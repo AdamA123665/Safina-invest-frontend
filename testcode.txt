@@ -1,0 +1,382 @@
+import React, { useState, useEffect } from 'react';
+import {
+  PieChart, Pie, Cell, Tooltip as RechartsTooltip, LineChart, Line, XAxis, YAxis, ResponsiveContainer
+} from 'recharts';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  TextField,
+  Slider,
+  Box,
+  Alert,
+  Container,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  Collapse,
+} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8A2BE2', '#FF69B4', '#A52A2A', '#5F9EA0', '#D2691E', '#FF7F50'];
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: { default: '#121212' },
+    primary: { main: '#4CAF50' },
+    text: { primary: '#ffffff', secondary: '#aaaaaa' }
+  },
+  typography: { fontFamily: 'Roboto, sans-serif' },
+  components: {
+    MuiCard: { styleOverrides: { root: { borderRadius: '12px', boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' } } },
+    MuiButton: { styleOverrides: { root: { borderRadius: '8px', textTransform: 'none' } } }
+  }
+});
+
+const PortfolioOptimizer = () => {
+  const [initialInvestment, setInitialInvestment] = useState(10000);
+  const [riskTolerance, setRiskTolerance] = useState(5);
+  const [portfolioData, setPortfolioData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [selectedAsset, setSelectedAsset] = useState(null);
+  const [researchOpen, setResearchOpen] = useState({});
+
+  useEffect(() => {
+    if (portfolioData && portfolioData.dashboard_data && portfolioData.dashboard_data.asset_info) {
+      setSelectedAsset(portfolioData.dashboard_data.asset_info[0]);
+    }
+  }, [portfolioData]);
+
+  const handleOptimize = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('http://localhost:8000/api/portfolio/optimize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ initial_investment: initialInvestment, risk_tolerance: riskTolerance })
+      });
+
+      if (!response.ok) throw new Error('Optimization failed');
+      const data = await response.json();
+      setPortfolioData(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleAssetClick = (asset) => {
+    setSelectedAsset(asset);
+  };
+
+  const toggleResearch = (index) => {
+    setResearchOpen((prevState) => ({ ...prevState, [index]: !prevState[index] }));
+  };
+
+  const scrollToSection = (sectionId) => {
+    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <ThemeProvider theme={darkTheme}>
+      <Box sx={{ backgroundColor: darkTheme.palette.background.default, minHeight: '100vh', color: darkTheme.palette.text.primary }}>
+
+        {/* Navigation Bar */}
+        <AppBar position="static" color="primary" sx={{ mb: 4 }}>
+          <Toolbar>
+            <Typography variant="h5" component="div" sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => scrollToSection('hero-section')}>
+              Safina Bank
+            </Typography>
+            <Button color="inherit" onClick={() => scrollToSection('learn-more')}>Learn More</Button>
+            <Button color="inherit" onClick={() => scrollToSection('portfolio-configuration')}>Allocation</Button>
+            <Button color="inherit" onClick={() => scrollToSection('tickers')}>Tickers</Button>
+            <Button color="inherit" onClick={() => scrollToSection('research-section')}>Research</Button>
+            <Button color="inherit" onClick={() => scrollToSection('contact-us')}>Contact Us</Button>
+          </Toolbar>
+        </AppBar>
+
+        {/* Hero Section */}
+        <Box id="hero-section" sx={{ py: 10, textAlign: 'center', backgroundColor: darkTheme.palette.primary.main, color: '#ffffff' }}>
+          <Container maxWidth="md">
+            <Typography variant="h3" gutterBottom>
+              Welcome to Safina Bank's Sharia Portfolio Optimizer
+            </Typography>
+            <Typography variant="h6" paragraph>
+              Build a portfolio aligned with Sharia principles. Enter your investment preferences to start.
+            </Typography>
+            <Button variant="contained" color="secondary" size="large" onClick={() => scrollToSection('portfolio-configuration')}>
+              Get Started
+            </Button>
+          </Container>
+        </Box>
+
+        {/* About Section with Asset Performance */}
+        <Container maxWidth="lg" sx={{ py: 5 }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={8}>
+              <Typography variant="h4" gutterBottom>About Islamic Sharia Portfolio Optimizer</Typography>
+              <Typography variant="body1" paragraph>
+                Our platform is dedicated to helping Muslims invest in compliance with Sharia principles.
+                We provide detailed analysis and optimized portfolios tailored to your risk tolerance and investment goals.
+              </Typography>
+              {selectedAsset && portfolioData && (
+                <Card sx={{ mt: 3 }}>
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>{selectedAsset.name} Performance</Typography>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <LineChart data={portfolioData.dashboard_data.performance.dates.map((date, index) => ({
+                        date,
+                        value: portfolioData.dashboard_data.performance.series.find(s => s.name === selectedAsset.name)?.values[index]
+                      }))}>
+                        <XAxis dataKey="date" tick={{ fill: '#ffffff' }} />
+                        <YAxis tick={{ fill: '#ffffff' }} tickFormatter={(value) => `${(value * 100).toFixed(2)}%`} />
+                        <RechartsTooltip formatter={(value) => `${(value * 100).toFixed(2)}%`} />
+                        <Line
+                          type="monotone"
+                          dataKey="value"
+                          stroke={selectedAsset.color}
+                          dot={false}
+                          strokeWidth={2}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              )}
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Typography variant="h6" gutterBottom>Select an Asset</Typography>
+              {portfolioData && portfolioData.dashboard_data.asset_info.map((asset, index) => (
+                <Button
+                  key={index}
+                  variant="contained"
+                  fullWidth
+                  sx={{ mb: 1, backgroundColor: asset.color }}
+                  onClick={() => handleAssetClick(asset)}
+                >
+                  {asset.name}
+                </Button>
+              ))}
+            </Grid>
+          </Grid>
+        </Container>
+
+        {/* Portfolio Configuration Section */}
+        <Container maxWidth="lg" sx={{ py: 5 }} id="portfolio-configuration">
+          <Card sx={{ mb: 3 }}>
+            <CardHeader title="Portfolio Configuration" />
+            <CardContent>
+              <Box component="form" noValidate autoComplete="off" sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <TextField
+                  label="Initial Investment ($)"
+                  type="number"
+                  value={initialInvestment}
+                  onChange={(e) => setInitialInvestment(Number(e.target.value))}
+                  inputProps={{ min: 1000, max: 10000000, step: 1000 }}
+                  fullWidth
+                  sx={{ backgroundColor: 'background.paper', borderRadius: 1 }}
+                />
+                <Box>
+                  <Typography gutterBottom>Risk Tolerance: {riskTolerance}/10</Typography>
+                  <Slider
+                    value={riskTolerance}
+                    onChange={(e, val) => setRiskTolerance(val)}
+                    min={1}
+                    max={10}
+                    step={1}
+                    marks
+                    valueLabelDisplay="auto"
+                  />
+                </Box>
+                <Button variant="contained" color="primary" onClick={handleOptimize} disabled={isLoading} size="large">
+                  {isLoading ? 'Optimizing...' : 'Optimize Portfolio'}
+                </Button>
+              </Box>
+            </CardContent>
+          </Card>
+
+          {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
+
+          {portfolioData && (
+            <>
+              <Grid container spacing={4}>
+                {/* Pie Chart */}
+                <Grid item xs={12} md={6}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom>Asset Allocation</Typography>
+                      <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                          <Pie
+                            data={Object.entries(portfolioData.portfolio_metrics.Weights).map(([name, value], index) => ({
+                              name,
+                              value: value * 100,
+                              color: COLORS[index % COLORS.length]
+                            }))}
+                            dataKey="value"
+                            nameKey="name"
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={80}
+                            labelLine={false}
+                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(1)}%`}
+                          >
+                            {Object.entries(portfolioData.portfolio_metrics.Weights).map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            ))}
+                          </Pie>
+                          <RechartsTooltip formatter={(value) => `${value.toFixed(2)}%`} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                {/* Monte Carlo Simulation */}
+                <Grid item xs={12} md={6}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom>Projected Portfolio Growth Over 10 Years</Typography>
+                      <ResponsiveContainer width="100%" height={250}>
+                        <LineChart data={portfolioData.dashboard_data.projected_returns.years.map((year, index) => ({
+                          year,
+                          '5th Percentile': portfolioData.dashboard_data.projected_returns['5th_percentile'][index] * initialInvestment,
+                          'Mean': portfolioData.dashboard_data.projected_returns['mean'][index] * initialInvestment,
+                          '95th Percentile': portfolioData.dashboard_data.projected_returns['95th_percentile'][index] * initialInvestment
+                        }))}>
+                          <XAxis dataKey="year" label={{ value: 'Year', position: 'insideBottom', offset: -5 }} />
+                          <YAxis tickFormatter={(value) => `$${value.toFixed(0)}`} />
+                          <RechartsTooltip formatter={(value) => `$${value.toFixed(2)}`} />
+                          <Line type="monotone" dataKey="Mean" stroke="#8884d8" strokeWidth={2} />
+                          <Line type="monotone" dataKey="5th Percentile" stroke="#FF6B8A" strokeDasharray="5 5" />
+                          <Line type="monotone" dataKey="95th Percentile" stroke="#82ca9d" strokeDasharray="5 5" />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
+
+              {/* Asset Allocation Details */}
+              <Box sx={{ mt: 4 }}>
+                {Object.entries(portfolioData.portfolio_metrics.Weights).map(([assetName, weight], index) => (
+                  <Box
+                    key={assetName}
+                    sx={{
+                      border: `3px solid ${COLORS[index % COLORS.length]}`,
+                      borderRadius: '12px',
+                      p: 2,
+                      mb: 2,
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      color: COLORS[index % COLORS.length]
+                    }}
+                  >
+                    <Typography variant="h6">{assetName}</Typography>
+                    <Typography variant="h6">{(weight * 100).toFixed(2)}%</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </>
+          )}
+        </Container>
+
+        {/* Where to Invest Section */}
+        {portfolioData && (
+          <Container maxWidth="md" sx={{ py: 5 }}>
+            <Typography variant="h4" gutterBottom>Where to Invest</Typography>
+            {portfolioData.dashboard_data.asset_info.map((asset, index) => (
+              <Box
+                key={index}
+                sx={{
+                  border: `2px solid ${asset.color}`,
+                  borderRadius: '12px',
+                  p: 2,
+                  mb: 2,
+                  color: asset.color
+                }}
+              >
+                <Typography variant="h6">{asset.name}</Typography>
+                <Typography variant="body1">Ticker: {asset.ticker}</Typography>
+                <Typography variant="body2">{asset.info}</Typography>
+              </Box>
+            ))}
+          </Container>
+        )}
+
+        {/* Research Section */}
+        {portfolioData && (
+          <Container maxWidth="md" sx={{ py: 5 }}>
+            <Typography variant="h4" gutterBottom>Research</Typography>
+            <List>
+              {portfolioData.dashboard_data.research_articles.map((article, index) => (
+                <Box key={index} sx={{ mb: 2 }}>
+                  <ListItem button onClick={() => toggleResearch(index)} sx={{ borderRadius: '12px', backgroundColor: darkTheme.palette.background.paper }}>
+                    <ListItemText primary={article.title} />
+                    <ExpandMoreIcon />
+                  </ListItem>
+                  <Collapse in={researchOpen[index]} timeout="auto" unmountOnExit>
+                    <CardContent>
+                      <Typography variant="body1">{article.content}</Typography>
+                    </CardContent>
+                  </Collapse>
+                </Box>
+              ))}
+            </List>
+          </Container>
+        )}
+
+        {/* Customer Reviews */}
+        <Container maxWidth="md" sx={{ py: 5 }}>
+          <Typography variant="h4" gutterBottom>Customer Reviews</Typography>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="body1" gutterBottom>
+                    "This platform is fantastic for aligning my investments with my faith. Very user-friendly and effective."
+                  </Typography>
+                  <Typography variant="subtitle2">- Ali A.</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="body1" gutterBottom>
+                    "It's rare to find such a well-constructed financial tool for ethical investing. Highly recommend!"
+                  </Typography>
+                  <Typography variant="subtitle2">- Fatima R.</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Container>
+
+        {/* Contact Us Section */}
+        <Container maxWidth="md" sx={{ py: 5, textAlign: 'center', backgroundColor: darkTheme.palette.background.paper, borderRadius: 2, mt: 4 }}>
+          <Typography variant="h4" gutterBottom>Contact Us</Typography>
+          <Typography variant="body1" paragraph>
+            Have questions or feedback? We'd love to hear from you!
+          </Typography>
+          <Button variant="contained" color="primary" href="mailto:support@yourdomain.com">
+            Email Us
+          </Button>
+        </Container>
+      </Box>
+    </ThemeProvider>
+  );
+}
+
+export default PortfolioOptimizer;
