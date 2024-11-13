@@ -16,7 +16,7 @@ const PortfolioOptimizer = () => {
     const [portfolioData, setPortfolioData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [setSelectedAsset] = useState(null);
+    const [, setSelectedAsset] = useState(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [articleModalOpen, setArticleModalOpen] = useState(false);
     const [selectedArticle, setSelectedArticle] = useState(null);
