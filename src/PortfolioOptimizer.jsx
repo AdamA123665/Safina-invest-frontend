@@ -31,7 +31,7 @@ const PortfolioOptimizer = () => {
   
         try {
           const response = await fetch(
-            'https://safina2-backend.azurewebsites.net/api/portfolio/optimize',
+            'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
             {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
