@@ -32,7 +32,7 @@ const PortfolioOptimizer = () => {
   
         try {
           const response = await fetch(
-            'http://localhost:8000/api/portfolio/optimize',
+            'https://safina2-backend.azurewebsites.net/',
             {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
