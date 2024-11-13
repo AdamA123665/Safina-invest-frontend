@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
-  PieChart, Pie, Cell, Tooltip as RechartsTooltip, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+  PieChart, Pie, Cell, Tooltip as RechartsTooltip, LineChart, Line, XAxis, YAxis, ResponsiveContainer
 } from 'recharts';
 import {ChevronUpIcon } from '@heroicons/react/solid';
-import { Dialog, Transition } from '@headlessui/react';
+import { Transition } from '@headlessui/react';
 import { MenuIcon, ChevronDownIcon, XIcon } from '@heroicons/react/outline';
 import "./index.css";
 import { motion } from 'framer-motion';
@@ -16,8 +16,7 @@ const PortfolioOptimizer = () => {
     const [portfolioData, setPortfolioData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [selectedAsset, setSelectedAsset] = useState(null);
-    const [researchOpen, setResearchOpen] = useState({});
+    const [setSelectedAsset] = useState(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [articleModalOpen, setArticleModalOpen] = useState(false);
     const [selectedArticle, setSelectedArticle] = useState(null);
@@ -64,16 +63,16 @@ const PortfolioOptimizer = () => {
       ) {
         setSelectedAsset(portfolioData.dashboard_data.asset_info[0]);
       }
-    }, [portfolioData]);
-  
-    const handleAssetClick = (asset) => {
-      setSelectedAsset(asset);
-    };
-  
+    }, [portfolioData, setSelectedAsset]);
+    
+
     // Toggle the expansion for only the clicked asset, ensuring others remain collapsed
     const toggleExpand = (assetTicker) => {
       setExpandedAsset(expandedAsset === assetTicker ? null : assetTicker);
+      // If you want to set the selected asset when expanded
+      setSelectedAsset(expandedAsset === assetTicker ? null : assetTicker);
     };
+    
   
     const openArticleModal = (article) => {
       setSelectedArticle(article);
@@ -85,14 +84,6 @@ const PortfolioOptimizer = () => {
       setMobileMenuOpen(false);
     };
   
-    const chartData = [
-      { name: 'Jan', value: 50 },
-      { name: 'Feb', value: 40 },
-      { name: 'Mar', value: 100 },
-      { name: 'Apr', value: 110 },
-      { name: 'May', value: 120 },
-      { name: 'Jun', value: 150 },
-    ];
   
   return (
     <div className="bg-gray-50 min-h-screen text-gray-800 font-sans">
@@ -252,7 +243,7 @@ const PortfolioOptimizer = () => {
         <div>
           <div className="bg-gradient-to-br from-green-600 to-green-900 p-6 rounded-lg shadow-lg">
             <p className="text-xl">
-              We know each person's circumstance is different. That's why we give you the ability to tailor your investments to what you want while still guiding you with expert help.
+              We know each circumstance is different. This is why we give you the ability to tailor your investments to what you want while still guiding you with expert help.
             </p>
           </div>
         </div>
@@ -267,7 +258,7 @@ const PortfolioOptimizer = () => {
         <h2 className="text-4xl font-bold mb-4 text-green-500">ETFs</h2>
         <p className="text-lg mb-6 text-gray-700">
           An ETF is a basket of stocks (companies). These usually track an index
-          (like the S&P 500). In the Sharia space, we have 8 main indexes. Each Index has at least 1 asset manager providing ETF's which track it. More information can be found at the specifc companies website (just type the ticker.)
+          (like the S&P 500). In the Sharia space, we have 8 main indexes. Each Index has at least 1 asset manager providing ETFs which track it. More information can be found at the specifc companies website (just type the ticker.)
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {portfolioData &&
@@ -388,7 +379,6 @@ const PortfolioOptimizer = () => {
                     const RADIAL_OFFSET = 1.4; // Adjust this multiplier to control the distance
                   
                     // Calculate angle and new positions for radial offset
-                    const angle = Math.atan2(y - cy, x - cx);
                     const newX = cx + (x - cx) * RADIAL_OFFSET;
                     const newY = cy + (y - cy) * RADIAL_OFFSET;
                   
@@ -514,11 +504,11 @@ const PortfolioOptimizer = () => {
               </div>
               <div className="bg-white rounded-lg shadow-lg p-6">
                 <h3 className="text-2xl font-bold mb-2">Step 2</h3>
-                <p>Leverage our asset allocation tool to invest the right amounts into the Sharia ETF's.</p>
+                <p>Leverage our asset allocation tool to invest the right amounts into the Sharia ETF&apos.</p>
               </div>
               <div className="bg-white rounded-lg shadow-lg p-6">
                 <h3 className="text-2xl font-bold mb-2">Step 3</h3>
-                <p>Invest and monitor your portfolio's performance. If your not happy with the amount of volatility then you can always change and rebalance. I suggest setting a direct debit and investing a fixed amount each month</p>
+                <p>Invest and monitor your portfolio performance. If your not happy with the amount of volatility then you can always change and rebalance. I suggest setting a direct debit and investing a fixed amount each month</p>
               </div>
             </div>
           </div>
@@ -542,14 +532,12 @@ const PortfolioOptimizer = () => {
               {article.content}
             </div>
             <button
-              onClick={() => {
-                setSelectedArticle(article);
-                setArticleModalOpen(true);
-              }}
+              onClick={() => openArticleModal(article)}
               className="text-blue-500 underline"
             >
               Read More
             </button>
+
           </div>
         </div>
       ))}
@@ -557,49 +545,53 @@ const PortfolioOptimizer = () => {
   </div>
 
   {/* Article Modal */}
-  <Transition show={articleModalOpen} className="fixed z-10 inset-0 overflow-y-auto">
-    <div className="flex items-center justify-center min-h-screen px-4 text-center">
-      <Transition.Child
-        className="fixed inset-0 transition-opacity"
-        aria-hidden="true"
-        enter="ease-out duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="ease-in duration-200"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-      </Transition.Child>
+<Transition show={articleModalOpen} className="fixed z-10 inset-0 overflow-y-auto">
+  <div className="flex items-center justify-center min-h-screen px-4 text-center">
+    <Transition.Child
+      className="fixed inset-0 transition-opacity"
+      aria-hidden="true"
+      enter="ease-out duration-300"
+      enterFrom="opacity-0"
+      enterTo="opacity-100"
+      leave="ease-in duration-200"
+      leaveFrom="opacity-100"
+      leaveTo="opacity-0"
+    >
+      <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+    </Transition.Child>
 
-      <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-      <Transition.Child
-        className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full max-w-3xl"
-        enter="ease-out duration-300"
-        enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-        enterTo="opacity-100 translate-y-0 sm:scale-100"
-        leave="ease-in duration-200"
-        leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-        leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-      >
-        {selectedArticle && (
-          <div className="bg-white p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-2xl font-bold">{selectedArticle.title}</h3>
-              <button onClick={() => setArticleModalOpen(false)} className="text-gray-500 hover:text-gray-700">
-                <XIcon className="h-6 w-6" />
-              </button>
-            </div>
-            <p className="text-sm text-gray-600 mb-4">{selectedArticle.date}</p>
-            <div className="prose max-w-none">
-              <p>{selectedArticle.content}</p>
-            </div>
+    <Transition.Child
+      className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full max-w-3xl"
+      enter="ease-out duration-300"
+      enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+      enterTo="opacity-100 translate-y-0 sm:scale-100"
+      leave="ease-in duration-200"
+      leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+      leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+    >
+      {selectedArticle && (
+        <div className="bg-white p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-2xl font-bold">{selectedArticle.title}</h3>
+            <button
+              onClick={() => setArticleModalOpen(false)}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <XIcon className="h-6 w-6" />
+            </button>
           </div>
-        )}
-      </Transition.Child>
-    </div>
-  </Transition>
+          <p className="text-sm text-gray-600 mb-4">{selectedArticle.date}</p>
+          <div className="prose max-w-none">
+            <p>{selectedArticle.content}</p>
+          </div>
+        </div>
+      )}
+    </Transition.Child>
+  </div>
+</Transition>
+
 </section>
 
 
@@ -610,11 +602,11 @@ const PortfolioOptimizer = () => {
             <h2 className="text-4xl font-bold mb-8">Customer Reviews</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-white rounded-lg shadow-lg p-6">
-                <p className="mb-4">"This platform has transformed the way I invest. The tools are intuitive and the support is excellent."</p>
+                <p className="mb-4">&quotThis platform has transformed the way I invest. The tools are intuitive and the support is excellent.&quot</p>
                 <p className="font-bold">- Sarah K.</p>
               </div>
               <div className="bg-white rounded-lg shadow-lg p-6">
-                <p className="mb-4">"A must-have for anyone looking to invest ethically. Highly recommended!"</p>
+                <p className="mb-4">&quotA must-have for anyone looking to invest ethically. Highly recommended!&quot</p>
                 <p className="font-bold">- Ahmed M.</p>
               </div>
             </div>
