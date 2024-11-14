@@ -55,6 +55,9 @@ function ResearchNews() {
       return matchesTab && matchesSearch;
     });
     setFilteredArticles(filtered);
+
+    // Reset the current slide when the filtered articles change
+    setCurrentSlide(0);
   }, [activeTab, searchQuery, articles]);
 
   const openArticleModal = (article) => {
@@ -68,11 +71,11 @@ function ResearchNews() {
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % Math.min(articles.length, 5));
+    setCurrentSlide((prev) => (prev + 1) % filteredArticles.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + Math.min(articles.length, 5)) % Math.min(articles.length, 5));
+    setCurrentSlide((prev) => (prev - 1 + filteredArticles.length) % filteredArticles.length);
   };
 
   return (
@@ -88,61 +91,69 @@ function ResearchNews() {
 
         {/* Hero Carousel */}
         <div className="relative mb-12 h-96 overflow-hidden rounded-lg shadow-lg">
-          {articles.slice(0, 5).map((article, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                index === currentSlide ? 'opacity-100' : 'opacity-0'
-              }`}
-            >
+          {filteredArticles.length > 0 ? (
+            filteredArticles.slice(0, 5).map((article, index) => (
               <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{
-                  backgroundImage: `url(${
-                    article.image_url ||
-                    'https://source.unsplash.com/1600x900/?finance,investment'
-                  })`,
-                }}
-              >
-                <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-              </div>
-              <div className="relative z-10 p-8 md:p-16 lg:p-24 flex flex-col justify-end h-full">
-                <h3 className="text-4xl font-bold text-white mb-4">{article.title}</h3>
-                <p className="text-gray-200 mb-6">{article.content.substring(0, 120)}...</p>
-                <button
-                  onClick={() => openArticleModal(article)}
-                  className="self-start px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition"
-                >
-                  Read More
-                </button>
-              </div>
-            </div>
-          ))}
-          {/* Carousel Controls */}
-          <button
-            onClick={prevSlide}
-            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full hover:bg-opacity-90 transition"
-          >
-            <ChevronLeftIcon className="h-6 w-6 text-gray-800" />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full hover:bg-opacity-90 transition"
-          >
-            <ChevronRightIcon className="h-6 w-6 text-gray-800" />
-          </button>
-          {/* Carousel Indicators */}
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {articles.slice(0, 5).map((_, index) => (
-              <span
                 key={index}
-                className={`h-3 w-3 rounded-full cursor-pointer ${
-                  index === currentSlide ? 'bg-green-600' : 'bg-gray-400'
+                className={`absolute inset-0 transition-opacity duration-1000 ${
+                  index === currentSlide ? 'opacity-100' : 'opacity-0'
                 }`}
-                onClick={() => setCurrentSlide(index)}
-              ></span>
-            ))}
-          </div>
+              >
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{
+                    backgroundImage: `url(${
+                      article.image_url ||
+                      'https://source.unsplash.com/1600x900/?finance,investment'
+                    })`,
+                  }}
+                >
+                  <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+                </div>
+                <div className="relative z-10 p-8 md:p-16 lg:p-24 flex flex-col justify-end h-full">
+                  <h3 className="text-4xl font-bold text-white mb-4">{article.title}</h3>
+                  <p className="text-gray-200 mb-6">{article.content.substring(0, 120)}...</p>
+                  <button
+                    onClick={() => openArticleModal(article)}
+                    className="self-start px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition"
+                  >
+                    Read More
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-600">No articles found.</p>
+          )}
+          {/* Carousel Controls */}
+          {filteredArticles.length > 1 && (
+            <>
+              <button
+                onClick={prevSlide}
+                className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full hover:bg-opacity-90 transition"
+              >
+                <ChevronLeftIcon className="h-6 w-6 text-gray-800" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full hover:bg-opacity-90 transition"
+              >
+                <ChevronRightIcon className="h-6 w-6 text-gray-800" />
+              </button>
+              {/* Carousel Indicators */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                {filteredArticles.slice(0, 5).map((_, index) => (
+                  <span
+                    key={index}
+                    className={`h-3 w-3 rounded-full cursor-pointer ${
+                      index === currentSlide ? 'bg-green-600' : 'bg-gray-400'
+                    }`}
+                    onClick={() => setCurrentSlide(index)}
+                  ></span>
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         {/* Tabs for News and Research */}
@@ -184,9 +195,9 @@ function ResearchNews() {
         </div>
 
         {/* Articles Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredArticles.length > 0 ? (
-            filteredArticles.map((article, index) => (
+        {filteredArticles.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredArticles.map((article, index) => (
               <div
                 key={index}
                 className="bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden"
@@ -208,11 +219,11 @@ function ResearchNews() {
                   </button>
                 </div>
               </div>
-            ))
-          ) : (
-            <p className="text-center col-span-full text-gray-600">No articles found.</p>
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-600">No articles found.</p>
+        )}
       </div>
 
       {/* Article Modal */}

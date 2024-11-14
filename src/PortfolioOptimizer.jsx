@@ -8,6 +8,7 @@ import About from './pages/About';
 import "./index.css";
 import { XIcon, HomeIcon } from '@heroicons/react/outline';
 
+  // Removed mt-16 from content wrapper
 function PortfolioOptimizer() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -15,7 +16,7 @@ function PortfolioOptimizer() {
     <Router>
       <Navbar isMobileMenuOpen={isMobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
       {/* Page Content */}
-      <div className="mt-16"> {/* Push content below the navbar */}
+      <div> {/* Removed mt-16 */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/allocation" element={<Allocation />} />
@@ -28,6 +29,7 @@ function PortfolioOptimizer() {
   );
 }
 
+
 function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
@@ -35,7 +37,7 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50); // Change navbar background after 50px scroll
+      setIsScrolled(window.scrollY > 100); // Change navbar background after 100px scroll
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -47,7 +49,7 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${
         isScrolled
-          ? 'bg-gray-100 bg-opacity-90 shadow-md' // Light grey with partial transparency
+          ? 'bg-white bg-opacity-90 shadow-md'
           : 'bg-transparent'
       }`}
     >
@@ -101,36 +103,36 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
       {/* Mobile Navigation Menu */}
       {isMobileMenuOpen && (
         <nav
-          className="sm:hidden fixed top-16 left-0 w-3/4 h-full bg-gray-800 bg-opacity-70 p-6"
+          className="sm:hidden fixed top-16 left-0 bg-gray-800 bg-opacity-90 p-4"
           style={{
-            borderRadius: '0 20px 20px 0', // Rounded edge for elegance
+            borderRadius: '0 10px 10px 0',
             boxShadow: '2px 0 12px rgba(0, 0, 0, 0.2)',
           }}
         >
-          <div className="flex flex-col space-y-6">
+          <div className="flex flex-col space-y-4">
             <Link
-              className="text-white text-lg hover:text-green-600 transition"
+              className="text-white text-lg hover:text-green-300 transition"
               to="/allocation"
               onClick={() => setMobileMenuOpen(false)}
             >
               Allocation
             </Link>
             <Link
-              className="text-white text-lg hover:text-green-600 transition"
+              className="text-white text-lg hover:text-green-300 transition"
               to="/assets"
               onClick={() => setMobileMenuOpen(false)}
             >
               Assets
             </Link>
             <Link
-              className="text-white text-lg hover:text-green-600 transition"
+              className="text-white text-lg hover:text-green-300 transition"
               to="/research"
               onClick={() => setMobileMenuOpen(false)}
             >
               Research
             </Link>
             <Link
-              className="text-white text-lg hover:text-green-600 transition"
+              className="text-white text-lg hover:text-green-300 transition"
               to="/about"
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -142,5 +144,4 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
     </header>
   );
 }
-
 export default PortfolioOptimizer;
