@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes
+import React, { useState, useEffect, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { Transition } from '@headlessui/react';
 import { XIcon, SearchIcon } from '@heroicons/react/solid';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
@@ -12,15 +12,19 @@ function ResearchNews({ portfolioData }) {
   const [filteredArticles, setFilteredArticles] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Extract articles from portfolioData
-  const articles = portfolioData?.dashboard_data.research_articles || [];
+  // Memoize articles to prevent unnecessary re-renders
+  const articles = useMemo(() => {
+    return portfolioData?.dashboard_data.research_articles || [];
+  }, [portfolioData]);
 
   useEffect(() => {
     // Filter articles based on active tab and search query
-    const filtered = articles.filter(article => {
-      const matchesTab = activeTab === 'news' ? article.type === 'news' : article.type === 'research';
-      const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            article.content.toLowerCase().includes(searchQuery.toLowerCase());
+    const filtered = articles.filter((article) => {
+      const matchesTab =
+        activeTab === 'news' ? article.type === 'news' : article.type === 'research';
+      const matchesSearch =
+        article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        article.content.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesTab && matchesSearch;
     });
     setFilteredArticles(filtered);
@@ -49,32 +53,38 @@ function ResearchNews({ portfolioData }) {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-extrabold text-gray-800">Research & News</h2>
+          <h2 className="text-5xl font-extrabold text-gray-800">Research & News</h2>
           <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
             Explore the latest insights in Islamic finance and investment strategies.
           </p>
         </div>
 
         {/* Hero Carousel */}
-        <div className="relative mb-12">
+        <div className="relative mb-12 h-96 overflow-hidden rounded-lg shadow-lg">
           {articles.slice(0, 5).map((article, index) => (
             <div
               key={index}
-              className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
-              style={{
-                backgroundImage: `url(${article.image_url || 'https://source.unsplash.com/1600x900/?finance,investment'})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                index === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
             >
-              <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-              <div className="absolute bottom-8 left-8 text-white max-w-xl">
-                <h3 className="text-3xl font-bold">{article.title}</h3>
-                <p className="mt-2 text-sm">{article.date}</p>
-                <p className="mt-4">{article.content.substring(0, 100)}...</p>
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${
+                    article.image_url ||
+                    'https://source.unsplash.com/1600x900/?finance,investment'
+                  })`,
+                }}
+              >
+                <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+              </div>
+              <div className="relative z-10 p-8 md:p-16 lg:p-24 flex flex-col justify-end h-full">
+                <h3 className="text-4xl font-bold text-white mb-4">{article.title}</h3>
+                <p className="text-gray-200 mb-6">{article.content.substring(0, 120)}...</p>
                 <button
                   onClick={() => openArticleModal(article)}
-                  className="mt-4 inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                  className="self-start px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition"
                 >
                   Read More
                 </button>
@@ -99,7 +109,9 @@ function ResearchNews({ portfolioData }) {
             {articles.slice(0, 5).map((_, index) => (
               <span
                 key={index}
-                className={`h-2 w-2 rounded-full cursor-pointer ${index === currentSlide ? 'bg-green-600' : 'bg-gray-400'}`}
+                className={`h-3 w-3 rounded-full cursor-pointer ${
+                  index === currentSlide ? 'bg-green-600' : 'bg-gray-400'
+                }`}
                 onClick={() => setCurrentSlide(index)}
               ></span>
             ))}
@@ -109,13 +121,21 @@ function ResearchNews({ portfolioData }) {
         {/* Tabs for News and Research */}
         <div className="flex justify-center mb-8">
           <button
-            className={`px-6 py-2 mr-4 text-lg font-medium rounded ${activeTab === 'news' ? 'bg-green-600 text-white' : 'bg-white text-gray-800 hover:bg-gray-100'}`}
+            className={`px-6 py-2 mr-4 text-lg font-medium rounded-full shadow ${
+              activeTab === 'news'
+                ? 'bg-green-600 text-white'
+                : 'bg-white text-gray-800 hover:bg-gray-100'
+            }`}
             onClick={() => setActiveTab('news')}
           >
             Latest News
           </button>
           <button
-            className={`px-6 py-2 text-lg font-medium rounded ${activeTab === 'research' ? 'bg-green-600 text-white' : 'bg-white text-gray-800 hover:bg-gray-100'}`}
+            className={`px-6 py-2 text-lg font-medium rounded-full shadow ${
+              activeTab === 'research'
+                ? 'bg-green-600 text-white'
+                : 'bg-white text-gray-800 hover:bg-gray-100'
+            }`}
             onClick={() => setActiveTab('research')}
           >
             Research Articles
@@ -130,9 +150,9 @@ function ResearchNews({ portfolioData }) {
               placeholder="Search articles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
+              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-600 shadow"
             />
-            <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <SearchIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400" />
           </div>
         </div>
 
@@ -140,19 +160,22 @@ function ResearchNews({ portfolioData }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredArticles.length > 0 ? (
             filteredArticles.map((article, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden"
+              >
                 <img
                   src={article.image_url || 'https://source.unsplash.com/600x400/?islamic,finance'}
                   alt={article.title}
-                  className="w-full h-48 object-cover rounded-t-lg"
+                  className="w-full h-56 object-cover"
                 />
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">{article.title}</h3>
+                  <h3 className="text-2xl font-semibold text-gray-800 mb-2">{article.title}</h3>
                   <p className="text-sm text-gray-500 mb-4">{article.date}</p>
-                  <p className="text-gray-700 mb-4 line-clamp-3">{article.content}</p>
+                  <p className="text-gray-700 mb-6 line-clamp-3">{article.content}</p>
                   <button
                     onClick={() => openArticleModal(article)}
-                    className="text-green-600 font-medium hover:underline"
+                    className="inline-block px-4 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition"
                   >
                     Read More
                   </button>
@@ -176,9 +199,11 @@ function ResearchNews({ portfolioData }) {
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+            className="fixed inset-0 bg-black bg-opacity-70 transition-opacity"
           />
-          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+            &#8203;
+          </span>
           <Transition.Child
             as="div"
             className="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full max-w-3xl"
@@ -192,7 +217,7 @@ function ResearchNews({ portfolioData }) {
             {selectedArticle && (
               <div className="p-6">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-2xl font-bold text-gray-800">{selectedArticle.title}</h3>
+                  <h3 className="text-3xl font-bold text-gray-800">{selectedArticle.title}</h3>
                   <button
                     onClick={closeArticleModal}
                     className="text-gray-500 hover:text-gray-700 focus:outline-none"
@@ -200,7 +225,7 @@ function ResearchNews({ portfolioData }) {
                     <XIcon className="h-6 w-6" />
                   </button>
                 </div>
-                <p className="text-sm text-gray-500 mb-4">{selectedArticle.date}</p>
+                <p className="text-sm text-gray-500 mb-6">{selectedArticle.date}</p>
                 <div className="prose max-w-none text-gray-700">
                   {selectedArticle.content.split('\n').map((para, idx) => (
                     <p key={idx}>{para}</p>
