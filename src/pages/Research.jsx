@@ -56,7 +56,7 @@ function ResearchNews() {
     });
     setFilteredArticles(filtered);
 
-    // Reset the current slide when the filtered articles change
+    // Reset currentSlide when filteredArticles change
     setCurrentSlide(0);
   }, [activeTab, searchQuery, articles]);
 
@@ -71,11 +71,15 @@ function ResearchNews() {
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % filteredArticles.length);
+    setCurrentSlide((prev) =>
+      (prev + 1) % Math.min(filteredArticles.length, 5)
+    );
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + filteredArticles.length) % filteredArticles.length);
+    setCurrentSlide((prev) =>
+      (prev - 1 + Math.min(filteredArticles.length, 5)) % Math.min(filteredArticles.length, 5)
+    );
   };
 
   return (
@@ -125,6 +129,7 @@ function ResearchNews() {
           ) : (
             <p className="text-center text-gray-600">No articles found.</p>
           )}
+
           {/* Carousel Controls */}
           {filteredArticles.length > 1 && (
             <>

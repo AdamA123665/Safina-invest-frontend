@@ -54,7 +54,7 @@ function Assets() {
         {/* Introduction */}
         <div className="mb-16 text-center">
           <h1 className="text-5xl font-extrabold text-green-800 mb-6">
-            Understanding Asset Classes & Sharia-Compliant ETFs
+            Investing 101
           </h1>
           <p className="text-xl text-gray-700 max-w-4xl mx-auto">
             Investing can be overwhelming for beginners. Here's a simple guide to asset classes,
@@ -111,7 +111,29 @@ function Assets() {
             </div>
           </div>
         </div>
+        {/* Section Header */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-extrabold text-gray-800">Asset Classes & Savings</h2>
+          <p className="text-lg text-gray-700 mt-4 max-w-3xl mx-auto">
+            Asset classes play a vital role in building a diversified portfolio. In addition to equities and bonds,
+            savings are a critical tool to ensure your money doesn’t sit idle and continues to grow in safe and liquid environments.
+          </p>
+        </div>
 
+        {/* Savings Subsection */}
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-12">
+          <h3 className="text-3xl font-bold text-green-600 mb-4">The Power of Savings</h3>
+          <p className="text-lg text-gray-700 mb-4">
+            Savings are one of the most important tools in financial planning. They provide a safety net for emergencies,
+            enable planned expenses, and allow for better investment opportunities. While investing in other asset classes can bring higher returns,
+            savings accounts or short-term liquid investments ensure you have cash readily available without the risk of market fluctuations.
+          </p>
+          <ul className="list-disc list-inside text-gray-700">
+            <li>Helps avoid leaving money idle and unused.</li>
+            <li>Provides a steady and predictable growth rate.</li>
+            <li>Essential for short-term goals and emergency funds.</li>
+          </ul>
+        </div>
         {/* ETFs Explanation */}
         <div className="mb-16">
           <h2 className="text-4xl font-bold text-green-700 mb-8 text-center">
@@ -155,16 +177,15 @@ function Assets() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
                   className={`bg-white rounded-xl shadow-xl border-2 transition-all duration-300 ${
-                    isExpanded ? 'p-6' : 'p-4 h-40'
+                    isExpanded ? 'p-6' : 'p-2 h-28'
                   }`}
                   style={{
                     borderColor: asset.color,
-                    minHeight: isExpanded ? 'auto' : '10px',
                   }}
                 >
                   <div className="flex justify-between items-center">
                     <h3
-                      className="text-2xl font-bold"
+                      className="text-lg md:text-xl font-bold"
                       style={{ color: asset.color }}
                     >
                       {asset.name}
