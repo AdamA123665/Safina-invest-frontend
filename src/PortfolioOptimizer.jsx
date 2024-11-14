@@ -39,6 +39,7 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
     };
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Call once on mount to set initial state
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

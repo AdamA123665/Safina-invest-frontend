@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import { Transition } from '@headlessui/react';
 import { XIcon, SearchIcon } from '@heroicons/react/solid';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 
-function ResearchNews({ portfolioData }) {
+function ResearchNews() {
+  const [portfolioData, setPortfolioData] = useState(null);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [articleModalOpen, setArticleModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('news'); // 'news' or 'research'
@@ -12,9 +12,36 @@ function ResearchNews({ portfolioData }) {
   const [filteredArticles, setFilteredArticles] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Fetch portfolio data (including articles)
+  useEffect(() => {
+    const fetchPortfolioData = async () => {
+      try {
+        const response = await fetch(
+          'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              initial_investment: 1000, // Adjust as needed
+              risk_tolerance: 5,        // Adjust as needed
+            }),
+          }
+        );
+
+        if (!response.ok) throw new Error('Failed to fetch articles');
+        const data = await response.json();
+        setPortfolioData(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchPortfolioData();
+  }, []);
+
   // Memoize articles to prevent unnecessary re-renders
   const articles = useMemo(() => {
-    return portfolioData?.dashboard_data.research_articles || [];
+    return portfolioData?.dashboard_data?.research_articles || [];
   }, [portfolioData]);
 
   useEffect(() => {
@@ -239,22 +266,5 @@ function ResearchNews({ portfolioData }) {
     </section>
   );
 }
-
-// Define PropTypes
-ResearchNews.propTypes = {
-  portfolioData: PropTypes.shape({
-    dashboard_data: PropTypes.shape({
-      research_articles: PropTypes.arrayOf(
-        PropTypes.shape({
-          title: PropTypes.string.isRequired,
-          date: PropTypes.string.isRequired,
-          content: PropTypes.string.isRequired,
-          image_url: PropTypes.string,
-          type: PropTypes.string.isRequired, // "news" or "research"
-        })
-      ).isRequired,
-    }).isRequired,
-  }).isRequired,
-};
 
 export default ResearchNews;
