@@ -3,7 +3,6 @@ import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, LineChart, Line, XAxis
 import {ChevronUpIcon } from '@heroicons/react/solid';
 import { Transition } from '@headlessui/react';
 import { MenuIcon, ChevronDownIcon, XIcon } from '@heroicons/react/outline';
-import "./index.css";
 import { motion } from 'framer-motion';
 import { CheckCircleIcon } from 'lucide-react';
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8A2BE2', '#FF69B4', '#A52A2A', '#5F9EA0', '#D2691E', '#FF7F50'];
