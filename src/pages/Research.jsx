@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Transition } from '@headlessui/react';
 import { XIcon, SearchIcon } from '@heroicons/react/solid';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
@@ -11,7 +11,10 @@ function ResearchNews({ portfolioData }) {
   const [filteredArticles, setFilteredArticles] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const articles = portfolioData?.dashboard_data.research_articles || [];
+  // Memoize the articles to prevent unnecessary recalculations
+  const articles = useMemo(() => {
+    return portfolioData?.dashboard_data.research_articles || [];
+  }, [portfolioData]);
 
   useEffect(() => {
     // Filter articles based on active tab and search query
@@ -35,11 +38,11 @@ function ResearchNews({ portfolioData }) {
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % articles.length);
+    setCurrentSlide((prev) => (prev + 1) % Math.min(articles.length, 5)); // Limit to first 5 articles for carousel
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + articles.length) % articles.length);
+    setCurrentSlide((prev) => (prev - 1 + Math.min(articles.length, 5)) % Math.min(articles.length, 5));
   };
 
   return (
@@ -54,55 +57,57 @@ function ResearchNews({ portfolioData }) {
         </div>
 
         {/* Hero Carousel */}
-        <div className="relative mb-12">
-          {articles.slice(0, 5).map((article, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
-              style={{
-                backgroundImage: `url(${article.image_url || 'https://source.unsplash.com/1600x900/?finance,investment'})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            >
-              <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-              <div className="absolute bottom-8 left-8 text-white max-w-xl">
-                <h3 className="text-3xl font-bold">{article.title}</h3>
-                <p className="mt-2 text-sm">{article.date}</p>
-                <p className="mt-4">{article.content.substring(0, 100)}...</p>
-                <button
-                  onClick={() => openArticleModal(article)}
-                  className="mt-4 inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
-                >
-                  Read More
-                </button>
-              </div>
-            </div>
-          ))}
-          {/* Carousel Controls */}
-          <button
-            onClick={prevSlide}
-            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full hover:bg-opacity-90 transition"
-          >
-            <ChevronLeftIcon className="h-6 w-6 text-gray-800" />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full hover:bg-opacity-90 transition"
-          >
-            <ChevronRightIcon className="h-6 w-6 text-gray-800" />
-          </button>
-          {/* Carousel Indicators */}
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {articles.slice(0, 5).map((_, index) => (
-              <span
+        {articles.length > 0 && (
+          <div className="relative mb-12">
+            {articles.slice(0, 5).map((article, index) => (
+              <div
                 key={index}
-                className={`h-2 w-2 rounded-full ${index === currentSlide ? 'bg-green-600' : 'bg-gray-400'}`}
-                onClick={() => setCurrentSlide(index)}
-              ></span>
+                className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
+                style={{
+                  backgroundImage: `url(${article.image_url || 'https://source.unsplash.com/1600x900/?finance,investment'})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              >
+                <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+                <div className="absolute bottom-8 left-8 text-white max-w-xl">
+                  <h3 className="text-3xl font-bold">{article.title}</h3>
+                  <p className="mt-2 text-sm">{article.date}</p>
+                  <p className="mt-4">{article.content.substring(0, 100)}...</p>
+                  <button
+                    onClick={() => openArticleModal(article)}
+                    className="mt-4 inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                  >
+                    Read More
+                  </button>
+                </div>
+              </div>
             ))}
+            {/* Carousel Controls */}
+            <button
+              onClick={prevSlide}
+              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full hover:bg-opacity-90 transition"
+            >
+              <ChevronLeftIcon className="h-6 w-6 text-gray-800" />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full hover:bg-opacity-90 transition"
+            >
+              <ChevronRightIcon className="h-6 w-6 text-gray-800" />
+            </button>
+            {/* Carousel Indicators */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+              {articles.slice(0, 5).map((_, index) => (
+                <span
+                  key={index}
+                  className={`h-2 w-2 rounded-full cursor-pointer ${index === currentSlide ? 'bg-green-600' : 'bg-gray-400'}`}
+                  onClick={() => setCurrentSlide(index)}
+                ></span>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Tabs for News and Research */}
         <div className="flex justify-center mb-8">
@@ -181,11 +186,11 @@ function ResearchNews({ portfolioData }) {
             as="div"
             className="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full max-w-3xl"
             enter="ease-out duration-300"
-            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            enterTo="opacity-100 translate-y-0 sm:scale-100"
+            enterFrom="opacity-0 translate-y-4"
+            enterTo="opacity-100 translate-y-0"
             leave="ease-in duration-200"
-            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-4"
           >
             {selectedArticle && (
               <div className="p-6">
@@ -199,11 +204,13 @@ function ResearchNews({ portfolioData }) {
                   </button>
                 </div>
                 <p className="text-sm text-gray-500 mb-4">{selectedArticle.date}</p>
-                <img
-                  src={selectedArticle.image_url || 'https://source.unsplash.com/800x600/?islamic,finance'}
-                  alt={selectedArticle.title}
-                  className="w-full h-64 object-cover rounded mb-6"
-                />
+                {selectedArticle.image_url && (
+                  <img
+                    src={selectedArticle.image_url}
+                    alt={selectedArticle.title}
+                    className="w-full h-64 object-cover rounded mb-6"
+                  />
+                )}
                 <div className="prose max-w-none text-gray-700">
                   {selectedArticle.content.split('\n').map((para, idx) => (
                     <p key={idx}>{para}</p>
