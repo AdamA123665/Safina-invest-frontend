@@ -101,23 +101,23 @@ function About() {
           <div className="lg:w-1/2 lg:pr-12 mb-8 lg:mb-0">
             <h2 className="text-3xl font-bold mb-4">Meet the Founder</h2>
             <p className="text-gray-600">
-              Shoab Ahmed is the visionary founder behind Safina Invest. With a
+              Adam Ahmed is the visionary founder behind Safina Invest. With a
               mission to uplift the Muslim community through innovative,
               Sharia-compliant financial solutions, he has dedicated his career
               to bridging the gap between institutional-grade tools and
               individual investors.
             </p>
             <p className="text-gray-600 mt-4">
-              Shoab's expertise spans technology, finance, and community-driven
-              growth. His goal is to democratise finance for all while staying
+              Adam's expertise spans technology, finance, and community-driven
+              growth. With experience from leading investment banks and asset managers his goal is to democratise finance for all while staying
               rooted in ethical and moral values.
             </p>
           </div>
           {/* Image Section */}
           <div className="lg:w-1/2 flex justify-center">
             <img
-              src={`${process.env.PUBLIC_URL}/shoab_ahmed.png`}
-              alt="Shoab Ahmed"
+              src={`${process.env.PUBLIC_URL}/adam.png`}
+              alt="Adam Ahmed"
               className="rounded-lg shadow-lg w-80 h-auto"
             />
           </div>
