@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Allocation from './pages/Allocation';
@@ -6,11 +6,11 @@ import Assets from './pages/Assets';
 import Research from './pages/Research';
 import About from './pages/About';
 import "./index.css";
-import { XIcon, HomeIcon } from '@heroicons/react/outline'; // Ensure you have heroicons installed
+import { XIcon, HomeIcon } from '@heroicons/react/outline';
 
 function PortfolioOptimizer() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+
   return (
     <Router>
       <Navbar isMobileMenuOpen={isMobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
@@ -29,24 +29,33 @@ function PortfolioOptimizer() {
 }
 
 function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/';
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50); // Change navbar background after 50px scroll
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <header
-      className="fixed top-0 left-0 w-full"
-      style={{
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Transparent background
-        backdropFilter: 'blur(10px)', // Adds elegance with slight blur
-        zIndex: 1000,
-      }}
+      className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${
+        isScrolled
+          ? 'bg-gray-100 bg-opacity-90 shadow-md' // Light grey with partial transparency
+          : 'bg-transparent'
+      }`}
     >
       <div className="container mx-auto px-6 sm:px-8 lg:px-10 flex justify-between items-center h-16">
         {/* Left Side: Home Button on non-home pages */}
         {!isHome && (
           <Link to="/" className="flex items-center space-x-2">
-            <HomeIcon className="h-6 w-6 text-white" />
-            <span className="text-white font-semibold">Home</span>
+            <HomeIcon className="h-6 w-6 text-gray-800" />
+            <span className="text-gray-800 font-semibold">Home</span>
           </Link>
         )}
 
@@ -66,15 +75,15 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
 
         {/* Desktop Navigation */}
         <nav className="hidden sm:flex space-x-4">
-          <Link className="text-white hover:text-green-600 transition" to="/allocation">Allocation</Link>
-          <Link className="text-white hover:text-green-600 transition" to="/assets">Assets</Link>
-          <Link className="text-white hover:text-green-600 transition" to="/research">Research</Link>
-          <Link className="text-white hover:text-green-600 transition" to="/about">About</Link>
+          <Link className="text-gray-800 hover:text-green-600 transition" to="/allocation">Allocation</Link>
+          <Link className="text-gray-800 hover:text-green-600 transition" to="/assets">Assets</Link>
+          <Link className="text-gray-800 hover:text-green-600 transition" to="/research">Research</Link>
+          <Link className="text-gray-800 hover:text-green-600 transition" to="/about">About</Link>
         </nav>
 
         {/* Mobile Menu Toggle */}
         <button
-          className="sm:hidden text-white focus:outline-none ml-2"
+          className="sm:hidden text-gray-800 focus:outline-none"
           onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle Mobile Menu"
         >
@@ -89,13 +98,11 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
       </div>
 
       {/* Mobile Navigation Menu */}
-      <Transition isOpen={isMobileMenuOpen}>
+      {isMobileMenuOpen && (
         <nav
-          className={`sm:hidden fixed top-0 left-0 h-full w-3/4 bg-gray-800 bg-opacity-90 p-6 transform transition-transform duration-300 ${
-            isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
+          className="sm:hidden fixed top-16 left-0 w-3/4 h-full bg-gray-800 bg-opacity-70 p-6"
           style={{
-            borderRadius: '0 20px 20px 0', // Elegant rounded edge
+            borderRadius: '0 20px 20px 0', // Rounded edge for elegance
             boxShadow: '2px 0 12px rgba(0, 0, 0, 0.2)',
           }}
         >
@@ -130,19 +137,9 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
             </Link>
           </div>
         </nav>
-      </Transition>
+      )}
     </header>
   );
-}
-
-/**
- * Transition Component for handling mobile menu animations
- * You can use a library like react-transition-group or implement your own.
- * Here, I'll provide a simple implementation using CSS transitions.
- */
-
-function Transition({ isOpen, children }) {
-  return isOpen ? children : null;
 }
 
 export default PortfolioOptimizer;
