@@ -13,11 +13,12 @@ function PortfolioOptimizer() {
   return (
     <Router>
       <div>
-        {/* Navigation Bar */}
+        {/* Transparent Navigation Bar */}
         <header
           className="fixed top-0 left-0 w-full"
           style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.8)', // Semi-transparent background
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Transparent background
+            backdropFilter: 'blur(10px)', // Adds elegance with slight blur
             zIndex: 1000,
           }}
         >
@@ -28,7 +29,7 @@ function PortfolioOptimizer() {
                 src={`${process.env.PUBLIC_URL}/safina_invest_logo-removebg-preview.png`}
                 alt="Safina Invest Logo"
                 style={{
-                  width: '80px', // Adjusted for both mobile and desktop
+                  width: '80px',
                   height: 'auto',
                 }}
               />
@@ -44,8 +45,13 @@ function PortfolioOptimizer() {
 
             {/* Mobile Menu Toggle */}
             <button
-              className="sm:hidden text-white"
+              className="sm:hidden text-white focus:outline-none"
               onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
+              style={{
+                padding: '10px',
+                borderRadius: '50%',
+                backgroundColor: isMobileMenuOpen ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+              }}
             >
               {isMobileMenuOpen ? '✖' : '☰'}
             </button>
@@ -53,30 +59,36 @@ function PortfolioOptimizer() {
 
           {/* Mobile Navigation Menu */}
           {isMobileMenuOpen && (
-            <nav className="sm:hidden bg-black text-white w-full absolute top-16 left-0 space-y-4 p-4">
+            <nav
+              className="sm:hidden fixed top-16 left-0 w-3/4 h-full bg-gray-800 bg-opacity-80 p-6 space-y-6"
+              style={{
+                borderRadius: '0 20px 20px 0', // Elegant rounded edge
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
+              }}
+            >
               <Link
-                className="block hover:text-green-600"
+                className="block text-white hover:text-green-600 text-lg py-2"
                 to="/allocation"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Allocation
               </Link>
               <Link
-                className="block hover:text-green-600"
+                className="block text-white hover:text-green-600 text-lg py-2"
                 to="/assets"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Assets
               </Link>
               <Link
-                className="block hover:text-green-600"
+                className="block text-white hover:text-green-600 text-lg py-2"
                 to="/research"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Research
               </Link>
               <Link
-                className="block hover:text-green-600"
+                className="block text-white hover:text-green-600 text-lg py-2"
                 to="/about"
                 onClick={() => setMobileMenuOpen(false)}
               >
