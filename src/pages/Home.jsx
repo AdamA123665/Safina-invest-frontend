@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, LineChart, Line, XAxis, YAxis, ResponsiveContainer, Legend } from 'recharts';
 import {ChevronUpIcon } from '@heroicons/react/solid';
 import { Transition } from '@headlessui/react';
-import { MenuIcon, ChevronDownIcon, XIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon, XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
 import { CheckCircleIcon } from 'lucide-react';
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8A2BE2', '#FF69B4', '#A52A2A', '#5F9EA0', '#D2691E', '#FF7F50'];
@@ -14,7 +14,7 @@ const PortfolioOptimizer = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [, setSelectedAsset] = useState(null);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [, setMobileMenuOpen] = useState(false);
     const [articleModalOpen, setArticleModalOpen] = useState(false);
     const [selectedArticle, setSelectedArticle] = useState(null);
   
@@ -76,10 +76,10 @@ const PortfolioOptimizer = () => {
       setArticleModalOpen(true);
     };
   
-    const scrollToSection = (sectionId) => {
-      document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-      setMobileMenuOpen(false);
-    };
+    //const scrollToSection = (sectionId) => {
+    //  document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+    //  setMobileMenuOpen(false);
+    //};
   
   
   return (
