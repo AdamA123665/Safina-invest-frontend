@@ -461,24 +461,93 @@ const PortfolioOptimizer = () => {
             </div>
 
             {/* Projected Portfolio Growth */}
-            <div className="bg-white rounded-lg shadow-lg p-6 mt-6">
-              <h3 className="text-2xl font-bold mb-4 text-green-500">Projected Portfolio Growth Over 10 Years</h3>
-              <ResponsiveContainer width="100%" height={250}>
-                <LineChart data={portfolioData.dashboard_data.projected_returns.years.map((year, idx) => ({
-                  year,
-                  '5th Percentile': portfolioData.dashboard_data.projected_returns['5th_percentile'][idx] * initialInvestment,
-                  'Mean': portfolioData.dashboard_data.projected_returns['mean'][idx] * initialInvestment,
-                  '95th Percentile': portfolioData.dashboard_data.projected_returns['95th_percentile'][idx] * initialInvestment
-                }))}>
-                  <XAxis dataKey="year" label={{ value: 'Year', position: 'insideBottom', offset: -5 }} />
-                  <YAxis tickFormatter={(value) => `$${value.toFixed(0)}`} />
-                  <RechartsTooltip formatter={(value) => `$${value.toFixed(2)}`} />
-                  <Line type="monotone" dataKey="Mean" stroke="#8884d8" strokeWidth={2} />
-                  <Line type="monotone" dataKey="5th Percentile" stroke="#FF6B8A" strokeDasharray="5 5" />
-                  <Line type="monotone" dataKey="95th Percentile" stroke="#82ca9d" strokeDasharray="5 5" />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
+          <div className="bg-white rounded-lg shadow-lg p-6 mt-6">
+            <h3 className="text-2xl font-bold mb-4 text-green-500">Projected Portfolio Growth Over 10 Years</h3>
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart
+                data={portfolioData.dashboard_data.projected_returns.years.map(
+                  (year, idx) => ({
+                    year,
+                    "5th Percentile":
+                      portfolioData.dashboard_data.projected_returns["5th_percentile"][
+                        idx
+                      ] * initialInvestment,
+                    Mean:
+                      portfolioData.dashboard_data.projected_returns["mean"][idx] *
+                      initialInvestment,
+                    "95th Percentile":
+                      portfolioData.dashboard_data.projected_returns["95th_percentile"][
+                        idx
+                      ] * initialInvestment,
+                  })
+                )}
+              >
+                <XAxis dataKey="year" label={{ value: "Year", position: "insideBottom", offset: -5 }} />
+                <YAxis tickFormatter={(value) => `$${value.toFixed(0)}`} />
+                <RechartsTooltip formatter={(value) => `$${value.toFixed(2)}`} />
+                <Line type="monotone" dataKey="Mean" stroke="#8884d8" strokeWidth={2} />
+                <Line
+                  type="monotone"
+                  dataKey="5th Percentile"
+                  stroke="#FF6B8A"
+                  strokeDasharray="5 5"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="95th Percentile"
+                  stroke="#82ca9d"
+                  strokeDasharray="5 5"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Historical Performance Graphs */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mt-6">
+            <h3 className="text-2xl font-bold mb-4 text-green-500">
+              Historical Performance vs. S&P 500
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart
+                data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
+                  date,
+                  Portfolio:
+                    portfolioData.dashboard_data.performance.series.find(
+                      (s) => s.name === "Portfolio"
+                    )?.values[idx] || 0,
+                  "S&P 500":
+                    portfolioData.dashboard_data.performance.series.find(
+                      (s) => s.name === "S&P 500"
+                    )?.values[idx] || 0,
+                }))}
+              >
+                <XAxis dataKey="date" tick={{ fill: "#6B7280" }} />
+                <YAxis
+                  tick={{ fill: "#6B7280" }}
+                  tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+                />
+                <RechartsTooltip
+                  formatter={(value) => `${(value * 100).toFixed(2)}%`}
+                />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="Portfolio"
+                  stroke="#228B22"
+                  dot={false}
+                  strokeWidth={2}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="S&P 500"
+                  stroke="#FF0000"
+                  dot={false}
+                  strokeWidth={2}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
           </>
         )}
       </div>
@@ -486,51 +555,7 @@ const PortfolioOptimizer = () => {
   </div>
 </section>
 
-{/* Historical Performance Graphs */}
-<div className="bg-white rounded-lg shadow-lg p-6 mt-6">
-  <h3 className="text-2xl font-bold mb-4 text-green-500">
-    Historical Performance vs. S&P 500
-  </h3>
-  <ResponsiveContainer width="100%" height={300}>
-    <LineChart
-      data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
-        date,
-        Portfolio:
-          portfolioData.dashboard_data.performance.series.find(
-            (s) => s.name === 'Portfolio'
-          )?.values[idx] || 0,
-        'S&P 500':
-          portfolioData.dashboard_data.performance.series.find(
-            (s) => s.name === 'S&P 500'
-          )?.values[idx] || 0,
-      }))}
-    >
-      <XAxis dataKey="date" tick={{ fill: '#6B7280' }} />
-      <YAxis
-        tick={{ fill: '#6B7280' }}
-        tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
-      />
-      <RechartsTooltip
-        formatter={(value) => `${(value * 100).toFixed(2)}%`}
-      />
-      <Legend />
-      <Line
-        type="monotone"
-        dataKey="Portfolio"
-        stroke="#228B22"
-        dot={false}
-        strokeWidth={2}
-      />
-      <Line
-        type="monotone"
-        dataKey="S&P 500"
-        stroke="#FF0000"
-        dot={false}
-        strokeWidth={2}
-      />
-    </LineChart>
-  </ResponsiveContainer>
-</div>
+
 
     
 
