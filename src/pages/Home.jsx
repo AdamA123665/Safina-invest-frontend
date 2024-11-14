@@ -70,7 +70,7 @@ const PortfolioOptimizer = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8 }}
                 >
-                  Growing Your Piggy Bank
+                  Empowering your investments
                 </motion.h1>
                 <motion.p
                   className="text-xl mb-8 max-w-3xl mx-auto"
@@ -78,8 +78,7 @@ const PortfolioOptimizer = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  We empower you to make the best financial decisions with algorithms based on 10 years
-                  of data, cutting-edge statistics, and backed by industry leaders.
+                  Learn. Manage. Enjoy.
                 </motion.p>
                 <motion.button
                   className="px-8 py-4 bg-white text-green-700 font-semibold rounded-full shadow-lg hover:bg-green-50 transition"
@@ -87,7 +86,7 @@ const PortfolioOptimizer = () => {
                   animate={{ scale: 1 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                  Get Started
+                  Sharia Compliant
                 </motion.button>
               </div>
             </div>
