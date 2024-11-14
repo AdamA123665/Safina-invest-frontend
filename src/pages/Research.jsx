@@ -27,17 +27,19 @@ function ResearchNews() {
             }),
           }
         );
-
+  
         if (!response.ok) throw new Error('Failed to fetch articles');
         const data = await response.json();
+        console.log('Fetched data:', data); // Add this line
         setPortfolioData(data);
       } catch (err) {
         console.error(err);
       }
     };
-
+  
     fetchPortfolioData();
   }, []);
+  
 
   // Memoize articles to prevent unnecessary re-renders
   const articles = useMemo(() => {
@@ -45,20 +47,23 @@ function ResearchNews() {
   }, [portfolioData]);
 
   useEffect(() => {
-    // Filter articles based on active tab and search query
+    // Assuming 'category' is the correct field
     const filtered = articles.filter((article) => {
       const matchesTab =
-        activeTab === 'news' ? article.type === 'news' : article.type === 'research';
+        activeTab === 'news'
+          ? article.category === 'news'
+          : article.category === 'research';
       const matchesSearch =
         article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         article.content.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesTab && matchesSearch;
     });
     setFilteredArticles(filtered);
-
+  
     // Reset currentSlide when filteredArticles change
     setCurrentSlide(0);
   }, [activeTab, searchQuery, articles]);
+  
 
   const openArticleModal = (article) => {
     setSelectedArticle(article);

@@ -5,22 +5,23 @@ function About() {
     <div className="bg-gray-50 text-gray-800 font-sans">
       {/* Hero Section */}
       <div
-        className="flex flex-col justify-center items-center text-white h-screen"
-        style={{
-          backgroundImage:
-            "url(https://executiveboatandyacht.com/wp-content/uploads/2015/08/sail-boats-on-horizon.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <h1 className="text-6xl font-bold mb-4 text centre drop-shadow-lg">
-          Levelling Up the Ummah
-        </h1>
-        <p className="text-4xl text centre drop-shadow-lg">
-          Democratising institutional tools to help you grow
-        </p>
-      </div>
+  className="flex flex-col justify-center items-center h-screen"
+  style={{
+    backgroundImage:
+      "url(https://executiveboatandyacht.com/wp-content/uploads/2015/08/sail-boats-on-horizon.jpg)",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+  <h1 className="text-6xl font-bold mb-4 text-center drop-shadow-lg text-yellow-300">
+    Levelling Up the Ummah
+  </h1>
+  <p className="text-4xl text-center drop-shadow-lg text-white">
+    Democratising institutional tools to help you grow
+  </p>
+</div>
+
 
       {/* Mission Statements Section */}
       <div className="py-16 bg-white">
