@@ -104,98 +104,96 @@ const PortfolioOptimizer = () => {
           </section>
     
           <section id="about" className="py-24 bg-white relative overflow-hidden">
-  <div className="container mx-auto px-6 sm:px-8 lg:px-10">
-    <div className="flex flex-col lg:flex-row items-center">
-      {/* Text Section */}
-      <div className="lg:w-1/2 lg:pr-10">
-        <motion.h2
-          className="text-5xl font-bold mb-6 text-gray-800 leading-tight"
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          Empowering Your Financial Growth
-        </motion.h2>
-        <motion.div
-          className="space-y-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, staggerChildren: 0.3 }}
-        >
-          <motion.div>
-            <h3 className="text-3xl font-semibold text-green-600 mb-4">1. Decade of Data</h3>
-            <p className="text-lg text-gray-600">
-              Our algorithms are built on 10 years of financial data, giving you insights that have been tested and refined over time to ensure reliability.
-            </p>
+    <div className="container mx-auto px-6 sm:px-8 lg:px-10">
+      <div className="flex flex-col lg:flex-row items-center">
+        {/* Text Section */}
+        <div className="lg:w-1/2 lg:pr-10">
+          <motion.h2
+            className="text-5xl font-bold mb-6 text-gray-800 leading-tight"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Empowering Your Financial Growth
+          </motion.h2>
+          <motion.div
+            className="space-y-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, staggerChildren: 0.3 }}
+          >
+            <motion.div>
+              <h3 className="text-3xl font-semibold text-green-600 mb-4">1. Decade of Data</h3>
+              <p className="text-lg text-gray-600">
+                Our algorithms are built on 10 years of financial data, giving you insights that have been tested and refined over time to ensure reliability.
+              </p>
+            </motion.div>
+            <motion.div>
+              <h3 className="text-3xl font-semibold text-green-600 mb-4">2. Cutting-edge Analysis</h3>
+              <p className="text-lg text-gray-600">
+                Utilizing advanced statistical models and the latest in AI technology, our system ensures you're getting the most accurate financial recommendations available.
+              </p>
+            </motion.div>
+            <motion.div>
+              <h3 className="text-3xl font-semibold text-green-600 mb-4">3. Backed by Industry Leaders</h3>
+              <p className="text-lg text-gray-600">
+                Our partners include top industry experts and leading institutions, bringing trusted expertise to guide your financial decisions.
+              </p>
+            </motion.div>
+            <motion.div className="mt-8">
+              <a 
+                href="#assets" 
+                className="text-lg font-semibold text-blue-600 hover:underline"
+              >
+                Learn more about investing
+              </a>
+            </motion.div>
           </motion.div>
-          <motion.div>
-            <h3 className="text-3xl font-semibold text-green-600 mb-4">2. Cutting-edge Analysis</h3>
-            <p className="text-lg text-gray-600">
-              Utilizing advanced statistical models and the latest in AI technology, our system ensures you're getting the most accurate financial recommendations available.
-            </p>
-          </motion.div>
-          <motion.div>
-            <h3 className="text-3xl font-semibold text-green-600 mb-4">3. Backed by Industry Leaders</h3>
-            <p className="text-lg text-gray-600">
-              Our partners include top industry experts and leading institutions, bringing trusted expertise to guide your financial decisions.
-            </p>
-          </motion.div>
-          <motion.div className="mt-8">
-            <a 
-              href="#assets" 
-              className="text-lg font-semibold text-blue-600 hover:underline"
-            >
-              Learn more about investing
-            </a>
-          </motion.div>
-        </motion.div>
-      </div>
+        </div>
 
-      {/* Image Section */}
-      <div className="lg:w-1/2 lg:pl-10 mt-12 lg:mt-0">
-        <motion.img
-          src={`${process.env.PUBLIC_URL}/https://media.istockphoto.com/id/1330600649/vector/glass-money-jar-full-of-gold-coins-saving-dollar-coin-in-moneybox-vector-illustration-web.jpg?s=612x612&w=0&k=20&c=79LzZfpCUKNL4GOcANKIKgXDaM45RhW4WhdsEE478WU=`}
-          alt="About Us"
-          className="rounded-xl shadow-lg w-full h-full object-cover"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-        />
-      </div>
-    </div>
-
-    {/* Downward Arrow to Draw Attention */}
-    <div className="flex justify-center mt-16">
-      <a href="#construction">
-        <motion.svg
-          className="w-12 h-12 animate-bounce text-green-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
+        {/* Image Section */}
+        <div className="lg:w-1/2 lg:pl-10 mt-12 lg:mt-0">
+          <motion.img
+            src={`${process.env.PUBLIC_URL}/jardollar.png`}
+            alt="About Us"
+            className="rounded-xl shadow-lg w-full h-full object-cover"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
           />
-        </motion.svg>
-      </a>
+        </div>
+      </div>
+
+      {/* Downward Arrow to Draw Attention */}
+      <div className="flex justify-center mt-16">
+        <a href="#construction">
+          <motion.svg
+            className="w-12 h-12 animate-bounce text-green-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </motion.svg>
+        </a>
+      </div>
     </div>
-  </div>
-
-  {/* Background Accent */}
-  <div
-    className="absolute top-0 left-0 w-full h-full pointer-events-none"
-    style={{
-        background: "url('https://www.svgrepo.com/show/180534/wave-line.svg') no-repeat center center / cover",
-
-    }}
-  ></div>
-</section>
+    {/* Background Accent */}
+    <div
+      className="absolute top-0 left-0 w-full h-full pointer-events-none"
+      style={{
+        background: "url('/path-to-your-wave-pattern.svg') no-repeat center center / cover",
+      }}
+    />
+  </section>
 
 
 

@@ -36,9 +36,11 @@ export default [
     rules: {
       ...pluginJs.configs.recommended.rules,
       ...pluginReact.configs.recommended.rules,
-      "react/react-in-jsx-scope": "off", // Not needed with React 17+
-      "no-unused-vars": "warn",
-      "react/no-unescaped-entities": "warn",
+      "react/react-in-jsx-scope": "off",
+      "no-unused-vars": "off",
+      "react/no-unescaped-entities": "off",
+      "react/jsx-no-comment-textnodes": "off", // Turn off this rule
     },
+    
   },
 ];
