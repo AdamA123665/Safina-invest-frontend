@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, LineChart, Line, XAxis, YAxis, ResponsiveContainer, Legend } from 'recharts';
+import { Tooltip as RechartsTooltip, LineChart, Line, XAxis, YAxis, ResponsiveContainer, Legend } from 'recharts';
 import { Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { Button } from '@/components/ui/button';
+import { ChevronRightIcon } from 'lucide-react';
+import { CreditCardIcon, GiftIcon, GlobeAltIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8A2BE2', '#FF69B4', '#A52A2A', '#5F9EA0', '#D2691E', '#FF7F50'];
 
 const PortfolioOptimizer = () => {
