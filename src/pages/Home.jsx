@@ -154,7 +154,7 @@ const PortfolioOptimizer = () => {
           {/* Image Section */}
           <div className="lg:w-1/2 lg:pl-10 mt-12 lg:mt-0">
             <motion.img
-              src={aboutImage}
+              src={`${process.env.PUBLIC_URL}/https://media.istockphoto.com/id/1330600649/vector/glass-money-jar-full-of-gold-coins-saving-dollar-coin-in-moneybox-vector-illustration-web.jpg?s=612x612&w=0&k=20&c=79LzZfpCUKNL4GOcANKIKgXDaM45RhW4WhdsEE478WU=`}
               alt="About Us"
               className="rounded-xl shadow-lg w-full h-full object-cover"
               initial={{ opacity: 0, scale: 0.9 }}
