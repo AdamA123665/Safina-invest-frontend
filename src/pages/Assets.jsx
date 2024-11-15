@@ -113,7 +113,7 @@ function Assets() {
         </div>
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-extrabold text-gray-800">Asset Classes & Savings</h2>
+          <h2 className="text-4xl font-extrabold text-gray-800">Savings... dont let your money just sit there</h2>
           <p className="text-lg text-gray-700 mt-4 max-w-3xl mx-auto">
             Asset classes play a vital role in building a diversified portfolio. In addition to equities and bonds,
             savings are a critical tool to ensure your money doesn’t sit idle and continues to grow in safe and liquid environments.

@@ -14,10 +14,10 @@ function About() {
     backgroundRepeat: "no-repeat",
   }}
 >
-  <h1 className="text-6xl font-bold mb-4 text-center drop-shadow-lg text-yellow-300">
+  <h1 className="text-6xl font-bold mb-4 text-center drop-shadow-lg text-green">
     Levelling Up the Ummah
   </h1>
-  <p className="text-4xl text-center drop-shadow-lg text-white">
+  <p className="text-4xl text-center drop-shadow-lg text-green">
     Democratising institutional tools to help you grow
   </p>
 </div>
