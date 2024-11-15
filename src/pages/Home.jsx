@@ -3,7 +3,6 @@ import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, LineChart, Line, XAxis
 import { Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
-
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8A2BE2', '#FF69B4', '#A52A2A', '#5F9EA0', '#D2691E', '#FF7F50'];
 
 const PortfolioOptimizer = () => {
@@ -11,33 +10,32 @@ const PortfolioOptimizer = () => {
     const [, setSelectedAsset] = useState(null);
     const [articleModalOpen, setArticleModalOpen] = useState(false);
     const [selectedArticle, setSelectedArticle] = useState(null);
+   // Fetch aggressive portfolio data
+  useEffect(() => {
+    const fetchPortfolioData = async () => {
+      try {
+        const response = await fetch(
+          'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              initial_investment: 1000,
+              risk_tolerance: 10, // Assuming 10 represents aggressive
+            }),
+          }
+        );
 
-    // Fetch aggressive portfolio data
-    useEffect(() => {
-      const fetchPortfolioData = async () => {
-        try {
-          const response = await fetch(
-            'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                initial_investment: 1000,
-                risk_tolerance: 10, // Assuming 10 represents aggressive
-              }),
-            }
-          );
+        if (!response.ok) throw new Error('Failed to fetch portfolio data');
+        const data = await response.json();
+        setPortfolioData(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
-          if (!response.ok) throw new Error('Failed to fetch portfolio data');
-          const data = await response.json();
-          setPortfolioData(data);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-
-      fetchPortfolioData();
-    }, []);
+    fetchPortfolioData();
+  }, []);
   
     useEffect(() => {
       if (
@@ -47,13 +45,16 @@ const PortfolioOptimizer = () => {
       ) {
         setSelectedAsset(portfolioData.dashboard_data.asset_info[0]);
       }
-    }, [portfolioData]);
+    }, [portfolioData, setSelectedAsset]);
     
+  
     const openArticleModal = (article) => {
       setSelectedArticle(article);
       setArticleModalOpen(true);
     };
 
+  
+  
     return (
         <div className="bg-gray-50 min-h-screen text-gray-800 font-sans">
           {/* Hero Section */}
@@ -77,7 +78,7 @@ const PortfolioOptimizer = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  Learn. Manage. Relax.
+                  Learn. Manage. Prosper.
                 </motion.p>
                 <motion.button
                   className="px-8 py-4 bg-white text-green-700 font-semibold rounded-full shadow-lg hover:bg-green-50 transition"
@@ -102,190 +103,200 @@ const PortfolioOptimizer = () => {
             </div>
           </section>
     
-          <section id="about" className="py-24 bg-white relative overflow-hidden">
-            <div className="container mx-auto px-6 sm:px-8 lg:px-10">
-              <div className="flex flex-col lg:flex-row items-center">
-                <div className="lg:w-1/2 lg:pr-10">
-                  <motion.h2
-                    className="text-5xl font-bold mb-6 text-gray-800 leading-tight"
-                    initial={{ opacity: 0, y: -50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                  >
-                    Empowering Your Financial Growth
-                  </motion.h2>
-                  <motion.div
-                    className="space-y-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8, staggerChildren: 0.3 }}
-                  >
-                    <motion.div>
-                      <h3 className="text-3xl font-semibold text-green-600 mb-4">1. Decade of Data</h3>
-                      <p className="text-lg text-gray-600">
-                        Our algorithms are built on 10 years of financial data, giving you insights that have been tested and refined over time to ensure reliability.
-                      </p>
-                    </motion.div>
-                    <motion.div>
-                      <h3 className="text-3xl font-semibold text-green-600 mb-4">2. Cutting-edge Analysis</h3>
-                      <p className="text-lg text-gray-600">
-                        Utilizing advanced statistical models and the latest in AI technology, our system ensures you're getting the most accurate financial recommendations available.
-                      </p>
-                    </motion.div>
-                    <motion.div>
-                      <h3 className="text-3xl font-semibold text-green-600 mb-4">3. Backed by Industry Leaders</h3>
-                      <p className="text-lg text-gray-600">
-                        Our partners include top industry experts and leading institutions, bringing trusted expertise to guide your financial decisions.
-                      </p>
-                    </motion.div>
-                    <motion.div className="mt-8">
-                      <a 
-                        href="#assets" 
-                        className="text-lg font-semibold text-blue-600 hover:underline"
-                      >
-                        Learn more about investing
-                      </a>
-                    </motion.div>
-                  </motion.div>
-                </div>
-
-                <div className="lg:w-1/2 lg:pl-10 mt-12 lg:mt-0">
-                  <motion.img
-                    src={`${process.env.PUBLIC_URL}/jardollar.png`}
-                    alt="About Us"
-                    className="rounded-xl shadow-lg w-full h-full object-cover"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8 }}
-                  />
-                </div>
-              </div>
-
-              <div className="flex justify-center mt-16">
-                <a href="#construction">
-                  <motion.svg
-                    className="w-12 h-12 animate-bounce text-green-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </motion.svg>
-                </a>
-              </div>
-            </div>
-          </section>
-
-
-
-    /* Portfolio Showcase Section */
-<section id="portfolio-showcase" className="py-20 bg-gray-50">
-  <div className="container mx-auto px-4">
-    <div className="text-center mb-12">
-      <h2 className="text-5xl font-extrabold mb-4 text-green-600">Our Proven Performance</h2>
-      <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-        Witness our strategy in action. Below, we present our historical performance against the S&P 500 along with our optimized asset allocation. We believe in data-driven insights that outperform traditional benchmarks, and here’s the proof.
-      </p>
-    </div>
-
-    {/* Performance Section */}
-    <div className="flex flex-col lg:flex-row lg:space-x-12 mb-16">
-      {/* Left Side: Historical Performance Graph */}
-      <div className="lg:w-1/2 mb-12 lg:mb-0">
-        <div className="bg-white rounded-lg shadow-xl p-8">
-          <h3 className="text-3xl font-bold mb-6 text-green-600">Historical Performance vs. S&P 500</h3>
-          {portfolioData && (
-            <ResponsiveContainer width="100%" height={350}>
-              <LineChart
-                data={portfolioData.dashboard_data.performance.dates.map(
-                  (date, idx) => ({
-                    date,
-                    Portfolio:
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'Portfolio'
-                      )?.values[idx] || 0,
-                    'S&P 500':
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'S&P 500'
-                      )?.values[idx] || 0,
-                  })
-                )}
+          {/* About Section */}
+      <section id="about" className="py-24 bg-white">
+        {/* ... Your about section content ... */}
+        <div className="container mx-auto px-6 sm:px-8 lg:px-10">
+          <div className="text-center">
+            <motion.h2
+              className="text-5xl font-bold mb-6 text-gray-800"
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              Growing the Piggy Bank
+            </motion.h2>
+            <motion.p
+              className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              We empower you to make the best financial decisions, which is why our algorithms are based on 10 years worth of data, cutting-edge statistics, and are backed by industry leaders.
+            </motion.p>
+            <motion.p
+              className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              Don't just take our word... trust the data.
+            </motion.p>
+          </div>
+          {/* Downward Arrow to Draw Attention */}
+          <div className="flex justify-center mt-8">
+            <a href="#construction">
+              <svg
+                className="w-8 h-8 animate-bounce text-green-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <XAxis dataKey="date" tick={{ fill: '#374151' }} tickLine={false} />
-                <YAxis tick={{ fill: '#374151' }} tickFormatter={(value) => `${(value * 100).toFixed(0)}%`} />
-                <RechartsTooltip formatter={(value) => `${(value * 100).toFixed(2)}%`} />
-                <Legend verticalAlign="top" height={36} iconType="circle" />
-                <Line type="monotone" dataKey="Portfolio" stroke="#2E8B57" strokeWidth={3} dot={{ r: 1 }} />
-                <Line type="monotone" dataKey="S&P 500" stroke="#DC2626" strokeWidth={3} dot={{ r: 1 }} />
-              </LineChart>
-            </ResponsiveContainer>
-          )}
-        </div>
-      </div>
-
-      {/* Right Side: Asset Allocation and Summary */}
-      <div className="lg:w-1/2">
-        <div className="bg-white rounded-lg shadow-xl p-8">
-          <h3 className="text-3xl font-bold mb-6 text-green-600">Optimized Asset Allocation</h3>
-          {portfolioData && (
-            <ResponsiveContainer width="100%" height={360}>
-              <PieChart>
-                <Pie
-                  data={Object.entries(portfolioData.portfolio_metrics.Weights).map(([name, value], idx) => ({
-                    name,
-                    value: value * 100,
-                    color: COLORS[idx % COLORS.length],
-                  }))}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={90}
-                  labelLine={false}
-                  label={({ name }) => `${name}`}
-                >
-                  {Object.entries(portfolioData.portfolio_metrics.Weights).map((entry, idx) => (
-                    <Cell key={`cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          )}
-          {/* Allocation Table */}
-          <div className="grid grid-cols-2 gap-6 mt-6">
-            {portfolioData &&
-              Object.entries(portfolioData.portfolio_metrics.Weights).map(([assetName, weight], index) => (
-                <div key={index} className="bg-gray-200 rounded-lg p-4">
-                  <h4 className="font-bold text-green-700">{assetName}</h4>
-                  <p className="text-green-800">{(weight * 100).toFixed(2)}%</p>
-                </div>
-              ))}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </a>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    {/* Learn More Section */}
-    <div className="text-center">
-      <h3 className="text-3xl font-bold text-green-600 mb-6">Interested in Learning More?</h3>
-      <p className="text-lg text-gray-700 mb-8 max-w-xl mx-auto">
-        Our algorithms work tirelessly to achieve the optimal asset mix for your investment profile. To see how we can help you achieve your goals, explore the full allocation section.
-      </p>
-      <a href="#allocation" className="inline-block bg-green-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-green-700">
-        Explore Our Asset Allocation Strategy
-      </a>
-    </div>
-  </div>
-</section>
+      {/* Construction Section */}
+      <section id="construction" className="py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold mb-8 text-green-500">Portfolio Construction</h2>
+          <div className="flex flex-col md:flex-row md:space-x-6">
+            {/* Left Side: Pie Chart and Asset Allocation */}
+            <div className="md:w-1/2">
+              <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h3 className="text-2xl font-bold mb-4 text-green-500">Asset Allocation</h3>
+                {portfolioData && (
+                  <ResponsiveContainer width="100%" height={360}>
+                    <PieChart>
+                      <Pie
+                        data={Object.entries(
+                          portfolioData.portfolio_metrics.Weights
+                        ).map(([name, value], idx) => ({
+                          name,
+                          value: value * 100,
+                          color: COLORS[idx % COLORS.length],
+                        }))}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        labelLine={false}
+                        label={({ name, percent, x, y, cx, cy }) => {
+                          if (percent < 0.01) return null; // Skip rendering if the percentage is negligible
 
+                          const RADIAL_OFFSET = 1.4; // Adjust this multiplier to control the distance
+
+                          // Calculate angle and new positions for radial offset
+                          const newX = cx + (x - cx) * RADIAL_OFFSET;
+                          const newY = cy + (y - cy) * RADIAL_OFFSET;
+
+                          return (
+                            <text
+                              x={newX}
+                              y={newY}
+                              fill={
+                                COLORS[
+                                  Object.keys(portfolioData.portfolio_metrics.Weights).indexOf(
+                                    name
+                                  ) % COLORS.length
+                                ]
+                              }
+                              textAnchor="middle"
+                              dominantBaseline="central"
+                              fontWeight="bold"
+                            >
+                              {`${name}`}
+                            </text>
+                          );
+                        }}
+                      >
+                        {Object.entries(portfolioData.portfolio_metrics.Weights).map(
+                          (entry, idx) => (
+                            <Cell
+                              key={`cell-${idx}`}
+                              fill={COLORS[idx % COLORS.length]}
+                            />
+                          )
+                        )}
+                      </Pie>
+                      <RechartsTooltip formatter={(value) => `${value.toFixed(2)}%`} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                )}
+              </div>
+              {/* Asset Allocation Details */}
+              <div className="grid grid-cols-2 gap-4">
+                {portfolioData &&
+                  Object.entries(portfolioData.portfolio_metrics.Weights).map(
+                    ([assetName, weight], index) => (
+                      <div
+                        key={index}
+                        className="bg-white rounded-lg shadow p-4"
+                        style={{
+                          backgroundColor: COLORS[index % COLORS.length],
+                        }}
+                      >
+                        <h4 className="font-bold text-white">{assetName}</h4>
+                        <p className="text-white">{(weight * 100).toFixed(2)}%</p>
+                      </div>
+                    )
+                  )}
+              </div>
+            </div>
+
+            {/* Right Side: Historical Performance Graph */}
+            <div className="md:w-1/2 mt-6 md:mt-0">
+              {portfolioData && (
+                <div className="bg-white rounded-lg shadow-lg p-6">
+                  <h3 className="text-2xl font-bold mb-4 text-green-500">
+                    Historical Performance vs. S&P 500
+                  </h3>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart
+                      data={portfolioData.dashboard_data.performance.dates.map(
+                        (date, idx) => ({
+                          date,
+                          Portfolio:
+                            portfolioData.dashboard_data.performance.series.find(
+                              (s) => s.name === 'Portfolio'
+                            )?.values[idx] || 0,
+                          'S&P 500':
+                            portfolioData.dashboard_data.performance.series.find(
+                              (s) => s.name === 'S&P 500'
+                            )?.values[idx] || 0,
+                        })
+                      )}
+                    >
+                      <XAxis dataKey="date" tick={{ fill: '#6B7280' }} />
+                      <YAxis
+                        tick={{ fill: '#6B7280' }}
+                        tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+                      />
+                      <RechartsTooltip
+                        formatter={(value) => `${(value * 100).toFixed(2)}%`}
+                      />
+                      <Legend />
+                      <Line
+                        type="monotone"
+                        dataKey="Portfolio"
+                        stroke="#228B22"
+                        dot={false}
+                        strokeWidth={2}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="S&P 500"
+                        stroke="#FF0000"
+                        dot={false}
+                        strokeWidth={2}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
 
 
 
