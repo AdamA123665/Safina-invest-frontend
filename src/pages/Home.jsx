@@ -191,7 +191,8 @@ const PortfolioOptimizer = () => {
   <div
     className="absolute top-0 left-0 w-full h-full pointer-events-none"
     style={{
-      background: "url('../assets/bg-pattern.svg') no-repeat center center / cover",
+        background: "url('https://www.svgrepo.com/show/180534/wave-line.svg') no-repeat center center / cover",
+
     }}
   ></div>
 </section>
