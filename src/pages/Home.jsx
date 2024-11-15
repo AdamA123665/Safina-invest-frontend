@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Tooltip as RechartsTooltip, LineChart, Line, XAxis, YAxis, ResponsiveContainer, Legend } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
 import { Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
-import { Button } from '@/components/ui/button';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { ChevronRightIcon } from 'lucide-react';
 import { CreditCardIcon, GiftIcon, GlobeAltIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
