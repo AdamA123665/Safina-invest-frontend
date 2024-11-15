@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { ResponsiveContainer } from 'recharts';
+import { ResponsiveContainer, LineChart, Line, } from 'recharts';
 import { Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
-import { ChevronRightIcon, Globe, CreditCardIcon, GiftIcon } from 'lucide-react';
-
+import { Link,} from 'react-router-dom';
+import { XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { Globe, CreditCardIcon, GiftIcon } from 'lucide-react';
+const COLORS = [
+    '#0088FE',
+    '#00C49F',
+    '#FFBB28',
+    '#FF8042',
+    '#FF6666',
+    '#AAEEBB',
+    '#BBBBBB',
+    '#7744DD',
+  ];
 const PortfolioOptimizer = () => {
     const [portfolioData, setPortfolioData] = useState(null);
     const [, setSelectedAsset] = useState(null);
