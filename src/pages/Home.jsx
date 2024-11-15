@@ -5,7 +5,6 @@ import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { ChevronRightIcon, Globe, CreditCardIcon, GiftIcon } from 'lucide-react';
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8A2BE2', '#FF69B4', '#A52A2A', '#5F9EA0', '#D2691E', '#FF7F50'];
 
 const PortfolioOptimizer = () => {
     const [portfolioData, setPortfolioData] = useState(null);
