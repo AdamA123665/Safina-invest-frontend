@@ -72,7 +72,7 @@ function Assets() {
             {/* Asset Class 1 */}
             <div className="bg-white rounded-xl shadow-lg p-8">
               <img
-                src="https://source.unsplash.com/400x300/?stocks,market"
+                src="https://www.seowebdesignllc.com/wp-content/uploads/2019/11/small-biz-smb-ss-1920.jpg"
                 alt="Equities"
                 className="w-full h-48 object-cover rounded-t-lg mb-6"
               />
@@ -86,7 +86,7 @@ function Assets() {
             {/* Asset Class 2 */}
             <div className="bg-white rounded-xl shadow-lg p-8">
               <img
-                src="https://source.unsplash.com/400x300/?bonds,finance"
+                src="https://taiflearning.com/pub/media/mgs_blog/i/s/islamic_bonds.png"
                 alt="Fixed Income"
                 className="w-full h-48 object-cover rounded-t-lg mb-6"
               />
@@ -99,7 +99,7 @@ function Assets() {
             {/* Asset Class 3 */}
             <div className="bg-white rounded-xl shadow-lg p-8">
               <img
-                src="https://source.unsplash.com/400x300/?real-estate,investment"
+                src="https://hfre.ae/wp-content/uploads/2022/12/gettyimages-1187886889.webp"
                 alt="Real Assets"
                 className="w-full h-48 object-cover rounded-t-lg mb-6"
               />
