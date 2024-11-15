@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { ChevronRightIcon } from 'lucide-react';
 import { CreditCardIcon, GiftIcon, GlobeAltIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8A2BE2', '#FF69B4', '#A52A2A', '#5F9EA0', '#D2691E', '#FF7F50'];
 
 const PortfolioOptimizer = () => {
@@ -143,9 +142,14 @@ const PortfolioOptimizer = () => {
             <p className="text-gray-600">
               Our algorithms are powered by 10 years of financial data, ensuring you make informed choices that grow your wealth.
             </p>
-            <Button className="mt-4" variant="outline" icon={<GlobeAltIcon className="w-5 h-5" />}>
-              Learn More
-            </Button>
+            <a
+                href="/assets"
+                className="inline-flex items-center mt-4 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+                >
+                <GlobeAltIcon className="w-5 h-5 mr-2" />
+                Learn More
+            </a>
+
           </motion.div>
 
           <motion.div
@@ -161,9 +165,14 @@ const PortfolioOptimizer = () => {
             <p className="text-gray-600">
               Our team of industry experts ensures you receive guidance you can trust, backed by cutting-edge analytics.
             </p>
-            <Button className="mt-4" variant="outline" icon={<GlobeAltIcon className="w-5 h-5" />}>
-              Learn More
-            </Button>
+            <a
+                href="/assets"
+                className="inline-flex items-center mt-4 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+                >
+                <GlobeAltIcon className="w-5 h-5 mr-2" />
+                Learn More
+            </a>
+
           </motion.div>
 
           <motion.div
@@ -179,9 +188,14 @@ const PortfolioOptimizer = () => {
             <p className="text-gray-600">
               Our platform leverages worldwide financial data to deliver personalized recommendations tailored to your unique goals.
             </p>
-            <Button className="mt-4" variant="outline" icon={<GlobeAltIcon className="w-5 h-5" />}>
-              Learn More
-            </Button>
+            <a
+                href="/assets"
+                className="inline-flex items-center mt-4 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+                >
+                <GlobeAltIcon className="w-5 h-5 mr-2" />
+                Learn More
+            </a>
+
           </motion.div>
         </div>
       </div>
@@ -269,14 +283,14 @@ const PortfolioOptimizer = () => {
             <p className="text-gray-600 mb-6">
               See how your portfolio is constructed to understand its risk and return profile.
             </p>
-            <Button
-              href="/allocation"
-              variant="outline"
-              className="flex items-center"
-              icon={<ChevronRightIcon className="w-5 h-5" />}
-            >
-              View Allocation
-            </Button>
+            <a
+                href="/allocation"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+                >
+                <ChevronRightIcon className="w-5 h-5 mr-2" />
+                View Allocation
+            </a>
+
           </div>
         </motion.div>
       </div>
