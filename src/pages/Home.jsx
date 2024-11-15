@@ -104,199 +104,179 @@ const PortfolioOptimizer = () => {
           </section>
     
           {/* About Section */}
-      <section id="about" className="py-24 bg-white">
-        {/* ... Your about section content ... */}
-        <div className="container mx-auto px-6 sm:px-8 lg:px-10">
-          <div className="text-center">
-            <motion.h2
-              className="text-5xl font-bold mb-6 text-gray-800"
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              Growing the Piggy Bank
-            </motion.h2>
-            <motion.p
-              className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              We empower you to make the best financial decisions, which is why our algorithms are based on 10 years worth of data, cutting-edge statistics, and are backed by industry leaders.
-            </motion.p>
-            <motion.p
-              className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              Don't just take our word... trust the data.
-            </motion.p>
-          </div>
-          {/* Downward Arrow to Draw Attention */}
-          <div className="flex justify-center mt-8">
-            <a href="#construction">
-              <svg
-                className="w-8 h-8 animate-bounce text-green-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </a>
-          </div>
+    <section id="about" className="py-32 bg-white">
+      <div className="container mx-auto px-6 sm:px-8 lg:px-10">
+        <div className="text-center mb-16">
+          <motion.h2
+            className="text-5xl font-bold text-gray-800"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Growing the Piggy Bank
+          </motion.h2>
+          <motion.p
+            className="text-xl text-gray-600 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            We empower you to make the best financial decisions, with algorithms based on 10 years of data, cutting-edge statistics, and industry-leading expertise.
+          </motion.p>
         </div>
-      </section>
 
-      {/* Construction Section */}
-      <section id="construction" className="py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-8 text-green-500">Portfolio Construction</h2>
-          <div className="flex flex-col md:flex-row md:space-x-6">
-            {/* Left Side: Pie Chart and Asset Allocation */}
-            <div className="md:w-1/2">
-              <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-                <h3 className="text-2xl font-bold mb-4 text-green-500">Asset Allocation</h3>
-                {portfolioData && (
-                  <ResponsiveContainer width="100%" height={360}>
-                    <PieChart>
-                      <Pie
-                        data={Object.entries(
-                          portfolioData.portfolio_metrics.Weights
-                        ).map(([name, value], idx) => ({
-                          name,
-                          value: value * 100,
-                          color: COLORS[idx % COLORS.length],
-                        }))}
-                        dataKey="value"
-                        nameKey="name"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        labelLine={false}
-                        label={({ name, percent, x, y, cx, cy }) => {
-                          if (percent < 0.01) return null; // Skip rendering if the percentage is negligible
-
-                          const RADIAL_OFFSET = 1.4; // Adjust this multiplier to control the distance
-
-                          // Calculate angle and new positions for radial offset
-                          const newX = cx + (x - cx) * RADIAL_OFFSET;
-                          const newY = cy + (y - cy) * RADIAL_OFFSET;
-
-                          return (
-                            <text
-                              x={newX}
-                              y={newY}
-                              fill={
-                                COLORS[
-                                  Object.keys(portfolioData.portfolio_metrics.Weights).indexOf(
-                                    name
-                                  ) % COLORS.length
-                                ]
-                              }
-                              textAnchor="middle"
-                              dominantBaseline="central"
-                              fontWeight="bold"
-                            >
-                              {`${name}`}
-                            </text>
-                          );
-                        }}
-                      >
-                        {Object.entries(portfolioData.portfolio_metrics.Weights).map(
-                          (entry, idx) => (
-                            <Cell
-                              key={`cell-${idx}`}
-                              fill={COLORS[idx % COLORS.length]}
-                            />
-                          )
-                        )}
-                      </Pie>
-                      <RechartsTooltip formatter={(value) => `${value.toFixed(2)}%`} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                )}
-              </div>
-              {/* Asset Allocation Details */}
-              <div className="grid grid-cols-2 gap-4">
-                {portfolioData &&
-                  Object.entries(portfolioData.portfolio_metrics.Weights).map(
-                    ([assetName, weight], index) => (
-                      <div
-                        key={index}
-                        className="bg-white rounded-lg shadow p-4"
-                        style={{
-                          backgroundColor: COLORS[index % COLORS.length],
-                        }}
-                      >
-                        <h4 className="font-bold text-white">{assetName}</h4>
-                        <p className="text-white">{(weight * 100).toFixed(2)}%</p>
-                      </div>
-                    )
-                  )}
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <motion.div
+            className="bg-gray-100 p-8 rounded-lg shadow-md"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <div className="flex items-center mb-4">
+              <CreditCardIcon className="w-8 h-8 text-green-500 mr-4" />
+              <h3 className="text-2xl font-bold text-gray-800">Data-Driven Decisions</h3>
             </div>
+            <p className="text-gray-600">
+              Our algorithms are powered by 10 years of financial data, ensuring you make informed choices that grow your wealth.
+            </p>
+            <Button className="mt-4" variant="outline" icon={<GlobeAltIcon className="w-5 h-5" />}>
+              Learn More
+            </Button>
+          </motion.div>
 
-            {/* Right Side: Historical Performance Graph */}
-            <div className="md:w-1/2 mt-6 md:mt-0">
-              {portfolioData && (
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                  <h3 className="text-2xl font-bold mb-4 text-green-500">
-                    Historical Performance vs. S&P 500
-                  </h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <LineChart
-                      data={portfolioData.dashboard_data.performance.dates.map(
-                        (date, idx) => ({
-                          date,
-                          Portfolio:
-                            portfolioData.dashboard_data.performance.series.find(
-                              (s) => s.name === 'Portfolio'
-                            )?.values[idx] || 0,
-                          'S&P 500':
-                            portfolioData.dashboard_data.performance.series.find(
-                              (s) => s.name === 'S&P 500'
-                            )?.values[idx] || 0,
-                        })
-                      )}
-                    >
-                      <XAxis dataKey="date" tick={{ fill: '#6B7280' }} />
-                      <YAxis
-                        tick={{ fill: '#6B7280' }}
-                        tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
-                      />
-                      <RechartsTooltip
-                        formatter={(value) => `${(value * 100).toFixed(2)}%`}
-                      />
-                      <Legend />
-                      <Line
-                        type="monotone"
-                        dataKey="Portfolio"
-                        stroke="#228B22"
-                        dot={false}
-                        strokeWidth={2}
-                      />
-                      <Line
-                        type="monotone"
-                        dataKey="S&P 500"
-                        stroke="#FF0000"
-                        dot={false}
-                        strokeWidth={2}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              )}
+          <motion.div
+            className="bg-gray-100 p-8 rounded-lg shadow-md"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <div className="flex items-center mb-4">
+              <GiftIcon className="w-8 h-8 text-green-500 mr-4" />
+              <h3 className="text-2xl font-bold text-gray-800">Trustworthy Advice</h3>
             </div>
-          </div>
+            <p className="text-gray-600">
+              Our team of industry experts ensures you receive guidance you can trust, backed by cutting-edge analytics.
+            </p>
+            <Button className="mt-4" variant="outline" icon={<GlobeAltIcon className="w-5 h-5" />}>
+              Learn More
+            </Button>
+          </motion.div>
+
+          <motion.div
+            className="bg-gray-100 p-8 rounded-lg shadow-md"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+          >
+            <div className="flex items-center mb-4">
+              <GlobeAltIcon className="w-8 h-8 text-green-500 mr-4" />
+              <h3 className="text-2xl font-bold text-gray-800">Global Insights</h3>
+            </div>
+            <p className="text-gray-600">
+              Our platform leverages worldwide financial data to deliver personalized recommendations tailored to your unique goals.
+            </p>
+            <Button className="mt-4" variant="outline" icon={<GlobeAltIcon className="w-5 h-5" />}>
+              Learn More
+            </Button>
+          </motion.div>
         </div>
-      </section>
+      </div>
+    </section>
+
+    <section id="construction" className="py-20 bg-gray-100">
+      <div className="container mx-auto px-4">
+        <motion.h2
+          className="text-4xl font-bold mb-8 text-green-500"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          Portfolio Construction
+        </motion.h2>
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h3 className="text-2xl font-bold mb-4 text-green-500">
+              Historical Performance
+            </h3>
+            {portfolioData && (
+              <ResponsiveContainer width="100%" height={300}>
+                <AreaChart
+                  data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
+                    date,
+                    Portfolio:
+                      portfolioData.dashboard_data.performance.series.find(
+                        (s) => s.name === 'Portfolio'
+                      )?.values[idx] || 0,
+                    'S&P 500':
+                      portfolioData.dashboard_data.performance.series.find(
+                        (s) => s.name === 'S&P 500'
+                      )?.values[idx] || 0,
+                  }))}
+                >
+                  <XAxis dataKey="date" tick={{ fill: '#6B7280' }} />
+                  <YAxis
+                    tick={{ fill: '#6B7280' }}
+                    tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+                  />
+                  <Tooltip
+                    formatter={(value) => `${(value * 100).toFixed(2)}%`}
+                    contentStyle={{
+                      backgroundColor: '#334155',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '8px',
+                      padding: '8px 12px',
+                    }}
+                  />
+                  <Legend
+                    wrapperStyle={{
+                      paddingTop: '16px',
+                      color: '#6B7280',
+                      fontWeight: 'bold',
+                    }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="Portfolio"
+                    stroke="#228B22"
+                    fill="#228B22"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="S&P 500"
+                    stroke="#FF0000"
+                    fill="#FF0000"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            )}
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold mb-4 text-green-500">Asset Allocation</h3>
+            <p className="text-gray-600 mb-6">
+              See how your portfolio is constructed to understand its risk and return profile.
+            </p>
+            <Button
+              href="/allocation"
+              variant="outline"
+              className="flex items-center"
+              icon={<ChevronRightIcon className="w-5 h-5" />}
+            >
+              View Allocation
+            </Button>
+          </div>
+        </motion.div>
+      </div>
+    </section>
 
 
 
