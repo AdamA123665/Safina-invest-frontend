@@ -188,7 +188,12 @@ const PortfolioOptimizer = () => {
       </div>
 
       {/* Background Accent */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none" style={{ background: "url('../assets/bg-pattern.svg') no-repeat center center / cover" }}></div>
+<div
+  className="absolute top-0 left-0 w-full h-full pointer-events-none"
+  style={{
+    background: "url('../assets/bg-pattern.svg') no-repeat center center / cover",
+  }}
+></div>
     </section>
 
 
