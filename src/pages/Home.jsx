@@ -4,8 +4,7 @@ import { Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
-import { ChevronRightIcon } from 'lucide-react';
-import { CreditCardIcon, GiftIcon, GlobeAltIcon } from 'lucide-react';
+import { ChevronRightIcon, Globe, CreditCardIcon, GiftIcon } from 'lucide-react';
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8A2BE2', '#FF69B4', '#A52A2A', '#5F9EA0', '#D2691E', '#FF7F50'];
 
 const PortfolioOptimizer = () => {
@@ -146,7 +145,7 @@ const PortfolioOptimizer = () => {
                 href="/assets"
                 className="inline-flex items-center mt-4 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
                 >
-                <GlobeAltIcon className="w-5 h-5 mr-2" />
+                <Globe className="w-5 h-5 mr-2" />
                 Learn More
             </a>
 
@@ -169,7 +168,7 @@ const PortfolioOptimizer = () => {
                 href="/assets"
                 className="inline-flex items-center mt-4 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
                 >
-                <GlobeAltIcon className="w-5 h-5 mr-2" />
+                <Globe className="w-5 h-5 mr-2" />
                 Learn More
             </a>
 
@@ -182,7 +181,7 @@ const PortfolioOptimizer = () => {
             transition={{ duration: 0.8, delay: 0.8 }}
           >
             <div className="flex items-center mb-4">
-              <GlobeAltIcon className="w-8 h-8 text-green-500 mr-4" />
+              <Globe className="w-8 h-8 text-green-500 mr-4" />
               <h3 className="text-2xl font-bold text-gray-800">Global Insights</h3>
             </div>
             <p className="text-gray-600">
@@ -192,7 +191,7 @@ const PortfolioOptimizer = () => {
                 href="/assets"
                 className="inline-flex items-center mt-4 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
                 >
-                <GlobeAltIcon className="w-5 h-5 mr-2" />
+                <Globe className="w-5 h-5 mr-2" />
                 Learn More
             </a>
 
