@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, LineChart, Line, XAxis
 import { Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
+
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8A2BE2', '#FF69B4', '#A52A2A', '#5F9EA0', '#D2691E', '#FF7F50'];
 
 const PortfolioOptimizer = () => {
@@ -10,32 +11,33 @@ const PortfolioOptimizer = () => {
     const [, setSelectedAsset] = useState(null);
     const [articleModalOpen, setArticleModalOpen] = useState(false);
     const [selectedArticle, setSelectedArticle] = useState(null);
-   // Fetch aggressive portfolio data
-  useEffect(() => {
-    const fetchPortfolioData = async () => {
-      try {
-        const response = await fetch(
-          'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              initial_investment: 1000,
-              risk_tolerance: 10, // Assuming 10 represents aggressive
-            }),
-          }
-        );
 
-        if (!response.ok) throw new Error('Failed to fetch portfolio data');
-        const data = await response.json();
-        setPortfolioData(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    // Fetch aggressive portfolio data
+    useEffect(() => {
+      const fetchPortfolioData = async () => {
+        try {
+          const response = await fetch(
+            'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                initial_investment: 1000,
+                risk_tolerance: 10, // Assuming 10 represents aggressive
+              }),
+            }
+          );
 
-    fetchPortfolioData();
-  }, []);
+          if (!response.ok) throw new Error('Failed to fetch portfolio data');
+          const data = await response.json();
+          setPortfolioData(data);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      fetchPortfolioData();
+    }, []);
   
     useEffect(() => {
       if (
@@ -45,16 +47,13 @@ const PortfolioOptimizer = () => {
       ) {
         setSelectedAsset(portfolioData.dashboard_data.asset_info[0]);
       }
-    }, [portfolioData, setSelectedAsset]);
+    }, [portfolioData]);
     
-  
     const openArticleModal = (article) => {
       setSelectedArticle(article);
       setArticleModalOpen(true);
     };
 
-  
-  
     return (
         <div className="bg-gray-50 min-h-screen text-gray-800 font-sans">
           {/* Hero Section */}
@@ -104,96 +103,86 @@ const PortfolioOptimizer = () => {
           </section>
     
           <section id="about" className="py-24 bg-white relative overflow-hidden">
-    <div className="container mx-auto px-6 sm:px-8 lg:px-10">
-      <div className="flex flex-col lg:flex-row items-center">
-        {/* Text Section */}
-        <div className="lg:w-1/2 lg:pr-10">
-          <motion.h2
-            className="text-5xl font-bold mb-6 text-gray-800 leading-tight"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Empowering Your Financial Growth
-          </motion.h2>
-          <motion.div
-            className="space-y-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, staggerChildren: 0.3 }}
-          >
-            <motion.div>
-              <h3 className="text-3xl font-semibold text-green-600 mb-4">1. Decade of Data</h3>
-              <p className="text-lg text-gray-600">
-                Our algorithms are built on 10 years of financial data, giving you insights that have been tested and refined over time to ensure reliability.
-              </p>
-            </motion.div>
-            <motion.div>
-              <h3 className="text-3xl font-semibold text-green-600 mb-4">2. Cutting-edge Analysis</h3>
-              <p className="text-lg text-gray-600">
-                Utilizing advanced statistical models and the latest in AI technology, our system ensures you're getting the most accurate financial recommendations available.
-              </p>
-            </motion.div>
-            <motion.div>
-              <h3 className="text-3xl font-semibold text-green-600 mb-4">3. Backed by Industry Leaders</h3>
-              <p className="text-lg text-gray-600">
-                Our partners include top industry experts and leading institutions, bringing trusted expertise to guide your financial decisions.
-              </p>
-            </motion.div>
-            <motion.div className="mt-8">
-              <a 
-                href="#assets" 
-                className="text-lg font-semibold text-blue-600 hover:underline"
-              >
-                Learn more about investing
-              </a>
-            </motion.div>
-          </motion.div>
-        </div>
+            <div className="container mx-auto px-6 sm:px-8 lg:px-10">
+              <div className="flex flex-col lg:flex-row items-center">
+                <div className="lg:w-1/2 lg:pr-10">
+                  <motion.h2
+                    className="text-5xl font-bold mb-6 text-gray-800 leading-tight"
+                    initial={{ opacity: 0, y: -50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    Empowering Your Financial Growth
+                  </motion.h2>
+                  <motion.div
+                    className="space-y-8"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8, staggerChildren: 0.3 }}
+                  >
+                    <motion.div>
+                      <h3 className="text-3xl font-semibold text-green-600 mb-4">1. Decade of Data</h3>
+                      <p className="text-lg text-gray-600">
+                        Our algorithms are built on 10 years of financial data, giving you insights that have been tested and refined over time to ensure reliability.
+                      </p>
+                    </motion.div>
+                    <motion.div>
+                      <h3 className="text-3xl font-semibold text-green-600 mb-4">2. Cutting-edge Analysis</h3>
+                      <p className="text-lg text-gray-600">
+                        Utilizing advanced statistical models and the latest in AI technology, our system ensures you're getting the most accurate financial recommendations available.
+                      </p>
+                    </motion.div>
+                    <motion.div>
+                      <h3 className="text-3xl font-semibold text-green-600 mb-4">3. Backed by Industry Leaders</h3>
+                      <p className="text-lg text-gray-600">
+                        Our partners include top industry experts and leading institutions, bringing trusted expertise to guide your financial decisions.
+                      </p>
+                    </motion.div>
+                    <motion.div className="mt-8">
+                      <a 
+                        href="#assets" 
+                        className="text-lg font-semibold text-blue-600 hover:underline"
+                      >
+                        Learn more about investing
+                      </a>
+                    </motion.div>
+                  </motion.div>
+                </div>
 
-        {/* Image Section */}
-        <div className="lg:w-1/2 lg:pl-10 mt-12 lg:mt-0">
-          <motion.img
-            src={`${process.env.PUBLIC_URL}/jardollar.png`}
-            alt="About Us"
-            className="rounded-xl shadow-lg w-full h-full object-cover"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-          />
-        </div>
-      </div>
+                <div className="lg:w-1/2 lg:pl-10 mt-12 lg:mt-0">
+                  <motion.img
+                    src={`${process.env.PUBLIC_URL}/jardollar.png`}
+                    alt="About Us"
+                    className="rounded-xl shadow-lg w-full h-full object-cover"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8 }}
+                  />
+                </div>
+              </div>
 
-      {/* Downward Arrow to Draw Attention */}
-      <div className="flex justify-center mt-16">
-        <a href="#construction">
-          <motion.svg
-            className="w-12 h-12 animate-bounce text-green-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </motion.svg>
-        </a>
-      </div>
-    </div>
-    {/* Background Accent */}
-    <div
-      className="absolute top-0 left-0 w-full h-full pointer-events-none"
-      style={{
-        background: "url('/path-to-your-wave-pattern.svg') no-repeat center center / cover",
-      }}
-    />
-  </section>
+              <div className="flex justify-center mt-16">
+                <a href="#construction">
+                  <motion.svg
+                    className="w-12 h-12 animate-bounce text-green-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </motion.svg>
+                </a>
+              </div>
+            </div>
+          </section>
 
 
 
