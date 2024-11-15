@@ -122,7 +122,7 @@ const PortfolioOptimizer = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            We empower you to make the best financial decisions, with algorithms based on 10 years of data, cutting-edge statistics, and industry-leading expertise.
+            Guiding you to make the best financial decisions. Helping you and the ones you love
           </motion.p>
         </div>
 
@@ -140,13 +140,6 @@ const PortfolioOptimizer = () => {
             <p className="text-gray-600">
               Our algorithms are powered by 10 years of financial data, ensuring you make informed choices that grow your wealth.
             </p>
-            <a
-                href="/assets"
-                className="inline-flex items-center mt-4 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
-                >
-                <Globe className="w-5 h-5 mr-2" />
-                Learn More
-            </a>
 
           </motion.div>
 
@@ -163,13 +156,6 @@ const PortfolioOptimizer = () => {
             <p className="text-gray-600">
               Our team of industry experts ensures you receive guidance you can trust, backed by cutting-edge analytics.
             </p>
-            <a
-                href="/assets"
-                className="inline-flex items-center mt-4 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
-                >
-                <Globe className="w-5 h-5 mr-2" />
-                Learn More
-            </a>
 
           </motion.div>
 
@@ -186,113 +172,138 @@ const PortfolioOptimizer = () => {
             <p className="text-gray-600">
               Our platform leverages worldwide financial data to deliver personalized recommendations tailored to your unique goals.
             </p>
-            <a
-                href="/assets"
-                className="inline-flex items-center mt-4 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
-                >
-                <Globe className="w-5 h-5 mr-2" />
-                Learn More
-            </a>
 
-          </motion.div>
-        </div>
-      </div>
-    </section>
+            </motion.div>
+            </div>
+            </div>
 
-    <section id="construction" className="py-20 bg-gray-100">
-      <div className="container mx-auto px-4">
-        <motion.h2
-          className="text-4xl font-bold mb-8 text-green-500"
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          Portfolio Construction
-        </motion.h2>
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-2xl font-bold mb-4 text-green-500">
-              Historical Performance
-            </h3>
-            {portfolioData && (
-              <ResponsiveContainer width="100%" height={300}>
-                <AreaChart
-                  data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
-                    date,
-                    Portfolio:
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'Portfolio'
-                      )?.values[idx] || 0,
-                    'S&P 500':
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'S&P 500'
-                      )?.values[idx] || 0,
-                  }))}
-                >
-                  <XAxis dataKey="date" tick={{ fill: '#6B7280' }} />
-                  <YAxis
-                    tick={{ fill: '#6B7280' }}
-                    tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
-                  />
-                  <Tooltip
-                    formatter={(value) => `${(value * 100).toFixed(2)}%`}
-                    contentStyle={{
-                      backgroundColor: '#334155',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '8px',
-                      padding: '8px 12px',
-                    }}
-                  />
-                  <Legend
-                    wrapperStyle={{
-                      paddingTop: '16px',
-                      color: '#6B7280',
-                      fontWeight: 'bold',
-                    }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="Portfolio"
-                    stroke="#228B22"
-                    fill="#228B22"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="S&P 500"
-                    stroke="#FF0000"
-                    fill="#FF0000"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold mb-4 text-green-500">Asset Allocation</h3>
-            <p className="text-gray-600 mb-6">
-              See how your portfolio is constructed to understand its risk and return profile.
+            <p className="mt-8 text-center text-gray-600">
+            If you want to learn more about investing,{' '}
+            <Link 
+                to="/assets" 
+                className="text-green-600 underline hover:text-green-800 transition"
+            >
+                click here
+            </Link>.
             </p>
-            <a
-                href="/allocation"
-                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
-                >
-                <ChevronRightIcon className="w-5 h-5 mr-2" />
-                View Allocation
-            </a>
+            </section>
 
-          </div>
-        </motion.div>
-      </div>
-    </section>
+
+    {/* Asset Allocation Section */}
+<section id="construction" className="py-16 bg-gray-50">
+  <div className="container mx-auto px-6 sm:px-8 lg:px-10">
+    {/* Section Heading */}
+    <div className="text-center mb-12">
+      <motion.h2
+        className="text-4xl font-bold text-green-700"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Our Tools Help You Become a Leading Wall Street Investor
+      </motion.h2>
+      <motion.p
+        className="text-lg text-gray-600 max-w-3xl mx-auto mt-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        Master the art of investing with our cutting-edge analytics and asset allocation tools.
+      </motion.p>
+    </div>
+
+    {/* Asset Allocation and Graph */}
+    <div className="flex flex-col lg:flex-row lg:space-x-8">
+      {/* Asset Allocation Table */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+        className="bg-white rounded-xl shadow-lg p-6 lg:w-1/2"
+      >
+        <h2 className="text-2xl font-bold text-green-700 mb-4">Your Asset Allocation</h2>
+        <div className="space-y-4">
+          {Object.entries(portfolioData.portfolio_metrics.Weights).map(([assetName, weight], index) => (
+            <div
+              key={index}
+              className="flex items-center p-3 bg-gray-50 rounded-lg shadow-sm"
+              style={{ borderLeft: `8px solid ${COLORS[index % COLORS.length]}` }}
+            >
+              <span className="font-semibold text-gray-700 flex-grow">{assetName}</span>
+              <span className="font-bold text-gray-800">{(weight * 100).toFixed(2)}%</span>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Historical Performance Graph */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="bg-white rounded-xl shadow-lg p-6 lg:w-1/2"
+      >
+        <h2 className="text-2xl font-bold text-green-700 mb-4">Historical Performance vs. S&P 500</h2>
+        <ResponsiveContainer width="100%" height={400}>
+          <LineChart
+            data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
+              date,
+              Portfolio:
+                portfolioData.dashboard_data.performance.series.find(
+                  (s) => s.name === 'Portfolio'
+                )?.values[idx] || 0,
+              'S&P 500':
+                portfolioData.dashboard_data.performance.series.find(
+                  (s) => s.name === 'S&P 500'
+                )?.values[idx] || 0,
+            }))}
+          >
+            <XAxis dataKey="date" tick={{ fill: '#6B7280' }} />
+            <YAxis
+              tick={{ fill: '#6B7280' }}
+              tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+            />
+            <Tooltip formatter={(value) => `${(value * 100).toFixed(2)}%`} />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="Portfolio"
+              stroke="#10B981"
+              dot={false}
+              strokeWidth={3}
+            />
+            <Line
+              type="monotone"
+              dataKey="S&P 500"
+              stroke="#EF4444"
+              dot={false}
+              strokeWidth={3}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </motion.div>
+    </div>
+
+    {/* Learn More Section */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.4 }}
+      className="text-center mt-12"
+    >
+      <p className="text-lg text-gray-600">
+        Want to explore more about asset allocation strategies?
+      </p>
+      <Link
+        to="/allocation"
+        className="inline-block mt-4 px-6 py-3 bg-green-600 text-white font-bold rounded-lg shadow-md hover:bg-green-700 transition"
+      >
+        Learn More
+      </Link>
+    </motion.div>
+  </div>
+</section>
+
 
 
 

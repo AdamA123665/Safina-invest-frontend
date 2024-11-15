@@ -233,57 +233,54 @@ function Allocation() {
         className="bg-white rounded-xl shadow-lg p-6 mb-8"
       >
         <h2 className="text-2xl font-bold text-green-700 mb-4">Your Asset Allocation</h2>
-        
-        {/* Asset Allocation Table */}
-        <div className="space-y-4">
-          {Object.entries(portfolioData.portfolio_metrics.Weights).map(
-            ([assetName, weight], index) => (
-              <div
-                key={index}
-                className="flex items-center p-2 bg-gray-50 rounded-lg shadow-sm"
-                style={{ borderLeft: `8px solid ${COLORS[index % COLORS.length]}` }}
-              >
-                <span className="font-semibold text-gray-700 flex-grow">{assetName}</span>
-                <span className="font-bold text-gray-800">{(weight * 100).toFixed(2)}%</span>
-              </div>
-            )
-          )}
-        </div>
-      </motion.div>
-
-      {/* Pie Chart Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="bg-white rounded-xl shadow-lg p-6"
-      >
-        <h2 className="text-2xl font-bold text-green-700 mb-4">Portfolio Distribution</h2>
-        <ResponsiveContainer width="100%" height={400}>
-          <PieChart>
-            <Pie
-              data={Object.entries(portfolioData.portfolio_metrics.Weights).map(
-                ([name, value], idx) => ({
-                  name,
-                  value: value * 100,
-                  color: COLORS[idx % COLORS.length],
-                })
-              )}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={150} // Increased radius for better visibility
-            >
+        <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-8">
+          {/* Asset Allocation Table */}
+          <div className="lg:w-1/2">
+            <div className="space-y-4">
               {Object.entries(portfolioData.portfolio_metrics.Weights).map(
-                (entry, idx) => (
-                  <Cell key={`cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
+                ([assetName, weight], index) => (
+                  <div
+                    key={index}
+                    className="flex items-center p-2 bg-gray-50 rounded-lg shadow-sm"
+                    style={{ borderLeft: `8px solid ${COLORS[index % COLORS.length]}` }}
+                  >
+                    <span className="font-semibold text-gray-700 flex-grow">{assetName}</span>
+                    <span className="font-bold text-gray-800">{(weight * 100).toFixed(2)}%</span>
+                  </div>
                 )
               )}
-            </Pie>
-            <RechartsTooltip formatter={(value) => `${value.toFixed(2)}%`} />
-          </PieChart>
-        </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Asset Allocation Pie Chart */}
+          <div className="lg:w-1/2">
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={Object.entries(portfolioData.portfolio_metrics.Weights).map(
+                    ([name, value], idx) => ({
+                      name,
+                      value: value * 100,
+                      color: COLORS[idx % COLORS.length],
+                    })
+                  )}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={120}
+                >
+                  {Object.entries(portfolioData.portfolio_metrics.Weights).map(
+                    (entry, idx) => (
+                      <Cell key={`cell-${idx}`} fill={COLORS[idx % COLORS.length]} />
+                    )
+                  )}
+                </Pie>
+                <RechartsTooltip formatter={(value) => `${value.toFixed(2)}%`} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </motion.div>
     </>
   ) : (
@@ -292,7 +289,6 @@ function Allocation() {
     </div>
   )}
 </div>
-
 
 
                 {/* Risk Metrics */}
