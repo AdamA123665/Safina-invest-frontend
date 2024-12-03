@@ -4,7 +4,6 @@ import { Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
-import { ChevronRightIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 const PortfolioOptimizer = () => {
     const [portfolioData, setPortfolioData] = useState(null);
