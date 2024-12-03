@@ -58,51 +58,85 @@ const PortfolioOptimizer = () => {
   
     return (
         <div className="bg-gray-50 min-h-screen text-gray-800 font-sans">
-          {/* Hero Section */}
-          <section
-            id="hero"
-            className="relative bg-gradient-to-br from-green-600 to-blue-800 text-white"
-          >
-            <div className="container mx-auto px-6 sm:px-8 lg:px-10 py-32">
-              <div className="text-center">
-                <motion.h1
-                  className="text-6xl font-extrabold mb-6"
-                  initial={{ opacity: 0, y: -50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  Empowering your investments
-                </motion.h1>
-                <motion.p
-                  className="text-xl mb-8 max-w-3xl mx-auto"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                >
-                  Learn. Manage. Prosper.
-                </motion.p>
-                <motion.button
-                  className="px-8 py-4 bg-white text-green-700 font-semibold rounded-full shadow-lg hover:bg-green-50 transition"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                >
-                  Sharia Compliant
-                </motion.button>
-              </div>
+          {/* New Hero Section */}
+        <section className="relative w-full h-screen bg-midnight-blue overflow-hidden">
+            {/* Hero Overlay */}
+            <div
+            className="absolute top-0 left-0 w-full h-full bg-no-repeat bg-cover animate-backgroundAnimation"
+            style={{
+                backgroundImage: 'url("your-geometric-pattern.png")',
+            }}
+            ></div>
+
+            {/* Hero Content */}
+            <div className="relative z-10 max-w-4xl mx-auto pt-40 px-4 text-center text-white">
+            <motion.h1
+                className="text-5xl md:text-6xl font-extrabold mb-6"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 2 }}
+                style={{ fontFamily: 'Lora, serif' }}
+            >
+                Invest the Halal Way, Grow Your Future Today.
+            </motion.h1>
+            <motion.p
+                className="text-xl md:text-2xl mb-8 text-soft-green"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 2, delay: 0.5 }}
+                style={{ fontFamily: 'Open Sans, sans-serif' }}
+            >
+                Your journey towards Sharia-compliant investing starts here.
+            </motion.p>
+            <motion.a
+                href="#"
+                className="inline-block px-8 py-4 bg-gold text-white font-semibold rounded-md shadow-lg"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 2, delay: 1 }}
+                whileHover={{ scale: 1.05, boxShadow: '0 0 25px rgba(212, 175, 55, 0.6)' }}
+            >
+                Get Started
+            </motion.a>
             </div>
-            {/* Decorative Wave */}
-            <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
-              <svg
-                className="relative block w-full h-16"
-                xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="none"
-                viewBox="0 0 1920 80"
-              >
-                <path d="M0,80L1920,0L1920,80L0,80Z" fill="white"></path>
-              </svg>
-            </div>
-          </section>
+
+            {/* Embedded Styles */}
+            <style jsx>{`
+            /* Colors */
+            .bg-midnight-blue {
+                background-color: #191970;
+            }
+            .text-soft-green {
+                color: #98fb98;
+            }
+            .bg-gold {
+                background-color: #d4af37;
+            }
+
+            /* Animations */
+            @keyframes backgroundAnimation {
+                0% {
+                background-position: center center;
+                }
+                100% {
+                background-position: center bottom;
+                }
+            }
+            .animate-backgroundAnimation {
+                animation: backgroundAnimation 30s infinite alternate;
+            }
+
+            /* Responsive Adjustments */
+            @media (max-width: 768px) {
+                h1 {
+                font-size: 36px !important;
+                }
+                p {
+                font-size: 18px !important;
+                }
+            }
+            `}</style>
+        </section>
     
           {/* About Section */}
     <section id="about" className="py-32 bg-white">
