@@ -584,98 +584,108 @@ const PortfolioOptimizer = () => {
           </h2>
         </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {portfolioData &&
-          portfolioData.dashboard_data.research_articles.map((article, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:scale-105"
-            >
-              <div className="relative">
-                <img
-                  src={
-                    article.image_url ||
-                    'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A6f22b49f-c9e1-4ddf-9cc6-eead253330d0?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1'
-                  }
-                  alt={article.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="absolute top-4 right-4 bg-gold text-white px-2 py-1 rounded">
-                  {article.date}
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-bold mb-4" style={{ color: '#191970' }}>
-                  {article.title}
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  {article.content.length > 100 ? article.content.substring(0, 100) + '...' : article.content}
-                </p>
-                <button
-                  onClick={() => openArticleModal(article)}
-                  className="text-gold font-semibold hover:underline"
+      {/* Articles Grid */}
+      <div className="lg:col-span-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {portfolioData &&
+              portfolioData.dashboard_data.research_articles.map((article, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105"
                 >
-                  Read More
-                </button>
-              </div>
-            </div>
-          ))}
+                  {/* Image Section */}
+                  <div className="relative">
+                    <img
+                      src={
+                        article.image_url ||
+                        'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A6f22b49f-c9e1-4ddf-9cc6-eead253330d0?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1'
+                      }
+                      alt={article.title}
+                      className="w-full h-40 sm:h-48 object-cover"
+                    />
+                    <div className="absolute top-4 right-4 bg-yellow-500 text-white text-sm px-2 py-1 rounded-lg shadow-md">
+                      {article.date}
+                    </div>
+                  </div>
+
+                  {/* Content Section */}
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-3" style={{ color: '#191970' }}>
+                      {article.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                      {article.content.length > 120
+                        ? `${article.content.substring(0, 120)}...`
+                        : article.content}
+                    </p>
+                    <button
+                      onClick={() => openArticleModal(article)}
+                      className="text-yellow-500 font-semibold hover:underline"
+                    >
+                      Read More
+                    </button>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  {/* Article Modal */}
-  {selectedArticle && (
-    <Transition show={articleModalOpen} className="fixed z-10 inset-0 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen px-4 text-center">
-        <Transition.Child
-          className="fixed inset-0 transition-opacity"
-          aria-hidden="true"
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </Transition.Child>
+    {/* Article Modal */}
+    {selectedArticle && (
+      <Transition show={articleModalOpen} className="fixed z-10 inset-0 overflow-y-auto">
+        <div className="flex items-center justify-center min-h-screen px-4 text-center">
+          {/* Overlay */}
+          <Transition.Child
+            className="fixed inset-0 transition-opacity"
+            aria-hidden="true"
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+          </Transition.Child>
 
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
-          &#8203;
-        </span>
+          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+            &#8203;
+          </span>
 
-        <Transition.Child
-          className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full max-w-3xl"
-          enter="ease-out duration-300"
-          enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          enterTo="opacity-100 translate-y-0 sm:scale-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-          leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-        >
-          <div className="bg-white p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-2xl font-bold" style={{ color: '#191970' }}>
-                {selectedArticle.title}
-              </h3>
-              <button
-                onClick={() => setArticleModalOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <XIcon className="h-6 w-6" />
-              </button>
+          {/* Modal Content */}
+          <Transition.Child
+            className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full max-w-4xl"
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            enterTo="opacity-100 translate-y-0 sm:scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          >
+            <div className="bg-white p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-2xl font-bold" style={{ color: '#191970' }}>
+                  {selectedArticle.title}
+                </h3>
+                <button
+                  onClick={() => setArticleModalOpen(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <XIcon className="h-6 w-6" />
+                </button>
+              </div>
+              <p className="text-sm text-gray-600 mb-4">{selectedArticle.date}</p>
+              <div className="prose max-w-none">
+                <p>{selectedArticle.content}</p>
+              </div>
             </div>
-            <p className="text-sm text-gray-600 mb-4">{selectedArticle.date}</p>
-            <div className="prose max-w-none">
-              <p>{selectedArticle.content}</p>
-            </div>
-          </div>
-        </Transition.Child>
-      </div>
-    </Transition>
-  )}
-  </div>
+          </Transition.Child>
+        </div>
+      </Transition>
+    )}
+    </div>
   </div>
 </section>
 
