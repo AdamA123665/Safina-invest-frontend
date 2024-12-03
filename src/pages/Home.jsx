@@ -542,7 +542,7 @@ const PortfolioOptimizer = () => {
     .text-gold {
       color: #d4af37;
     }
-    .hover\:shadow-2xl:hover {
+    .hover:shadow-2xl:hover {
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
   `}</style>
