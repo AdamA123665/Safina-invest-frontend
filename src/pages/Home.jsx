@@ -340,16 +340,6 @@ const PortfolioOptimizer = () => {
     Build Real Wealth
   </h2>
   <p
-    className="text-gray-600 text-lg mb-2"
-    style={{
-      fontFamily: 'Open Sans, sans-serif',
-      fontSize: '0.75rem', // Smaller text size
-    }}
-  >
-    Past performance isn't indicative of future growth.
-  </p>
-  <hr className="border-t-2 border-gray-300 w-3/4 mx-auto mb-4" />
-  <p
     className="text-lg font-semibold"
     style={{ fontFamily: 'Open Sans, sans-serif', color: '#191970' }}
   >
@@ -361,6 +351,15 @@ const PortfolioOptimizer = () => {
     <li>Real Estate</li>
     <li>Commodities</li>
   </ul>
+  <p
+    className="text-gray-600 text-lg mb-2"
+    style={{
+      fontFamily: 'Open Sans, sans-serif',
+      fontSize: '0.75rem', // Smaller text size
+    }}
+  >
+    Past performance isn't indicative of future growth.
+  </p>
 </motion.div>
 
           {/* Graph */}
