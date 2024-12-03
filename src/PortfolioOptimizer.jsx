@@ -144,4 +144,5 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
     </header>
   );
 }
+
 export default PortfolioOptimizer;
