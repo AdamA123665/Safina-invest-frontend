@@ -568,69 +568,68 @@ const PortfolioOptimizer = () => {
     ></div>
 
 <div className="container mx-auto px-4 relative z-10">
-  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+  <div className="space-y-8">
     {/* Title Section */}
-    <div className="lg:col-span-1 flex justify-end">
-      <div className="text-right lg:mt-0 mt-8">
-        <h2
-          className="text-5xl font-bold mb-4"
-          style={{
-            fontFamily: 'Lora, serif',
-            color: '#191970',
-            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
-          }}
-        >
-          Explore Our Latest Research
-          </h2>
-        </div>
+    <div className="text-center">
+      <h2
+        className="text-5xl font-bold mb-4"
+        style={{
+          fontFamily: 'Lora, serif',
+          color: '#191970',
+          textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
+        }}
+      >
+        Explore Our Latest Research
+      </h2>
+    </div>
 
-      {/* Articles Grid */}
-      <div className="lg:col-span-1">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {portfolioData &&
-              portfolioData.dashboard_data.research_articles.map((article, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105"
-                >
-                  {/* Image Section */}
-                  <div className="relative">
-                    <img
-                      src={
-                        article.image_url ||
-                        'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A6f22b49f-c9e1-4ddf-9cc6-eead253330d0?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1'
-                      }
-                      alt={article.title}
-                      className="w-full h-40 sm:h-48 object-cover"
-                    />
-                    <div className="absolute top-4 right-4 bg-yellow-500 text-white text-sm px-2 py-1 rounded-lg shadow-md">
-                      {article.date}
-                    </div>
-                  </div>
-
-                  {/* Content Section */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-3" style={{ color: '#191970' }}>
-                      {article.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      {article.content.length > 120
-                        ? `${article.content.substring(0, 120)}...`
-                        : article.content}
-                    </p>
-                    <button
-                      onClick={() => openArticleModal(article)}
-                      className="text-yellow-500 font-semibold hover:underline"
-                    >
-                      Read More
-                    </button>
-                  </div>
+    {/* Articles Grid */}
+    <div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {portfolioData &&
+          portfolioData.dashboard_data.research_articles.map((article, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105"
+            >
+              {/* Image Section */}
+              <div className="relative">
+                <img
+                  src={
+                    article.image_url ||
+                    'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A6f22b49f-c9e1-4ddf-9cc6-eead253330d0?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1'
+                  }
+                  alt={article.title}
+                  className="w-full h-40 sm:h-48 object-cover"
+                />
+                <div className="absolute top-4 right-4 bg-yellow-500 text-white text-sm px-2 py-1 rounded-lg shadow-md">
+                  {article.date}
                 </div>
-              ))}
-          </div>
-        </div>
+              </div>
+
+              {/* Content Section */}
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-3" style={{ color: '#191970' }}>
+                  {article.title}
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  {article.content.length > 120
+                    ? `${article.content.substring(0, 120)}...`
+                    : article.content}
+                </p>
+                <button
+                  onClick={() => openArticleModal(article)}
+                  className="text-yellow-500 font-semibold hover:underline"
+                >
+                  Read More
+                </button>
+              </div>
+            </div>
+          ))}
       </div>
     </div>
+  </div>
+</div>
 
     {/* Article Modal */}
     {selectedArticle && (
@@ -686,14 +685,13 @@ const PortfolioOptimizer = () => {
       </Transition>
     )}
     </div>
-  </div>
 </section>
 
 <section id="reviews" className="py-20" style={{ backgroundColor: '#191970' }}>
   <div className="container mx-auto px-4">
     <h2
       className="text-5xl font-bold text-center mb-12"
-      style={{ fontFamily: 'Lora, serif', color: 'black' }}
+      style={{ fontFamily: 'Lora, serif', color: 'white' }}
     >
       Hear From Our Clients
     </h2>
