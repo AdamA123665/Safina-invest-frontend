@@ -4,8 +4,8 @@ import { Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
-import { ChevronRightIcon, Globe, CreditCardIcon, GiftIcon } from 'lucide-react';
-
+import { ChevronRightIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 const PortfolioOptimizer = () => {
     const [portfolioData, setPortfolioData] = useState(null);
     const [, setSelectedAsset] = useState(null);
@@ -57,8 +57,8 @@ const PortfolioOptimizer = () => {
   
   
     return (
-        <div className="bg-gray-50 min-h-screen text-gray-800 font-sans">
-          {/* New Hero Section */}
+      <div className="bg-gray-50 min-h-screen text-gray-800 font-sans">
+      {/* Hero Section */}
       <section className="relative w-full h-screen bg-midnight-blue overflow-hidden">
         {/* Hero Overlay */}
         <div
@@ -77,27 +77,39 @@ const PortfolioOptimizer = () => {
             transition={{ duration: 2 }}
             style={{ fontFamily: 'Lora, serif' }}
           >
-            Invest the Halal Way, Grow Your Future Today.
+            Data-driven Investment Solutions
           </motion.h1>
           <motion.p
-            className="text-xl md:text-2xl mb-8 text-soft-green"
+            className="text-3xl md:text-2xl mb-8 text-black"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 2, delay: 0.5 }}
             style={{ fontFamily: 'Open Sans, sans-serif' }}
           >
-            Your journey towards Sharia-compliant investing starts here.
+            Your journey towards sustainable growth starts here.
           </motion.p>
-          <motion.a
-            href="#"
-            className="inline-block px-8 py-4 bg-gold text-white font-semibold rounded-md shadow-lg"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 2, delay: 1 }}
-            whileHover={{ scale: 1.05, boxShadow: '0 0 25px rgba(212, 175, 55, 0.6)' }}
+          <Link
+            to="/assets"
+            className="inline-block px-8 py-4 bg-gold text-white font-semibold rounded-md shadow-lg mb-8"
           >
-            Get Started
-          </motion.a>
+            Sharia Compliant
+          </Link>
+
+          {/* Interactive Arrow */}
+          <div className="mt-8">
+            <a href="#about" className="block animate-bounce text-white">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-8 w-8 mx-auto"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
+          </div>
         </div>
 
         {/* Embedded Styles */}
@@ -106,24 +118,28 @@ const PortfolioOptimizer = () => {
           .bg-midnight-blue {
             background-color: #191970;
           }
-          .text-soft-green {
-            color: #98fb98;
-          }
           .bg-gold {
             background-color: #d4af37;
           }
 
-          /* Animations */
-          @keyframes backgroundAnimation {
-            0% {
-              background-position: center center;
-            }
+          /* Arrow Animation */
+          @keyframes bounce {
+            0%,
+            20%,
+            50%,
+            80%,
             100% {
-              background-position: center bottom;
+              transform: translateY(0);
+            }
+            40% {
+              transform: translateY(-10px);
+            }
+            60% {
+              transform: translateY(-5px);
             }
           }
-          .animate-backgroundAnimation {
-            animation: backgroundAnimation 30s infinite alternate;
+          .animate-bounce {
+            animation: bounce 2s infinite;
           }
 
           /* Responsive Adjustments */
@@ -137,115 +153,199 @@ const PortfolioOptimizer = () => {
           }
         `}</style>
       </section>
-    
-          {/* About Section */}
-    <section id="about" className="py-32 bg-white">
-      <div className="container mx-auto px-6 sm:px-8 lg:px-10">
-        <div className="text-center mb-16">
-          <motion.h2
-            className="text-5xl font-bold text-gray-800"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
+
+      {/* About Section */}
+      <section id="about" className="py-20 bg-midnight-blue text-white">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          {/* Title and Tagline */}
+          <h2 className="text-5xl font-bold mb-4" style={{ color: '#d4af37' , fontFamily: 'Lora, serif' }}>
+            Growing Your Piggy Bank
+          </h2>
+          <p className="text-lg mb-12 text-gray-300" style = {{fontFamily: 'Lora, serif'}}>
+            Guiding you to make robust financial decisions.
+          </p>
+
+          {/* Interactive Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1: Learn */}
+            <div className="relative bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105">
+              <div className="h-16 w-16 flex items-center justify-center rounded-full bg-gold mx-auto mb-4">
+                {/* Icon for Learn */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 8c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 2a7 7 0 00-7 7v3l-2 2v1h18v-1l-2-2V9a7 7 0 00-7-7z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Learn</h3>
+              <p className="text-gray-600 mb-6">
+                Explore investment strategies, understand your options, and find
+                solutions that align with your goals.
+              </p>
+              <Link
+                to="/assets"
+                className="inline-block px-4 py-2 bg-gold text-white font-semibold rounded-md shadow-md hover:bg-yellow-600 transition"
+              >
+                Explore Assets
+              </Link>
+            </div>
+
+            {/* Card 2: Manage */}
+            <div className="relative bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105">
+              <div className="h-16 w-16 flex items-center justify-center rounded-full bg-gold mx-auto mb-4">
+                {/* Icon for Manage */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M7 20h10a2 2 0 002-2V7a2 2 0 00-2-2h-5l-2-2H7a2 2 0 00-2 2v11a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Manage</h3>
+              <p className="text-gray-600 mb-6">
+                Use our advanced tools and data-driven services to optimise your
+                investments with insights from the last decade.
+              </p>
+              <Link
+                to="/allocation"
+                className="inline-block px-4 py-2 bg-gold text-white font-semibold rounded-md shadow-md hover:bg-yellow-600 transition"
+              >
+                Allocation Tools
+              </Link>
+            </div>
+
+            {/* Card 3: Prosper */}
+            <div className="relative bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105">
+              <div className="h-16 w-16 flex items-center justify-center rounded-full bg-gold mx-auto mb-4">
+                {/* Icon for Prosper */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 5l7 7-7 7" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Prosper</h3>
+              <p className="text-gray-600 mb-6">
+                Stay informed with the latest investment news and explore
+                tax-efficient growth strategies.
+              </p>
+              <Link
+                to="/research"
+                className="inline-block px-4 py-2 bg-gold text-white font-semibold rounded-md shadow-md hover:bg-yellow-600 transition"
+              >
+                Research Insights
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Embedded Styles */}
+      <style jsx>{`
+        /* Colors */
+        .bg-midnight-blue {
+          background-color: #191970;
+        }
+        .bg-gold {
+          background-color: #d4af37;
+        }
+
+        /* Arrow Animation */
+        @keyframes bounce {
+          0%,
+          20%,
+          50%,
+          80%,
+          100% {
+            transform: translateY(0);
+          }
+          40% {
+            transform: translateY(-10px);
+          }
+          60% {
+            transform: translateY(-5px);
+          }
+        }
+        .animate-bounce {
+          animation: bounce 2s infinite;
+        }
+
+        /* Hover Effects */
+        .hover\\:shadow-2xl:hover {
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+          h1 {
+            font-size: 36px !important;
+          }
+          h2 {
+            font-size: 28px !important;
+          }
+          p {
+            font-size: 16px !important;
+          }
+        }
+      `}</style>
+
+<section id="construction" className="py-20 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8">
+          {/* Text Content */}
+          <motion.div
+            className="space-y-6"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Growing the Piggy Bank
-          </motion.h2>
-          <motion.p
-            className="text-xl text-gray-600 max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            Guiding you to make the best financial decisions. Helping you and the ones you love
-          </motion.p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <motion.div
-            className="bg-gray-100 p-8 rounded-lg shadow-md"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <div className="flex items-center mb-4">
-              <CreditCardIcon className="w-8 h-8 text-green-500 mr-4" />
-              <h3 className="text-2xl font-bold text-gray-800">Data-Driven Decisions</h3>
-            </div>
-            <p className="text-gray-600">
-              Our algorithms are powered by 10 years of financial data, ensuring you make informed choices that grow your wealth.
+            <h2
+              className="text-5xl font-bold mb-4"
+              style={{ color: '#191970', fontFamily: 'Lora, serif' }}
+            >
+              Build Real Wealth
+            </h2>
+            <p className="text-gray-600 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+              Past performance isn't indicative of future growth.
             </p>
-
           </motion.div>
 
+          {/* Graph */}
           <motion.div
-            className="bg-gray-100 p-8 rounded-lg shadow-md"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+            className="relative"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            <div className="flex items-center mb-4">
-              <GiftIcon className="w-8 h-8 text-green-500 mr-4" />
-              <h3 className="text-2xl font-bold text-gray-800">Trustworthy Advice</h3>
-            </div>
-            <p className="text-gray-600">
-              Our team of industry experts ensures you receive guidance you can trust, backed by cutting-edge analytics.
-            </p>
-            <a
-                href="/assets"
-                className="inline-flex items-center mt-4 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
-                >
-                <Globe className="w-5 h-5 mr-2" />
-                Learn More
-            </a>
-
-          </motion.div>
-
-          <motion.div
-            className="bg-gray-100 p-8 rounded-lg shadow-md"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
-            <div className="flex items-center mb-4">
-              <Globe className="w-8 h-8 text-green-500 mr-4" />
-              <h3 className="text-2xl font-bold text-gray-800">Global Insights</h3>
-            </div>
-            <p className="text-gray-600">
-              Our platform leverages worldwide financial data to deliver personalized recommendations tailored to your unique goals.
-            </p>
-            <a
-                href="/assets"
-                className="inline-flex items-center mt-4 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
-                >
-                <Globe className="w-5 h-5 mr-2" />
-                Learn More
-            </a>
-
-          </motion.div>
-        </div>
-      </div>
-    </section>
-
-    <section id="construction" className="py-20 bg-gray-100">
-      <div className="container mx-auto px-4">
-        <motion.h2
-          className="text-4xl font-bold mb-8 text-green-500"
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          Portfolio Construction
-        </motion.h2>
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-2xl font-bold mb-4 text-green-500">
-              Historical Performance
-            </h3>
             {portfolioData && (
               <ResponsiveContainer width="100%" height={300}>
                 <AreaChart
@@ -261,6 +361,16 @@ const PortfolioOptimizer = () => {
                       )?.values[idx] || 0,
                   }))}
                 >
+                  <defs>
+                    <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#d4af37" stopOpacity={0.8} />
+                      <stop offset="100%" stopColor="#d4af37" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#191970" stopOpacity={0.8} />
+                      <stop offset="100%" stopColor="#191970" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
                   <XAxis dataKey="date" tick={{ fill: '#6B7280' }} />
                   <YAxis
                     tick={{ fill: '#6B7280' }}
@@ -286,39 +396,32 @@ const PortfolioOptimizer = () => {
                   <Area
                     type="monotone"
                     dataKey="Portfolio"
-                    stroke="#228B22"
-                    fill="#228B22"
+                    stroke="#d4af37"
+                    fill="url(#colorPortfolio)"
                     strokeWidth={2}
                     dot={false}
                   />
                   <Area
                     type="monotone"
                     dataKey="S&P 500"
-                    stroke="#FF0000"
-                    fill="#FF0000"
+                    stroke="#191970"
+                    fill="url(#colorSP500)"
                     strokeWidth={2}
                     dot={false}
                   />
                 </AreaChart>
               </ResponsiveContainer>
             )}
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold mb-4 text-green-500">Asset Allocation</h3>
-            <p className="text-gray-600 mb-6">
-              See how your portfolio is constructed to understand its risk and return profile.
-            </p>
-            <a
-                href="/allocation"
-                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
-                >
-                <ChevronRightIcon className="w-5 h-5 mr-2" />
-                View Allocation
-            </a>
-
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
+
+      {/* Embedded Styles */}
+      <style jsx>{`
+        .bg-white {
+          background-color: #fff;
+        }
+      `}</style>
     </section>
 
 
