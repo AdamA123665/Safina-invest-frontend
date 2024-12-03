@@ -6,7 +6,7 @@ import * as THREE from 'three';
 
 export function Particles() {
   const ref = useRef();
-  const count = 5000;
+  const count = 100;
   const positions = new Float32Array(count * 3);
 
   // Randomly place particles
