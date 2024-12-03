@@ -5,6 +5,12 @@ import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
 const PortfolioOptimizer = () => {
     const [portfolioData, setPortfolioData] = useState(null);
     const [, setSelectedAsset] = useState(null);
@@ -58,34 +64,34 @@ const PortfolioOptimizer = () => {
     return (
       <div className="bg-gray-50 min-h-screen text-gray-800 font-sans">
       {/* Hero Section */}
-      <section className="relative w-full h-screen bg-midnight-blue overflow-hidden">
+      <section className="relative w-full h-[75vh] bg-midnight-blue overflow-hidden">
         {/* Hero Overlay */}
         <div
-          className="absolute top-0 left-0 w-full h-full bg-no-repeat bg-cover animate-backgroundAnimation"
+          className="absolute top-0 left-0 w-full h-full bg-no-repeat bg-cover"
           style={{
             backgroundImage: 'url("your-geometric-pattern.png")',
           }}
         ></div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-4xl mx-auto pt-40 px-4 text-center text-white">
+        <div className="relative z-10 max-w-4xl mx-auto pt-28 px-4 text-center text-white">
           <motion.h1
             className="text-5xl md:text-6xl font-extrabold mb-6"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 2 }}
-            style={{ fontFamily: 'Lora, serif' }}
+            style={{ fontFamily: 'Lora, serif', textShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)' }}
           >
             Data-driven Investment Solutions
           </motion.h1>
           <motion.p
-            className="text-3xl md:text-2xl mb-8 text-black"
+            className="text-3xl md:text-3xl mb-6 text-black"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 2, delay: 0.5 }}
             style={{ fontFamily: 'Open Sans, sans-serif' }}
           >
-            Your journey towards sustainable growth starts here.
+            Your journey towards sustainable growth starts here
           </motion.p>
           <Link
             to="/assets"
@@ -226,7 +232,7 @@ const PortfolioOptimizer = () => {
               <h3 className="text-xl font-bold text-gray-800 mb-4">Manage</h3>
               <p className="text-gray-600 mb-6">
                 Use our advanced tools and data-driven services to optimise your
-                investments with insights from the last decade.
+                investments with data from the last 10+ years.
               </p>
               <Link
                 to="/allocation"
@@ -321,22 +327,41 @@ const PortfolioOptimizer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8">
           {/* Text Content */}
-          <motion.div
-            className="space-y-6"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2
-              className="text-5xl font-bold mb-4"
-              style={{ color: '#191970', fontFamily: 'Lora, serif' }}
-            >
-              Build Real Wealth
-            </h2>
-            <p className="text-gray-600 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-              Past performance isn't indicative of future growth.
-            </p>
-          </motion.div>
+<motion.div
+  className="space-y-6"
+  initial={{ opacity: 0, x: -50 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.8 }}
+>
+  <h2
+    className="text-5xl font-extrabold mb-4"
+    style={{ color: '#191970', fontFamily: 'Lora, serif' }}
+  >
+    Build Real Wealth
+  </h2>
+  <p
+    className="text-gray-600 text-lg mb-2"
+    style={{
+      fontFamily: 'Open Sans, sans-serif',
+      fontSize: '0.75rem', // Smaller text size
+    }}
+  >
+    Past performance isn't indicative of future growth.
+  </p>
+  <hr className="border-t-2 border-gray-300 w-3/4 mx-auto mb-4" />
+  <p
+    className="text-lg font-semibold"
+    style={{ fontFamily: 'Open Sans, sans-serif', color: '#191970' }}
+  >
+    Tailored portfolios with a variety of assets:
+  </p>
+  <ul className="list-disc list-inside text-gray-600 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+    <li>Equity</li>
+    <li>Sukuk</li>
+    <li>Real Estate</li>
+    <li>Commodities</li>
+  </ul>
+</motion.div>
 
           {/* Graph */}
           <motion.div
@@ -422,141 +447,433 @@ const PortfolioOptimizer = () => {
         }
       `}</style>
     </section>
-
-
-
-    
-
-
-  
         {/* How to Invest Section */}
-        <section id="how-to-invest" className="bg-gray-100 py-20">
-          <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-bold mb-8">How to Invest</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-2xl font-bold mb-2">Step 1</h3>
-                <p>Open an account with your prefered investment platforn. There are pros and cons fo each of them however Trading212 seems to have the lowest fees.</p>
-              </div>
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-2xl font-bold mb-2">Step 2</h3>
-                <p>Leverage our asset allocation tool to invest the right amounts into the Sharia ETF&apos.</p>
-              </div>
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-2xl font-bold mb-2">Step 3</h3>
-                <p>Invest and monitor your portfolio performance. If your not happy with the amount of volatility then you can always change and rebalance. I suggest setting a direct debit and investing a fixed amount each month</p>
-              </div>
-            </div>
-          </div>
-        </section>
-  
-        <section id="research" className="py-20">
+<section id="how-to-invest" className="bg-gray-100 py-20">
   <div className="container mx-auto px-4">
-    <h2 className="text-4xl font-bold mb-8">Research</h2>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {portfolioData && portfolioData.dashboard_data.research_articles.map((article, index) => (
-        <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <img
-            src={article.image_url || 'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A6f22b49f-c9e1-4ddf-9cc6-eead253330d0?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1'}
-            alt={article.title}
-            className="w-full h-48 object-cover"
-          />
-          <div className="p-6">
-            <h3 className="text-2xl font-bold mb-2">{article.title}</h3>
-            <p className="text-sm text-gray-600 mb-4">{article.date}</p>
-            <div className="text-gray-700 mb-4 h-24 overflow-hidden">
-              {article.content}
-            </div>
-            <button
-              onClick={() => openArticleModal(article)}
-              className="text-blue-500 underline"
-            >
-              Read More
-            </button>
+    {/* Section Title */}
+    <motion.h2
+      className="text-4xl font-extrabold text-center mb-12"
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1 }}
+      style={{ fontFamily: 'Lora, serif', color: '#191970' }}
+    >
+      Take Action
+    </motion.h2>
 
-          </div>
+    {/* Steps Grid */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Step 1 */}
+      <motion.div
+        className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-gold hover:shadow-2xl transition transform hover:scale-105"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1 }}
+      >
+        <h3 className="text-2xl font-bold mb-4" style={{ color: '#191970' }}>
+          Step 1: Explore Investment Options
+        </h3>
+        <p className="text-gray-600 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+          Start by exploring various Sharia-compliant investment options. Understand the risks,
+          rewards, and strategies to see what resonates with your financial goals.
+        </p>
+        <a
+          href="/articles"
+          className="text-gold font-semibold hover:underline"
+        >
+          Read our in-depth articles
+        </a>
+      </motion.div>
+
+      {/* Step 2 */}
+      <motion.div
+        className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-gold hover:shadow-2xl transition transform hover:scale-105"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.2 }}
+      >
+        <h3 className="text-2xl font-bold mb-4" style={{ color: '#191970' }}>
+          Step 2: Make Your Initial Investment
+        </h3>
+        <p className="text-gray-600 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+          Use our recommended Trading 212 Pies or your preferred brokerage account to invest in
+          tailored portfolios. Set up recurring investments for consistent growth.
+        </p>
+        <a
+          href="/brokerage-options"
+          className="text-gold font-semibold hover:underline"
+        >
+          Learn about brokerage options
+        </a>
+      </motion.div>
+
+      {/* Step 3 */}
+      <motion.div
+        className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-gold hover:shadow-2xl transition transform hover:scale-105"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.4 }}
+      >
+        <h3 className="text-2xl font-bold mb-4" style={{ color: '#191970' }}>
+          Step 3: Monitor & Stay Updated
+        </h3>
+        <p className="text-gray-600 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+          Monitor your portfolio performance regularly. Subscribe to our email updates to receive
+          quarterly allocation changes, market insights, and tailored recommendations.
+        </p>
+        <a
+          href="/subscribe"
+          className="text-gold font-semibold hover:underline"
+        >
+          Subscribe to our email list
+        </a>
+      </motion.div>
+    </div>
+  </div>
+
+  {/* Embedded Styles */}
+  <style jsx>{`
+    .border-gold {
+      border-color: #d4af37;
+    }
+    .text-gold {
+      color: #d4af37;
+    }
+    .hover\:shadow-2xl:hover {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+  `}</style>
+</section>
+
+<section id="research">
+  {/* Section Background */}
+  <div
+    className="relative py-20"
+    style={{
+      background: 'linear-gradient(to right, #d4af37, #e0eafc)', // Matches the palette
+    }}
+  >
+    {/* Decorative Overlay */}
+    <div
+      className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none"
+      style={{
+        backgroundImage: 'url(/images/decorative-shape.svg)', // Replace with an actual decorative SVG
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'contain',
+        backgroundPosition: 'top right',
+      }}
+    ></div>
+
+<div className="container mx-auto px-4 relative z-10">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    {/* Title Section */}
+    <div className="lg:col-span-1 flex justify-end">
+      <div className="text-right lg:mt-0 mt-8">
+        <h2
+          className="text-5xl font-bold mb-4"
+          style={{
+            fontFamily: 'Lora, serif',
+            color: '#191970',
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
+          }}
+        >
+          Explore Our Latest Research
+          </h2>
         </div>
-      ))}
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {portfolioData &&
+          portfolioData.dashboard_data.research_articles.map((article, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:scale-105"
+            >
+              <div className="relative">
+                <img
+                  src={
+                    article.image_url ||
+                    'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A6f22b49f-c9e1-4ddf-9cc6-eead253330d0?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1'
+                  }
+                  alt={article.title}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute top-4 right-4 bg-gold text-white px-2 py-1 rounded">
+                  {article.date}
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-2xl font-bold mb-4" style={{ color: '#191970' }}>
+                  {article.title}
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  {article.content.length > 100 ? article.content.substring(0, 100) + '...' : article.content}
+                </p>
+                <button
+                  onClick={() => openArticleModal(article)}
+                  className="text-gold font-semibold hover:underline"
+                >
+                  Read More
+                </button>
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
   </div>
 
   {/* Article Modal */}
-<Transition show={articleModalOpen} className="fixed z-10 inset-0 overflow-y-auto">
-  <div className="flex items-center justify-center min-h-screen px-4 text-center">
-    <Transition.Child
-      className="fixed inset-0 transition-opacity"
-      aria-hidden="true"
-      enter="ease-out duration-300"
-      enterFrom="opacity-0"
-      enterTo="opacity-100"
-      leave="ease-in duration-200"
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
-    >
-      <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-    </Transition.Child>
+  {selectedArticle && (
+    <Transition show={articleModalOpen} className="fixed z-10 inset-0 overflow-y-auto">
+      <div className="flex items-center justify-center min-h-screen px-4 text-center">
+        <Transition.Child
+          className="fixed inset-0 transition-opacity"
+          aria-hidden="true"
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </Transition.Child>
 
-    <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+          &#8203;
+        </span>
 
-    <Transition.Child
-      className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full max-w-3xl"
-      enter="ease-out duration-300"
-      enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-      enterTo="opacity-100 translate-y-0 sm:scale-100"
-      leave="ease-in duration-200"
-      leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-      leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-    >
-      {selectedArticle && (
-        <div className="bg-white p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-2xl font-bold">{selectedArticle.title}</h3>
-            <button
-              onClick={() => setArticleModalOpen(false)}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              <XIcon className="h-6 w-6" />
-            </button>
-          </div>
-          <p className="text-sm text-gray-600 mb-4">{selectedArticle.date}</p>
-          <div className="prose max-w-none">
-            <p>{selectedArticle.content}</p>
-          </div>
-        </div>
-      )}
-    </Transition.Child>
-  </div>
-</Transition>
-
-</section>
-
-
-  
-        {/* Reviews Section */}
-        <section id="reviews" className="bg-gray-100 py-20">
-          <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-bold mb-8">Customer Reviews</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <p className="mb-4">"This platform has transformed the way I invest. The tools are intuitive and the support is excellent."</p>
-                <p className="font-bold">- Sarah K.</p>
-              </div>
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <p className="mb-4">"A must-have for anyone looking to invest ethically. Highly recommended!"</p>
-                <p className="font-bold">- Ahmed M.</p>
-              </div>
+        <Transition.Child
+          className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full max-w-3xl"
+          enter="ease-out duration-300"
+          enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          enterTo="opacity-100 translate-y-0 sm:scale-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+          leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+        >
+          <div className="bg-white p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-2xl font-bold" style={{ color: '#191970' }}>
+                {selectedArticle.title}
+              </h3>
+              <button
+                onClick={() => setArticleModalOpen(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <XIcon className="h-6 w-6" />
+              </button>
+            </div>
+            <p className="text-sm text-gray-600 mb-4">{selectedArticle.date}</p>
+            <div className="prose max-w-none">
+              <p>{selectedArticle.content}</p>
             </div>
           </div>
-        </section>
-  
-        {/* Contact Us Section */}
-        <section id="contact" className="py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl font-bold mb-4">Contact Us</h2>
-            <p className="text-lg mb-8">Have questions or need support? Get in touch with us.</p>
-            <a href="mailto:support@safinabank.com" className="bg-green-500 text-white px-6 py-3 rounded-lg">Email Us</a>
+        </Transition.Child>
+      </div>
+    </Transition>
+  )}
+  </div>
+  </div>
+</section>
+
+<section id="reviews" className="py-20" style={{ backgroundColor: '#191970' }}>
+  <div className="container mx-auto px-4">
+    <h2
+      className="text-5xl font-bold text-center mb-12"
+      style={{ fontFamily: 'Lora, serif', color: 'black' }}
+    >
+      Hear From Our Clients
+    </h2>
+
+
+    <Swiper
+      modules={[Autoplay, Pagination, Navigation]}
+      spaceBetween={30}
+      slidesPerView={1}
+      breakpoints={{
+        // when window width is >= 640px
+        640: {
+          slidesPerView: 1,
+          spaceBetween: 20,
+        },
+        // when window width is >= 768px
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 30,
+        },
+        // when window width is >= 1024px
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 30,
+        },
+      }}
+      loop={true}
+      autoplay={{ delay: 5000 }}
+      pagination={{ clickable: true }}
+      navigation={true}
+      className="relative"
+    >
+      {/* Review 1 */}
+      <SwiperSlide>
+        <div className="bg-white rounded-lg shadow-lg p-8 mx-4">
+          <div className="mb-4">
+            <p className="text-xl font-bold mb-2">Sarah K.</p>
+            <div className="flex">
+              {/* Star Ratings */}
+              {[...Array(5)].map((_, i) => (
+                <svg
+                  key={i}
+                  className="h-5 w-5 text-gold"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M10 15l-5.878 3.09 1.123-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.757 4.635 1.123 6.545z" />
+                </svg>
+              ))}
+            </div>
           </div>
-        </section>
+          <p className="text-gray-600 leading-relaxed">
+            "This platform has transformed the way I invest. The tools are intuitive and the support is excellent."
+          </p>
+        </div>
+      </SwiperSlide>
+
+      {/* Review 2 */}
+      <SwiperSlide>
+        <div className="bg-white rounded-lg shadow-lg p-8 mx-4">
+          <div className="mb-4">
+            <p className="text-xl font-bold mb-2">Ahmed M.</p>
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <svg
+                  key={i}
+                  className="h-5 w-5 text-gold"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M10 15l-5.878 3.09 1.123-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.757 4.635 1.123 6.545z" />
+                </svg>
+              ))}
+            </div>
+          </div>
+          <p className="text-gray-600 leading-relaxed">
+            "A must-have for anyone looking to invest ethically. Highly recommended!"
+          </p>
+        </div>
+      </SwiperSlide>
+
+      {/* Review 3 */}
+      <SwiperSlide>
+        <div className="bg-white rounded-lg shadow-lg p-8 mx-4">
+          <div className="mb-4">
+            <p className="text-xl font-bold mb-2">Emily R.</p>
+            <div className="flex">
+              {[...Array(4)].map((_, i) => (
+                <svg
+                  key={i}
+                  className="h-5 w-5 text-gold"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M10 15l-5.878 3.09 1.123-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.757 4.635 1.123 6.545z" />
+                </svg>
+              ))}
+              {/* Half Star */}
+              <svg
+                className="h-5 w-5 text-gold"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <defs>
+                  <linearGradient id="halfStar">
+                    <stop offset="50%" stopColor="currentColor" />
+                    <stop offset="50%" stopColor="transparent" />
+                  </linearGradient>
+                </defs>
+                <path
+                  fill="url(#halfStar)"
+                  d="M10 15l-5.878 3.09 1.123-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.757 4.635 1.123 6.545z"
+                />
+              </svg>
+            </div>
+          </div>
+          <p className="text-gray-600 leading-relaxed">
+            "Their data-driven approach has given me confidence in my investments. The platform is user-friendly and insightful."
+          </p>
+        </div>
+      </SwiperSlide>
+
+      {/* Review 4 */}
+      <SwiperSlide>
+        <div className="bg-white rounded-lg shadow-lg p-8 mx-4">
+          <div className="mb-4">
+            <p className="text-xl font-bold mb-2">John D.</p>
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <svg
+                  key={i}
+                  className="h-5 w-5 text-gold"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M10 15l-5.878 3.09 1.123-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.757 4.635 1.123 6.545z" />
+                </svg>
+              ))}
+            </div>
+          </div>
+          <p className="text-gray-600 leading-relaxed">
+            "Excellent customer service and a great selection of investment options that align with my values."
+          </p>
+        </div>
+      </SwiperSlide>
+
+      {/* Add more SwiperSlides as needed */}
+    </Swiper>
+
+    {/* Swiper Navigation Buttons (optional customization) */}
+    <style jsx>{`
+      .swiper-button-next,
+      .swiper-button-prev {
+        color: #d4af37;
+      }
+      .swiper-pagination-bullet-active {
+        background: #d4af37;
+      }
+    `}</style>
+  </div>
+</section>
+
+  
+<section
+  id="contact"
+  className="relative py-20 bg-cover bg-center"
+  style={{ backgroundImage: 'url("your-geometric-pattern.png")' }}
+>
+  <div className="absolute inset-0 bg-black opacity-50"></div>
+  <div className="relative container mx-auto px-4 text-center">
+    <h2
+      className="text-4xl font-bold mb-4 text-white"
+      style={{ fontFamily: 'Lora, serif' }}
+    >
+      Contact Us
+    </h2>
+    <p
+      className="text-lg mb-8 text-gray-200"
+      style={{ fontFamily: 'Open Sans, sans-serif' }}
+    >
+      Have questions or need support? Get in touch with us.
+    </p>
+    <a
+      href="mailto:support@safinabank.com"
+      className="bg-gold text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:bg-yellow-600 transition"
+    >
+      Email Us
+    </a>
+  </div>
+</section>
       </div>
     );
   }
