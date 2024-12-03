@@ -5,6 +5,9 @@ import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { ChevronRightIcon, Globe, CreditCardIcon, GiftIcon } from 'lucide-react';
+import { Canvas } from '@react-three/fiber';
+import { Suspense } from 'react';
+import { Particles } from './Particles'; // Custom particle component
 
 const PortfolioOptimizer = () => {
     const [portfolioData, setPortfolioData] = useState(null);
@@ -59,50 +62,66 @@ const PortfolioOptimizer = () => {
     return (
         <div className="bg-gray-50 min-h-screen text-gray-800 font-sans">
           {/* Hero Section */}
-          <section
-            id="hero"
-            className="relative bg-gradient-to-br from-green-600 to-blue-800 text-white"
-          >
-            <div className="container mx-auto px-6 sm:px-8 lg:px-10 py-32">
-              <div className="text-center">
-                <motion.h1
-                  className="text-6xl font-extrabold mb-6"
-                  initial={{ opacity: 0, y: -50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  Empowering your investments
-                </motion.h1>
-                <motion.p
-                  className="text-xl mb-8 max-w-3xl mx-auto"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                >
-                  Learn. Manage. Prosper.
-                </motion.p>
-                <motion.button
-                  className="px-8 py-4 bg-white text-green-700 font-semibold rounded-full shadow-lg hover:bg-green-50 transition"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                >
-                  Sharia Compliant
-                </motion.button>
-              </div>
+        <section
+        id="hero"
+        className="relative bg-midnight-blue text-white overflow-hidden h-screen"
+        >
+        {/* 3D Interactive Background */}
+        <div className="absolute inset-0">
+            <Canvas camera={{ position: [0, 0, 10] }}>
+            <Suspense fallback={null}>
+                <Particles />
+            </Suspense>
+            </Canvas>
+        </div>
+
+        {/* Content */}
+        <div className="container mx-auto px-6 sm:px-8 lg:px-10 py-40 relative z-10">
+            <div className="text-center">
+            <motion.h1
+                className="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gold via-light-turquoise to-soft-green"
+                initial={{ opacity: 0, y: -80 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+            >
+                Invest with Purpose
+            </motion.h1>
+            <motion.p
+                className="text-xl sm:text-2xl mb-8 max-w-2xl mx-auto"
+                initial={{ opacity: 0, y: 80 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.5 }}
+            >
+                Bridging Faith and Finance for a Prosperous Future
+            </motion.p>
+            <motion.div
+                className="flex justify-center space-x-4"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, delay: 1 }}
+            >
+                <button className="px-8 py-4 bg-gold text-midnight-blue font-semibold rounded-full shadow-lg hover:bg-white hover:text-gold transition duration-300">
+                Get Started
+                </button>
+                <button className="px-8 py-4 bg-transparent border-2 border-gold text-gold font-semibold rounded-full shadow-lg hover:bg-gold hover:text-midnight-blue transition duration-300">
+                Learn More
+                </button>
+            </motion.div>
             </div>
-            {/* Decorative Wave */}
-            <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
-              <svg
-                className="relative block w-full h-16"
-                xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="none"
-                viewBox="0 0 1920 80"
-              >
-                <path d="M0,80L1920,0L1920,80L0,80Z" fill="white"></path>
-              </svg>
-            </div>
-          </section>
+        </div>
+
+        {/* Angled SVG Divider */}
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
+            <svg
+            className="relative block w-full h-48"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+            viewBox="0 0 1920 320"
+            >
+            <polygon points="0,320 1920,0 1920,320" fill="#FFFFFF" />
+            </svg>
+        </div>
+        </section>
     
           {/* About Section */}
     <section id="about" className="py-32 bg-white">
