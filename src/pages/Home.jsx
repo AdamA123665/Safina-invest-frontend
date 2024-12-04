@@ -557,7 +557,7 @@ const PortfolioOptimizer = () => {
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1 }}
-      style={{ fontFamily: 'Lora, serif', color: '##F5F5F5' }}
+      style={{ fontFamily: 'Lora, serif', color: '#006C5B' }}
     >
       Support from start to end
     </motion.h2>
@@ -588,7 +588,7 @@ const PortfolioOptimizer = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-4" style={{ color: '##F5F5F5' }}>Learn</h3>
+              <h3 className="text-xl font-bold mb-4" style={{ color: '#006C5B' }}>Learn</h3>
               <p className="text-gray-600 mb-6" style={{ color: '#1F2937' }}>
                 Explore investment strategies, understand your options, and find
                 solutions that align with your goals.
@@ -621,7 +621,7 @@ const PortfolioOptimizer = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-4" style={{ color: '##F5F5F5' }} >Manage</h3>
+              <h3 className="text-xl font-bold mb-4" style={{ color: '#006C5B' }} >Manage</h3>
               <p className="text-gray-600 mb-6" style={{ color: '#1F2937' }}>
                 Use our advanced tools and data-driven services to optimise your
                 investments with data from the last 10+ years.
@@ -650,7 +650,7 @@ const PortfolioOptimizer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 5l7 7-7 7" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-4" style={{ color: '##F5F5F5' }} >Prosper</h3>
+              <h3 className="text-xl font-bold mb-4" style={{ color: '#006C5B' }} >Prosper</h3>
               <p className="text-gray-600 mb-6" style={{ color: '#1F2937' }}>
                 Stay informed with the latest investment news and explore
                 tax-efficient growth strategies.
@@ -673,7 +673,7 @@ const PortfolioOptimizer = () => {
           background-color: ##F5F5F5;
         }
         .bg-gold {
-          background-color: #006C5B;
+          background-color: #A5D6A7;
         }
 
         /* Arrow Animation */
