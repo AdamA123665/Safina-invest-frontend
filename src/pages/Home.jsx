@@ -1,16 +1,265 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ResponsiveContainer } from 'recharts';
 import { Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { Link } from 'react-router-dom';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+const Step1 = () => {
+  const [riskLevel, setRiskLevel] = useState(5);
 
+  const handleRiskChange = (e) => {
+    setRiskLevel(parseInt(e.target.value));
+  };
+
+  // Generate data for risk levels 1 to 10
+  const stockData = useMemo(() => generateStockData(), []);
+
+  return (
+    <div className="flex flex-col md:flex-row items-center">
+      {/* Graph and Slider */}
+      <div className="w-full md:w-1/2 flex flex-col items-center">
+        {/* Graph */}
+        <div className="relative w-full max-w-md mb-8">
+          <svg viewBox="0 0 300 200" className="w-full h-auto">
+            {/* Axes */}
+            <line x1="30" y1="170" x2="280" y2="170" stroke="#ccc" strokeWidth="2" />
+            <line x1="30" y1="170" x2="30" y2="20" stroke="#ccc" strokeWidth="2" />
+
+            {/* Lines for risk levels 1 to 10 */}
+            {stockData.map(({ risk, points }) => {
+              const opacity = risk === riskLevel ? 1 : 0.2;
+              const strokeWidth = risk === riskLevel ? 3 : 1;
+              const color = risk === riskLevel ? '#A8DADC' : '#888';
+
+              const pathData = points
+                .map((point, i) =>
+                  i === 0 ? `M ${point.x},${point.y}` : `L ${point.x},${point.y}`
+                )
+                .join(' ');
+
+              return (
+                <path
+                  key={risk}
+                  d={pathData}
+                  fill="none"
+                  stroke={color}
+                  strokeWidth={strokeWidth}
+                  opacity={opacity}
+                />
+              );
+            })}
+          </svg>
+
+          {/* Labels */}
+          <div className="absolute top-0 left-0 w-full h-full">
+            <div className="absolute left-0 bottom-0 mb-2 ml-2 text-gray-600 text-sm">
+              Growth
+            </div>
+            <div className="absolute right-0 bottom-0 mb-2 mr-2 text-gray-600 text-sm">
+              Time
+            </div>
+          </div>
+        </div>
+
+        {/* Risk Slider */}
+        <div className="flex flex-col items-center">
+          <input
+            type="range"
+            min="1"
+            max="10"
+            value={riskLevel}
+            onChange={handleRiskChange}
+            className="slider"
+            style={{
+              marginBottom: '10px',
+            }}
+          />
+          <div
+            style={{
+              fontFamily: 'Open Sans, sans-serif',
+              color: '#A8DADC',
+              fontSize: '1.25rem',
+              fontWeight: 'bold',
+            }}
+          >
+            Risk Level: {riskLevel}
+          </div>
+        </div>
+      </div>
+
+      {/* Text Content */}
+      <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
+        <h3 className="text-3xl font-bold mb-4" style={{ color: '#A8DADC' }}>
+          Step 1: Pick Your Risk Level
+        </h3>
+        <p
+          className="text-gray-700 mb-4 text-lg"
+          style={{ fontFamily: 'Open Sans, sans-serif' }}
+        >
+          Start by exploring various Sharia-compliant investment options. Understand the risks,
+          rewards, and strategies to see what resonates with your financial goals.
+        </p>
+        <a href="/articles" className="text-gold font-semibold hover:underline text-lg">
+          Read our in-depth articles
+        </a>
+      </div>
+
+      {/* Embedded Styles */}
+      <style jsx>{`
+        .slider {
+          -webkit-appearance: none;
+          width: 200px;
+          height: 15px;
+          background: #d3d3d3;
+          border-radius: 10px;
+          outline: none;
+          opacity: 0.7;
+          transition: opacity 0.2s;
+        }
+        .slider:hover {
+          opacity: 1;
+        }
+        .slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 30px;
+          height: 30px;
+          background: #A8DADC;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+        .slider::-moz-range-thumb {
+          width: 30px;
+          height: 30px;
+          background: #A8DADC;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+// Generate stock-like data for the graph
+const generateStockData = () => {
+  const data = [];
+  const numPoints = 20; // Number of data points
+  let maxOverallValue = 0; // To normalize y-values later
+
+  // First, generate all data
+  for (let risk = 1; risk <= 10; risk++) {
+    const points = [];
+    let value = 0; // Starting from zero
+    const meanReturn = 0.02 + risk * 0.005; // Higher risk levels have higher mean returns
+    const volatility = 0.01 + risk * 0.01; // Higher risk levels have higher volatility
+
+    for (let i = 0; i <= numPoints; i++) {
+      const randomShock = (Math.random() - 0.5) * 2 * volatility;
+      value += meanReturn + randomShock;
+      if (value < 0) value = 0; // Prevent negative values
+      points.push({ x: i, y: value });
+    }
+    data.push({ risk, points });
+    const maxValue = Math.max(...points.map((p) => p.y));
+    if (maxValue > maxOverallValue) maxOverallValue = maxValue;
+  }
+
+  // Now normalize y-values to fit the SVG coordinate system
+  const xScale = 250 / numPoints; // Scaling x-values to fit within 250px width (from x=30 to x=280)
+  const yScale = 140 / maxOverallValue; // Scaling y-values to fit within 140px height (from y=170 to y=30)
+
+  // Adjust points to fit within the SVG viewBox
+  const adjustedData = data.map(({ risk, points }) => {
+    const adjustedPoints = points.map(({ x, y }) => ({
+      x: x * xScale + 30, // Shift x to start from 30px
+      y: 170 - y * yScale, // Invert y and shift to start from y=170px
+    }));
+    return { risk, points: adjustedPoints };
+  });
+
+  return adjustedData;
+};
+const Step2 = () => {
+  return (
+    <motion.div
+      className="flex flex-col md:flex-row-reverse items-center"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1, delay: 0.2 }}
+    >
+      {/* Image of a Phone */}
+      <div className="w-full md:w-1/2 flex justify-center">
+        <motion.img
+          src="trading_212.png" // Replace with your actual image path
+          alt="Make Your First Investment"
+          className="w-64 h-auto"
+          whileHover={{ scale: 1.3, rotate: +10 }}
+          transition={{ duration: 0.5 }}
+        />
+      </div>
+      {/* Text Content */}
+      <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
+        <h3 className="text-3xl font-bold mb-4" style={{ color: '#A8DADC' }}>
+          Step 2: Make Your First Investment
+        </h3>
+        <p className="text-gray-700 mb-4 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+          Use our recommended Trading 212 Pies or your preferred brokerage account to invest in
+          tailored portfolios. Set up recurring investments for consistent growth.
+        </p>
+        <a
+          href="/brokerage-options"
+          className="text-gold font-semibold hover:underline text-lg"
+        >
+          Learn about brokerage options
+        </a>
+      </div>
+    </motion.div>
+  );
+};
+
+const Step3 = () => {
+  return (
+    <motion.div
+      className="flex flex-col md:flex-row items-center"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1, delay: 0.4 }}
+    >
+      {/* Animated Man Image */}
+      <div className="w-full md:w-1/2 flex justify-center">
+        <motion.img
+          src="legs back.webp" // Replace with your actual animated image path
+          alt="Sit Back and Relax"
+          className="w-64 h-auto"
+          whileHover={{ scale: 1.3, rotate: -10 }}
+          transition={{ duration: 0.5 }}
+        />
+      </div>
+      {/* Text Content */}
+      <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
+        <h3 className="text-3xl font-bold mb-4" style={{ color: '#A8DADC' }}>
+          Step 3: Sit Back and Relax
+        </h3>
+        <p className="text-gray-700 mb-4 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+          Monitor your portfolio performance regularly. Subscribe to our email updates to receive
+          quarterly allocation changes, market insights, and tailored recommendations.
+        </p>
+        <a
+          href="/subscribe"
+          className="text-gold font-semibold hover:underline text-lg"
+        >
+          Subscribe to our email list
+        </a>
+      </div>
+    </motion.div>
+  );
+};
 const PortfolioOptimizer = () => {
     const [portfolioData, setPortfolioData] = useState(null);
     const [, setSelectedAsset] = useState(null);
@@ -67,14 +316,15 @@ const PortfolioOptimizer = () => {
       <section className="relative w-full h-[75vh] bg-midnight-blue overflow-hidden">
         {/* Hero Overlay */}
         <div
-          className="absolute top-0 left-0 w-full h-full bg-no-repeat bg-cover"
-          style={{
-            backgroundImage: 'url("your-geometric-pattern.png")',
-          }}
-        ></div>
+  className="absolute top-0 left-0 w-full h-full bg-no-repeat bg-cover"
+  style={{
+    backgroundImage: 'linear-gradient(to bottom, #A8DADC,white )',
+  }}
+></div>
+
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-4xl mx-auto pt-28 px-4 text-center text-white">
+        <div className="relative z-10 max-w-4xl mx-auto pt-28 px-4 text-center" style={{ color: '#006C5B' }}>
           <motion.h1
             className="text-5xl md:text-6xl font-extrabold mb-6"
             initial={{ opacity: 0, y: 30 }}
@@ -85,20 +335,30 @@ const PortfolioOptimizer = () => {
             Data-driven Investment Solutions
           </motion.h1>
           <motion.p
-            className="text-3xl md:text-3xl mb-6 text-black"
+            className="text-3xl md:text-3xl mb-6" 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 2, delay: 0.5 }}
-            style={{ fontFamily: 'Open Sans, sans-serif' }}
+            style={{ fontFamily: 'Open Sans, sans-serif', color: '#1F2937' }}
           >
             Your journey towards sustainable growth starts here
           </motion.p>
-          <Link
-            to="/assets"
-            className="inline-block px-8 py-4 bg-gold text-white font-semibold rounded-md shadow-lg mb-8"
-          >
-            Sharia Compliant
-          </Link>
+          <div className="flex flex-col items-center mt-8">
+          <a
+  href="#how-to-invest"
+  className="inline-block px-16 py-6 text-white font-semibold rounded-md shadow-lg text-2xl"
+  style={{
+    backgroundColor: '#006C5B', // Exact emerald green
+  }}
+>
+  Invest Now
+</a>
+  <span
+    className="mt-4 inline-block px-4 py-2  text-sm font-semibold rounded-full shadow" style={{ color: '#006C5B' }}
+  >
+    Sharia Compliant
+  </span>
+</div>
 
           {/* Interactive Arrow */}
           <div className="mt-8">
@@ -121,10 +381,10 @@ const PortfolioOptimizer = () => {
         <style jsx>{`
           /* Colors */
           .bg-midnight-blue {
-            background-color: #191970;
+            background-color: #A8DADC;
           }
           .bg-gold {
-            background-color: #d4af37;
+            background-color: #D4AF37;
           }
 
           /* Arrow Animation */
@@ -159,16 +419,148 @@ const PortfolioOptimizer = () => {
         `}</style>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 bg-midnight-blue text-white">
+      <section
+  id="construction"
+  className="py-20"
+  style={{
+    background: 'linear-gradient(to bottom, white, #F9FAFB)',
+  }}
+>
+  <div className="container mx-auto px-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8">
+<motion.div
+  className="space-y-6"
+  initial={{ opacity: 0, x: -50 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.8 }}
+>
+  <h2
+    className="text-5xl font-extrabold mb-4"
+    style={{ color: '#374151', fontFamily: 'Lora, serif' }}
+  >
+    Build Real Wealth
+  </h2>
+  <p
+    className="text-lg font-semibold"
+    style={{ fontFamily: 'Open Sans, sans-serif', color: '#A8DADC' }}
+  >
+    Tailored portfolios with a variety of assets:
+  </p>
+  <ul className="list-disc list-inside text-gray-600 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' , color: '#A8DADC' }}>
+    <li>Equity</li>
+    <li>Sukuk</li>
+    <li>Real Estate</li>
+    <li>Commodities</li>
+  </ul>
+  <p
+    className="text-gray-600 text-lg mb-2"
+    style={{
+      fontFamily: 'Open Sans, sans-serif',
+      fontSize: '0.75rem', // Smaller text size
+    }}
+  >
+    Past performance isn't indicative of future growth.
+  </p>
+</motion.div>
+
+          {/* Graph */}
+          <motion.div
+            className="relative"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            {portfolioData && (
+              <ResponsiveContainer width="100%" height={300}>
+                <AreaChart
+                  data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
+                    date,
+                    Portfolio:
+                      portfolioData.dashboard_data.performance.series.find(
+                        (s) => s.name === 'Portfolio'
+                      )?.values[idx] || 0,
+                    'S&P 500':
+                      portfolioData.dashboard_data.performance.series.find(
+                        (s) => s.name === 'S&P 500'
+                      )?.values[idx] || 0,
+                  }))}
+                >
+                  <defs>
+                    <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#A7A9AC" stopOpacity={0.8} />
+                      <stop offset="100%" stopColor="#A7A9AC" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#A8DADC" stopOpacity={0.8} />
+                      <stop offset="100%" stopColor="#A8DADC" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="date" tick={{ fill: '#6B7280' }} />
+                  <YAxis
+                    tick={{ fill: '#6B7280' }}
+                    tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+                  />
+                  <Tooltip
+                    formatter={(value) => `${(value * 100).toFixed(2)}%`}
+                    contentStyle={{
+                      backgroundColor: '#334155',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '8px',
+                      padding: '8px 12px',
+                    }}
+                  />
+                  <Legend
+                    wrapperStyle={{
+                      paddingTop: '16px',
+                      color: '#6B7280',
+                      fontWeight: 'bold',
+                    }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="Portfolio"
+                    stroke="#A7A9AC"
+                    fill="url(#colorPortfolio)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="S&P 500"
+                    stroke="#A8DADC"
+                    fill="url(#colorSP500)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            )}
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Embedded Styles */}
+      <style jsx>{`
+        .bg-white {
+          background-color: #fff;
+        }
+      `}</style>
+    </section>
+
+    {/* About Section */}
+    <section id="about" className="py-10 bg-midnight-blue text-white">
         <div className="max-w-6xl mx-auto px-4 text-center">
           {/* Title and Tagline */}
-          <h2 className="text-5xl font-bold mb-4" style={{ color: '#d4af37' , fontFamily: 'Lora, serif' }}>
-            Growing Your Piggy Bank
-          </h2>
-          <p className="text-lg mb-12 text-gray-300" style = {{fontFamily: 'Lora, serif'}}>
-            Guiding you to make robust financial decisions.
-          </p>
+          <motion.h2
+      className="text-4xl font-extrabold text-center mb-12"
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1 }}
+      style={{ fontFamily: 'Lora, serif', color: '#D4AF37' }}
+    >
+      Support from start to end
+    </motion.h2>
 
           {/* Interactive Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -196,8 +588,8 @@ const PortfolioOptimizer = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Learn</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-xl font-bold mb-4" style={{ color: '#D4AF37' }}>Learn</h3>
+              <p className="text-gray-600 mb-6" style={{ color: '#1F2937' }}>
                 Explore investment strategies, understand your options, and find
                 solutions that align with your goals.
               </p>
@@ -229,8 +621,8 @@ const PortfolioOptimizer = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Manage</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-xl font-bold mb-4" style={{ color: '#D4AF37' }} >Manage</h3>
+              <p className="text-gray-600 mb-6" style={{ color: '#1F2937' }}>
                 Use our advanced tools and data-driven services to optimise your
                 investments with data from the last 10+ years.
               </p>
@@ -258,8 +650,8 @@ const PortfolioOptimizer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 5l7 7-7 7" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Prosper</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-xl font-bold mb-4" style={{ color: '#D4AF37' }} >Prosper</h3>
+              <p className="text-gray-600 mb-6" style={{ color: '#1F2937' }}>
                 Stay informed with the latest investment news and explore
                 tax-efficient growth strategies.
               </p>
@@ -278,10 +670,10 @@ const PortfolioOptimizer = () => {
       <style jsx>{`
         /* Colors */
         .bg-midnight-blue {
-          background-color: #191970;
+          background-color: #F9FAFB;
         }
         .bg-gold {
-          background-color: #d4af37;
+          background-color: #006C5B;
         }
 
         /* Arrow Animation */
@@ -323,226 +715,69 @@ const PortfolioOptimizer = () => {
         }
       `}</style>
 
-<section id="construction" className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8">
-          {/* Text Content */}
-<motion.div
-  className="space-y-6"
-  initial={{ opacity: 0, x: -50 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.8 }}
->
-  <h2
-    className="text-5xl font-extrabold mb-4"
-    style={{ color: '#191970', fontFamily: 'Lora, serif' }}
-  >
-    Build Real Wealth
-  </h2>
-  <p
-    className="text-lg font-semibold"
-    style={{ fontFamily: 'Open Sans, sans-serif', color: '#191970' }}
-  >
-    Tailored portfolios with a variety of assets:
-  </p>
-  <ul className="list-disc list-inside text-gray-600 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-    <li>Equity</li>
-    <li>Sukuk</li>
-    <li>Real Estate</li>
-    <li>Commodities</li>
-  </ul>
-  <p
-    className="text-gray-600 text-lg mb-2"
-    style={{
-      fontFamily: 'Open Sans, sans-serif',
-      fontSize: '0.75rem', // Smaller text size
-    }}
-  >
-    Past performance isn't indicative of future growth.
-  </p>
-</motion.div>
 
-          {/* Graph */}
-          <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            {portfolioData && (
-              <ResponsiveContainer width="100%" height={300}>
-                <AreaChart
-                  data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
-                    date,
-                    Portfolio:
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'Portfolio'
-                      )?.values[idx] || 0,
-                    'S&P 500':
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'S&P 500'
-                      )?.values[idx] || 0,
-                  }))}
-                >
-                  <defs>
-                    <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#d4af37" stopOpacity={0.8} />
-                      <stop offset="100%" stopColor="#d4af37" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#191970" stopOpacity={0.8} />
-                      <stop offset="100%" stopColor="#191970" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <XAxis dataKey="date" tick={{ fill: '#6B7280' }} />
-                  <YAxis
-                    tick={{ fill: '#6B7280' }}
-                    tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
-                  />
-                  <Tooltip
-                    formatter={(value) => `${(value * 100).toFixed(2)}%`}
-                    contentStyle={{
-                      backgroundColor: '#334155',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '8px',
-                      padding: '8px 12px',
-                    }}
-                  />
-                  <Legend
-                    wrapperStyle={{
-                      paddingTop: '16px',
-                      color: '#6B7280',
-                      fontWeight: 'bold',
-                    }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="Portfolio"
-                    stroke="#d4af37"
-                    fill="url(#colorPortfolio)"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="S&P 500"
-                    stroke="#191970"
-                    fill="url(#colorSP500)"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
-          </motion.div>
-        </div>
-      </div>
 
-      {/* Embedded Styles */}
-      <style jsx>{`
-        .bg-white {
-          background-color: #fff;
-        }
-      `}</style>
-    </section>
-        {/* How to Invest Section */}
-<section id="how-to-invest" className="bg-gray-100 py-20">
+{/* How to Invest Section */}
+<section id="how-to-invest" className="relative py-20 overflow-hidden" style={{
+    background: '#F4E7D3',
+  }} >
   <div className="container mx-auto px-4">
     {/* Section Title */}
     <motion.h2
-      className="text-4xl font-extrabold text-center mb-12"
+      className="text-5xl font-extrabold text-center mb-20"
       initial={{ opacity: 0, y: -50 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
       transition={{ duration: 1 }}
-      style={{ fontFamily: 'Lora, serif', color: '#191970' }}
+      style={{ fontFamily: 'Lora, serif', color: '#A8DADC' }}
     >
       Take Action
     </motion.h2>
 
-    {/* Steps Grid */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    {/* Steps */}
+    <div className="space-y-20">
       {/* Step 1 */}
-      <motion.div
-        className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-gold hover:shadow-2xl transition transform hover:scale-105"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1 }}
-      >
-        <h3 className="text-2xl font-bold mb-4" style={{ color: '#191970' }}>
-          Step 1: Explore Investment Options
-        </h3>
-        <p className="text-gray-600 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          Start by exploring various Sharia-compliant investment options. Understand the risks,
-          rewards, and strategies to see what resonates with your financial goals.
-        </p>
-        <a
-          href="/articles"
-          className="text-gold font-semibold hover:underline"
-        >
-          Read our in-depth articles
-        </a>
-      </motion.div>
-
+      <Step1 />
       {/* Step 2 */}
-      <motion.div
-        className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-gold hover:shadow-2xl transition transform hover:scale-105"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.2 }}
-      >
-        <h3 className="text-2xl font-bold mb-4" style={{ color: '#191970' }}>
-          Step 2: Make Your Initial Investment
-        </h3>
-        <p className="text-gray-600 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          Use our recommended Trading 212 Pies or your preferred brokerage account to invest in
-          tailored portfolios. Set up recurring investments for consistent growth.
-        </p>
-        <a
-          href="/brokerage-options"
-          className="text-gold font-semibold hover:underline"
-        >
-          Learn about brokerage options
-        </a>
-      </motion.div>
-
+      <Step2 />
       {/* Step 3 */}
-      <motion.div
-        className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-gold hover:shadow-2xl transition transform hover:scale-105"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.4 }}
-      >
-        <h3 className="text-2xl font-bold mb-4" style={{ color: '#191970' }}>
-          Step 3: Monitor & Stay Updated
-        </h3>
-        <p className="text-gray-600 mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          Monitor your portfolio performance regularly. Subscribe to our email updates to receive
-          quarterly allocation changes, market insights, and tailored recommendations.
-        </p>
-        <a
-          href="/subscribe"
-          className="text-gold font-semibold hover:underline"
-        >
-          Subscribe to our email list
-        </a>
-      </motion.div>
+      <Step3 />
     </div>
   </div>
 
   {/* Embedded Styles */}
   <style jsx>{`
-    .border-gold {
-      border-color: #d4af37;
-    }
     .text-gold {
-      color: #d4af37;
+      color: #A7A9AC;
     }
-    .hover:shadow-2xl:hover {
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    .slider {
+      -webkit-appearance: none;
+      width: 200px;
+      height: 15px;
+      background: #d3d3d3;
+      border-radius: 10px;
+      outline: none;
+      opacity: 0.7;
+      transition: opacity .2s;
+    }
+    .slider:hover {
+      opacity: 1;
+    }
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 30px;
+      height: 30px;
+      background: #A8DADC;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .slider::-moz-range-thumb {
+      width: 30px;
+      height: 30px;
+      background: #A8DADC;
+      border-radius: 50%;
+      cursor: pointer;
     }
   `}</style>
 </section>
@@ -552,7 +787,7 @@ const PortfolioOptimizer = () => {
   <div
     className="relative py-20"
     style={{
-      background: 'linear-gradient(to right, #d4af37, #e0eafc)', // Matches the palette
+      background: 'linear-gradient(to bottom, #F4E7D3, #A8DADC)', // Matches the palette
     }}
   >
     {/* Decorative Overlay */}
@@ -574,7 +809,7 @@ const PortfolioOptimizer = () => {
         className="text-5xl font-bold mb-4"
         style={{
           fontFamily: 'Lora, serif',
-          color: '#191970',
+          color: '#A8DADC',
           textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
         }}
       >
@@ -608,7 +843,7 @@ const PortfolioOptimizer = () => {
 
               {/* Content Section */}
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-3" style={{ color: '#191970' }}>
+                <h3 className="text-xl font-bold mb-3" style={{ color: '#A8DADC' }}>
                   {article.title}
                 </h3>
                 <p className="text-gray-600 mb-4">
@@ -664,7 +899,7 @@ const PortfolioOptimizer = () => {
           >
             <div className="bg-white p-6">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-2xl font-bold" style={{ color: '#191970' }}>
+                <h3 className="text-2xl font-bold" style={{ color: '#A8DADC' }}>
                   {selectedArticle.title}
                 </h3>
                 <button
@@ -686,180 +921,12 @@ const PortfolioOptimizer = () => {
     </div>
 </section>
 
-<section id="reviews" className="py-20" style={{ backgroundColor: '#191970' }}>
-  <div className="container mx-auto px-4">
-    <h2
-      className="text-5xl font-bold text-center mb-12"
-      style={{ fontFamily: 'Lora, serif', color: 'white' }}
-    >
-      Hear From Our Clients
-    </h2>
-
-
-    <Swiper
-      modules={[Autoplay, Pagination, Navigation]}
-      spaceBetween={30}
-      slidesPerView={1}
-      breakpoints={{
-        // when window width is >= 640px
-        640: {
-          slidesPerView: 1,
-          spaceBetween: 20,
-        },
-        // when window width is >= 768px
-        768: {
-          slidesPerView: 2,
-          spaceBetween: 30,
-        },
-        // when window width is >= 1024px
-        1024: {
-          slidesPerView: 3,
-          spaceBetween: 30,
-        },
-      }}
-      loop={true}
-      autoplay={{ delay: 5000 }}
-      pagination={{ clickable: true }}
-      navigation={true}
-      className="relative"
-    >
-      {/* Review 1 */}
-      <SwiperSlide>
-        <div className="bg-white rounded-lg shadow-lg p-8 mx-4">
-          <div className="mb-4">
-            <p className="text-xl font-bold mb-2">Sarah K.</p>
-            <div className="flex">
-              {/* Star Ratings */}
-              {[...Array(5)].map((_, i) => (
-                <svg
-                  key={i}
-                  className="h-5 w-5 text-gold"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 15l-5.878 3.09 1.123-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.757 4.635 1.123 6.545z" />
-                </svg>
-              ))}
-            </div>
-          </div>
-          <p className="text-gray-600 leading-relaxed">
-            "This platform has transformed the way I invest. The tools are intuitive and the support is excellent."
-          </p>
-        </div>
-      </SwiperSlide>
-
-      {/* Review 2 */}
-      <SwiperSlide>
-        <div className="bg-white rounded-lg shadow-lg p-8 mx-4">
-          <div className="mb-4">
-            <p className="text-xl font-bold mb-2">Ahmed M.</p>
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <svg
-                  key={i}
-                  className="h-5 w-5 text-gold"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 15l-5.878 3.09 1.123-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.757 4.635 1.123 6.545z" />
-                </svg>
-              ))}
-            </div>
-          </div>
-          <p className="text-gray-600 leading-relaxed">
-            "A must-have for anyone looking to invest ethically. Highly recommended!"
-          </p>
-        </div>
-      </SwiperSlide>
-
-      {/* Review 3 */}
-      <SwiperSlide>
-        <div className="bg-white rounded-lg shadow-lg p-8 mx-4">
-          <div className="mb-4">
-            <p className="text-xl font-bold mb-2">Emily R.</p>
-            <div className="flex">
-              {[...Array(4)].map((_, i) => (
-                <svg
-                  key={i}
-                  className="h-5 w-5 text-gold"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 15l-5.878 3.09 1.123-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.757 4.635 1.123 6.545z" />
-                </svg>
-              ))}
-              {/* Half Star */}
-              <svg
-                className="h-5 w-5 text-gold"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <defs>
-                  <linearGradient id="halfStar">
-                    <stop offset="50%" stopColor="currentColor" />
-                    <stop offset="50%" stopColor="transparent" />
-                  </linearGradient>
-                </defs>
-                <path
-                  fill="url(#halfStar)"
-                  d="M10 15l-5.878 3.09 1.123-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.757 4.635 1.123 6.545z"
-                />
-              </svg>
-            </div>
-          </div>
-          <p className="text-gray-600 leading-relaxed">
-            "Their data-driven approach has given me confidence in my investments. The platform is user-friendly and insightful."
-          </p>
-        </div>
-      </SwiperSlide>
-
-      {/* Review 4 */}
-      <SwiperSlide>
-        <div className="bg-white rounded-lg shadow-lg p-8 mx-4">
-          <div className="mb-4">
-            <p className="text-xl font-bold mb-2">John D.</p>
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <svg
-                  key={i}
-                  className="h-5 w-5 text-gold"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 15l-5.878 3.09 1.123-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.757 4.635 1.123 6.545z" />
-                </svg>
-              ))}
-            </div>
-          </div>
-          <p className="text-gray-600 leading-relaxed">
-            "Excellent customer service and a great selection of investment options that align with my values."
-          </p>
-        </div>
-      </SwiperSlide>
-
-      {/* Add more SwiperSlides as needed */}
-    </Swiper>
-
-    {/* Swiper Navigation Buttons (optional customization) */}
-    <style jsx>{`
-      .swiper-button-next,
-      .swiper-button-prev {
-        color: #d4af37;
-      }
-      .swiper-pagination-bullet-active {
-        background: #d4af37;
-      }
-    `}</style>
-  </div>
-</section>
-
   
 <section
   id="contact"
   className="relative py-20 bg-cover bg-center"
-  style={{ backgroundImage: 'url("your-geometric-pattern.png")' }}
+  style={{ background: '#A8DADC' }}
 >
-  <div className="absolute inset-0 bg-black opacity-50"></div>
   <div className="relative container mx-auto px-4 text-center">
     <h2
       className="text-4xl font-bold mb-4 text-white"
