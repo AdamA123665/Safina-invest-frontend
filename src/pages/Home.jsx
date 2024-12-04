@@ -33,7 +33,7 @@ const Step1 = () => {
             {stockData.map(({ risk, points }) => {
               const opacity = risk === riskLevel ? 1 : 0.2;
               const strokeWidth = risk === riskLevel ? 3 : 1;
-              const color = risk === riskLevel ? '#A8DADC' : '#888';
+              const color = risk === riskLevel ? '#A5D6A7' : '#888';
 
               const pathData = points
                 .map((point, i) =>
@@ -81,7 +81,7 @@ const Step1 = () => {
           <div
             style={{
               fontFamily: 'Open Sans, sans-serif',
-              color: '#A8DADC',
+              color: '#A5D6A7',
               fontSize: '1.25rem',
               fontWeight: 'bold',
             }}
@@ -93,7 +93,7 @@ const Step1 = () => {
 
       {/* Text Content */}
       <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
-        <h3 className="text-3xl font-bold mb-4" style={{ color: '#A8DADC' }}>
+        <h3 className="text-3xl font-bold mb-4" style={{ color: '#A5D6A7' }}>
           Step 1: Pick Your Risk Level
         </h3>
         <p
@@ -128,14 +128,14 @@ const Step1 = () => {
           appearance: none;
           width: 30px;
           height: 30px;
-          background: #A8DADC;
+          background: #A5D6A7;
           border-radius: 50%;
           cursor: pointer;
         }
         .slider::-moz-range-thumb {
           width: 30px;
           height: 30px;
-          background: #A8DADC;
+          background: #A5D6A7;
           border-radius: 50%;
           cursor: pointer;
         }
@@ -204,7 +204,7 @@ const Step2 = () => {
       </div>
       {/* Text Content */}
       <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
-        <h3 className="text-3xl font-bold mb-4" style={{ color: '#A8DADC' }}>
+        <h3 className="text-3xl font-bold mb-4" style={{ color: '#A5D6A7' }}>
           Step 2: Make Your First Investment
         </h3>
         <p className="text-gray-700 mb-4 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
@@ -243,7 +243,7 @@ const Step3 = () => {
       </div>
       {/* Text Content */}
       <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
-        <h3 className="text-3xl font-bold mb-4" style={{ color: '#A8DADC' }}>
+        <h3 className="text-3xl font-bold mb-4" style={{ color: '#A5D6A7' }}>
           Step 3: Sit Back and Relax
         </h3>
         <p className="text-gray-700 mb-4 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
@@ -318,7 +318,7 @@ const PortfolioOptimizer = () => {
         <div
   className="absolute top-0 left-0 w-full h-full bg-no-repeat bg-cover"
   style={{
-    backgroundImage: 'linear-gradient(to bottom, #A8DADC,white )',
+    backgroundImage: 'linear-gradient(to bottom, #A5D6A7,white )',
   }}
 ></div>
 
@@ -381,10 +381,10 @@ const PortfolioOptimizer = () => {
         <style jsx>{`
           /* Colors */
           .bg-midnight-blue {
-            background-color: #A8DADC;
+            background-color: #A5D6A7;
           }
           .bg-gold {
-            background-color: #D4AF37;
+            background-color: ##F5F5F5;
           }
 
           /* Arrow Animation */
@@ -436,17 +436,17 @@ const PortfolioOptimizer = () => {
 >
   <h2
     className="text-5xl font-extrabold mb-4"
-    style={{ color: '#374151', fontFamily: 'Lora, serif' }}
+    style={{ color: '#F4E7D3', fontFamily: 'Lora, serif' }}
   >
     Build Real Wealth
   </h2>
   <p
     className="text-lg font-semibold"
-    style={{ fontFamily: 'Open Sans, sans-serif', color: '#A8DADC' }}
+    style={{ fontFamily: 'Open Sans, sans-serif', color: '#A5D6A7' }}
   >
     Tailored portfolios with a variety of assets:
   </p>
-  <ul className="list-disc list-inside text-gray-600 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' , color: '#A8DADC' }}>
+  <ul className="list-disc list-inside text-gray-600 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' , color: '#A5D6A7' }}>
     <li>Equity</li>
     <li>Sukuk</li>
     <li>Real Estate</li>
@@ -491,8 +491,8 @@ const PortfolioOptimizer = () => {
                       <stop offset="100%" stopColor="#A7A9AC" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#A8DADC" stopOpacity={0.8} />
-                      <stop offset="100%" stopColor="#A8DADC" stopOpacity={0} />
+                      <stop offset="0%" stopColor="#A5D6A7" stopOpacity={0.8} />
+                      <stop offset="100%" stopColor="#A5D6A7" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <XAxis dataKey="date" tick={{ fill: '#6B7280' }} />
@@ -528,7 +528,7 @@ const PortfolioOptimizer = () => {
                   <Area
                     type="monotone"
                     dataKey="S&P 500"
-                    stroke="#A8DADC"
+                    stroke="#A5D6A7"
                     fill="url(#colorSP500)"
                     strokeWidth={2}
                     dot={false}
@@ -549,7 +549,7 @@ const PortfolioOptimizer = () => {
     </section>
 
     {/* About Section */}
-    <section id="about" className="py-10 bg-midnight-blue text-white">
+    <section id="about" className="py-10 text-white" style = {{background:'#F9FAFB'}}>
         <div className="max-w-6xl mx-auto px-4 text-center">
           {/* Title and Tagline */}
           <motion.h2
@@ -557,7 +557,7 @@ const PortfolioOptimizer = () => {
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1 }}
-      style={{ fontFamily: 'Lora, serif', color: '#D4AF37' }}
+      style={{ fontFamily: 'Lora, serif', color: '##F5F5F5' }}
     >
       Support from start to end
     </motion.h2>
@@ -588,7 +588,7 @@ const PortfolioOptimizer = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-4" style={{ color: '#D4AF37' }}>Learn</h3>
+              <h3 className="text-xl font-bold mb-4" style={{ color: '##F5F5F5' }}>Learn</h3>
               <p className="text-gray-600 mb-6" style={{ color: '#1F2937' }}>
                 Explore investment strategies, understand your options, and find
                 solutions that align with your goals.
@@ -621,7 +621,7 @@ const PortfolioOptimizer = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-4" style={{ color: '#D4AF37' }} >Manage</h3>
+              <h3 className="text-xl font-bold mb-4" style={{ color: '##F5F5F5' }} >Manage</h3>
               <p className="text-gray-600 mb-6" style={{ color: '#1F2937' }}>
                 Use our advanced tools and data-driven services to optimise your
                 investments with data from the last 10+ years.
@@ -650,7 +650,7 @@ const PortfolioOptimizer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 5l7 7-7 7" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-4" style={{ color: '#D4AF37' }} >Prosper</h3>
+              <h3 className="text-xl font-bold mb-4" style={{ color: '##F5F5F5' }} >Prosper</h3>
               <p className="text-gray-600 mb-6" style={{ color: '#1F2937' }}>
                 Stay informed with the latest investment news and explore
                 tax-efficient growth strategies.
@@ -670,7 +670,7 @@ const PortfolioOptimizer = () => {
       <style jsx>{`
         /* Colors */
         .bg-midnight-blue {
-          background-color: #F9FAFB;
+          background-color: ##F5F5F5;
         }
         .bg-gold {
           background-color: #006C5B;
@@ -729,7 +729,7 @@ const PortfolioOptimizer = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 1 }}
-      style={{ fontFamily: 'Lora, serif', color: '#A8DADC' }}
+      style={{ fontFamily: 'Lora, serif', color: '#A5D6A7' }}
     >
       Take Action
     </motion.h2>
@@ -768,14 +768,14 @@ const PortfolioOptimizer = () => {
       appearance: none;
       width: 30px;
       height: 30px;
-      background: #A8DADC;
+      background: #A5D6A7;
       border-radius: 50%;
       cursor: pointer;
     }
     .slider::-moz-range-thumb {
       width: 30px;
       height: 30px;
-      background: #A8DADC;
+      background: #A5D6A7;
       border-radius: 50%;
       cursor: pointer;
     }
@@ -787,7 +787,7 @@ const PortfolioOptimizer = () => {
   <div
     className="relative py-20"
     style={{
-      background: 'linear-gradient(to bottom, #F4E7D3, #A8DADC)', // Matches the palette
+      background: 'linear-gradient(to bottom, #F4E7D3, #A5D6A7)', // Matches the palette
     }}
   >
     {/* Decorative Overlay */}
@@ -809,7 +809,7 @@ const PortfolioOptimizer = () => {
         className="text-5xl font-bold mb-4"
         style={{
           fontFamily: 'Lora, serif',
-          color: '#A8DADC',
+          color: '#006C5B',
           textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
         }}
       >
@@ -843,7 +843,7 @@ const PortfolioOptimizer = () => {
 
               {/* Content Section */}
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-3" style={{ color: '#A8DADC' }}>
+                <h3 className="text-xl font-bold mb-3" style={{ color: '#A5D6A7' }}>
                   {article.title}
                 </h3>
                 <p className="text-gray-600 mb-4">
@@ -899,7 +899,7 @@ const PortfolioOptimizer = () => {
           >
             <div className="bg-white p-6">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-2xl font-bold" style={{ color: '#A8DADC' }}>
+                <h3 className="text-2xl font-bold" style={{ color: '#A5D6A7' }}>
                   {selectedArticle.title}
                 </h3>
                 <button
@@ -925,7 +925,7 @@ const PortfolioOptimizer = () => {
 <section
   id="contact"
   className="relative py-20 bg-cover bg-center"
-  style={{ background: '#A8DADC' }}
+  style={{ background: '#A5D6A7' }}
 >
   <div className="relative container mx-auto px-4 text-center">
     <h2
