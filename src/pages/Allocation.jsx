@@ -1,6 +1,6 @@
 // src/pages/Allocation.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   ResponsiveContainer,
   PieChart,
@@ -21,7 +21,7 @@ import 'tailwindcss/tailwind.css';
 
 function Allocation() {
   const navigate = useNavigate();
-
+  const assetRefs = useRef({});
   const [initialInvestment] = useState(1000);
   const [riskTolerance, setRiskTolerance] = useState(5);
   const [portfolioData, setPortfolioData] = useState(null);
@@ -95,10 +95,16 @@ function Allocation() {
     setShowMetricModal(true);
   };
 
-  const handleAssetClick = (assetName) => {
-    // Navigate to the asset explainer page
-    navigate(`/assets/${encodeURIComponent(assetName)}`);
+  const handleAssetClick = (assetTicker) => {
+    // Expand the asset card
+    setExpandedAsset((prevTicker) => (prevTicker === assetTicker ? null : assetTicker));
+  
+    // Scroll to the asset card if the ref exists
+    if (assetRefs.current[assetTicker]) {
+      assetRefs.current[assetTicker].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
+  
 
   const toggleExpand = (ticker) => {
     setExpandedAsset((prevTicker) => (prevTicker === ticker ? null : ticker));
@@ -193,29 +199,31 @@ function Allocation() {
                 <div className="flex flex-col md:flex-row md:space-x-8">
                   {/* Asset Allocation Table */}
                   <div className="md:w-1/2">
+                    {/* Asset Allocation Table */}
                     <div className="space-y-4">
-                      {Object.entries(
-                        portfolioData.portfolio_metrics.Weights
-                      ).map(([assetName, weight], index) => (
-                        <div
-                          key={index}
-                          className="flex items-center p-2 bg-gray-50 rounded-lg shadow-sm cursor-pointer hover:bg-gray-100 transition"
-                          style={{
-                            borderLeft: `8px solid ${
-                              COLORS[index % COLORS.length]
-                            }`,
-                          }}
-                          onClick={() => handleAssetClick(assetName)}
-                        >
-                          <span className="font-semibold text-gray-700 flex-grow">
-                            {assetName}
-                          </span>
-                          <span className="font-bold text-gray-800">
-                            {(weight * 100).toFixed(2)}%
-                          </span>
-                        </div>
-                      ))}
+                      {Object.entries(portfolioData.portfolio_metrics.Weights).map(([assetName, weight], index) => {
+                        // Find the asset's ticker from asset_info
+                        const assetInfo = portfolioData.dashboard_data.asset_info.find(
+                          (asset) => asset.name === assetName
+                        );
+                        const assetTicker = assetInfo ? assetInfo.ticker : assetName;
+
+                        return (
+                          <div
+                            key={index}
+                            className="flex items-center p-2 bg-gray-50 rounded-lg shadow-sm cursor-pointer hover:bg-gray-100 transition"
+                            style={{
+                              borderLeft: `8px solid ${COLORS[index % COLORS.length]}`,
+                            }}
+                            onClick={() => handleAssetClick(assetTicker)}
+                          >
+                            <span className="font-semibold text-gray-700 flex-grow">{assetName}</span>
+                            <span className="font-bold text-gray-800">{(weight * 100).toFixed(2)}%</span>
+                          </div>
+                        );
+                      })}
                     </div>
+
                   </div>
 
                   {/* Asset Allocation Pie Chart */}
@@ -388,7 +396,7 @@ function Allocation() {
                       (asset, index) => {
                         // Assign a color to the asset
                         const color = COLORS[index % COLORS.length];
-
+                        
                         // Prepare performance data for the graph
                         const performanceData =
                           portfolioData.dashboard_data.performance.dates.map(
@@ -407,6 +415,7 @@ function Allocation() {
                         return (
                           <motion.div
                             key={index}
+                            ref={(el) => (assetRefs.current[asset.ticker] = el)} // Assign ref here
                             layout
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
