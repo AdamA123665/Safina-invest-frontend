@@ -16,7 +16,6 @@ import {
 import { FaInfoCircle } from 'react-icons/fa';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import { motion } from 'framer-motion';
-import { Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import 'tailwindcss/tailwind.css';
 
@@ -77,9 +76,6 @@ function Allocation() {
     setRiskTolerance(Number(e.target.value));
   };
 
-  const handleInvestmentChange = (e) => {
-    setInitialInvestment(Number(e.target.value));
-  };
 
   const handleOptimizeClick = () => {
     fetchPortfolioData();
