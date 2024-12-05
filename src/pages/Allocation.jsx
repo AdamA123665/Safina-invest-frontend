@@ -16,11 +16,9 @@ import {
 import { FaInfoCircle } from 'react-icons/fa';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import 'tailwindcss/tailwind.css';
 
 function Allocation() {
-  const navigate = useNavigate();
   const assetRefs = useRef({});
   const [initialInvestment] = useState(1000);
   const [riskTolerance, setRiskTolerance] = useState(5);
