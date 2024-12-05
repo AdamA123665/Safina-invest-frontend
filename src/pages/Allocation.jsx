@@ -22,7 +22,7 @@ import 'tailwindcss/tailwind.css';
 function Allocation() {
   const navigate = useNavigate();
 
-  const [initialInvestment, setInitialInvestment] = useState(1000);
+  const [initialInvestment] = useState(1000);
   const [riskTolerance, setRiskTolerance] = useState(5);
   const [portfolioData, setPortfolioData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
