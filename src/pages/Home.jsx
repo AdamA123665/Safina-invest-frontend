@@ -575,18 +575,16 @@ const PortfolioOptimizer = () => {
         <Area
           type="monotone"
           dataKey="Portfolio"
-          stroke="#0EA5E9" // Sleek blue line
+          stroke="#1F2937" // Sleek blue line
           fillOpacity={0} // Remove fill
-          strokeWidth={3} // Thicker modern line
-          dot={{ r: 3, strokeWidth: 1, fill: '#0EA5E9' }} // Small dots for data points
+          strokeWidth={2} // Thicker modern line
         />
         <Area
           type="monotone"
-          dataKey="SP500"
-          stroke="#D97706" // Sleek orange line
+          dataKey="S&P500"
+          stroke="#006C5B" // Sleek orange line
           fillOpacity={0} // Remove fill
-          strokeWidth={3} // Thicker modern line
-          dot={{ r: 3, strokeWidth: 1, fill: '#D97706' }} // Small dots for data points
+          strokeWidth={2} // Thicker modern line
         />
       </AreaChart>
     </ResponsiveContainer>
