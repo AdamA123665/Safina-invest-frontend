@@ -530,8 +530,8 @@ const PortfolioOptimizer = () => {
       >
         <defs>
           <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.8} />
-            <stop offset="100%" stopColor="#3B82F6" stopOpacity={0} />
+            <stop offset="0%" stopColor="#006C5B" stopOpacity={0.8} />
+            <stop offset="100%" stopColor="#006C5B" stopOpacity={0} />
           </linearGradient>
           <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#F43F5E" stopOpacity={0.8} />
@@ -579,16 +579,14 @@ const PortfolioOptimizer = () => {
           dataKey="Portfolio"
           stroke="#3B82F6"
           fill="url(#colorPortfolio)"
-          strokeWidth={3.5} // Thicker modern line
-          dot={{ r: 4, fill: '#3B82F6' }} // Highlight points with dots
+          strokeWidth={4} // Thicker modern line
         />
         <Area
           type="monotone"
           dataKey="SP500"
           stroke="#F43F5E"
           fill="url(#colorSP500)"
-          strokeWidth={3.5} // Thicker modern line
-          dot={{ r: 4, fill: '#F43F5E' }} // Highlight points with dots
+          strokeWidth={4} // Thicker modern line
         />
       </AreaChart>
     </ResponsiveContainer>
