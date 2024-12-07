@@ -9,7 +9,7 @@ function ArticleDetailsPage() {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/articles/${id}`);
+        const response = await fetch(`https://safinabackend.azurewebsites.net/api/articles/${id}`);
         if (!response.ok) throw new Error('Failed to fetch article');
         const data = await response.json();
         setArticle(data);
