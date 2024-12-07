@@ -502,7 +502,7 @@ const PortfolioOptimizer = () => {
 </motion.div>
 
           {/* Graph */}
-{/* Minimalist Graph */}
+{/* Graph */}
 <motion.div
   className="relative"
   initial={{ opacity: 0, x: 50 }}
@@ -516,7 +516,7 @@ const PortfolioOptimizer = () => {
           date: new Date(date).toLocaleDateString('en-US', {
             month: 'short',
             year: '2-digit',
-          }), // Simplified date format
+          }),
           Portfolio:
             portfolioData.dashboard_data.performance.series.find(
               (s) => s.name === 'Portfolio'
@@ -526,34 +526,34 @@ const PortfolioOptimizer = () => {
               (s) => s.name === 'S&P 500'
             )?.values[idx] || 0,
         }))}
-        margin={{ top: 20, right: 40, left: 10, bottom: 20 }}
+        margin={{ top: 40, right: 40, left: 10, bottom: 20 }}
       >
         {/* Define Custom Colours */}
         <XAxis
           dataKey="date"
           tick={{
-            fill: '#6B7280',
+            fill: '#4B5563',
             fontSize: '14px',
             fontFamily: 'Lora, serif',
           }}
           tickLine={false}
-          axisLine={{ stroke: '#E5E7EB' }}
+          axisLine={{ stroke: '#D1D5DB' }}
         />
         <YAxis
           orientation="right"
           tick={{
-            fill: '#6B7280',
+            fill: '#4B5563',
             fontSize: '14px',
             fontFamily: 'Lora, serif',
           }}
           tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
-          axisLine={{ stroke: '#E5E7EB' }}
+          axisLine={{ stroke: '#D1D5DB' }}
           tickLine={false}
         />
         <Tooltip
           formatter={(value) => `${(value * 100).toFixed(2)}%`}
           contentStyle={{
-            background: '#F3F4F6',
+            background: '#F9FAFB',
             color: '#1F2937',
             borderRadius: '6px',
             padding: '8px 12px',
@@ -564,31 +564,42 @@ const PortfolioOptimizer = () => {
         <Legend
           wrapperStyle={{
             paddingTop: '16px',
-            color: '#6B7280',
+            color: '#4B5563',
             fontFamily: 'Lora, serif',
             fontWeight: '500',
           }}
           iconType="line"
+          iconSize={10}
           align="center"
           layout="horizontal"
         />
         <Area
           type="monotone"
           dataKey="Portfolio"
-          stroke="#1F2937" // Sleek blue line
-          fillOpacity={0} // Remove fill
-          strokeWidth={2} // Thicker modern line
+          stroke="#4B5563" // Sleek grey line
+          fillOpacity={0} // No fill
+          strokeWidth={3} // Thicker line
         />
         <Area
           type="monotone"
           dataKey="S&P500"
-          stroke="#006C5B" // Sleek orange line
-          fillOpacity={0} // Remove fill
-          strokeWidth={2} // Thicker modern line
+          stroke="#10B981" // Sleek green line
+          fillOpacity={0} // No fill
+          strokeWidth={3} // Thicker line
         />
       </AreaChart>
     </ResponsiveContainer>
   )}
+  {/* Bubble Sticker */}
+  <div
+    className="absolute top-4 left-8 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg"
+    style={{
+      transform: 'rotate(-10deg)',
+      whiteSpace: 'nowrap',
+    }}
+  >
+    Over the last 10 years, our portfolio has returned over 300%!
+  </div>
 </motion.div>
 <style jsx>{`
   .recharts-surface {
@@ -596,6 +607,14 @@ const PortfolioOptimizer = () => {
   }
   .recharts-tooltip-wrapper {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for modern feel */
+  }
+  .recharts-legend-item {
+    font-family: 'Lora, serif';
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .recharts-line-curve {
+    stroke-linecap: round; /* Sleek modern line ends */
   }
 `}</style>
 
