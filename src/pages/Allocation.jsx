@@ -488,6 +488,111 @@ function Allocation() {
                     )}
                 </div>
               </motion.div>
+              {/* Upcoming Additions Section */}
+<motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.6, delay: 1.5 }}
+  className="bg-gray-50 rounded-xl shadow-lg p-8 mt-10"
+>
+  <h2 className="text-3xl font-extrabold text-green-700 text-center mb-6 drop-shadow-md">
+    Future of Investing: What's Coming Next
+  </h2>
+  <p className="text-lg text-gray-700 text-center mb-8">
+    We're bringing you the latest opportunities to diversify and grow. Explore the future of investing with our upcoming funds:
+  </p>
+  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+    {/* Commodity Fund */}
+    <motion.div
+      whileHover={{ scale: 1.05, boxShadow: "0px 10px 20px rgba(0, 128, 0, 0.2)" }}
+      className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition"
+    >
+      <img
+        src="/icons/commodity.svg"
+        alt="Commodity Fund Icon"
+        className="w-16 h-16 mb-4"
+      />
+      <h3 className="text-xl font-semibold text-green-700 mb-2">
+        Macro Fund
+      </h3>
+      <p className="text-gray-700 text-center mb-4">
+        Unlock the potential of high-performing commodities and protect your portfolio against market volatility.
+      </p>
+      <a
+        href="/funds"
+        className="text-green-600 underline hover:text-green-800 transition"
+      >
+        Learn More
+      </a>
+    </motion.div>
+
+    {/* Tech Equity Fund */}
+    <motion.div
+      whileHover={{ scale: 1.05, boxShadow: "0px 10px 20px rgba(0, 128, 0, 0.2)" }}
+      className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition"
+    >
+      <img
+        src="/icons/tech.svg"
+        alt="Tech Equity Fund Icon"
+        className="w-16 h-16 mb-4"
+      />
+      <h3 className="text-xl font-semibold text-green-700 mb-2">
+        Tech Equity Fund
+      </h3>
+      <p className="text-gray-700 text-center mb-4">
+        Invest in the technology shaping tomorrow with exposure to industry leaders and innovators.
+      </p>
+      <a
+        href="/funds"
+        className="text-green-600 underline hover:text-green-800 transition"
+      >
+        Learn More
+      </a>
+    </motion.div>
+
+    {/* Crypto Fund */}
+    <motion.div
+      whileHover={{ scale: 1.05, boxShadow: "0px 10px 20px rgba(0, 128, 0, 0.2)" }}
+      className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition"
+    >
+      <img
+        src="/icons/crypto.svg"
+        alt="Crypto Icon"
+        className="w-16 h-16 mb-4"
+      />
+      <h3 className="text-xl font-semibold text-green-700 mb-2">
+        Crypto Investments
+      </h3>
+      <p className="text-gray-700 text-center mb-4">
+        Dive into the digital frontier and gain exposure to the world of blockchain and cryptocurrency.
+      </p>
+      <a
+        href="/crypto-article"
+        className="text-green-600 underline hover:text-green-800 transition"
+      >
+        Read the Article
+      </a>
+    </motion.div>
+  </div>
+
+  {/* Call-to-Action Banner */}
+  <div className="mt-10 bg-gradient-to-r from-green-700 to-green-600 text-white rounded-lg p-6 shadow-lg">
+    <h3 className="text-2xl font-bold text-center">
+      Your Portfolio, Powered by Innovation
+    </h3>
+    <p className="text-center text-lg mt-2">
+      Stay ahead of the curve. Discover new ways to invest, grow, and achieve financial independence with our cutting-edge funds.
+    </p>
+    <div className="flex justify-center mt-4">
+      <a
+        href="/funds"
+        className="bg-white text-green-700 font-semibold px-6 py-2 rounded-full shadow-md hover:bg-gray-100 transition"
+      >
+        Explore Funds
+      </a>
+    </div>
+  </div>
+</motion.div>
 
               {/* Methodology Explainer */}
               <motion.div

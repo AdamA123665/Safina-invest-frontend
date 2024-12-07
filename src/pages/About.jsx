@@ -14,12 +14,12 @@ function About() {
     backgroundRepeat: "no-repeat",
   }}
 >
-  <h1 className="text-6xl font-bold mb-4 text-center drop-shadow-lg text-green">
-    Levelling Up the Ummah
-  </h1>
-  <p className="text-4xl text-center drop-shadow-lg text-green">
-    Democratising institutional tools to help you grow
-  </p>
+<h1 className="text-6xl font-bold mb-4 text-center text-green drop-shadow-[2px_4px_6px_rgba(0,0,0,0.4)]">
+  Levelling Up the Ummah
+</h1>
+<p className="text-4xl text-center text-green drop-shadow-[2px_4px_6px_rgba(0,0,0,0.3)]">
+  Democratising institutional tools to help you grow
+</p>
 </div>
 
 
@@ -113,7 +113,26 @@ function About() {
               growth. With experience from leading investment banks and asset managers his goal is to democratise finance for all while staying
               rooted in ethical and moral values.
             </p>
+            <div className="flex justify-center mt-6">
+  <a
+    href="https://www.linkedin.com/in/adamahmed2210"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center px-4 py-2 bg-blue-700 text-white font-semibold text-lg rounded-full shadow-md hover:bg-blue-800 transition duration-300"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-6 h-6 mr-2"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.25c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.25h-3v-5.5c0-1.657-1.343-3-3-3s-3 1.343-3 3v5.5h-3v-10h3v1.344c.891-1.161 2.222-1.844 3.5-1.844 2.481 0 4.5 2.019 4.5 4.5v6z" />
+    </svg>
+    Connect on LinkedIn
+  </a>
+</div>
           </div>
+          
           {/* Image Section */}
           <div className="lg:w-1/2 flex justify-center">
             <img
