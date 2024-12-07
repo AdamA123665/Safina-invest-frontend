@@ -502,7 +502,7 @@ const PortfolioOptimizer = () => {
 </motion.div>
 
           {/* Graph */}
-{/* Graph */}
+{/* Minimalist Graph */}
 <motion.div
   className="relative"
   initial={{ opacity: 0, x: 50 }}
@@ -516,7 +516,7 @@ const PortfolioOptimizer = () => {
           date: new Date(date).toLocaleDateString('en-US', {
             month: 'short',
             year: '2-digit',
-          }), // Modern short date format
+          }), // Simplified date format
           Portfolio:
             portfolioData.dashboard_data.performance.series.find(
               (s) => s.name === 'Portfolio'
@@ -528,70 +528,79 @@ const PortfolioOptimizer = () => {
         }))}
         margin={{ top: 20, right: 40, left: 10, bottom: 20 }}
       >
-        <defs>
-          <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#006C5B" stopOpacity={0.8} />
-            <stop offset="100%" stopColor="#006C5B" stopOpacity={0} />
-          </linearGradient>
-          <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#F43F5E" stopOpacity={0.8} />
-            <stop offset="100%" stopColor="#F43F5E" stopOpacity={0} />
-          </linearGradient>
-        </defs>
+        {/* Define Custom Colours */}
         <XAxis
           dataKey="date"
-          tick={{ fill: '#94A3B8', fontSize: '14px', fontFamily: 'Lora, serif' }}
+          tick={{
+            fill: '#6B7280',
+            fontSize: '14px',
+            fontFamily: 'Lora, serif',
+          }}
           tickLine={false}
-          axisLine={false}
+          axisLine={{ stroke: '#E5E7EB' }}
         />
         <YAxis
-          orientation="right" // Move Y-axis to the right
-          tick={{ fill: '#94A3B8', fontSize: '14px', fontFamily: 'Lora, serif' }}
+          orientation="right"
+          tick={{
+            fill: '#6B7280',
+            fontSize: '14px',
+            fontFamily: 'Lora, serif',
+          }}
           tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
-          axisLine={false}
+          axisLine={{ stroke: '#E5E7EB' }}
           tickLine={false}
         />
         <Tooltip
           formatter={(value) => `${(value * 100).toFixed(2)}%`}
           contentStyle={{
-            background: 'rgba(17, 24, 39, 0.9)',
-            color: '#E5E7EB',
-            border: 'none',
-            borderRadius: '12px',
-            padding: '10px 15px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+            background: '#F3F4F6',
+            color: '#1F2937',
+            borderRadius: '6px',
+            padding: '8px 12px',
             fontFamily: 'Lora, serif',
+            fontSize: '14px',
           }}
         />
         <Legend
           wrapperStyle={{
             paddingTop: '16px',
-            color: '#94A3B8',
+            color: '#6B7280',
             fontFamily: 'Lora, serif',
-            fontWeight: '600',
+            fontWeight: '500',
           }}
-          iconType="circle"
+          iconType="line"
           align="center"
           layout="horizontal"
         />
         <Area
           type="monotone"
           dataKey="Portfolio"
-          stroke="#3B82F6"
-          fill="url(#colorPortfolio)"
-          strokeWidth={4} // Thicker modern line
+          stroke="#0EA5E9" // Sleek blue line
+          fillOpacity={0} // Remove fill
+          strokeWidth={3} // Thicker modern line
+          dot={{ r: 3, strokeWidth: 1, fill: '#0EA5E9' }} // Small dots for data points
         />
         <Area
           type="monotone"
           dataKey="SP500"
-          stroke="#F43F5E"
-          fill="url(#colorSP500)"
-          strokeWidth={4} // Thicker modern line
+          stroke="#D97706" // Sleek orange line
+          fillOpacity={0} // Remove fill
+          strokeWidth={3} // Thicker modern line
+          dot={{ r: 3, strokeWidth: 1, fill: '#D97706' }} // Small dots for data points
         />
       </AreaChart>
     </ResponsiveContainer>
   )}
 </motion.div>
+<style jsx>{`
+  .recharts-surface {
+    background-color: transparent; /* No background, blends perfectly */
+  }
+  .recharts-tooltip-wrapper {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for modern feel */
+  }
+`}</style>
+
 
         </div>
       </div>

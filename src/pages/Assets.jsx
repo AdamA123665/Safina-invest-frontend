@@ -58,42 +58,42 @@ function Assets() {
           {[
             {
               title: 'Savings Accounts',
-              image: '/images/savings.jpg',
+              image: 'savings.jpg',
               description:
                 'A safe place to store your money and earn modest interest.',
               link: '/articles/savings-accounts',
             },
             {
               title: 'Equities (Stocks)',
-              image: '/images/equities.jpg',
+              image: 'equities.jfif',
               description:
                 'Invest in companies and share in their growth and profits.',
               link: '/articles/equities',
             },
             {
               title: 'Sukuks',
-              image: '/images/sukuks.jpg',
+              image: 'islamic-bonds.webp',
               description:
                 'Islamic financial certificates similar to bonds, compliant with Sharia law.',
               link: '/articles/sukuks',
             },
             {
               title: 'ETFs',
-              image: '/images/etfs.jpg',
+              image: 'ETF.png',
               description:
                 'Exchange-Traded Funds offering diversified investment options.',
               link: '/articles/etfs',
             },
             {
               title: 'Commodities',
-              image: '/images/commodities.jpg',
+              image: 'Commodities.jfif',
               description:
                 'Invest in physical goods like gold, silver, and oil.',
               link: '/articles/commodities',
             },
             {
               title: 'Real Estate',
-              image: '/images/realestate.jpg',
+              image: 'real estate.jfif',
               description:
                 'Invest in properties for income or value appreciation.',
               link: '/articles/real-estate',
@@ -410,19 +410,19 @@ function Assets() {
               {
                 title: 'Pensions',
                 description: 'Secure your retirement with long-term growth and tax benefits.',
-                image: '/images/pensions.jpg',
+                image: 'pension.jfif',
                 link: '/articles/pensions',
               },
               {
                 title: 'ISAs',
                 description: 'Enjoy tax-free savings and flexible investment options.',
-                image: '/images/isas.jpg',
+                image: 'ISA.jfif',
                 link: '/articles/isas',
               },
               {
                 title: 'Investment Platforms',
                 description: 'Choose the right platform to manage and grow your investments.',
-                image: '/images/platforms.jpg',
+                image: 'investment platforms.jpg',
                 link: '/articles/platforms',
               },
             ].map((way, idx) => (
