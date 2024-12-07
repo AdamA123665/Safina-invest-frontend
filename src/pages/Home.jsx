@@ -502,79 +502,99 @@ const PortfolioOptimizer = () => {
 </motion.div>
 
           {/* Graph */}
-          <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            {portfolioData && (
-              <ResponsiveContainer width="100%" height={300}>
-                <AreaChart
-                  data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
-                    date,
-                    Portfolio:
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'Portfolio'
-                      )?.values[idx] || 0,
-                    'S&P 500':
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'S&P 500'
-                      )?.values[idx] || 0,
-                  }))}
-                >
-                  <defs>
-                    <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#A7A9AC" stopOpacity={0.8} />
-                      <stop offset="100%" stopColor="#A7A9AC" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#A5D6A7" stopOpacity={0.8} />
-                      <stop offset="100%" stopColor="#A5D6A7" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <XAxis dataKey="date" tick={{ fill: '#6B7280' }} />
-                  <YAxis
-                    tick={{ fill: '#6B7280' }}
-                    tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
-                  />
-                  <Tooltip
-                    formatter={(value) => `${(value * 100).toFixed(2)}%`}
-                    contentStyle={{
-                      backgroundColor: '#334155',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '8px',
-                      padding: '8px 12px',
-                    }}
-                  />
-                  <Legend
-                    wrapperStyle={{
-                      paddingTop: '16px',
-                      color: '#6B7280',
-                      fontWeight: 'bold',
-                    }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="Portfolio"
-                    stroke="#A7A9AC"
-                    fill="url(#colorPortfolio)"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="S&P 500"
-                    stroke="#A5D6A7"
-                    fill="url(#colorSP500)"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
-          </motion.div>
+{/* Graph */}
+<motion.div
+  className="relative"
+  initial={{ opacity: 0, x: 50 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.8 }}
+>
+  {portfolioData && (
+    <ResponsiveContainer width="100%" height={300}>
+      <AreaChart
+        data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
+          date: new Date(date).toLocaleDateString('en-US', {
+            month: 'short',
+            year: '2-digit',
+          }), // Modern short date format
+          Portfolio:
+            portfolioData.dashboard_data.performance.series.find(
+              (s) => s.name === 'Portfolio'
+            )?.values[idx] || 0,
+          SP500:
+            portfolioData.dashboard_data.performance.series.find(
+              (s) => s.name === 'S&P 500'
+            )?.values[idx] || 0,
+        }))}
+        margin={{ top: 20, right: 40, left: 10, bottom: 20 }}
+      >
+        <defs>
+          <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.8} />
+            <stop offset="100%" stopColor="#3B82F6" stopOpacity={0} />
+          </linearGradient>
+          <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#F43F5E" stopOpacity={0.8} />
+            <stop offset="100%" stopColor="#F43F5E" stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <XAxis
+          dataKey="date"
+          tick={{ fill: '#94A3B8', fontSize: '14px', fontFamily: 'Lora, serif' }}
+          tickLine={false}
+          axisLine={false}
+        />
+        <YAxis
+          orientation="right" // Move Y-axis to the right
+          tick={{ fill: '#94A3B8', fontSize: '14px', fontFamily: 'Lora, serif' }}
+          tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+          axisLine={false}
+          tickLine={false}
+        />
+        <Tooltip
+          formatter={(value) => `${(value * 100).toFixed(2)}%`}
+          contentStyle={{
+            background: 'rgba(17, 24, 39, 0.9)',
+            color: '#E5E7EB',
+            border: 'none',
+            borderRadius: '12px',
+            padding: '10px 15px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+            fontFamily: 'Lora, serif',
+          }}
+        />
+        <Legend
+          wrapperStyle={{
+            paddingTop: '16px',
+            color: '#94A3B8',
+            fontFamily: 'Lora, serif',
+            fontWeight: '600',
+          }}
+          iconType="circle"
+          align="center"
+          layout="horizontal"
+        />
+        <Area
+          type="monotone"
+          dataKey="Portfolio"
+          stroke="#3B82F6"
+          fill="url(#colorPortfolio)"
+          strokeWidth={3.5} // Thicker modern line
+          dot={{ r: 4, fill: '#3B82F6' }} // Highlight points with dots
+        />
+        <Area
+          type="monotone"
+          dataKey="SP500"
+          stroke="#F43F5E"
+          fill="url(#colorSP500)"
+          strokeWidth={3.5} // Thicker modern line
+          dot={{ r: 4, fill: '#F43F5E' }} // Highlight points with dots
+        />
+      </AreaChart>
+    </ResponsiveContainer>
+  )}
+</motion.div>
+
         </div>
       </div>
 
