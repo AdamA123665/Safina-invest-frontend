@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ResponsiveContainer } from 'recharts';
-import { Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { Link } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is installed
 const Step1 = () => {
   const [riskLevel, setRiskLevel] = useState(5);
 
@@ -261,10 +260,13 @@ const Step3 = () => {
   );
 };
 const PortfolioOptimizer = () => {
+    const [articles, setArticles] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);   
     const [portfolioData, setPortfolioData] = useState(null);
     const [, setSelectedAsset] = useState(null);
-    const [articleModalOpen, setArticleModalOpen] = useState(false);
-    const [selectedArticle, setSelectedArticle] = useState(null);
+    const navigate = useNavigate();
+    
    // Fetch aggressive portfolio data
   useEffect(() => {
     const fetchPortfolioData = async () => {
@@ -301,12 +303,48 @@ const PortfolioOptimizer = () => {
         setSelectedAsset(portfolioData.dashboard_data.asset_info[0]);
       }
     }, [portfolioData, setSelectedAsset]);
-    
+
+    useEffect(() => {
+      const fetchArticles = async () => {
+        try {
+          const response = await fetch('https://safinabackend.azurewebsites.net/api/articles');
+          if (!response.ok) throw new Error('Failed to fetch articles');
+          const data = await response.json();
+          setArticles(data.slice(0, 3)); // Only take the first 3 articles
+          setLoading(false);
+        } catch (err) {
+          console.error(err);
+          setError(true);
+          setLoading(false);
+        }
+      };
   
-    const openArticleModal = (article) => {
-      setSelectedArticle(article);
-      setArticleModalOpen(true);
+      fetchArticles();
+    }, []);
+  
+    const openArticle = (id) => {
+      navigate(`/articles/${id.toLowerCase()}`); // Ensure your routes are set up accordingly
     };
+  
+    if (loading) {
+      return (
+        <section id="research">
+          <div className="container mx-auto px-4 py-20 text-center">
+            <p className="text-xl">Loading...</p>
+          </div>
+        </section>
+      );
+    }
+  
+    if (error) {
+      return (
+        <section id="research">
+          <div className="container mx-auto px-4 py-20 text-center">
+            <p className="text-xl text-red-500">Failed to load articles. Please try again later.</p>
+          </div>
+        </section>
+      );
+    }
 
   
   
@@ -783,143 +821,103 @@ const PortfolioOptimizer = () => {
 </section>
 
 <section id="research">
-  {/* Section Background */}
-  <div
-    className="relative py-20"
-    style={{
-      background: 'linear-gradient(to bottom, #F4E7D3, #A5D6A7)', // Matches the palette
-    }}
-  >
-    {/* Decorative Overlay */}
-    <div
-      className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none"
-      style={{
-        backgroundImage: 'url(/images/decorative-shape.svg)', // Replace with an actual decorative SVG
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'contain',
-        backgroundPosition: 'top right',
-      }}
-    ></div>
-
-<div className="container mx-auto px-4 relative z-10">
-  <div className="space-y-8">
-    {/* Title Section */}
-    <div className="text-center">
-      <h2
-        className="text-5xl font-bold mb-4"
+      {/* Section Background */}
+      <div
+        className="relative py-20"
         style={{
-          fontFamily: 'Lora, serif',
-          color: '#006C5B',
-          textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
+          background: 'linear-gradient(to bottom, #F4E7D3, #A5D6A7)', // Matches the palette
         }}
       >
-        Explore Our Latest Research
-      </h2>
-    </div>
+        {/* Decorative Overlay (Optional) */}
+        <div
+          className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none"
+          style={{
+            backgroundImage: 'url(/images/decorative-shape.svg)', // Replace with an actual decorative SVG or remove if not needed
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'contain',
+            backgroundPosition: 'top right',
+          }}
+        ></div>
 
-    {/* Articles Grid */}
-    <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {portfolioData &&
-          portfolioData.dashboard_data.research_articles.map((article, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105"
-            >
-              {/* Image Section */}
-              <div className="relative">
-                <img
-                  src={
-                    article.image_url ||
-                    'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A6f22b49f-c9e1-4ddf-9cc6-eead253330d0?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1'
-                  }
-                  alt={article.title}
-                  className="w-full h-40 sm:h-48 object-cover"
-                />
-                <div className="absolute top-4 right-4 bg-yellow-500 text-white text-sm px-2 py-1 rounded-lg shadow-md">
-                  {article.date}
-                </div>
-              </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="space-y-8">
+            {/* Title Section */}
+            <div className="text-center">
+              <h2
+                className="text-5xl font-bold mb-4"
+                style={{
+                  fontFamily: 'Lora, serif',
+                  color: '#006C5B',
+                  textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
+                }}
+              >
+                Explore Our Latest Research
+              </h2>
+            </div>
 
-              {/* Content Section */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-3" style={{ color: '#A5D6A7' }}>
-                  {article.title}
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  {article.content.length > 120
-                    ? `${article.content.substring(0, 120)}...`
-                    : article.content}
-                </p>
-                <button
-                  onClick={() => openArticleModal(article)}
-                  className="text-yellow-500 font-semibold hover:underline"
-                >
-                  Read More
-                </button>
+            {/* Articles Grid */}
+            <div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {articles.map((article) => (
+                  <div
+                    key={article.id}
+                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105"
+                  >
+                    {/* Image Section */}
+                    <div className="relative">
+                      {/* Handle image_url as an object */}
+                      <img
+                        src={
+                          typeof article.image_url === 'object' && article.image_url.url
+                            ? article.image_url.url
+                            : 'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A6f22b49f-c9e1-4ddf-9cc6-eead253330d0?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1'
+                        }
+                        alt={
+                          typeof article.image_url === 'object' && article.image_url.alt
+                            ? article.image_url.alt
+                            : article.title
+                        }
+                        className="w-full h-40 sm:h-48 object-cover"
+                        loading="lazy" // Lazy load images for performance
+                      />
+                      <div className="absolute top-4 right-4 bg-yellow-500 text-white text-sm px-2 py-1 rounded-lg shadow-md">
+                        {article.date
+                          ? new Date(article.date).toLocaleDateString()
+                          : 'No Date'}
+                      </div>
+                    </div>
+
+                    {/* Content Section */}
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold mb-3" style={{ color: '#A5D6A7' }}>
+                        {article.title || 'No Title'}
+                      </h3>
+                      <p className="text-gray-600 mb-4">
+                        {Array.isArray(article.content) && typeof article.content[0] === 'string'
+                          ? article.content[0].length > 120
+                            ? `${article.content[0].substring(0, 120)}...`
+                            : article.content[0]
+                          : typeof article.content === 'string'
+                          ? article.content.length > 120
+                            ? `${article.content.substring(0, 120)}...`
+                            : article.content
+                          : 'No preview available'}
+                      </p>
+                      <button
+                        onClick={() => openArticle(article.id)}
+                        className="text-yellow-500 font-semibold hover:underline"
+                      >
+                        Read More
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-      </div>
-    </div>
-  </div>
-</div>
-
-    {/* Article Modal */}
-    {selectedArticle && (
-      <Transition show={articleModalOpen} className="fixed z-10 inset-0 overflow-y-auto">
-        <div className="flex items-center justify-center min-h-screen px-4 text-center">
-          {/* Overlay */}
-          <Transition.Child
-            className="fixed inset-0 transition-opacity"
-            aria-hidden="true"
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-          </Transition.Child>
-
-          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
-            &#8203;
-          </span>
-
-          {/* Modal Content */}
-          <Transition.Child
-            className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle w-full max-w-4xl"
-            enter="ease-out duration-300"
-            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            enterTo="opacity-100 translate-y-0 sm:scale-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          >
-            <div className="bg-white p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-2xl font-bold" style={{ color: '#A5D6A7' }}>
-                  {selectedArticle.title}
-                </h3>
-                <button
-                  onClick={() => setArticleModalOpen(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <XIcon className="h-6 w-6" />
-                </button>
-              </div>
-              <p className="text-sm text-gray-600 mb-4">{selectedArticle.date}</p>
-              <div className="prose max-w-none">
-                <p>{selectedArticle.content}</p>
-              </div>
-            </div>
-          </Transition.Child>
+          </div>
         </div>
-      </Transition>
-    )}
-    </div>
-</section>
+      </div>
+    </section>
 
   
 <section

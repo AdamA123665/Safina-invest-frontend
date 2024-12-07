@@ -6,6 +6,7 @@ import Assets from './pages/Assets';
 import Research from './pages/Research';
 import About from './pages/About';
 import "./index.css";
+import ArticleDetailsPage from './pages/ArticleDetailsPage';
 import { XIcon, HomeIcon } from '@heroicons/react/outline';
 
   // Removed mt-16 from content wrapper
@@ -23,6 +24,7 @@ function PortfolioOptimizer() {
           <Route path="/assets" element={<Assets />} />
           <Route path="/research" element={<Research />} />
           <Route path="/about" element={<About />} />
+          <Route path="/articles/:id" element={<ArticleDetailsPage />} />
         </Routes>
       </div>
     </Router>
