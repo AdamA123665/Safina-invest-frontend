@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import Home from './pages/Home';
 import Allocation from './pages/Allocation';
 import Assets from './pages/Assets';
+import Funds from './pages/Funds';
 import Research from './pages/Research';
 import About from './pages/About';
 import "./index.css";
@@ -24,6 +25,7 @@ function PortfolioOptimizer() {
           <Route path="/assets" element={<Assets />} />
           <Route path="/research" element={<Research />} />
           <Route path="/about" element={<About />} />
+          <Route path="/Funds" element={<Funds />} />
           <Route path="/articles/:id" element={<ArticleDetailsPage />} />
         </Routes>
       </div>
@@ -84,6 +86,7 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
           <Link className="text-gray-800 hover:text-green-600 transition" to="/assets">Assets</Link>
           <Link className="text-gray-800 hover:text-green-600 transition" to="/research">Research</Link>
           <Link className="text-gray-800 hover:text-green-600 transition" to="/about">About</Link>
+          <Link className="text-gray-800 hover:text-green-600 transition" to="/Funds">Funds</Link>
         </nav>
 
         {/* Mobile Menu Toggle */}
