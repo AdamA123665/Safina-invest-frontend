@@ -143,6 +143,13 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
             >
               About
             </Link>
+            <Link
+              className="text-white text-lg hover:text-green-300 transition"
+              to="/Funds"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Funds
+            </Link>
           </div>
         </nav>
       )}

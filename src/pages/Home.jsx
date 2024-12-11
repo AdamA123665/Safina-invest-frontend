@@ -459,176 +459,242 @@ const PortfolioOptimizer = () => {
 
       <section
   id="construction"
-  className="py-20"
+  className="relative py-20 overflow-hidden"
   style={{
-    background: 'linear-gradient(to bottom, white, #F9FAFB)',
+    background: 'linear-gradient(to bottom, #f5f3ff, #fffbfa 50%, #e0f7fa 100%)',
   }}
 >
-  <div className="container mx-auto px-4">
-    <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8">
-<motion.div
-  className="space-y-6"
-  initial={{ opacity: 0, x: -50 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.8 }}
->
-  <h2
-    className="text-5xl font-extrabold mb-4"
-    style={{ color: '#F4E7D3', fontFamily: 'Lora, serif' }}
-  >
-    Build Real Wealth
-  </h2>
-  <p
-    className="text-lg font-semibold"
-    style={{ fontFamily: 'Open Sans, sans-serif', color: '#A5D6A7' }}
-  >
-    Tailored portfolios with a variety of assets:
-  </p>
-  <ul className="list-disc list-inside text-gray-600 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' , color: '#A5D6A7' }}>
-    <li>Equity</li>
-    <li>Sukuk</li>
-    <li>Real Estate</li>
-    <li>Commodities</li>
-  </ul>
-  <p
-    className="text-gray-600 text-lg mb-2"
+  {/* Pattern Overlay */}
+  <div 
+    className="absolute inset-0 pointer-events-none" 
     style={{
-      fontFamily: 'Open Sans, sans-serif',
-      fontSize: '0.75rem', // Smaller text size
+      backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(0,0,0,0.03) 1px, transparent 1px), radial-gradient(circle at 80% 80%, rgba(0,0,0,0.03) 1px, transparent 1px)',
+      backgroundSize: '50px 50px',
+      opacity: 0.5
     }}
-  >
-    Past performance isn't indicative of future growth.
-  </p>
-</motion.div>
+  ></div>
 
-          {/* Graph */}
-{/* Graph */}
-<motion.div
-  className="relative"
-  initial={{ opacity: 0, x: 50 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.8 }}
->
-  {portfolioData && (
-    <ResponsiveContainer width="100%" height={300}>
-      <AreaChart
-        data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
-          date: new Date(date).toLocaleDateString('en-US', {
-            month: 'short',
-            year: '2-digit',
-          }),
-          Portfolio:
-            portfolioData.dashboard_data.performance.series.find(
-              (s) => s.name === 'Portfolio'
-            )?.values[idx] || 0,
-          SP500:
-            portfolioData.dashboard_data.performance.series.find(
-              (s) => s.name === 'S&P 500'
-            )?.values[idx] || 0,
-        }))}
-        margin={{ top: 40, right: 40, left: 10, bottom: 20 }}
-      >
-        {/* Define Custom Colours */}
-        <XAxis
-          dataKey="date"
-          tick={{
-            fill: '#4B5563',
-            fontSize: '14px',
-            fontFamily: 'Lora, serif',
-          }}
-          tickLine={false}
-          axisLine={{ stroke: '#D1D5DB' }}
-        />
-        <YAxis
-          orientation="right"
-          tick={{
-            fill: '#4B5563',
-            fontSize: '14px',
-            fontFamily: 'Lora, serif',
-          }}
-          tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
-          axisLine={{ stroke: '#D1D5DB' }}
-          tickLine={false}
-        />
-        <Tooltip
-          formatter={(value) => `${(value * 100).toFixed(2)}%`}
-          contentStyle={{
-            background: '#F9FAFB',
-            color: '#1F2937',
-            borderRadius: '6px',
-            padding: '8px 12px',
-            fontFamily: 'Lora, serif',
-            fontSize: '14px',
-          }}
-        />
-        <Legend
-          wrapperStyle={{
-            paddingTop: '16px',
-            color: '#4B5563',
-            fontFamily: 'Lora, serif',
-            fontWeight: '500',
-          }}
-          iconType="line"
-          iconSize={10}
-          align="center"
-          layout="horizontal"
-        />
-        <Area
-          type="monotone"
-          dataKey="Portfolio"
-          stroke="#4B5563" // Sleek grey line
-          fillOpacity={0} // No fill
-          strokeWidth={3} // Thicker line
-        />
-        <Area
-          type="monotone"
-          dataKey="S&P500"
-          stroke="#10B981" // Sleek green line
-          fillOpacity={0} // No fill
-          strokeWidth={3} // Thicker line
-        />
-      </AreaChart>
-    </ResponsiveContainer>
-  )}
-  {/* Bubble Sticker */}
-  <div
-    className="absolute top-4 left-8 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg"
-    style={{
-      transform: 'rotate(-10deg)',
-      whiteSpace: 'nowrap',
-    }}
-  >
-    Over the last 10 years, our portfolio has returned over 300%!
-  </div>
-</motion.div>
-<style jsx>{`
-  .recharts-surface {
-    background-color: transparent; /* No background, blends perfectly */
-  }
-  .recharts-tooltip-wrapper {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for modern feel */
-  }
-  .recharts-legend-item {
-    font-family: 'Lora, serif';
-    font-size: 14px;
-    font-weight: bold;
-  }
-  .recharts-line-curve {
-    stroke-linecap: round; /* Sleek modern line ends */
-  }
-`}</style>
+  {/* Decorative Shape (Top Left) */}
+  <div 
+    className="absolute -top-16 -left-16 w-96 h-96 bg-purple-200 rounded-full filter blur-3xl opacity-70"
+  ></div>
+  {/* Decorative Shape (Bottom Right) */}
+  <div 
+    className="absolute bottom-0 right-0 w-72 h-72 bg-pink-100 rounded-full filter blur-2xl opacity-60"
+  ></div>
 
+  <div className="container mx-auto px-4 relative z-10">
+    <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12">
 
-        </div>
+      {/* Left Content */}
+      <div>
+        <motion.div
+          className="space-y-6"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <h2
+            className="text-6xl font-extrabold mb-4 leading-tight"
+            style={{ 
+              fontFamily: 'Lora, serif',
+              background: 'linear-gradient(90deg, #a78bfa, #fda4af 30%, #6ee7b7 60%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              lineHeight: '1.2',
+            }}
+          >
+            Build Real Wealth
+          </h2>
+          <p
+            className="text-xl font-semibold"
+            style={{ fontFamily: 'Open Sans, sans-serif', color: '#4A4A4A' }}
+          >
+            Curated portfolios blending the best of:
+          </p>
+          <ul 
+            className="list-disc list-inside text-lg pl-4" 
+            style={{ fontFamily: 'Open Sans, sans-serif', color: '#555' }}
+          >
+            <li className="mb-1">Equity</li>
+            <li className="mb-1">Sukuk</li>
+            <li className="mb-1">Real Estate</li>
+            <li className="mb-1">Commodities</li>
+          </ul>
+          <p
+            className="text-sm text-gray-500"
+            style={{ fontFamily: 'Open Sans, sans-serif' }}
+          >
+            *Past performance isn’t indicative of future results.
+          </p>
+        </motion.div>
       </div>
 
-      {/* Embedded Styles */}
-      <style jsx>{`
-        .bg-white {
-          background-color: #fff;
-        }
-      `}</style>
-    </section>
+      {/* Chart Area */}
+      <motion.div
+        className="relative"
+        initial={{ opacity: 0, x: 30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1 }}
+      >
+        {portfolioData && (
+          <div 
+            className="relative p-6 rounded-3xl shadow-xl bg-white/50 backdrop-blur-xl border border-white/30"
+            style={{ 
+              boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
+            }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 
+                className="text-2xl font-bold"
+                style={{ 
+                  fontFamily: 'Lora, serif', 
+                  color: '#333' 
+                }}
+              >
+                Investment Growth
+              </h3>
+              <div className="text-sm text-gray-600" style={{fontFamily:'Open Sans, sans-serif'}}>
+                (10-year view)
+              </div>
+            </div>
+
+            <div className="w-full h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
+                    date: new Date(date).toLocaleDateString('en-US', {
+                      month: 'short',
+                      year: '2-digit',
+                    }),
+                    Portfolio:
+                      portfolioData.dashboard_data.performance.series.find(
+                        (s) => s.name === 'Portfolio'
+                      )?.values[idx] || 0,
+                    SP500:
+                      portfolioData.dashboard_data.performance.series.find(
+                        (s) => s.name === 'S&P 500'
+                      )?.values[idx] || 0,
+                  }))}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
+                >
+                  <defs>
+                    <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#4B5563" stopOpacity={0.2}/>
+                      <stop offset="100%" stopColor="#4B5563" stopOpacity={0}/>
+                    </linearGradient>
+                    <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#10B981" stopOpacity={0.2}/>
+                      <stop offset="100%" stopColor="#10B981" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <XAxis
+                    dataKey="date"
+                    tick={{
+                      fill: '#4B5563',
+                      fontSize: '14px',
+                      fontFamily: 'Lora, serif',
+                    }}
+                    tickLine={false}
+                    axisLine={{ stroke: '#D1D5DB' }}
+                  />
+                  <YAxis
+                    orientation="right"
+                    tick={{
+                      fill: '#4B5563',
+                      fontSize: '14px',
+                      fontFamily: 'Lora, serif',
+                    }}
+                    tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+                    axisLine={{ stroke: '#D1D5DB' }}
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    formatter={(value) => `${(value * 100).toFixed(2)}%`}
+                    contentStyle={{
+                      background: '#ffffff',
+                      border: '1px solid #E5E7EB',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)',
+                      padding: '8px 12px',
+                      fontFamily: 'Lora, serif',
+                      fontSize: '14px',
+                    }}
+                  />
+                  <Legend
+                    wrapperStyle={{
+                      paddingTop: '16px',
+                      color: '#4B5563',
+                      fontFamily: 'Lora, serif',
+                      fontWeight: '500',
+                    }}
+                    iconType="circle"
+                    iconSize={10}
+                    align="center"
+                    layout="horizontal"
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="Portfolio"
+                    stroke="#4B5563"
+                    fill="url(#colorPortfolio)"
+                    strokeWidth={3}
+                    strokeLinecap="round"
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="SP500"
+                    stroke="#10B981"
+                    fill="url(#colorSP500)"
+                    strokeWidth={3}
+                    strokeLinecap="round"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Neon Highlight Tag */}
+            <div
+              className="absolute bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
+              style={{
+                top: '20px',
+                left: '20px',
+                fontFamily: 'Lora, serif',
+                transform: 'rotate(-5deg)',
+                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
+                animation: 'pulseBadge 2s infinite',
+                cursor: 'default',
+              }}
+            >
+              +300% Growth!
+            </div>
+          </div>
+        )}
+      </motion.div>
+    </div>
+  </div>
+
+  {/* Custom CSS Animations */}
+  <style jsx>{`
+    @keyframes pulseBadge {
+      0% { transform: scale(1) rotate(-5deg); }
+      50% { transform: scale(1.05) rotate(-5deg); }
+      100% { transform: scale(1) rotate(-5deg); }
+    }
+
+    .recharts-surface {
+      background-color: transparent;
+    }
+    .recharts-tooltip-wrapper {
+      transition: all 0.2s ease;
+    }
+    .recharts-legend-item {
+      font-family: 'Lora, serif';
+      font-size: 14px;
+      font-weight: bold;
+    }
+  `}</style>
+</section>
 
     {/* About Section */}
     <section id="about" className="py-10 text-white" style = {{background:'#F9FAFB'}}>
