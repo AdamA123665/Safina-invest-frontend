@@ -350,12 +350,22 @@ const PortfolioOptimizer = () => {
   
     return (
       <div className="relative min-h-screen text-gray-900 font-sans overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative w-full h-[85vh] flex items-center justify-center px-4 md:px-8">
-        {/* Animated Gradient Background */}
-        <div className="absolute inset-0 -z-10">
-          <div className="w-full h-full gradient-bg-animation" />
-        </div>
+  {/* Hero Section */}
+  <section className="relative w-full h-[85vh] flex items-center justify-center px-4 md:px-8">
+    {/* Static Gradient Background */}
+    <div className="absolute inset-0 -z-10">
+      <div className="w-full h-full bg-gradient-to-br from-emerald-600 via-emerald-400 to-yellow-400">
+        {/* Optional Decorative Patterns */}
+        <div
+          className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-emerald-800 to-transparent opacity-10 rounded-full blur-2xl"
+          style={{ transform: 'translate(-50%, -50%)' }}
+        ></div>
+        <div
+          className="absolute bottom-0 right-0 w-72 h-72 bg-gradient-to-tr from-yellow-500 to-transparent opacity-10 rounded-full blur-2xl"
+          style={{ transform: 'translate(50%, 50%)' }}
+        ></div>
+      </div>
+    </div>
 
         {/* Content Container */}
         <div className="max-w-5xl mx-auto text-center relative z-10">
@@ -420,76 +430,40 @@ const PortfolioOptimizer = () => {
       </section>
 
       {/* Embedded Styles & Keyframes */}
-      <style jsx>{`
-        /* Animated Gradient Background */
-        .gradient-bg-animation {
-          background: linear-gradient(
-            120deg,
-            #006C5B 0%,
-            #FDC830 50%,
-            #0A2239 100%
-          );
-          background-size: 300% 300%;
-          animation: gradientShift 10s ease infinite;
-        }
+      {/* Embedded Styles */}
+  <style jsx>{`
+    .bg-gradient-to-br {
+      background: linear-gradient(135deg, #006c5b 0%, #fdbb2d 100%);
+    }
+  `}</style>
 
-        @keyframes gradientShift {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-          h1 {
-            font-size: 32px !important;
-          }
-          p {
-            font-size: 18px !important;
-          }
-        }
-      `}</style>
 
 
       <section
-
   id="construction"
-  className="relative py-20 overflow-hidden"
-  style={{
-    background: 'linear-gradient(to bottom, #ffffff, #f3f4f6 50%, #d1e7dd 100%)',
-  }}
+  className="relative py-20 overflow-hidden bg-gradient-to-b from-emerald-100 via-white to-yellow-50"
 >
-  {/* Pattern Overlay */}
-  <div 
-    className="absolute inset-0 pointer-events-none" 
+  {/* Subtle Pattern Overlay */}
+  <div
+    className="absolute inset-0 pointer-events-none"
     style={{
-      backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.02) 1px, transparent 1px), radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.02) 1px, transparent 1px)',
-      backgroundSize: '40px 40px',
-      opacity: 0.4
+      backgroundImage:
+        'radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.03) 1px, transparent 1px), radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.03) 1px, transparent 1px)',
+      backgroundSize: '50px 50px',
+      opacity: 0.5,
     }}
   ></div>
 
-  {/* Decorative Shape (Top Left) */}
-  <div 
-    className="absolute -top-16 -left-16 w-96 h-96 bg-green-100 rounded-full filter blur-3xl opacity-70"
-  ></div>
+  {/* Decorative Top Left Shape */}
+  <div className="absolute -top-20 -left-20 w-96 h-96 bg-emerald-400 rounded-full filter blur-3xl opacity-60"></div>
 
-  {/* Decorative Shape (Bottom Right) */}
-  <div 
-    className="absolute bottom-0 right-0 w-72 h-72 bg-gray-300 rounded-full filter blur-2xl opacity-50"
-  ></div>
-  
-  {/* Decorative Shape (Center Highlight) */}
-  <div 
-    className="absolute inset-x-1/2 top-1/3 w-48 h-48 bg-black opacity-5 rounded-full filter blur-2xl transform -translate-x-1/2"
-  ></div>
+  {/* Decorative Bottom Right Shape */}
+  <div className="absolute bottom-0 right-0 w-80 h-80 bg-yellow-300 rounded-full filter blur-2xl opacity-50"></div>
 
+  {/* Center Highlight Shape */}
+  <div className="absolute inset-x-1/2 top-1/4 w-48 h-48 bg-emerald-200 opacity-20 rounded-full filter blur-2xl transform -translate-x-1/2"></div>
+
+  {/* Content */}
   <div className="container mx-auto px-4 relative z-10">
     <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12">
 
@@ -502,16 +476,15 @@ const PortfolioOptimizer = () => {
           transition={{ duration: 1 }}
         >
           <h2
-            className="text-6xl font-extrabold mb-4 leading-tight"
-            style={{ 
-              fontFamily: 'Lora, serif',
-              background: 'linear-gradient(90deg, #a78bfa, #fda4af 30%, #6ee7b7 60%)',
+            className="text-6xl font-extrabold mb-6 leading-tight text-transparent bg-clip-text"
+            style={{
+              backgroundImage: 'linear-gradient(to right, #006C5B, #FDC830)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              lineHeight: '1.2',
+              fontFamily: 'Lora, serif',
             }}
           >
-            Build Real Wealth
+            Achieve Financial Freedom
           </h2>
           <p
             className="text-xl font-semibold"
@@ -704,7 +677,7 @@ const PortfolioOptimizer = () => {
 </section>
 
     {/* About Section */}
-    <section id="about" className="py-10 text-white" style = {{background:'#F9FAFB'}}>
+    <section id="about" className="py-10 text-white" style = {{background:'#FFF8E5'}}>
         <div className="max-w-6xl mx-auto px-4 text-center">
           {/* Title and Tagline */}
           <motion.h2
@@ -937,133 +910,80 @@ const PortfolioOptimizer = () => {
   `}</style>
 </section>
 
-<section id="research">
-      {/* Research Section Background */}
-<div className="relative py-20 overflow-hidden bg-research-gradient">
+<section id="research" className="relative py-20 overflow-hidden bg-gradient-to-br from-emerald-100 via-white to-emerald-200">
   {/* Decorative Abstract Shapes */}
-  <div
-    className="absolute top-0 left-0 w-[300px] h-[300px] bg-emerald-500 rounded-full opacity-20 blur-3xl"
-    style={{ transform: 'translate(-50%, -50%)' }}
-  ></div>
-  <div
-    className="absolute bottom-0 right-0 w-[250px] h-[250px] bg-gold opacity-30 blur-2xl"
-    style={{ transform: 'translate(50%, 50%)' }}
-  ></div>
+  <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-emerald-500 rounded-full opacity-10 blur-3xl"></div>
+  <div className="absolute bottom-0 right-0 w-[250px] h-[250px] bg-yellow-400 rounded-full opacity-20 blur-2xl"></div>
 
-  {/* Subtle Decorative Lines */}
-  <div
-    className="absolute top-0 right-0 w-full h-full pointer-events-none"
-    style={{
-      backgroundImage:
-        'url(/images/abstract-lines.svg)', // Replace with a subtle SVG or decorative element
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      opacity: 0.1,
-    }}
-  ></div>
+  <div className="container mx-auto px-4 relative z-10">
+    <div className="text-center mb-12">
+      <h2
+        className="text-5xl font-bold mb-6"
+        style={{
+          fontFamily: 'Lora, serif',
+          color: '#006C5B',
+        }}
+      >
+        Explore Our Latest Research
+      </h2>
+      <p
+        className="text-lg text-gray-600 max-w-3xl mx-auto"
+        style={{ fontFamily: 'Open Sans, sans-serif' }}
+      >
+        Stay informed with in-depth analysis and insights to guide your investment strategies.
+      </p>
+    </div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="space-y-8">
-            {/* Title Section */}
-            <div className="text-center">
-              <h2
-                className="text-5xl font-bold mb-4"
-                style={{
-                  fontFamily: 'Lora, serif',
-                  color: '#006C5B',
-                  textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
-                }}
-              >
-                Explore Our Latest Research
-              </h2>
-            </div>
-
-            {/* Articles Grid */}
-            <div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {articles.map((article) => (
-                  <div
-                    key={article.id}
-                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105"
-                  >
-                    {/* Image Section */}
-                    <div className="relative">
-                      {/* Handle image_url as an object */}
-                      <img
-                        src={
-                          typeof article.image_url === 'object' && article.image_url.url
-                            ? article.image_url.url
-                            : 'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A6f22b49f-c9e1-4ddf-9cc6-eead253330d0?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1'
-                        }
-                        alt={
-                          typeof article.image_url === 'object' && article.image_url.alt
-                            ? article.image_url.alt
-                            : article.title
-                        }
-                        className="w-full h-40 sm:h-48 object-cover"
-                        loading="lazy" // Lazy load images for performance
-                      />
-                      <div className="absolute top-4 right-4 bg-yellow-500 text-white text-sm px-2 py-1 rounded-lg shadow-md">
-                        {article.date
-                          ? new Date(article.date).toLocaleDateString()
-                          : 'No Date'}
-                      </div>
-                    </div>
-
-                    {/* Content Section */}
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold mb-3" style={{ color: '#A5D6A7' }}>
-                        {article.title || 'No Title'}
-                      </h3>
-                      <p className="text-gray-600 mb-4">
-                        {Array.isArray(article.content) && typeof article.content[0] === 'string'
-                          ? article.content[0].length > 120
-                            ? `${article.content[0].substring(0, 120)}...`
-                            : article.content[0]
-                          : typeof article.content === 'string'
-                          ? article.content.length > 120
-                            ? `${article.content.substring(0, 120)}...`
-                            : article.content
-                          : 'No preview available'}
-                      </p>
-                      <button
-                        onClick={() => openArticle(article.id)}
-                        className="text-yellow-500 font-semibold hover:underline"
-                      >
-                        Read More
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+    {/* Articles Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {articles.map((article) => (
+        <div
+          key={article.id}
+          className="bg-white rounded-lg shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+        >
+          {/* Image Section */}
+          <img
+            src={
+              article.image_url?.url ||
+              'https://via.placeholder.com/400x300?text=Research+Image'
+            }
+            alt={article.image_url?.alt || article.title}
+            className="w-full h-48 object-cover"
+          />
+          {/* Content Section */}
+          <div className="p-6">
+            <h3
+              className="text-xl font-bold mb-3"
+              style={{ color: '#006C5B' }}
+            >
+              {article.title || 'No Title'}
+            </h3>
+            <p className="text-gray-600 mb-4">
+              {article.content
+                ? `${article.content.substring(0, 120)}...`
+                : 'No preview available'}
+            </p>
+            <button
+              onClick={() => openArticle(article.id)}
+              className="text-yellow-500 font-semibold hover:underline"
+            >
+              Read More
+            </button>
           </div>
         </div>
-      </div>
-    </section>
-    {/* Embedded Styles for Custom Background */}
-  <style jsx>{`
-    .bg-research-gradient {
-      background: linear-gradient(135deg, #f4e7d3 0%, #a5d6a7 100%);
-    }
-    .bg-gold {
-      background-color: #fbd38d;
-    }
-    .bg-emerald-500 {
-      background-color: #006c5b;
-    }
-  `}</style>
+      ))}
+    </div>
+  </div>
+</section>
 
   
 <section
   id="contact"
-  className="relative py-20 bg-cover bg-center"
-  style={{ background: '#A5D6A7' }}
+  className="relative py-20 bg-gradient-to-b from-emerald-200 to-emerald-400"
 >
   <div className="relative container mx-auto px-4 text-center">
     <h2
-      className="text-4xl font-bold mb-4 text-white"
+      className="text-4xl font-bold mb-6 text-white"
       style={{ fontFamily: 'Lora, serif' }}
     >
       Contact Us
@@ -1072,15 +992,23 @@ const PortfolioOptimizer = () => {
       className="text-lg mb-8 text-gray-200"
       style={{ fontFamily: 'Open Sans, sans-serif' }}
     >
-      Have questions or need support? Get in touch with us.
+      Have questions or need support? We’re here to help.
     </p>
-    <a
-      href="mailto:support@safinabank.com"
-      className="bg-gold text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:bg-yellow-600 transition"
-    >
-      Email Us
-    </a>
+    <div className="space-y-4">
+      <a
+        href="mailto:support@safinabank.com"
+        className="inline-block bg-yellow-500 text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-yellow-600 transition"
+      >
+        Email Us
+      </a>
+      <p className="text-gray-300 mt-4">
+        Or call us directly: <span className="font-bold">+123-456-7890</span>
+      </p>
+    </div>
   </div>
+
+  {/* Decorative Shape */}
+  <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full opacity-10 blur-3xl"></div>
 </section>
       </div>
     );
