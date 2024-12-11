@@ -657,7 +657,7 @@ const PortfolioOptimizer = () => {
             <div
               className="absolute bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
               style={{
-                top: '40px',
+                top: '80px',
                 left: '20px',
                 fontFamily: 'Lora, serif',
                 transform: 'rotate(-5deg)',
