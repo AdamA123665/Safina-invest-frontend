@@ -349,61 +349,77 @@ const PortfolioOptimizer = () => {
   
   
     return (
-      <div className="bg-gray-50 min-h-screen text-gray-800 font-sans">
+      <div className="relative min-h-screen bg-gray-50 text-gray-900 font-sans overflow-hidden">
       {/* Hero Section */}
-      <section className="relative w-full h-[75vh] bg-midnight-blue overflow-hidden">
-        {/* Hero Overlay */}
-        <div
-  className="absolute top-0 left-0 w-full h-full bg-no-repeat bg-cover"
-  style={{
-    backgroundImage: 'linear-gradient(to bottom, #A5D6A7,white )',
-  }}
-></div>
+      <section className="relative w-full h-[85vh] flex items-center justify-center px-4 md:px-8">
+        {/* Animated Gradient Background */}
+        <div className="absolute inset-0 -z-10">
+          <div className="w-full h-full gradient-bg-animation" />
+        </div>
 
-
-        {/* Hero Content */}
-        <div className="relative z-10 max-w-4xl mx-auto pt-28 px-4 text-center" style={{ color: '#006C5B' }}>
+        {/* Content Container */}
+        <div className="max-w-5xl mx-auto text-center relative z-10">
           <motion.h1
-            className="text-5xl md:text-6xl font-extrabold mb-6"
-            initial={{ opacity: 0, y: 30 }}
+            className="text-4xl md:text-6xl font-semibold tracking-tight mb-6"
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 2 }}
-            style={{ fontFamily: 'Lora, serif', textShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)' }}
+            transition={{ duration: 1.2 }}
+            style={{
+              fontFamily: 'Lora, serif',
+              color: '#0A2239',
+              textShadow: '1px 1px 4px rgba(0,0,0,0.2)',
+            }}
           >
-            Data-driven Investment Solutions
+            Empowering Your Investments with Intelligent Insights
           </motion.h1>
-          <motion.p
-            className="text-3xl md:text-3xl mb-6" 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 2, delay: 0.5 }}
-            style={{ fontFamily: 'Open Sans, sans-serif', color: '#1F2937' }}
-          >
-            Your journey towards sustainable growth starts here
-          </motion.p>
-          <div className="flex flex-col items-center mt-8">
-          <a
-  href="#how-to-invest"
-  className="inline-block px-16 py-6 text-white font-semibold rounded-md shadow-lg text-2xl"
-  style={{
-    backgroundColor: '#006C5B', // Exact emerald green
-  }}
->
-  Invest Now
-</a>
-  <span
-    className="mt-4 inline-block px-4 py-2  text-sm font-semibold rounded-full shadow" style={{ color: '#006C5B' }}
-  >
-    Sharia Compliant
-  </span>
-</div>
 
-          {/* Interactive Arrow */}
-          <div className="mt-8">
-            <a href="#about" className="block animate-bounce text-white">
+          <motion.p
+            className="text-xl md:text-2xl font-light mb-8 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.3 }}
+            style={{
+              fontFamily: 'Open Sans, sans-serif',
+              color: '#1F2937',
+            }}
+          >
+            Unlock sustainable growth through data-driven strategies and expert guidance.
+          </motion.p>
+
+          <motion.div
+            className="flex flex-col items-center space-y-6 md:space-y-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.2, delay: 0.6 }}
+          >
+            {/* Primary CTA Button */}
+            <a
+              href="#how-to-invest"
+              className="relative inline-block px-10 py-4 text-lg font-semibold rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl focus:outline-none"
+              style={{
+                backgroundColor: '#006C5B',
+                color: '#FFFFFF',
+              }}
+            >
+              Start Investing
+            </a>
+
+            {/* Compliance Badge */}
+            <span
+              className="inline-block px-4 py-2 text-sm font-medium rounded-full border border-emerald-800 bg-white"
+              style={{
+                color: '#006C5B',
+                fontFamily: 'Open Sans, sans-serif',
+              }}
+            >
+              Sharia Compliant
+            </span>
+
+            {/* Scroll Down Indicator */}
+            <a href="#about" className="block mt-6 text-gray-800 hover:text-gray-700 transition-transform transform hover:scale-105">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 mx-auto"
+                className="h-7 w-7 mx-auto animate-bounce"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -412,75 +428,79 @@ const PortfolioOptimizer = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </a>
-          </div>
+          </motion.div>
         </div>
-
-        {/* Embedded Styles */}
-        <style jsx>{`
-          /* Colors */
-          .bg-midnight-blue {
-            background-color: #A5D6A7;
-          }
-          .bg-gold {
-            background-color: ##F5F5F5;
-          }
-
-          /* Arrow Animation */
-          @keyframes bounce {
-            0%,
-            20%,
-            50%,
-            80%,
-            100% {
-              transform: translateY(0);
-            }
-            40% {
-              transform: translateY(-10px);
-            }
-            60% {
-              transform: translateY(-5px);
-            }
-          }
-          .animate-bounce {
-            animation: bounce 2s infinite;
-          }
-
-          /* Responsive Adjustments */
-          @media (max-width: 768px) {
-            h1 {
-              font-size: 36px !important;
-            }
-            p {
-              font-size: 18px !important;
-            }
-          }
-        `}</style>
       </section>
 
+      {/* Embedded Styles & Keyframes */}
+      <style jsx>{`
+        /* Animated Gradient Background */
+        .gradient-bg-animation {
+          background: linear-gradient(
+            120deg,
+            #e0f2f1 0%,
+            #a5d6a7 50%,
+            #e0f2f1 100%
+          );
+          background-size: 200% 200%;
+          animation: gradientShift 10s ease infinite;
+        }
+
+        @keyframes gradientShift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+          h1 {
+            font-size: 32px !important;
+          }
+          p {
+            font-size: 18px !important;
+          }
+        }
+      `}</style>
+
+
       <section
+
   id="construction"
   className="relative py-20 overflow-hidden"
   style={{
-    background: 'linear-gradient(to bottom, #f5f3ff, #fffbfa 50%, #e0f7fa 100%)',
+    background: 'linear-gradient(to bottom, #ffffff, #f3f4f6 50%, #d1e7dd 100%)',
   }}
 >
   {/* Pattern Overlay */}
   <div 
     className="absolute inset-0 pointer-events-none" 
     style={{
-      backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(0,0,0,0.03) 1px, transparent 1px), radial-gradient(circle at 80% 80%, rgba(0,0,0,0.03) 1px, transparent 1px)',
-      backgroundSize: '50px 50px',
-      opacity: 0.5
+      backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.02) 1px, transparent 1px), radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.02) 1px, transparent 1px)',
+      backgroundSize: '40px 40px',
+      opacity: 0.4
     }}
   ></div>
 
   {/* Decorative Shape (Top Left) */}
   <div 
-    className="absolute -top-16 -left-16 w-96 h-96 bg-purple-200 rounded-full filter blur-3xl opacity-70"
+    className="absolute -top-16 -left-16 w-96 h-96 bg-green-100 rounded-full filter blur-3xl opacity-70"
   ></div>
+
   {/* Decorative Shape (Bottom Right) */}
   <div 
-    className="absolute bottom-0 right-0 w-72 h-72 bg-pink-100 rounded-full filter blur-2xl opacity-60"
+    className="absolute bottom-0 right-0 w-72 h-72 bg-gray-300 rounded-full filter blur-2xl opacity-50"
+  ></div>
+  
+  {/* Decorative Shape (Center Highlight) */}
+  <div 
+    className="absolute inset-x-1/2 top-1/3 w-48 h-48 bg-black opacity-5 rounded-full filter blur-2xl transform -translate-x-1/2"
   ></div>
 
   <div className="container mx-auto px-4 relative z-10">
