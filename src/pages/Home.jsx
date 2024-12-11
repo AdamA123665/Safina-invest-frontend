@@ -349,7 +349,7 @@ const PortfolioOptimizer = () => {
   
   
     return (
-      <div className="relative min-h-screen bg-gray-50 text-gray-900 font-sans overflow-hidden">
+      <div className="relative min-h-screen text-gray-900 font-sans overflow-hidden">
       {/* Hero Section */}
       <section className="relative w-full h-[85vh] flex items-center justify-center px-4 md:px-8">
         {/* Animated Gradient Background */}
@@ -366,8 +366,8 @@ const PortfolioOptimizer = () => {
             transition={{ duration: 1.2 }}
             style={{
               fontFamily: 'Lora, serif',
-              color: '#0A2239',
-              textShadow: '1px 1px 4px rgba(0,0,0,0.2)',
+              color: '#FFFFFF',
+              textShadow: '2px 2px 6px rgba(0,0,0,0.3)',
             }}
           >
             Empowering Your Investments with Intelligent Insights
@@ -380,7 +380,8 @@ const PortfolioOptimizer = () => {
             transition={{ duration: 1.2, delay: 0.3 }}
             style={{
               fontFamily: 'Open Sans, sans-serif',
-              color: '#1F2937',
+              color: '#E0E7FF',
+              textShadow: '1px 1px 4px rgba(0,0,0,0.2)',
             }}
           >
             Unlock sustainable growth through data-driven strategies and expert guidance.
@@ -414,20 +415,6 @@ const PortfolioOptimizer = () => {
             >
               Sharia Compliant
             </span>
-
-            {/* Scroll Down Indicator */}
-            <a href="#about" className="block mt-6 text-gray-800 hover:text-gray-700 transition-transform transform hover:scale-105">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-7 w-7 mx-auto animate-bounce"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </a>
           </motion.div>
         </div>
       </section>
@@ -438,11 +425,11 @@ const PortfolioOptimizer = () => {
         .gradient-bg-animation {
           background: linear-gradient(
             120deg,
-            #e0f2f1 0%,
-            #a5d6a7 50%,
-            #e0f2f1 100%
+            #006C5B 0%,
+            #FDC830 50%,
+            #0A2239 100%
           );
-          background-size: 200% 200%;
+          background-size: 300% 300%;
           animation: gradientShift 10s ease infinite;
         }
 
@@ -951,23 +938,30 @@ const PortfolioOptimizer = () => {
 </section>
 
 <section id="research">
-      {/* Section Background */}
-      <div
-        className="relative py-20"
-        style={{
-          background: 'linear-gradient(to bottom, #F4E7D3, #A5D6A7)', // Matches the palette
-        }}
-      >
-        {/* Decorative Overlay (Optional) */}
-        <div
-          className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none"
-          style={{
-            backgroundImage: 'url(/images/decorative-shape.svg)', // Replace with an actual decorative SVG or remove if not needed
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'contain',
-            backgroundPosition: 'top right',
-          }}
-        ></div>
+      {/* Research Section Background */}
+<div className="relative py-20 overflow-hidden bg-research-gradient">
+  {/* Decorative Abstract Shapes */}
+  <div
+    className="absolute top-0 left-0 w-[300px] h-[300px] bg-emerald-500 rounded-full opacity-20 blur-3xl"
+    style={{ transform: 'translate(-50%, -50%)' }}
+  ></div>
+  <div
+    className="absolute bottom-0 right-0 w-[250px] h-[250px] bg-gold opacity-30 blur-2xl"
+    style={{ transform: 'translate(50%, 50%)' }}
+  ></div>
+
+  {/* Subtle Decorative Lines */}
+  <div
+    className="absolute top-0 right-0 w-full h-full pointer-events-none"
+    style={{
+      backgroundImage:
+        'url(/images/abstract-lines.svg)', // Replace with a subtle SVG or decorative element
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      opacity: 0.1,
+    }}
+  ></div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="space-y-8">
@@ -1048,6 +1042,18 @@ const PortfolioOptimizer = () => {
         </div>
       </div>
     </section>
+    {/* Embedded Styles for Custom Background */}
+  <style jsx>{`
+    .bg-research-gradient {
+      background: linear-gradient(135deg, #f4e7d3 0%, #a5d6a7 100%);
+    }
+    .bg-gold {
+      background-color: #fbd38d;
+    }
+    .bg-emerald-500 {
+      background-color: #006c5b;
+    }
+  `}</style>
 
   
 <section
