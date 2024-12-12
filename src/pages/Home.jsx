@@ -417,27 +417,27 @@ const PortfolioOptimizer = () => {
 
 <section
   id="construction"
-  className="relative py-20 overflow-hidden bg-gradient-to-b from-emerald-100 via-white to-yellow-50"
+  className="relative py-20 overflow-hidden bg-white"
 >
   {/* Subtle Pattern Overlay */}
   <div
     className="absolute inset-0 pointer-events-none"
     style={{
       backgroundImage:
-        'radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.03) 1px, transparent 1px), radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.03) 1px, transparent 1px)',
-      backgroundSize: '50px 50px',
-      opacity: 0.5,
+        'radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.02) 1px, transparent 1px), radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.02) 1px, transparent 1px)',
+      backgroundSize: '40px 40px',
+      opacity: 0.3,
     }}
   ></div>
 
   {/* Decorative Top Left Shape */}
-  <div className="absolute -top-20 -left-20 w-96 h-96 bg-emerald-400 rounded-full filter blur-3xl opacity-60"></div>
+  <div className="absolute -top-10 -left-10 w-80 h-80 bg-gray-200 rounded-full filter blur-xl opacity-40"></div>
 
   {/* Decorative Bottom Right Shape */}
-  <div className="absolute bottom-0 right-0 w-80 h-80 bg-yellow-300 rounded-full filter blur-2xl opacity-50"></div>
+  <div className="absolute bottom-0 right-0 w-64 h-64 bg-gray-300 rounded-full filter blur-lg opacity-30"></div>
 
   {/* Center Highlight Shape */}
-  <div className="absolute inset-x-1/2 top-1/4 w-48 h-48 bg-emerald-200 opacity-20 rounded-full filter blur-2xl transform -translate-x-1/2"></div>
+  <div className="absolute inset-x-1/2 top-1/3 w-40 h-40 bg-gray-100 opacity-20 rounded-full filter blur-lg transform -translate-x-1/2"></div>
 
   <div className="container mx-auto px-4 relative z-10">
     <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12">
@@ -451,13 +451,10 @@ const PortfolioOptimizer = () => {
           transition={{ duration: 1 }}
         >
           <h2
-            className="text-6xl font-extrabold mb-4 leading-tight"
-            style={{ 
+            className="text-5xl font-bold mb-4 leading-tight text-gray-900"
+            style={{
               fontFamily: 'Lora, serif',
-              background: 'linear-gradient(90deg, #a78bfa, #fda4af 30%, #6ee7b7 60%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              lineHeight: '1.2',
+              lineHeight: '1.3',
             }}
           >
             Build Real Wealth
@@ -652,29 +649,63 @@ const PortfolioOptimizer = () => {
   `}</style>
 </section>
 
-    {/* About Section */}
-    <section id="about" className="py-10 text-white" style = {{background:'#F9FAFB'}}>
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          {/* Title and Tagline */}
-          <motion.h2
-      className="text-4xl font-extrabold text-center mb-12"
-      initial={{ opacity: 0, y: -50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 }}
-      style={{ fontFamily: 'Lora, serif', color: '#006C5B' }}
+<section
+      id="about"
+      className="relative py-20"
+      style={{ background: "#F9FAFB" }}
     >
-      Support from start to end
-    </motion.h2>
+      {/* Subtle Background Pattern */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 20% 20%, rgba(0,0,0,0.03) 1px, transparent 1px), radial-gradient(circle at 80% 80%, rgba(0,0,0,0.03) 1px, transparent 1px)",
+          backgroundSize: "50px 50px",
+          opacity: 0.4,
+        }}
+      ></div>
 
-          {/* Interactive Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Card 1: Learn */}
-            <div className="relative bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105">
-              <div className="h-16 w-16 flex items-center justify-center rounded-full bg-gold mx-auto mb-4">
-                {/* Icon for Learn */}
+      <div className="max-w-6xl mx-auto px-4 relative z-10 text-center">
+        {/* Heading Area */}
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="mb-16"
+        >
+          <h2
+            className="text-5xl font-extrabold mb-4 leading-snug"
+            style={{
+              fontFamily: "Lora, serif",
+              color: "#006C5B",
+            }}
+          >
+            Support from Start to End
+          </h2>
+          <p
+            className="text-lg max-w-2xl mx-auto text-gray-700"
+            style={{ fontFamily: "Inter, sans-serif" }}
+          >
+            From gaining foundational knowledge to optimizing your portfolio and
+            staying ahead with insightful research, we’re here to guide you at
+            every stage of your investing journey.
+          </p>
+        </motion.div>
+
+        {/* Cards Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Card Data Array for Reusability */}
+          {[ 
+            {
+              title: "Learn",
+              description:
+                "Explore investment strategies, understand your options, and find solutions that align with your goals.",
+              link: "/assets",
+              linkLabel: "Explore Assets",
+              icon: (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8 text-white"
+                  className="h-8 w-8"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -691,27 +722,18 @@ const PortfolioOptimizer = () => {
                     d="M12 2a7 7 0 00-7 7v3l-2 2v1h18v-1l-2-2V9a7 7 0 00-7-7z"
                   />
                 </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-4" style={{ color: '#006C5B' }}>Learn</h3>
-              <p className="text-gray-600 mb-6" style={{ color: '#1F2937' }}>
-                Explore investment strategies, understand your options, and find
-                solutions that align with your goals.
-              </p>
-              <Link
-                to="/assets"
-                className="inline-block px-4 py-2 bg-gold text-white font-semibold rounded-md shadow-md hover:bg-yellow-600 transition"
-              >
-                Explore Assets
-              </Link>
-            </div>
-
-            {/* Card 2: Manage */}
-            <div className="relative bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105">
-              <div className="h-16 w-16 flex items-center justify-center rounded-full bg-gold mx-auto mb-4">
-                {/* Icon for Manage */}
+              ),
+            },
+            {
+              title: "Manage",
+              description:
+                "Use our advanced tools and data-driven services to optimize your investments with insights spanning over a decade.",
+              link: "/allocation",
+              linkLabel: "Allocation Tools",
+              icon: (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8 text-white"
+                  className="h-8 w-8"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -724,100 +746,93 @@ const PortfolioOptimizer = () => {
                     d="M7 20h10a2 2 0 002-2V7a2 2 0 00-2-2h-5l-2-2H7a2 2 0 00-2 2v11a2 2 0 002 2z"
                   />
                 </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-4" style={{ color: '#006C5B' }} >Manage</h3>
-              <p className="text-gray-600 mb-6" style={{ color: '#1F2937' }}>
-                Use our advanced tools and data-driven services to optimise your
-                investments with data from the last 10+ years.
-              </p>
-              <Link
-                to="/allocation"
-                className="inline-block px-4 py-2 bg-gold text-white font-semibold rounded-md shadow-md hover:bg-yellow-600 transition"
-              >
-                Allocation Tools
-              </Link>
-            </div>
-
-            {/* Card 3: Prosper */}
-            <div className="relative bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105">
-              <div className="h-16 w-16 flex items-center justify-center rounded-full bg-gold mx-auto mb-4">
-                {/* Icon for Prosper */}
+              ),
+            },
+            {
+              title: "Prosper",
+              description:
+                "Stay informed with the latest investment news and explore tax-efficient strategies to help your wealth flourish.",
+              link: "/research",
+              linkLabel: "Research Insights",
+              icon: (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8 text-white"
+                  className="h-8 w-8"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth="2"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 5l7 7-7 7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 5l7 7-7 7"
+                  />
                 </svg>
+              ),
+            },
+          ].map((card, index) => (
+            <motion.div
+              key={index}
+              className="relative bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: index * 0.2 }}
+              style={{ fontFamily: "Inter, sans-serif" }}
+            >
+              {/* Icon Circle */}
+              <div className="h-16 w-16 flex items-center justify-center rounded-full bg-green-200 mx-auto mb-6">
+                <div className="text-green-800">{card.icon}</div>
               </div>
-              <h3 className="text-xl font-bold mb-4" style={{ color: '#006C5B' }} >Prosper</h3>
-              <p className="text-gray-600 mb-6" style={{ color: '#1F2937' }}>
-                Stay informed with the latest investment news and explore
-                tax-efficient growth strategies.
-              </p>
-              <Link
-                to="/research"
-                className="inline-block px-4 py-2 bg-gold text-white font-semibold rounded-md shadow-md hover:bg-yellow-600 transition"
+
+              {/* Title */}
+              <h3
+                className="text-2xl font-bold mb-4"
+                style={{ color: "#006C5B", fontFamily: "Lora, serif" }}
               >
-                Research Insights
+                {card.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-gray-700 leading-relaxed mb-6">
+                {card.description}
+              </p>
+
+              {/* CTA Button */}
+              <Link
+                to={card.link}
+                className="inline-block px-5 py-3 font-semibold rounded-md shadow-md text-white transition"
+                style={{
+                  backgroundColor: "#006C5B",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#005345")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#006C5B")}
+              >
+                {card.linkLabel}
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          ))}
         </div>
-      </section>
+      </div>
 
       {/* Embedded Styles */}
       <style jsx>{`
-        /* Colors */
-        .bg-midnight-blue {
-          background-color: ##F5F5F5;
-        }
-        .bg-gold {
-          background-color: #A5D6A7;
+        /* Additional Hover Animation */
+        .shadow-2xl {
+          box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
         }
 
-        /* Arrow Animation */
-        @keyframes bounce {
-          0%,
-          20%,
-          50%,
-          80%,
-          100% {
-            transform: translateY(0);
-          }
-          40% {
-            transform: translateY(-10px);
-          }
-          60% {
-            transform: translateY(-5px);
-          }
-        }
-        .animate-bounce {
-          animation: bounce 2s infinite;
-        }
-
-        /* Hover Effects */
-        .hover\\:shadow-2xl:hover {
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Responsive Adjustments */
         @media (max-width: 768px) {
-          h1 {
-            font-size: 36px !important;
-          }
           h2 {
-            font-size: 28px !important;
+            font-size: 32px !important;
           }
           p {
             font-size: 16px !important;
           }
         }
       `}</style>
+    </section>
 
 
 
