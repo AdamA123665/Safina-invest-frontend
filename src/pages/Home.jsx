@@ -415,38 +415,29 @@ const PortfolioOptimizer = () => {
   `}</style>
 
 
-      <section
-
+<section
   id="construction"
-  className="relative py-20 overflow-hidden"
-  style={{
-    background: 'linear-gradient(to bottom, #ffffff, #f3f4f6 50%, #d1e7dd 100%)',
-  }}
+  className="relative py-20 overflow-hidden bg-gradient-to-b from-emerald-100 via-white to-yellow-50"
 >
-  {/* Pattern Overlay */}
-  <div 
-    className="absolute inset-0 pointer-events-none" 
+  {/* Subtle Pattern Overlay */}
+  <div
+    className="absolute inset-0 pointer-events-none"
     style={{
-      backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.02) 1px, transparent 1px), radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.02) 1px, transparent 1px)',
-      backgroundSize: '40px 40px',
-      opacity: 0.4
+      backgroundImage:
+        'radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.03) 1px, transparent 1px), radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.03) 1px, transparent 1px)',
+      backgroundSize: '50px 50px',
+      opacity: 0.5,
     }}
   ></div>
 
-  {/* Decorative Shape (Top Left) */}
-  <div 
-    className="absolute -top-16 -left-16 w-96 h-96 bg-green-100 rounded-full filter blur-3xl opacity-70"
-  ></div>
+  {/* Decorative Top Left Shape */}
+  <div className="absolute -top-20 -left-20 w-96 h-96 bg-emerald-400 rounded-full filter blur-3xl opacity-60"></div>
 
-  {/* Decorative Shape (Bottom Right) */}
-  <div 
-    className="absolute bottom-0 right-0 w-72 h-72 bg-gray-300 rounded-full filter blur-2xl opacity-50"
-  ></div>
-  
-  {/* Decorative Shape (Center Highlight) */}
-  <div 
-    className="absolute inset-x-1/2 top-1/3 w-48 h-48 bg-black opacity-5 rounded-full filter blur-2xl transform -translate-x-1/2"
-  ></div>
+  {/* Decorative Bottom Right Shape */}
+  <div className="absolute bottom-0 right-0 w-80 h-80 bg-yellow-300 rounded-full filter blur-2xl opacity-50"></div>
+
+  {/* Center Highlight Shape */}
+  <div className="absolute inset-x-1/2 top-1/4 w-48 h-48 bg-emerald-200 opacity-20 rounded-full filter blur-2xl transform -translate-x-1/2"></div>
 
   <div className="container mx-auto px-4 relative z-10">
     <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12">
