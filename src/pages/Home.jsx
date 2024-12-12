@@ -350,111 +350,69 @@ const PortfolioOptimizer = () => {
   
     return (
       <div className="relative min-h-screen text-gray-900 font-sans overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative w-full h-[85vh] flex items-center justify-center px-4 md:px-8">
-        {/* Animated Gradient Background */}
-        <div className="absolute inset-0 -z-10">
-          <div className="w-full h-full gradient-bg-animation" />
-        </div>
+  {/* Hero Section */}
+  <section className="relative w-full h-[85vh] flex items-center justify-center px-4 md:px-8">
+    {/* Static Gradient Background */}
+    <div className="absolute inset-0 -z-10">
+      <div className="w-full h-full bg-gradient-to-br from-emerald-600 via-emerald-400 to-yellow-400">
+        {/* Optional Decorative Patterns */}
+        <div
+          className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-emerald-800 to-transparent opacity-10 rounded-full blur-2xl"
+          style={{ transform: 'translate(-50%, -50%)' }}
+        ></div>
+        <div
+          className="absolute bottom-0 right-0 w-72 h-72 bg-gradient-to-tr from-yellow-500 to-transparent opacity-10 rounded-full blur-2xl"
+          style={{ transform: 'translate(50%, 50%)' }}
+        ></div>
+      </div>
+    </div>
 
-        {/* Content Container */}
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <motion.h1
-            className="text-4xl md:text-6xl font-semibold tracking-tight mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2 }}
-            style={{
-              fontFamily: 'Lora, serif',
-              color: '#FFFFFF',
-              textShadow: '2px 2px 6px rgba(0,0,0,0.3)',
-            }}
-          >
-            Empowering Your Investments with Intelligent Insights
-          </motion.h1>
+    {/* Content Container */}
+    <div className="max-w-5xl mx-auto text-center relative z-10">
+      <h1
+        className="text-4xl md:text-6xl font-semibold tracking-tight mb-6"
+        style={{
+          fontFamily: 'Lora, serif',
+          color: '#FFFFFF',
+          textShadow: '2px 2px 6px rgba(0,0,0,0.2)',
+        }}
+      >
+        Empowering Your Investments with Intelligent Insights
+      </h1>
 
-          <motion.p
-            className="text-xl md:text-2xl font-light mb-8 max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.3 }}
-            style={{
-              fontFamily: 'Open Sans, sans-serif',
-              color: '#E0E7FF',
-              textShadow: '1px 1px 4px rgba(0,0,0,0.2)',
-            }}
-          >
-            Unlock sustainable growth through data-driven strategies and expert guidance.
-          </motion.p>
+      <p
+        className="text-xl md:text-2xl font-light mb-8 max-w-3xl mx-auto"
+        style={{
+          fontFamily: 'Open Sans, sans-serif',
+          color: '#1F2937',
+          textShadow: '1px 1px 4px rgba(0,0,0,0.1)',
+        }}
+      >
+        Unlock sustainable growth through data-driven strategies and expert guidance.
+      </p>
 
-          <motion.div
-            className="flex flex-col items-center space-y-6 md:space-y-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.6 }}
-          >
-            {/* Primary CTA Button */}
-            <a
-              href="#how-to-invest"
-              className="relative inline-block px-10 py-4 text-lg font-semibold rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl focus:outline-none"
-              style={{
-                backgroundColor: '#006C5B',
-                color: '#FFFFFF',
-              }}
-            >
-              Start Investing
-            </a>
+      <div className="flex flex-col items-center space-y-6 md:space-y-8">
+        {/* Primary CTA Button */}
+        <a
+          href="#how-to-invest"
+          className="relative inline-block px-10 py-4 text-lg font-semibold rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl focus:outline-none"
+          style={{
+            backgroundColor: '#006C5B',
+            color: '#FFFFFF',
+          }}
+        >
+          Start Investing
+        </a>
+      </div>
+    </div>
+  </section>
 
-            {/* Compliance Badge */}
-            <span
-              className="inline-block px-4 py-2 text-sm font-medium rounded-full border border-emerald-800 bg-white"
-              style={{
-                color: '#006C5B',
-                fontFamily: 'Open Sans, sans-serif',
-              }}
-            >
-              Sharia Compliant
-            </span>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Embedded Styles & Keyframes */}
-      <style jsx>{`
-        /* Animated Gradient Background */
-        .gradient-bg-animation {
-          background: linear-gradient(
-            120deg,
-            #006C5B 0%,
-            #FDC830 50%,
-            #0A2239 100%
-          );
-          background-size: 300% 300%;
-          animation: gradientShift 10s ease infinite;
-        }
-
-        @keyframes gradientShift {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-          h1 {
-            font-size: 32px !important;
-          }
-          p {
-            font-size: 18px !important;
-          }
-        }
-      `}</style>
+  {/* Embedded Styles */}
+  <style jsx>{`
+    .bg-gradient-to-br {
+      background: linear-gradient(135deg, #006c5b 0%, #fdbb2d 100%);
+    }
+  `}</style>
 
 
       <section
