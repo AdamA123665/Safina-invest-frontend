@@ -346,7 +346,7 @@ const PortfolioOptimizer = () => {
       );
     }
 
-    
+  
   
     return (
       <div className="relative min-h-screen text-gray-900 font-sans overflow-hidden">
@@ -498,15 +498,6 @@ const PortfolioOptimizer = () => {
             }}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 
-                className="text-2xl font-bold"
-                style={{ 
-                  fontFamily: 'Lora, serif', 
-                  color: '#333' 
-                }}
-              >
-                Investment Growth
-              </h3>
               <div className="text-sm text-gray-600" style={{fontFamily:'Open Sans, sans-serif'}}>
                 (10-year view)
               </div>
@@ -902,30 +893,30 @@ const PortfolioOptimizer = () => {
 </section>
 
 <section id="research">
-      {/* Research Section Background */}
-<div className="relative py-20 overflow-hidden bg-research-gradient">
-  {/* Decorative Abstract Shapes */}
+  {/* Research Section Background */}
   <div
-    className="absolute top-0 left-0 w-[300px] h-[300px] bg-emerald-500 rounded-full opacity-20 blur-3xl"
-    style={{ transform: 'translate(-50%, -50%)' }}
-  ></div>
-  <div
-    className="absolute bottom-0 right-0 w-[250px] h-[250px] bg-gold opacity-30 blur-2xl"
-    style={{ transform: 'translate(50%, 50%)' }}
-  ></div>
-
-  {/* Subtle Decorative Lines */}
-  <div
-    className="absolute top-0 right-0 w-full h-full pointer-events-none"
+    className="relative py-20 overflow-hidden"
     style={{
-      backgroundImage:
-        'url(/images/abstract-lines.svg)', // Replace with a subtle SVG or decorative element
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      opacity: 0.1,
+      background: 'linear-gradient(135deg, #1E293B 0%, #3B82F6 100%)',
     }}
-  ></div>
+  >
+    {/* Decorative Abstract Shapes */}
+    <div
+      className="absolute top-[-150px] left-[-150px] w-[400px] h-[400px] bg-gradient-to-tr from-emerald-400 to-teal-300 rounded-full opacity-30 blur-[120px]"
+    ></div>
+    <div
+      className="absolute bottom-[-100px] right-[-100px] w-[350px] h-[350px] bg-gradient-to-br from-amber-400 to-yellow-300 opacity-40 blur-[100px]"
+    ></div>
+
+    {/* Subtle Decorative Lines */}
+    <div
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        backgroundImage:
+          "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 1px, transparent 1px)",
+        backgroundSize: '20px 20px',
+      }}
+    ></div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="space-y-8">
@@ -1007,198 +998,36 @@ const PortfolioOptimizer = () => {
       </div>
     </section>
 
+  
+<section
+  id="contact"
+  className="relative py-20 bg-cover bg-center"
+  style={{ background: '#F5F5F5' }}
+>
+  <div className="relative container mx-auto px-4 text-center">
+    <h2
+      className="text-4xl font-bold mb-4 text-white"
+      style={{ fontFamily: 'Lora, serif' }}
+    >
+      Contact Us
+    </h2>
+    <p
+      className="text-lg mb-8 text-gray-200"
+      style={{ fontFamily: 'Open Sans, sans-serif' }}
+    >
+      Have questions or need support? Get in touch with us.
+    </p>
+    <a
+      href="mailto:support@safinabank.com"
+      className="bg-gold text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:bg-yellow-600 transition"
+    >
+      Email Us
+    </a>
+  </div>
+</section>
       </div>
     );
   }
   
   export default PortfolioOptimizer;
-
-  export function ContactSection() {
-    const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    };
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      // Handle form submission logic here (e.g., send data to a backend or use a form service)
-      alert("Your message has been sent. We typically respond within 24 hours!");
-    };
-  
-    return (
-      <section
-        id="contact"
-        className="relative py-20 overflow-hidden"
-        style={{
-          background: "linear-gradient(to bottom, #fefefc, #f9fafb)",
-        }}
-      >
-        {/* Subtle Background Pattern & Illustration */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: `
-              url('/images/bg-abstract.svg'),
-              radial-gradient(circle at 20% 30%, rgba(0,0,0,0.03) 2px, transparent 2px),
-              radial-gradient(circle at 80% 70%, rgba(0,0,0,0.03) 2px, transparent 2px)`,
-            backgroundRepeat: "no-repeat, repeat, repeat",
-            backgroundSize: "auto, 40px 40px, 40px 40px",
-            backgroundPosition: "center, 0 0, 0 0",
-            opacity: 0.4,
-          }}
-        ></div>
-  
-        <div className="relative container mx-auto px-4">
-          {/* Heading & Subheading */}
-          <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-          >
-            <h2
-              className="text-5xl font-bold mb-4"
-              style={{ fontFamily: "Lora, serif", color: "#006C5B" }}
-            >
-              Ready for Your Next Step?
-            </h2>
-            <p
-              className="max-w-xl mx-auto text-lg text-gray-700"
-              style={{ fontFamily: "Inter, sans-serif" }}
-            >
-              Connect with our advisors to find tailored solutions and elevate your
-              investment strategy.
-            </p>
-          </motion.div>
-  
-          {/* Contact Form Container */}
-          <motion.div
-            className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8 relative"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.2 }}
-          >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Microcopy / Info */}
-              <p
-                className="text-sm text-gray-500 mb-4"
-                style={{ fontFamily: "Inter, sans-serif" }}
-              >
-                We typically respond within 24 hours. Please provide your details below.
-              </p>
-  
-              {/* Name Field */}
-              <div className="relative">
-                <label
-                  htmlFor="name"
-                  className="block text-gray-700 font-semibold mb-2"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-green-500 transition duration-200"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                  placeholder="Your full name"
-                />
-              </div>
-  
-              {/* Email Field */}
-              <div className="relative">
-                <label
-                  htmlFor="email"
-                  className="block text-gray-700 font-semibold mb-2"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-green-500 transition duration-200"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                  placeholder="yourname@example.com"
-                />
-              </div>
-  
-              {/* Message Field */}
-              <div className="relative">
-                <label
-                  htmlFor="message"
-                  className="block text-gray-700 font-semibold mb-2"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows="5"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-green-500 transition duration-200"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                  placeholder="How can we help you?"
-                ></textarea>
-              </div>
-  
-              {/* Submit Button */}
-              <div className="text-center">
-                <motion.button
-                  type="submit"
-                  className="px-6 py-3 rounded-md font-semibold shadow-md text-white transition relative overflow-hidden"
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    backgroundColor: "#006C5B",
-                  }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Send Message
-                </motion.button>
-              </div>
-            </form>
-          </motion.div>
-        </div>
-  
-        <style jsx>{`
-          /* Additional Hover & Focus Interactions for the Form Fields */
-          input:focus,
-          textarea:focus {
-            box-shadow: 0 0 0 3px rgba(0, 108, 91, 0.1);
-          }
-  
-          /* Responsive Adjustments */
-          @media (max-width: 768px) {
-            h2 {
-              font-size: 32px !important;
-            }
-            p {
-              font-size: 16px !important;
-            }
-            input,
-            textarea {
-              font-size: 14px !important;
-            }
-          }
-        `}</style>
-      </section>
-    );
-  }
-
   
