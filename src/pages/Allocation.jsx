@@ -20,7 +20,7 @@ import 'tailwindcss/tailwind.css';
 
 function Allocation() {
   const assetRefs = useRef({});
-  const [initialInvestment] = useState(1000);
+  const [initialInvestment, setInitialInvestment] = useState(1000);
   const [riskTolerance, setRiskTolerance] = useState(5);
   const [portfolioData, setPortfolioData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +42,7 @@ function Allocation() {
   ];
 
   useEffect(() => {
-    fetchPortfolioData();
+    // Fetch portfolio data initially or whenever needed
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -78,6 +78,13 @@ function Allocation() {
     fetchPortfolioData();
   };
 
+  const handleInitialInvestmentChange = (e) => {
+    const value = Number(e.target.value);
+    if (value >= 100 && value <= 1000000) {
+      setInitialInvestment(value);
+    }
+  };
+
   const riskMetricExplanations = {
     'Expected Return': 'The anticipated average return of your portfolio.',
     Volatility: 'A measure of how much the portfolio’s returns may fluctuate.',
@@ -95,7 +102,7 @@ function Allocation() {
   const handleAssetClick = (assetTicker) => {
     // Expand the asset card
     setExpandedAsset((prevTicker) => (prevTicker === assetTicker ? null : assetTicker));
-  
+
     // Scroll to the asset card if the ref exists
     if (assetRefs.current[assetTicker]) {
       assetRefs.current[assetTicker].scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -132,7 +139,7 @@ function Allocation() {
 
         {/* Main Content */}
         <div className="space-y-12">
-          {/* Step 1: Risk Tolerance Input */}
+          {/* Step 1: Initial Investment and Risk Tolerance Input */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -140,9 +147,24 @@ function Allocation() {
             className="bg-white rounded-xl shadow-lg p-6"
           >
             <h2 className="text-2xl font-bold text-green-700 mb-4">
-              Step 1: Select Your Risk Tolerance
+              Step 1: Enter Your Investment Amount and Select Your Risk Tolerance
             </h2>
             <div className="space-y-6">
+              {/* Initial Investment */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  How much do you plan on investing? (Min £100, Max £1,000,000)
+                </label>
+                <input
+                  type="number"
+                  min="100"
+                  max="1000000"
+                  value={initialInvestment}
+                  onChange={handleInitialInvestmentChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+
               {/* Risk Tolerance */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -162,6 +184,7 @@ function Allocation() {
                   <span>Aggressive</span>
                 </div>
               </div>
+
               {/* Optimize Button */}
               <button
                 onClick={handleOptimizeClick}
@@ -169,6 +192,7 @@ function Allocation() {
               >
                 Generate My Portfolio
               </button>
+
               {/* Loading and Error Messages */}
               {isLoading && (
                 <p className="text-green-600 text-center font-medium">

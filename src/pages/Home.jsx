@@ -99,14 +99,16 @@ const Step1 = () => {
           className="text-gray-700 mb-4 text-lg"
           style={{ fontFamily: 'Open Sans, sans-serif' }}
         >
-          With each persons varying circumstances, we all need to be comfortable with how much risk (% we're willing to lose) our investments have. Of course known can predict the future... But what we can do is use mathematics to find trends in the data, to find investments with your level of expected risk. You also should be aware of the different types of investable asset classes and hpw they differ.
+          With everyone’s unique circumstances, it’s important to feel comfortable with the level of risk (% you’re willing to lose) associated with your investments. Naturally, no one can predict the future… but we can use mathematics to identify trends in the data, helping you find investments that align with your desired level of risk. It’s also essential to understand the various types of investable asset classes and how they differ.
         </p>
         <a href="/articles" className="text-gold font-semibold hover:underline text-lg">
           Learn more about risk
         </a>
+        <br />
         <a href="/articles" className="text-gold font-semibold hover:underline text-lg">
           Learn more about asset classes
         </a>
+        <br />
         <a href="/articles" className="text-gold font-semibold hover:underline text-lg">
           Know how much risk your willing to take? click here to leverage our asset allocation tool to know what to invest in.
         </a>
@@ -220,6 +222,7 @@ const Step2 = () => {
         >
           Asset Allocation and trading 212 portfolios
         </a>
+        <br />
         <a
           href="/brokerage-options"
           className="text-gold font-semibold hover:underline text-lg"
@@ -265,6 +268,7 @@ const Step3 = () => {
         >
           Subscribe to our email list
         </a>
+        <br />
         <a
           href="/Funds"
           className="text-gold font-semibold hover:underline text-lg"
@@ -959,17 +963,13 @@ const PortfolioOptimizer = () => {
                       {/* Handle image_url as an object */}
                       <img
                         src={
-                          typeof article.image_url === 'object' && article.image_url.url
-                            ? article.image_url.url
+                          article.image_url
+                            ? article.image_url
                             : 'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A6f22b49f-c9e1-4ddf-9cc6-eead253330d0?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1'
                         }
-                        alt={
-                          typeof article.image_url === 'object' && article.image_url.alt
-                            ? article.image_url.alt
-                            : article.title
-                        }
+                        alt={article.title || 'No Title'}
                         className="w-full h-40 sm:h-48 object-cover"
-                        loading="lazy" // Lazy load images for performance
+                        loading="lazy"
                       />
                       <div className="absolute top-4 right-4 bg-green-800 text-white text-sm px-2 py-1 rounded-lg shadow-md">
                         {article.date
