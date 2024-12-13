@@ -352,9 +352,17 @@ const PortfolioOptimizer = () => {
       <div className="relative min-h-screen text-gray-900 font-sans overflow-hidden">
   {/* Hero Section */}
   <section className="relative w-full h-[85vh] flex items-center justify-center px-4 md:px-8">
-    {/* Static Gradient Background */}
+    {/* Static Gradient Background with Background Image */}
     <div className="absolute inset-0 -z-10">
-      <div className="w-full h-full bg-gradient-to-br from-emerald-600 via-emerald-400 to-yellow-400">
+      <div
+        className="w-full h-full bg-gradient-to-br from-emerald-600 via-emerald-400 to-yellow-400"
+        style={{
+          backgroundImage: "url('/path-to-your-image.jpg')", // Replace with your image path
+          backgroundBlendMode: 'overlay', // Ensures the gradient is visible over the image
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         {/* Optional Decorative Patterns */}
         <div
           className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-emerald-800 to-transparent opacity-10 rounded-full blur-2xl"
@@ -497,11 +505,19 @@ const PortfolioOptimizer = () => {
               boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
             }}
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="text-sm text-gray-600" style={{fontFamily:'Open Sans, sans-serif'}}>
-                (10-year view)
-              </div>
-            </div>
+            <div className="flex items-center justify-between mb-4 relative">
+  <div className="flex-grow"></div>
+  <div
+    className="text-sm text-gray-600"
+    style={{
+      fontFamily: 'Open Sans, sans-serif',
+      marginLeft: 'auto',
+      alignSelf: 'flex-end',
+    }}
+  >
+    (10-year view)
+  </div>
+</div>
 
             <div className="w-full h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -829,7 +845,7 @@ const PortfolioOptimizer = () => {
 
 {/* How to Invest Section */}
 <section id="how-to-invest" className="relative py-20 overflow-hidden" style={{
-    background: '#F4E7D3',
+    background: '#E8EAF6',
   }} >
   <div className="container mx-auto px-4">
     {/* Section Title */}
@@ -893,30 +909,11 @@ const PortfolioOptimizer = () => {
 </section>
 
 <section id="research">
-  {/* Research Section Background */}
-  <div
+      {/* Research Section Background */}
+      <div
     className="relative py-20 overflow-hidden"
-    style={{
-      background: 'linear-gradient(135deg, #1E293B 0%, #3B82F6 100%)',
-    }}
+    style={{ backgroundColor: '#f7f7f7' }} // Light grey background
   >
-    {/* Decorative Abstract Shapes */}
-    <div
-      className="absolute top-[-150px] left-[-150px] w-[400px] h-[400px] bg-gradient-to-tr from-emerald-400 to-teal-300 rounded-full opacity-30 blur-[120px]"
-    ></div>
-    <div
-      className="absolute bottom-[-100px] right-[-100px] w-[350px] h-[350px] bg-gradient-to-br from-amber-400 to-yellow-300 opacity-40 blur-[100px]"
-    ></div>
-
-    {/* Subtle Decorative Lines */}
-    <div
-      className="absolute inset-0 pointer-events-none"
-      style={{
-        backgroundImage:
-          "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 1px, transparent 1px)",
-        backgroundSize: '20px 20px',
-      }}
-    ></div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="space-y-8">
@@ -999,31 +996,56 @@ const PortfolioOptimizer = () => {
     </section>
 
   
-<section
+    <section
   id="contact"
-  className="relative py-20 bg-cover bg-center"
-  style={{ background: '#F5F5F5' }}
+  className="relative py-20"
+  style={{ background: '#E9F7FA' }} // Soft pastel blue background for a clean and professional look
 >
-  <div className="relative container mx-auto px-4 text-center">
+  <div className="container mx-auto px-4 text-center">
     <h2
-      className="text-4xl font-bold mb-4 text-white"
-      style={{ fontFamily: 'Lora, serif' }}
+      className="text-5xl font-extrabold mb-6"
+      style={{
+        fontFamily: 'Lora, serif',
+        color: '#333', // Dark grey for better readability
+      }}
     >
-      Contact Us
+      Get in Touch
     </h2>
     <p
-      className="text-lg mb-8 text-gray-200"
-      style={{ fontFamily: 'Open Sans, sans-serif' }}
+      className="text-lg mb-8"
+      style={{
+        fontFamily: 'Open Sans, sans-serif',
+        color: '#555', // Neutral grey for a soft tone
+      }}
     >
-      Have questions or need support? Get in touch with us.
+      Have questions or need support? We're here to help. Reach out to us for assistance or to learn more about our services.
     </p>
     <a
       href="mailto:support@safinabank.com"
-      className="bg-gold text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:bg-yellow-600 transition"
+      className="bg-emerald-500 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-emerald-600 transition"
+      style={{
+        fontFamily: 'Open Sans, sans-serif',
+      }}
     >
       Email Us
     </a>
+    <div
+      className="mt-12 text-sm text-gray-500"
+      style={{
+        fontFamily: 'Open Sans, sans-serif',
+      }}
+    >
+      <p>© 2024 Safina Bank. All rights reserved.</p>
+    </div>
   </div>
+
+  {/* Subtle Decorative Divider */}
+  <div
+    className="absolute bottom-0 w-full h-2"
+    style={{
+      background: 'linear-gradient(to right, #A5D6A7, #E8F5E9)',
+    }}
+  ></div>
 </section>
       </div>
     );
