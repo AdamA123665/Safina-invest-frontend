@@ -74,7 +74,6 @@ function Allocation() {
     setRiskTolerance(Number(e.target.value));
   };
 
-
   const handleOptimizeClick = () => {
     fetchPortfolioData();
   };
@@ -102,7 +101,6 @@ function Allocation() {
       assetRefs.current[assetTicker].scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
-  
 
   const toggleExpand = (ticker) => {
     setExpandedAsset((prevTicker) => (prevTicker === ticker ? null : ticker));
@@ -183,7 +181,7 @@ function Allocation() {
 
           {portfolioData ? (
             <>
-              {/* Step 2: Portfolio Visualization */}
+              {/* Step 2: Your Optimized Portfolio */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -197,7 +195,6 @@ function Allocation() {
                 <div className="flex flex-col md:flex-row md:space-x-8">
                   {/* Asset Allocation Table */}
                   <div className="md:w-1/2">
-                    {/* Asset Allocation Table */}
                     <div className="space-y-4">
                       {Object.entries(portfolioData.portfolio_metrics.Weights).map(([assetName, weight], index) => {
                         // Find the asset's ticker from asset_info
@@ -205,6 +202,9 @@ function Allocation() {
                           (asset) => asset.name === assetName
                         );
                         const assetTicker = assetInfo ? assetInfo.ticker : assetName;
+
+                        const assetAllocationPercentage = (weight * 100).toFixed(2);
+                        const assetAllocationAmount = (weight * initialInvestment).toFixed(2);
 
                         return (
                           <div
@@ -216,12 +216,13 @@ function Allocation() {
                             onClick={() => handleAssetClick(assetTicker)}
                           >
                             <span className="font-semibold text-gray-700 flex-grow">{assetName}</span>
-                            <span className="font-bold text-gray-800">{(weight * 100).toFixed(2)}%</span>
+                            <span className="font-bold text-gray-800">
+                              {assetAllocationPercentage}% (£{assetAllocationAmount})
+                            </span>
                           </div>
                         );
                       })}
                     </div>
-
                   </div>
 
                   {/* Asset Allocation Pie Chart */}

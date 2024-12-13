@@ -99,11 +99,16 @@ const Step1 = () => {
           className="text-gray-700 mb-4 text-lg"
           style={{ fontFamily: 'Open Sans, sans-serif' }}
         >
-          Start by exploring various Sharia-compliant investment options. Understand the risks,
-          rewards, and strategies to see what resonates with your financial goals.
+          With each persons varying circumstances, we all need to be comfortable with how much risk (% we're willing to lose) our investments have. Of course known can predict the future... But what we can do is use mathematics to find trends in the data, to find investments with your level of expected risk. You also should be aware of the different types of investable asset classes and hpw they differ.
         </p>
         <a href="/articles" className="text-gold font-semibold hover:underline text-lg">
-          Read our in-depth articles
+          Learn more about risk
+        </a>
+        <a href="/articles" className="text-gold font-semibold hover:underline text-lg">
+          Learn more about asset classes
+        </a>
+        <a href="/articles" className="text-gold font-semibold hover:underline text-lg">
+          Know how much risk your willing to take? click here to leverage our asset allocation tool to know what to invest in.
         </a>
       </div>
 
@@ -207,14 +212,19 @@ const Step2 = () => {
           Step 2: Make Your First Investment
         </h3>
         <p className="text-gray-700 mb-4 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          Use our recommended Trading 212 Pies or your preferred brokerage account to invest in
-          tailored portfolios. Set up recurring investments for consistent growth.
+          Take our asset allocations from the optimiser and use them as the basis for your investments. Either use our already built portfolios via Trading 212 or your prefererd Brokarege account to invest. Take the allocations and use the tickers to find the correct funds.
         </p>
+        <a
+          href="/Allocation"
+          className="text-gold font-semibold hover:underline text-lg"
+        >
+          Asset Allocation and trading 212 portfolios
+        </a>
         <a
           href="/brokerage-options"
           className="text-gold font-semibold hover:underline text-lg"
         >
-          Learn about brokerage options
+          Learn about brokerage platforms
         </a>
       </div>
     </motion.div>
@@ -247,13 +257,19 @@ const Step3 = () => {
         </h3>
         <p className="text-gray-700 mb-4 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
           Monitor your portfolio performance regularly. Subscribe to our email updates to receive
-          quarterly allocation changes, market insights, and tailored recommendations.
+          quarterly allocation changes, market insights, and tailored recommendations. Learn more about investing and our propeitary funds
         </p>
         <a
           href="/subscribe"
           className="text-gold font-semibold hover:underline text-lg"
         >
           Subscribe to our email list
+        </a>
+        <a
+          href="/Funds"
+          className="text-gold font-semibold hover:underline text-lg"
+        >
+          Properiarty funds coming soon
         </a>
       </div>
     </motion.div>
@@ -845,7 +861,7 @@ const PortfolioOptimizer = () => {
 </section>
 
 {/* How to Invest Section */}
-<section id="how-to-invest" className="relative py-20 overflow-hidden bg-gradient-to-b from-green-50 to-green-100  "  >
+<section id="how-to-invest" className="relative py-20 overflow-hidden bg-green-50  "  >
   <div className="container mx-auto px-4">
     {/* Section Title */}
     <motion.h2
