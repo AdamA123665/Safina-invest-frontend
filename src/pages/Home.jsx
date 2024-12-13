@@ -32,7 +32,7 @@ const Step1 = () => {
             {stockData.map(({ risk, points }) => {
               const opacity = risk === riskLevel ? 1 : 0.2;
               const strokeWidth = risk === riskLevel ? 3 : 1;
-              const color = risk === riskLevel ? '#A5D6A7' : '#888';
+              const color = risk === riskLevel ? 'green-800' : '#888';
 
               const pathData = points
                 .map((point, i) =>
@@ -80,7 +80,7 @@ const Step1 = () => {
           <div
             style={{
               fontFamily: 'Open Sans, sans-serif',
-              color: '#A5D6A7',
+              color: 'green-800',
               fontSize: '1.25rem',
               fontWeight: 'bold',
             }}
@@ -92,7 +92,7 @@ const Step1 = () => {
 
       {/* Text Content */}
       <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
-        <h3 className="text-3xl font-bold mb-4" style={{ color: '#A5D6A7' }}>
+        <h3 className="text-3xl font-bold mb-4" style={{ color: 'green-800' }}>
           Step 1: Pick Your Risk Level
         </h3>
         <p
@@ -127,14 +127,14 @@ const Step1 = () => {
           appearance: none;
           width: 30px;
           height: 30px;
-          background: #A5D6A7;
+          background: green-800;
           border-radius: 50%;
           cursor: pointer;
         }
         .slider::-moz-range-thumb {
           width: 30px;
           height: 30px;
-          background: #A5D6A7;
+          background: green-800;
           border-radius: 50%;
           cursor: pointer;
         }
@@ -203,7 +203,7 @@ const Step2 = () => {
       </div>
       {/* Text Content */}
       <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
-        <h3 className="text-3xl font-bold mb-4" style={{ color: '#A5D6A7' }}>
+        <h3 className="text-3xl font-bold mb-4" style={{ color: 'green-800' }}>
           Step 2: Make Your First Investment
         </h3>
         <p className="text-gray-700 mb-4 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
@@ -242,7 +242,7 @@ const Step3 = () => {
       </div>
       {/* Text Content */}
       <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
-        <h3 className="text-3xl font-bold mb-4" style={{ color: '#A5D6A7' }}>
+        <h3 className="text-3xl font-bold mb-4" style={{ color: 'green-800' }}>
           Step 3: Sit Back and Relax
         </h3>
         <p className="text-gray-700 mb-4 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
@@ -357,7 +357,7 @@ const PortfolioOptimizer = () => {
       <div
         className="w-full h-full bg-gradient-to-br from-emerald-600 via-emerald-400 to-yellow-400"
         style={{
-          backgroundImage: "url('/path-to-your-image.jpg')", // Replace with your image path
+          backgroundImage: "url('/hero.jpg')", // Replace with your image path
           backgroundBlendMode: 'overlay', // Ensures the gradient is visible over the image
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -845,7 +845,7 @@ const PortfolioOptimizer = () => {
 
 {/* How to Invest Section */}
 <section id="how-to-invest" className="relative py-20 overflow-hidden" style={{
-    background: '#E8EAF6',
+    background: 'green-100',
   }} >
   <div className="container mx-auto px-4">
     {/* Section Title */}
@@ -855,7 +855,7 @@ const PortfolioOptimizer = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 1 }}
-      style={{ fontFamily: 'Lora, serif', color: '#A5D6A7' }}
+      style={{ fontFamily: 'Lora, serif', color: 'green-800' }}
     >
       Take Action
     </motion.h2>
@@ -894,14 +894,14 @@ const PortfolioOptimizer = () => {
       appearance: none;
       width: 30px;
       height: 30px;
-      background: #A5D6A7;
+      background: green-800;
       border-radius: 50%;
       cursor: pointer;
     }
     .slider::-moz-range-thumb {
       width: 30px;
       height: 30px;
-      background: #A5D6A7;
+      background: green-800;
       border-radius: 50%;
       cursor: pointer;
     }
@@ -965,7 +965,7 @@ const PortfolioOptimizer = () => {
 
                     {/* Content Section */}
                     <div className="p-6">
-                      <h3 className="text-xl font-bold mb-3" style={{ color: '#A5D6A7' }}>
+                      <h3 className="text-xl font-bold mb-3" style={{ color: 'green-800' }}>
                         {article.title || 'No Title'}
                       </h3>
                       <p className="text-gray-600 mb-4">
@@ -999,7 +999,7 @@ const PortfolioOptimizer = () => {
     <section
   id="contact"
   className="relative py-20"
-  style={{ background: '#E9F7FA' }} // Soft pastel blue background for a clean and professional look
+  style={{ background: '#f7f7f7' }} // Soft pastel blue background for a clean and professional look
 >
   <div className="container mx-auto px-4 text-center">
     <h2
@@ -1043,7 +1043,7 @@ const PortfolioOptimizer = () => {
   <div
     className="absolute bottom-0 w-full h-2"
     style={{
-      background: 'linear-gradient(to right, #A5D6A7, #E8F5E9)',
+      background: 'linear-gradient(to right, green-800, #E8F5E9)',
     }}
   ></div>
 </section>
