@@ -101,7 +101,8 @@ const Step1 = () => {
         >
           With everyone’s unique circumstances, it’s important to feel comfortable with the level of risk (% you’re willing to lose) associated with your investments. Naturally, no one can predict the future… but we can use mathematics to identify trends in the data, helping you find investments that align with your desired level of risk. It’s also essential to understand the various types of investable asset classes and how they differ.
         </p>
-        <div className="mt-4 border-t pt-4 space-y-2">
+    <div className="mt-4 border-t pt-4 space-y-4">
+    <div className="flex items-center">      
     <a
       href="/articles"
       className="block text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
@@ -120,6 +121,7 @@ const Step1 = () => {
     >
       ➤ Know how much risk you’re willing to take? Click here to leverage our asset allocation tool to know what to invest in.
     </a>
+  </div>
   </div>
       </div>
 
@@ -229,7 +231,7 @@ const Step2 = () => {
   <div className="mt-4 border-t pt-4 space-y-4">
     <div className="flex items-center">
       <img 
-        src="public\trading212-removebg-preview.png" 
+        src="/trading212-removebg-preview.png" 
         alt="Trading 212 Logo" 
         className="w-6 h-6 mr-2"
       />
@@ -288,7 +290,7 @@ const Step3 = () => {
   <div className="mt-4 border-t pt-4 space-y-4">
     <div className="flex items-center">
       <img
-        src="public\email.webp"
+        src="/email.webp"
         alt="Email Icon"
         className="w-6 h-6 mr-2"
       />
