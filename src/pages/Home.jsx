@@ -101,17 +101,26 @@ const Step1 = () => {
         >
           With everyone’s unique circumstances, it’s important to feel comfortable with the level of risk (% you’re willing to lose) associated with your investments. Naturally, no one can predict the future… but we can use mathematics to identify trends in the data, helping you find investments that align with your desired level of risk. It’s also essential to understand the various types of investable asset classes and how they differ.
         </p>
-        <a href="/articles" className="text-gold font-semibold hover:underline text-lg">
-          Learn more about risk
-        </a>
-        <br />
-        <a href="/articles" className="text-gold font-semibold hover:underline text-lg">
-          Learn more about asset classes
-        </a>
-        <br />
-        <a href="/articles" className="text-gold font-semibold hover:underline text-lg">
-          Know how much risk your willing to take? click here to leverage our asset allocation tool to know what to invest in.
-        </a>
+        <div className="mt-4 border-t pt-4 space-y-2">
+    <a
+      href="/articles"
+      className="block text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+    >
+      ➤ Learn more about risk
+    </a>
+    <a
+      href="/articles"
+      className="block text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+    >
+      ➤ Learn more about asset classes
+    </a>
+    <a
+      href="/asset-allocation-tool"
+      className="block text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+    >
+      ➤ Know how much risk you’re willing to take? Click here to leverage our asset allocation tool to know what to invest in.
+    </a>
+  </div>
       </div>
 
       {/* Embedded Styles */}
@@ -216,19 +225,32 @@ const Step2 = () => {
         <p className="text-gray-700 mb-4 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
           Take our asset allocations from the optimiser and use them as the basis for your investments. Either use our already built portfolios via Trading 212 or your prefererd Brokarege account to invest. Take the allocations and use the tickers to find the correct funds.
         </p>
-        <a
-          href="/Allocation"
-          className="text-gold font-semibold hover:underline text-lg"
-        >
-          Asset Allocation and trading 212 portfolios
-        </a>
-        <br />
-        <a
-          href="/brokerage-options"
-          className="text-gold font-semibold hover:underline text-lg"
-        >
-          Learn about brokerage platforms
-        </a>
+        <div className="p-4 bg-white rounded-lg shadow-md">
+  <div className="mt-4 border-t pt-4 space-y-4">
+    <div className="flex items-center">
+      <img 
+        src="public\trading212-removebg-preview.png" 
+        alt="Trading 212 Logo" 
+        className="w-6 h-6 mr-2"
+      />
+      <a
+        href="/Allocation"
+        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+      >
+        Asset Allocation and Trading 212 Portfolios
+      </a>
+    </div>
+    <div className="flex items-center">
+      <span className="text-gold text-lg mr-2">➤</span>
+      <a
+        href="/brokerage-options"
+        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+      >
+        Learn about brokerage platforms
+      </a>
+    </div>
+  </div>
+</div>
       </div>
     </motion.div>
   );
@@ -262,19 +284,32 @@ const Step3 = () => {
           Monitor your portfolio performance regularly. Subscribe to our email updates to receive
           quarterly allocation changes, market insights, and tailored recommendations. Learn more about investing and our propeitary funds
         </p>
-        <a
-          href="/subscribe"
-          className="text-gold font-semibold hover:underline text-lg"
-        >
-          Subscribe to our email list
-        </a>
-        <br />
-        <a
-          href="/Funds"
-          className="text-gold font-semibold hover:underline text-lg"
-        >
-          Properiarty funds coming soon
-        </a>
+        <div className="p-4 bg-white rounded-lg shadow-md">
+  <div className="mt-4 border-t pt-4 space-y-4">
+    <div className="flex items-center">
+      <img
+        src="public\email.webp"
+        alt="Email Icon"
+        className="w-6 h-6 mr-2"
+      />
+      <a
+        href="/subscribe"
+        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+      >
+        Subscribe to our email list
+      </a>
+    </div>
+    <div className="flex items-center">
+      <span className="text-gold text-lg mr-2">➤</span>
+      <a
+        href="/Funds"
+        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+      >
+        Proprietary funds coming soon
+      </a>
+    </div>
+  </div>
+</div>
       </div>
     </motion.div>
   );
@@ -432,6 +467,15 @@ const PortfolioOptimizer = () => {
         >
           Start Investing
         </a>
+        <div
+    className="mt-2 inline-block px-4 py-1 text-sm font-medium rounded-full shadow-md"
+    style={{
+      Color: '#4CAF50',
+      backgroundcolor: '#006C5B',
+    }}
+  >
+    Sharia Compliant
+  </div>
       </div>
     </div>
   </section>
@@ -496,7 +540,7 @@ const PortfolioOptimizer = () => {
             {
               title: "Learn",
               description:
-                "Explore investment strategies, understand your options, and find solutions that align with your goals.",
+                "Explore asset classes, understand your risk apetite, and find solutions that align with your goals.",
               link: "/assets",
               linkLabel: "Explore Assets",
               icon: (
@@ -548,7 +592,7 @@ const PortfolioOptimizer = () => {
             {
               title: "Prosper",
               description:
-                "Stay informed with the latest investment news and explore tax-efficient strategies to help your wealth flourish.",
+                "Stay informed with the latest investment news and resources to help your wealth flourish.",
               link: "/research",
               linkLabel: "Research Insights",
               icon: (
@@ -677,13 +721,13 @@ const PortfolioOptimizer = () => {
           </h2>
           <p
             className="text-xl font-semibold"
-            style={{ fontFamily: 'Open Sans, sans-serif', color: '#4A4A4A' }}
+            style={{ fontFamily: 'Lora, serif', color: '#4A4A4A' }}
           >
             Curated portfolios blending the best of:
           </p>
           <ul 
             className="list-disc list-inside text-lg pl-4" 
-            style={{ fontFamily: 'Open Sans, sans-serif', color: '#555' }}
+            style={{ fontFamily: 'Lora, serif', color: '#555' }}
           >
             <li className="mb-1">Equity</li>
             <li className="mb-1">Sukuk</li>
@@ -692,7 +736,7 @@ const PortfolioOptimizer = () => {
           </ul>
           <p
             className="text-sm text-gray-500"
-            style={{ fontFamily: 'Open Sans, sans-serif' }}
+            style={{ fontFamily: 'Lora, serif' }}
           >
             *Past performance isn’t indicative of future results.
           </p>
