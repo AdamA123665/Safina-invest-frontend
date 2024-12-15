@@ -90,34 +90,46 @@ const Step1 = () => {
         </div>
       </div>
 
-      {/* Text Content */}
-<div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
-  <h3 className="text-3xl font-bold mb-4" style={{ color: '#065F46' }}>
+      <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
+  <h3 className="text-3xl font-bold mb-6" style={{ color: '#065F46' }}>
     Step 1: Pick Your Risk Level
   </h3>
-  
   <p
-    className="text-gray-700 mb-4 text-lg"
+    className="text-gray-700 mb-6 text-lg"
     style={{ fontFamily: 'Open Sans, sans-serif' }}
   >
-    Choosing the right risk level is about understanding how much you can afford to lose while pursuing growth. p.s.we have a really cool quiz to help you decide.
+    Choosing the right risk level means understanding how much you can afford to lose while pursuing growth. Take our fun, interactive quiz to help you decide!
   </p>
-  <div className="mt-4 border-t pt-4 space-y-4">
-    <p className="text-gray-700 text-lg font-semibold" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-      Learn More:
-    </p>
-    <div className="flex flex-col space-y-3">
+  <p className="text-gray-700 text-lg font-semibold mb-4" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+    Learn More:
+  </p>
+  <div className="space-y-4">
+    <div className="flex items-center space-x-3">
+      <span className="text-emerald-600">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m-1 4h1m8-4h-1v4h-1m-1-4h1" />
+        </svg>
+      </span>
       <a
         href="/articles"
-        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+        className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
+        style={{ fontFamily: 'Open Sans, sans-serif' }}
       >
-        ➤ Understanding Risk
+        Understanding Risk
       </a>
+    </div>
+    <div className="flex items-center space-x-3">
+      <span className="text-emerald-600">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m2 0a2 2 0 100-4H7a2 2 0 100 4h4" />
+        </svg>
+      </span>
       <a
         href="/articles"
-        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+        className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
+        style={{ fontFamily: 'Open Sans, sans-serif' }}
       >
-        ➤ Exploring Asset Classes
+        Exploring Asset Classes
       </a>
     </div>
   </div>
@@ -278,56 +290,60 @@ const Step3 = () => {
           transition={{ duration: 0.5 }}
         />
       </div>
-      {/* Text Content */}
       <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
-        <h3 className="text-3xl font-bold mb-4" style={{ color: '#065F46' }}>
-          Step 3: Invest and relax
-        </h3>
-        <p className="text-gray-700 mb-4 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          Use either our trading 212 portfolio integration or your prefered brokeage account to invest.
-          We recommend investing a small amount each month. Subscribe to our email updates to receive
-          quarterly allocation changes, market insights, and tailored recommendations. 
-        </p>
-        <div className="p-4 bg-white rounded-lg shadow-md">
-  <div className="mt-4 border-t pt-4 space-y-4">
-  <div className="flex items-center">
-      <img 
-        src="/trading212-removebg-preview.png" 
-        alt="Trading 212 Logo" 
-        className="w-6 h-6 mr-2"
+  <h3 className="text-3xl font-bold mb-6" style={{ color: '#065F46' }}>
+    Step 3: Invest and Relax
+  </h3>
+  <p className="text-gray-700 mb-6 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+    Use our Trading 212 portfolio integration or your preferred brokerage account to invest. 
+    We recommend starting small by investing regularly each month. Subscribe to our email updates 
+    for quarterly allocation changes, market insights, and tailored recommendations.
+  </p>
+  <div className="space-y-4">
+    <div className="flex items-center space-x-3">
+      <img
+        src="/trading212-removebg-preview.png"
+        alt="Trading 212 Logo"
+        className="w-8 h-8"
       />
       <a
         href="/Allocation"
-        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+        className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
+        style={{ fontFamily: 'Open Sans, sans-serif' }}
       >
-        Asset Allocation
+        Explore Asset Allocation
       </a>
     </div>
-    
-    <div className="flex items-center">
-      <span className="text-gold text-lg mr-2">➤</span>
-      <a
-        href="/Funds"
-        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
-      >
-        Subscribe to our email list
-      </a>
-    </div>
-    <div className="flex items-center">
+    <div className="flex items-center space-x-3">
       <img
         src="/email.webp"
         alt="Email Icon"
-        className="w-6 h-6 mr-2"
+        className="w-8 h-8"
       />
       <a
-        href="/subscribe"
-        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+        href="/Funds"
+        className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
+        style={{ fontFamily: 'Open Sans, sans-serif' }}
       >
-        Learn about brokerage platforms
+        Subscribe to Email Updates
+      </a>
+    </div>
+    <div className="flex items-center space-x-3">
+      <span className="text-emerald-600">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.5v15m7-7.5H5" />
+        </svg>
+      </span>
+      <a
+        href="/subscribe"
+        className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
+        style={{ fontFamily: 'Open Sans, sans-serif' }}
+      >
+        Learn About Brokerage Platforms
       </a>
     </div>
   </div>
-</div>
+
       </div>
     </motion.div>
   );

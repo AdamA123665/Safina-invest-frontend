@@ -20,7 +20,7 @@ const TacticalAssetAllocationPage = () => {
   const data = {
     heroTitle: 'Tactical Asset Allocation',
     heroDescription:
-      'Each month, we dynamically tilt the portfolio based on fundamental research and quantitative signals. This approach helps capture extra alpha and preserve capital, while adhering to ethical and sustainable principles.',
+      'Boost returns by implemeting chnages derived from our fundamental and quantitative insights',
     ytdReturn: '+8%',
     lineData: {
       labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
@@ -94,7 +94,7 @@ const TacticalAssetAllocationPage = () => {
             transition={{ duration: 1 }}
           >
             <HeroHeading mainColor={theme.mainColor}>
-              Gain an Edge with Tactical Asset Allocation
+              Gain an Active Edge
             </HeroHeading>
             <HeroSubHeading>
               {data.heroDescription}
