@@ -91,39 +91,52 @@ const Step1 = () => {
       </div>
 
       {/* Text Content */}
-      <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
-        <h3 className="text-3xl font-bold mb-4" style={{ color: '#065F46' }}>
-          Step 1: Pick Your Risk Level
-        </h3>
-        <p
-          className="text-gray-700 mb-4 text-lg"
-          style={{ fontFamily: 'Open Sans, sans-serif' }}
-        >
-          With everyone’s unique circumstances, it’s important to feel comfortable with the level of risk (% you’re willing to lose) associated with your investments. Naturally, no one can predict the future… but we can use mathematics to identify trends in the data, helping you find investments that align with your desired level of risk. It’s also essential to understand the various types of investable asset classes and how they differ.
-        </p>
-    <div className="mt-4 border-t pt-4 space-y-4">
-    <div className="flex items-center">      
-    <a
-      href="/articles"
-      className="block text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
-    >
-      ➤ Learn more about risk
-    </a>
-    <a
-      href="/articles"
-      className="block text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
-    >
-      ➤ Learn more about asset classes
-    </a>
-    <a
-      href="/asset-allocation-tool"
-      className="block text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
-    >
-      ➤ Know how much risk you’re willing to take? Click here to leverage our asset allocation tool to know what to invest in.
-    </a>
+<div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
+  <h3 className="text-3xl font-bold mb-4" style={{ color: '#065F46' }}>
+    Step 1: Pick Your Risk Level
+  </h3>
+  
+  <p
+    className="text-gray-700 mb-4 text-lg"
+    style={{ fontFamily: 'Open Sans, sans-serif' }}
+  >
+    Choosing the right risk level is about understanding how much you can afford to lose while pursuing growth. By analyzing data-driven trends, we help you find investments that align with your comfort zone.
+  </p>
+  
+  <div className="mb-4 text-lg text-gray-700 space-y-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+    <p><strong>Key Concepts:</strong></p>
+    <ul className="list-disc list-inside space-y-1">
+      <li><strong>Risk:</strong> The percentage of your investment you’re willing to put at stake.</li>
+      <li><strong>Asset Classes:</strong> Different types of investments (stocks, bonds, etc.) that behave differently over time.</li>
+    </ul>
   </div>
+
+  <div className="mt-4 border-t pt-4 space-y-4">
+    <p className="text-gray-700 text-lg font-semibold" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+      Learn More:
+    </p>
+    <div className="flex flex-col space-y-3">
+      <a
+        href="/articles"
+        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+      >
+        ➤ Understanding Risk
+      </a>
+      <a
+        href="/articles"
+        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+      >
+        ➤ Exploring Asset Classes
+      </a>
+      <a
+        href="/asset-allocation-tool"
+        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+      >
+        ➤ Ready to Allocate? Use Our Asset Allocation Tool
+      </a>
+    </div>
   </div>
-      </div>
+</div>
 
       {/* Embedded Styles */}
       <style jsx>{`
@@ -447,8 +460,8 @@ const PortfolioOptimizer = () => {
         <div
           className="mt-2 inline-block px-4 py-1 text-sm font-medium rounded-full shadow-md"
           style={{
-            backgroundColor: '#006C5B',
-            color: '#FFFFFF',
+            backgroundColor: ' #FFFFFF',
+            color: '#006C5B',
           }}
         >
           Sharia Compliant
@@ -808,238 +821,6 @@ const PortfolioOptimizer = () => {
       `}</style>
     </section>
 
-    <section
-  id="construction"
-  className="relative py-20 overflow-hidden bg-white"
->
-  {/* Subtle Pattern Overlay */}
-  <div
-    className="absolute inset-0 pointer-events-none"
-    style={{
-      backgroundImage:
-        'radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.02) 1px, transparent 1px), radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.02) 1px, transparent 1px)',
-      backgroundSize: '40px 40px',
-      opacity: 0.3,
-    }}
-  ></div>
-
-  {/* Decorative Top Left Shape */}
-  <div className="absolute -top-10 -left-10 w-80 h-80 bg-gray-200 rounded-full filter blur-xl opacity-40"></div>
-
-  {/* Decorative Bottom Right Shape */}
-  <div className="absolute bottom-0 right-0 w-64 h-64 bg-gray-300 rounded-full filter blur-lg opacity-30"></div>
-
-  {/* Center Highlight Shape */}
-  <div className="absolute inset-x-1/2 top-1/3 w-40 h-40 bg-gray-100 opacity-20 rounded-full filter blur-lg transform -translate-x-1/2"></div>
-
-  <div className="container mx-auto px-4 relative z-10">
-    <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12">
-
-      {/* Left Content */}
-      <div>
-        <motion.div
-          className="space-y-6"
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <h2
-            className="text-5xl font-bold mb-4 leading-tight text-gray-900"
-            style={{
-              fontFamily: 'Lora, serif',
-              lineHeight: '1.3',
-            }}
-          >
-            Build Real Wealth
-          </h2>
-          <p
-            className="text-xl font-semibold"
-            style={{ fontFamily: 'Lora, serif', color: '#4A4A4A' }}
-          >
-            Curated portfolios blending the best of:
-          </p>
-          <ul 
-            className="list-disc list-inside text-lg pl-4" 
-            style={{ fontFamily: 'Lora, serif', color: '#555' }}
-          >
-            <li className="mb-1">Equity</li>
-            <li className="mb-1">Sukuk</li>
-            <li className="mb-1">Real Estate</li>
-            <li className="mb-1">Commodities</li>
-          </ul>
-          <p
-            className="text-sm text-gray-500"
-            style={{ fontFamily: 'Lora, serif' }}
-          >
-            *Past performance isn’t indicative of future results.
-          </p>
-        </motion.div>
-      </div>
-
-      {/* Chart Area */}
-      <motion.div
-        className="relative"
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1 }}
-      >
-        {portfolioData && (
-          <div 
-            className="relative p-6 rounded-3xl shadow-xl bg-white/50 backdrop-blur-xl border border-white/30"
-            style={{ 
-              boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
-            }}
-          >
-            <div className="flex items-center justify-between mb-4 relative">
-  <div className="flex-grow"></div>
-  <div
-    className="text-sm text-gray-600"
-    style={{
-      fontFamily: 'Open Sans, sans-serif',
-      marginLeft: 'auto',
-      alignSelf: 'flex-end',
-    }}
-  >
-    (10-year view)
-  </div>
-</div>
-
-            <div className="w-full h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
-                    date: new Date(date).toLocaleDateString('en-US', {
-                      month: 'short',
-                      year: '2-digit',
-                    }),
-                    Portfolio:
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'Portfolio'
-                      )?.values[idx] || 0,
-                    SP500:
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'S&P 500'
-                      )?.values[idx] || 0,
-                  }))}
-                  margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
-                >
-                  <defs>
-                    <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#4B5563" stopOpacity={0.2}/>
-                      <stop offset="100%" stopColor="#4B5563" stopOpacity={0}/>
-                    </linearGradient>
-                    <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#10B981" stopOpacity={0.2}/>
-                      <stop offset="100%" stopColor="#10B981" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <XAxis
-                    dataKey="date"
-                    tick={{
-                      fill: '#4B5563',
-                      fontSize: '14px',
-                      fontFamily: 'Lora, serif',
-                    }}
-                    tickLine={false}
-                    axisLine={{ stroke: '#D1D5DB' }}
-                  />
-                  <YAxis
-                    orientation="right"
-                    tick={{
-                      fill: '#4B5563',
-                      fontSize: '14px',
-                      fontFamily: 'Lora, serif',
-                    }}
-                    tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
-                    axisLine={{ stroke: '#D1D5DB' }}
-                    tickLine={false}
-                  />
-                  <Tooltip
-                    formatter={(value) => `${(value * 100).toFixed(2)}%`}
-                    contentStyle={{
-                      background: '#ffffff',
-                      border: '1px solid #E5E7EB',
-                      borderRadius: '8px',
-                      boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)',
-                      padding: '8px 12px',
-                      fontFamily: 'Lora, serif',
-                      fontSize: '14px',
-                    }}
-                  />
-                  <Legend
-                    wrapperStyle={{
-                      paddingTop: '16px',
-                      color: '#4B5563',
-                      fontFamily: 'Lora, serif',
-                      fontWeight: '500',
-                    }}
-                    iconType="circle"
-                    iconSize={10}
-                    align="center"
-                    layout="horizontal"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="Portfolio"
-                    stroke="#4B5563"
-                    fill="url(#colorPortfolio)"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="SP500"
-                    stroke="#10B981"
-                    fill="url(#colorSP500)"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* Neon Highlight Tag */}
-            <div
-              className="absolute bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
-              style={{
-                top: '80px',
-                left: '20px',
-                fontFamily: 'Lora, serif',
-                transform: 'rotate(-5deg)',
-                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
-                animation: 'pulseBadge 2s infinite',
-                cursor: 'default',
-              }}
-            >
-              +300% Growth!
-            </div>
-          </div>
-        )}
-      </motion.div>
-    </div>
-  </div>
-
-  {/* Custom CSS Animations */}
-  <style jsx>{`
-    @keyframes pulseBadge {
-      0% { transform: scale(1) rotate(-5deg); }
-      50% { transform: scale(1.05) rotate(-5deg); }
-      100% { transform: scale(1) rotate(-5deg); }
-    }
-
-    .recharts-surface {
-      background-color: transparent;
-    }
-    .recharts-tooltip-wrapper {
-      transition: all 0.2s ease;
-    }
-    .recharts-legend-item {
-      font-family: 'Lora, serif';
-      font-size: 14px;
-      font-weight: bold;
-    }
-  `}</style>
-</section>
 
 {/* How to Invest Section */}
 <section id="how-to-invest" className="relative py-20 overflow-hidden bg-green-50  "  >
