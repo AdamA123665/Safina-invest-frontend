@@ -406,44 +406,20 @@ const PortfolioOptimizer = () => {
   
   
     return (
-      <div className="relative min-h-screen text-gray-900 font-sans overflow-hidden">
+      <div className="relative min-h-screen text-gray-900 font-sans overflow-hidden bg-green-100">
   {/* Hero Section */}
-  <section className="relative w-full h-[85vh] flex items-center justify-center px-4 md:px-8">
-  <div className="absolute inset-0 -z-10">
-      {/* Background Image */}
-      <div
-        className="w-full h-full"
-        style={{
-          backgroundImage: "url('/hero.jpg')", // Replace with your image path
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      ></div>
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-600 via-emerald-400 to-yellow-400 opacity-80"></div>
-
-      {/* Optional Decorative Patterns */}
-      <div
-        className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-emerald-800 to-transparent opacity-10 rounded-full blur-2xl"
-        style={{ transform: 'translate(-50%, -50%)' }}
-      ></div>
-      <div
-        className="absolute bottom-0 right-0 w-72 h-72 bg-gradient-to-tr from-yellow-500 to-transparent opacity-10 rounded-full blur-2xl"
-        style={{ transform: 'translate(50%, 50%)' }}
-      ></div>
-    </div>
-
+  <section className="relative w-full flex flex-col items-center justify-center px-4 md:px-8 py-20">
     {/* Content Container */}
     <div className="max-w-5xl mx-auto text-center relative z-10">
       <h1
         className="text-4xl md:text-6xl font-semibold tracking-tight mb-6"
         style={{
           fontFamily: 'Lora, serif',
-          color: '#FFFFFF',
-          textShadow: '2px 2px 6px rgba(0,0,0,0.2)',
+          color: '#006C5B', // Darker text for contrast on light background
+          textShadow: '1px 1px 4px rgba(0,0,0,0.1)',
         }}
       >
-        Empowering Your Investments with Intelligent Insights
+        Investment portfolios driven by data
       </h1>
 
       <p
@@ -451,13 +427,12 @@ const PortfolioOptimizer = () => {
         style={{
           fontFamily: 'Open Sans, sans-serif',
           color: '#1F2937',
-          textShadow: '1px 1px 4px rgba(0,0,0,0.1)',
         }}
       >
         Unlock sustainable growth through data-driven strategies and expert guidance.
       </p>
 
-      <div className="flex flex-col items-center space-y-6 md:space-y-8">
+      <div className="flex flex-col items-center space-y-6 md:space-y-8 mb-12">
         {/* Primary CTA Button */}
         <a
           href="#how-to-invest"
@@ -470,22 +445,178 @@ const PortfolioOptimizer = () => {
           Start Investing
         </a>
         <div
-    className="mt-2 inline-block px-4 py-1 text-sm font-medium rounded-full shadow-md"
-    style={{
-      Color: '#4CAF50',
-      backgroundcolor: '#006C5B',
-    }}
-  >
-    Sharia Compliant
-  </div>
+          className="mt-2 inline-block px-4 py-1 text-sm font-medium rounded-full shadow-md"
+          style={{
+            backgroundColor: '#006C5B',
+            color: '#FFFFFF',
+          }}
+        >
+          Sharia Compliant
+        </div>
       </div>
+
+      {/* Chart Area */}
+      <motion.div
+        className="relative flex justify-center"
+        initial={{ opacity: 0, x: 30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1 }}
+      >
+        {portfolioData && (
+          <div
+            className="relative p-6 rounded-3xl shadow-xl bg-white/50 backdrop-blur-xl border border-white/30 max-w-4xl w-full"
+            style={{
+              boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
+            }}
+          >
+            <div className="flex items-center justify-between mb-4 relative">
+              <div className="flex-grow"></div>
+              <div
+                className="text-sm text-gray-600"
+                style={{
+                  fontFamily: 'Open Sans, sans-serif',
+                  marginLeft: 'auto',
+                  alignSelf: 'flex-end',
+                }}
+              >
+                (10-year view)
+              </div>
+            </div>
+
+            <div className="w-full h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
+                    date: new Date(date).toLocaleDateString('en-US', {
+                      month: 'short',
+                      year: '2-digit',
+                    }),
+                    Portfolio:
+                      portfolioData.dashboard_data.performance.series.find(
+                        (s) => s.name === 'Portfolio'
+                      )?.values[idx] || 0,
+                    SP500:
+                      portfolioData.dashboard_data.performance.series.find(
+                        (s) => s.name === 'S&P 500'
+                      )?.values[idx] || 0,
+                  }))}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
+                >
+                  <defs>
+                    <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#4B5563" stopOpacity={0.2}/>
+                      <stop offset="100%" stopColor="#4B5563" stopOpacity={0}/>
+                    </linearGradient>
+                    <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#10B981" stopOpacity={0.2}/>
+                      <stop offset="100%" stopColor="#10B981" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <XAxis
+                    dataKey="date"
+                    tick={{
+                      fill: '#4B5563',
+                      fontSize: '14px',
+                      fontFamily: 'Lora, serif',
+                    }}
+                    tickLine={false}
+                    axisLine={{ stroke: '#D1D5DB' }}
+                  />
+                  <YAxis
+                    orientation="right"
+                    tick={{
+                      fill: '#4B5563',
+                      fontSize: '14px',
+                      fontFamily: 'Lora, serif',
+                    }}
+                    tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+                    axisLine={{ stroke: '#D1D5DB' }}
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    formatter={(value) => `${(value * 100).toFixed(2)}%`}
+                    contentStyle={{
+                      background: '#ffffff',
+                      border: '1px solid #E5E7EB',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)',
+                      padding: '8px 12px',
+                      fontFamily: 'Lora, serif',
+                      fontSize: '14px',
+                    }}
+                  />
+                  <Legend
+                    wrapperStyle={{
+                      paddingTop: '16px',
+                      color: '#4B5563',
+                      fontFamily: 'Lora, serif',
+                      fontWeight: '500',
+                    }}
+                    iconType="circle"
+                    iconSize={10}
+                    align="center"
+                    layout="horizontal"
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="Portfolio"
+                    stroke="#4B5563"
+                    fill="url(#colorPortfolio)"
+                    strokeWidth={3}
+                    strokeLinecap="round"
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="SP500"
+                    stroke="#10B981"
+                    fill="url(#colorSP500)"
+                    strokeWidth={3}
+                    strokeLinecap="round"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Neon Highlight Tag */}
+            <div
+              className="absolute bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
+              style={{
+                top: '80px',
+                left: '20px',
+                fontFamily: 'Lora, serif',
+                transform: 'rotate(-5deg)',
+                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
+                animation: 'pulseBadge 2s infinite',
+                cursor: 'default',
+              }}
+            >
+              +300% Growth!
+            </div>
+          </div>
+        )}
+      </motion.div>
+
     </div>
   </section>
 
-  {/* Embedded Styles */}
+  {/* Custom CSS Animations */}
   <style jsx>{`
-    .bg-gradient-to-br {
-      background: linear-gradient(135deg, #006c5b 0%, #fdbb2d 100%);
+    @keyframes pulseBadge {
+      0% { transform: scale(1) rotate(-5deg); }
+      50% { transform: scale(1.05) rotate(-5deg); }
+      100% { transform: scale(1) rotate(-5deg); }
+    }
+
+    .recharts-surface {
+      background-color: transparent;
+    }
+    .recharts-tooltip-wrapper {
+      transition: all 0.2s ease;
+    }
+    .recharts-legend-item {
+      font-family: 'Lora, serif';
+      font-size: 14px;
+      font-weight: bold;
     }
   `}</style>
 
