@@ -100,17 +100,8 @@ const Step1 = () => {
     className="text-gray-700 mb-4 text-lg"
     style={{ fontFamily: 'Open Sans, sans-serif' }}
   >
-    Choosing the right risk level is about understanding how much you can afford to lose while pursuing growth. By analyzing data-driven trends, we help you find investments that align with your comfort zone.
+    Choosing the right risk level is about understanding how much you can afford to lose while pursuing growth. p.s.we have a really cool quiz to help you decide.
   </p>
-  
-  <div className="mb-4 text-lg text-gray-700 space-y-2" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-    <p><strong>Key Concepts:</strong></p>
-    <ul className="list-disc list-inside space-y-1">
-      <li><strong>Risk:</strong> The percentage of your investment you’re willing to put at stake.</li>
-      <li><strong>Asset Classes:</strong> Different types of investments (stocks, bonds, etc.) that behave differently over time.</li>
-    </ul>
-  </div>
-
   <div className="mt-4 border-t pt-4 space-y-4">
     <p className="text-gray-700 text-lg font-semibold" style={{ fontFamily: 'Open Sans, sans-serif' }}>
       Learn More:
@@ -127,12 +118,6 @@ const Step1 = () => {
         className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
       >
         ➤ Exploring Asset Classes
-      </a>
-      <a
-        href="/asset-allocation-tool"
-        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
-      >
-        ➤ Ready to Allocate? Use Our Asset Allocation Tool
       </a>
     </div>
   </div>
@@ -232,41 +217,44 @@ const Step2 = () => {
           transition={{ duration: 0.5 }}
         />
       </div>
-      {/* Text Content */}
       <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
-        <h3 className="text-3xl font-bold mb-4" style={{ color: '#065F46' }}>
-          Step 2: Make Your First Investment
-        </h3>
-        <p className="text-gray-700 mb-4 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          Take our asset allocations from the optimiser and use them as the basis for your investments. Either use our already built portfolios via Trading 212 or your prefererd Brokarege account to invest. Take the allocations and use the tickers to find the correct funds.
-        </p>
-        <div className="p-4 bg-white rounded-lg shadow-md">
-  <div className="mt-4 border-t pt-4 space-y-4">
-    <div className="flex items-center">
-      <img 
-        src="/trading212-removebg-preview.png" 
-        alt="Trading 212 Logo" 
-        className="w-6 h-6 mr-2"
-      />
+  <h3 className="text-3xl font-bold mb-6" style={{ color: '#065F46' }}>
+    Step 2: Build Your Risk-Adjusted Portfolio
+  </h3>
+  <p className="text-gray-700 mb-6 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+    Input your investment amount and risk level into our model to receive tailored allocations. Powered by over 10 years of backtested data, our process combines rigorous analysis with proven strategies—no guesswork involved.
+  </p>
+  <div className="space-y-4">
+    <div className="flex items-center space-x-3">
+      <span className="text-emerald-600">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.5v15m7-7.5H5" />
+        </svg>
+      </span>
       <a
-        href="/Allocation"
-        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+        href="/Funds"
+        className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
+        style={{ fontFamily: 'Open Sans, sans-serif' }}
       >
-        Asset Allocation and Trading 212 Portfolios
+        Explore Asset Allocation
       </a>
     </div>
-    <div className="flex items-center">
-      <span className="text-gold text-lg mr-2">➤</span>
+    <div className="flex items-center space-x-3">
+      <span className="text-emerald-600">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m2 0a2 2 0 100-4H7a2 2 0 100 4h4" />
+        </svg>
+      </span>
       <a
         href="/brokerage-options"
-        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+        className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
+        style={{ fontFamily: 'Open Sans, sans-serif' }}
       >
-        Learn about brokerage platforms
+        Learn About Our Methodology
       </a>
     </div>
   </div>
 </div>
-      </div>
     </motion.div>
   );
 };
@@ -293,14 +281,38 @@ const Step3 = () => {
       {/* Text Content */}
       <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
         <h3 className="text-3xl font-bold mb-4" style={{ color: '#065F46' }}>
-          Step 3: Sit Back and Relax
+          Step 3: Invest and relax
         </h3>
         <p className="text-gray-700 mb-4 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-          Monitor your portfolio performance regularly. Subscribe to our email updates to receive
-          quarterly allocation changes, market insights, and tailored recommendations. Learn more about investing and our propeitary funds
+          Use either our trading 212 portfolio integration or your prefered brokeage account to invest.
+          We recommend investing a small amount each month. Subscribe to our email updates to receive
+          quarterly allocation changes, market insights, and tailored recommendations. 
         </p>
         <div className="p-4 bg-white rounded-lg shadow-md">
   <div className="mt-4 border-t pt-4 space-y-4">
+  <div className="flex items-center">
+      <img 
+        src="/trading212-removebg-preview.png" 
+        alt="Trading 212 Logo" 
+        className="w-6 h-6 mr-2"
+      />
+      <a
+        href="/Allocation"
+        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+      >
+        Asset Allocation
+      </a>
+    </div>
+    
+    <div className="flex items-center">
+      <span className="text-gold text-lg mr-2">➤</span>
+      <a
+        href="/Funds"
+        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
+      >
+        Subscribe to our email list
+      </a>
+    </div>
     <div className="flex items-center">
       <img
         src="/email.webp"
@@ -311,16 +323,7 @@ const Step3 = () => {
         href="/subscribe"
         className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
       >
-        Subscribe to our email list
-      </a>
-    </div>
-    <div className="flex items-center">
-      <span className="text-gold text-lg mr-2">➤</span>
-      <a
-        href="/Funds"
-        className="text-gold font-semibold hover:text-gold-darker hover:underline text-lg transition-colors duration-200"
-      >
-        Proprietary funds coming soon
+        Learn about brokerage platforms
       </a>
     </div>
   </div>
