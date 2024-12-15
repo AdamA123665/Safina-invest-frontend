@@ -20,7 +20,7 @@ const TacticalAssetAllocationPage = () => {
   const data = {
     heroTitle: 'Tactical Asset Allocation',
     heroDescription:
-      'Boost returns by implemeting chnages derived from our fundamental and quantitative insights',
+      'Each month, we dynamically tilt the portfolio based on fundamental research and quantitative signals. This approach helps capture extra alpha and preserve capital, while adhering to ethical and sustainable principles.',
     ytdReturn: '+8%',
     lineData: {
       labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
@@ -96,8 +96,8 @@ const TacticalAssetAllocationPage = () => {
             <HeroHeading mainColor={theme.mainColor}>
               Gain an Active Edge
             </HeroHeading>
-            <HeroSubHeading>
-              {data.heroDescription}
+            <HeroSubHeading mainColor = {theme.chartColor}>
+            Boost Returns with Data-Driven Tactical Adjustments Combining Fundamental and Quantitative Insights
             </HeroSubHeading>
             <HeroButtonsWrapper>
               <ShariaBadge mainColor={theme.mainColor}>

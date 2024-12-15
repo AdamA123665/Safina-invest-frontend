@@ -19,76 +19,88 @@ const Step1 = () => {
 
   return (
     <div className="flex flex-col md:flex-row items-center">
-      {/* Graph and Slider */}
-      <div className="w-full md:w-1/2 flex flex-col items-center">
-        {/* Graph */}
-        <div className="relative w-full max-w-md mb-8">
-          <svg viewBox="0 0 300 200" className="w-full h-auto">
-            {/* Axes */}
-            <line x1="30" y1="170" x2="280" y2="170" stroke="#ccc" strokeWidth="2" />
-            <line x1="30" y1="170" x2="30" y2="20" stroke="#ccc" strokeWidth="2" />
+  {/* Graph and Slider */}
+  <div className="w-full md:w-1/2 flex flex-col items-center">
+    {/* Graph */}
+    <div className="relative w-full max-w-md mb-8">
+      <svg viewBox="0 0 300 200" className="w-full h-auto">
+        {/* Axes */}
+        <line x1="30" y1="170" x2="280" y2="170" stroke="#ccc" strokeWidth="2" />
+        <line x1="30" y1="170" x2="30" y2="20" stroke="#ccc" strokeWidth="2" />
 
-            {/* Lines for risk levels 1 to 10 */}
-            {stockData.map(({ risk, points }) => {
-              const opacity = risk === riskLevel ? 1 : 0.2;
-              const strokeWidth = risk === riskLevel ? 3 : 1;
-              const color = risk === riskLevel ? '#065F46' : '#888';
+        {/* Lines for risk levels 1 to 10 */}
+        {stockData.map(({ risk, points }) => {
+          const opacity = risk === riskLevel ? 1 : 0.2;
+          const strokeWidth = risk === riskLevel ? 3 : 1;
+          const color = risk === riskLevel ? '#065F46' : '#888';
 
-              const pathData = points
-                .map((point, i) =>
-                  i === 0 ? `M ${point.x},${point.y}` : `L ${point.x},${point.y}`
-                )
-                .join(' ');
+          const pathData = points
+            .map((point, i) =>
+              i === 0 ? `M ${point.x},${point.y}` : `L ${point.x},${point.y}`
+            )
+            .join(' ');
 
-              return (
-                <path
-                  key={risk}
-                  d={pathData}
-                  fill="none"
-                  stroke={color}
-                  strokeWidth={strokeWidth}
-                  opacity={opacity}
-                />
-              );
-            })}
-          </svg>
+          return (
+            <path
+              key={risk}
+              d={pathData}
+              fill="none"
+              stroke={color}
+              strokeWidth={strokeWidth}
+              opacity={opacity}
+            />
+          );
+        })}
+      </svg>
 
-          {/* Labels */}
-          <div className="absolute top-0 left-0 w-full h-full">
-            <div className="absolute left-0 bottom-0 mb-2 ml-2 text-gray-600 text-sm">
-              Growth
-            </div>
-            <div className="absolute right-0 bottom-0 mb-2 mr-2 text-gray-600 text-sm">
-              Time
-            </div>
-          </div>
+      {/* Labels */}
+      <div className="absolute top-0 left-0 w-full h-full">
+        <div className="absolute left-0 bottom-0 mb-2 ml-2 text-gray-600 text-sm">
+          Growth
         </div>
-
-        {/* Risk Slider */}
-        <div className="flex flex-col items-center">
-          <input
-            type="range"
-            min="1"
-            max="10"
-            value={riskLevel}
-            onChange={handleRiskChange}
-            className="slider"
-            style={{
-              marginBottom: '10px',
-            }}
-          />
-          <div
-            style={{
-              fontFamily: 'Open Sans, sans-serif',
-              color: '#065F46',
-              fontSize: '1.25rem',
-              fontWeight: 'bold',
-            }}
-          >
-            Risk Level: {riskLevel}
-          </div>
+        <div className="absolute right-0 bottom-0 mb-2 mr-2 text-gray-600 text-sm">
+          Time
         </div>
       </div>
+    </div>
+
+    {/* Risk Slider */}
+    <div className="flex flex-col items-center w-full">
+      {/* Slider Bar with Gradient */}
+      <div className="relative w-full max-w-lg px-4">
+        <input
+          type="range"
+          min="1"
+          max="10"
+          value={riskLevel}
+          onChange={handleRiskChange}
+          className="slider w-full appearance-none h-3 rounded-full bg-gradient-to-r from-green-500 to-red-500 focus:outline-none"
+          style={{
+            marginBottom: '16px',
+          }}
+        />
+        {/* Slider Labels */}
+        <div className="flex justify-between text-sm text-gray-600 mt-2">
+          <span>Low Risk</span>
+          <span>High Risk</span>
+        </div>
+      </div>
+
+      {/* Risk Level Display */}
+      <div
+        style={{
+          fontFamily: 'Open Sans, sans-serif',
+          color: '#065F46',
+          fontSize: '1.25rem',
+          fontWeight: 'bold',
+          marginTop: '10px',
+        }}
+      >
+        Risk Level: {riskLevel}
+      </div>
+    </div>
+  </div>
+
 
       <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
   <h3 className="text-3xl font-bold mb-6" style={{ color: '#065F46' }}>
@@ -488,169 +500,175 @@ const PortfolioOptimizer = () => {
       </div>
 
       {/* Chart Area */}
-      <motion.div
-        className="relative flex justify-center"
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1 }}
-      >
-        {portfolioData && (
-          <div
-            className="relative p-6 rounded-3xl shadow-xl bg-white/50 backdrop-blur-xl border border-white/30 max-w-4xl w-full"
-            style={{
-              boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
-            }}
+<motion.div
+  className="relative flex justify-center"
+  initial={{ opacity: 0, x: 30 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ duration: 1 }}
+>
+  {portfolioData && (
+    <div
+      className="relative p-6 rounded-3xl shadow-xl border border-white/20 max-w-4xl w-full"
+      style={{
+        background: 'rgba(255, 255, 255, 0.1)',
+        backdropFilter: 'blur(20px)',
+        boxShadow: '0 30px 60px rgba(0,0,0,0.15)',
+      }}
+    >
+      <div className="flex items-center justify-between mb-6 relative">
+        <div className="text-base font-medium text-gray-300 tracking-wide" style={{ fontFamily: 'Inter, sans-serif' }}>
+          Data-Backed Growth
+        </div>
+        <div
+          className="text-sm text-gray-400"
+          style={{
+            fontFamily: 'Inter, sans-serif',
+            marginLeft: 'auto',
+            alignSelf: 'flex-end',
+          }}
+        >
+          (10-year view)
+        </div>
+      </div>
+
+      <div className="w-full h-64">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
+            data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
+              date: new Date(date).toLocaleDateString('en-US', {
+                month: 'short',
+                year: '2-digit',
+              }),
+              Portfolio:
+                portfolioData.dashboard_data.performance.series.find(
+                  (s) => s.name === 'Portfolio'
+                )?.values[idx] || 0,
+              SP500:
+                portfolioData.dashboard_data.performance.series.find(
+                  (s) => s.name === 'S&P 500'
+                )?.values[idx] || 0,
+            }))}
+            margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
           >
-            <div className="flex items-center justify-between mb-4 relative">
-              <div className="flex-grow"></div>
-              <div
-                className="text-sm text-gray-600"
-                style={{
-                  fontFamily: 'Open Sans, sans-serif',
-                  marginLeft: 'auto',
-                  alignSelf: 'flex-end',
-                }}
-              >
-                (10-year view)
-              </div>
-            </div>
-
-            <div className="w-full h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
-                    date: new Date(date).toLocaleDateString('en-US', {
-                      month: 'short',
-                      year: '2-digit',
-                    }),
-                    Portfolio:
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'Portfolio'
-                      )?.values[idx] || 0,
-                    SP500:
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'S&P 500'
-                      )?.values[idx] || 0,
-                  }))}
-                  margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
-                >
-                  <defs>
-                    <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#4B5563" stopOpacity={0.2}/>
-                      <stop offset="100%" stopColor="#4B5563" stopOpacity={0}/>
-                    </linearGradient>
-                    <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#10B981" stopOpacity={0.2}/>
-                      <stop offset="100%" stopColor="#10B981" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <XAxis
-                    dataKey="date"
-                    tick={{
-                      fill: '#4B5563',
-                      fontSize: '14px',
-                      fontFamily: 'Lora, serif',
-                    }}
-                    tickLine={false}
-                    axisLine={{ stroke: '#D1D5DB' }}
-                  />
-                  <YAxis
-                    orientation="right"
-                    tick={{
-                      fill: '#4B5563',
-                      fontSize: '14px',
-                      fontFamily: 'Lora, serif',
-                    }}
-                    tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
-                    axisLine={{ stroke: '#D1D5DB' }}
-                    tickLine={false}
-                  />
-                  <Tooltip
-                    formatter={(value) => `${(value * 100).toFixed(2)}%`}
-                    contentStyle={{
-                      background: '#ffffff',
-                      border: '1px solid #E5E7EB',
-                      borderRadius: '8px',
-                      boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)',
-                      padding: '8px 12px',
-                      fontFamily: 'Lora, serif',
-                      fontSize: '14px',
-                    }}
-                  />
-                  <Legend
-                    wrapperStyle={{
-                      paddingTop: '16px',
-                      color: '#4B5563',
-                      fontFamily: 'Lora, serif',
-                      fontWeight: '500',
-                    }}
-                    iconType="circle"
-                    iconSize={10}
-                    align="center"
-                    layout="horizontal"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="Portfolio"
-                    stroke="#4B5563"
-                    fill="url(#colorPortfolio)"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="SP500"
-                    stroke="#10B981"
-                    fill="url(#colorSP500)"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* Neon Highlight Tag */}
-            <div
-              className="absolute bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
-              style={{
-                top: '80px',
-                left: '20px',
-                fontFamily: 'Lora, serif',
-                transform: 'rotate(-5deg)',
-                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
-                animation: 'pulseBadge 2s infinite',
-                cursor: 'default',
+            <defs>
+              <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#43e97b" stopOpacity={0.4} />
+                <stop offset="100%" stopColor="#43e97b" stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.4} />
+                <stop offset="100%" stopColor="#3b82f6" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <XAxis
+              dataKey="date"
+              tick={{
+                fill: '#e5e7eb',
+                fontSize: '12px',
+                fontFamily: 'Inter, sans-serif',
               }}
-            >
-              +300% Growth!
-            </div>
-          </div>
-        )}
-      </motion.div>
+              tickLine={false}
+              axisLine={{ stroke: 'rgba(255,255,255,0.2)' }}
+            />
+            <YAxis
+              orientation="right"
+              tick={{
+                fill: '#e5e7eb',
+                fontSize: '12px',
+                fontFamily: 'Inter, sans-serif',
+              }}
+              tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+              axisLine={{ stroke: 'rgba(255,255,255,0.2)' }}
+              tickLine={false}
+            />
+            <Tooltip
+              formatter={(value) => `${(value * 100).toFixed(2)}%`}
+              contentStyle={{
+                background: 'rgba(0,0,0,0.8)',
+                border: 'none',
+                borderRadius: '8px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                padding: '8px 12px',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '14px',
+                color: '#fff',
+              }}
+            />
+            <Legend
+              wrapperStyle={{
+                paddingTop: '16px',
+                color: '#e5e7eb',
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: '500',
+              }}
+              iconType="circle"
+              iconSize={10}
+              align="center"
+              layout="horizontal"
+            />
+            <Area
+              type="monotone"
+              dataKey="Portfolio"
+              stroke="#43e97b"
+              fill="url(#colorPortfolio)"
+              strokeWidth={3}
+              strokeLinecap="round"
+              style={{
+                filter: 'drop-shadow(0 0 6px rgba(67,233,123,0.6))',
+              }}
+            />
+            <Area
+              type="monotone"
+              dataKey="SP500"
+              stroke="#3b82f6"
+              fill="url(#colorSP500)"
+              strokeWidth={3}
+              strokeLinecap="round"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
 
+      {/* Neon Highlight Tag */}
+      <div
+        className="absolute text-white px-4 py-2 rounded-full text-sm font-semibold"
+        style={{
+          top: '60px',
+          left: '20px',
+          fontFamily: 'Inter, sans-serif',
+          background: 'linear-gradient(90deg, #43e97b 0%, #38b2a5 100%)',
+          boxShadow: '0 0 10px rgba(67,233,123,0.8)',
+          animation: 'pulseBadge 2s infinite ease-in-out',
+          cursor: 'default',
+        }}
+      >
+        +300% vs S&P 500!
+      </div>
     </div>
-  </section>
+  )}
+</motion.div>
+</div>
+<style jsx>{`
+  @keyframes pulseBadge {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
 
-  {/* Custom CSS Animations */}
-  <style jsx>{`
-    @keyframes pulseBadge {
-      0% { transform: scale(1) rotate(-5deg); }
-      50% { transform: scale(1.05) rotate(-5deg); }
-      100% { transform: scale(1) rotate(-5deg); }
-    }
+  .recharts-surface {
+    background-color: transparent;
+  }
+  .recharts-tooltip-wrapper {
+    transition: all 0.2s ease;
+  }
+  .recharts-legend-item {
+    font-family: 'Inter, sans-serif';
+    font-size: 14px;
+    font-weight: bold;
+  }
+`}</style>
+</section>
 
-    .recharts-surface {
-      background-color: transparent;
-    }
-    .recharts-tooltip-wrapper {
-      transition: all 0.2s ease;
-    }
-    .recharts-legend-item {
-      font-family: 'Lora, serif';
-      font-size: 14px;
-      font-weight: bold;
-    }
-  `}</style>
 
 
 
