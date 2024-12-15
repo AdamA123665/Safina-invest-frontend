@@ -311,21 +311,7 @@ const Step3 = () => {
         className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
         style={{ fontFamily: 'Open Sans, sans-serif' }}
       >
-        Explore Asset Allocation
-      </a>
-    </div>
-    <div className="flex items-center space-x-3">
-      <img
-        src="/email.webp"
-        alt="Email Icon"
-        className="w-8 h-8"
-      />
-      <a
-        href="/Funds"
-        className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
-        style={{ fontFamily: 'Open Sans, sans-serif' }}
-      >
-        Subscribe to Email Updates
+        Trading 212 portfolios
       </a>
     </div>
     <div className="flex items-center space-x-3">
@@ -340,6 +326,20 @@ const Step3 = () => {
         style={{ fontFamily: 'Open Sans, sans-serif' }}
       >
         Learn About Brokerage Platforms
+      </a>
+    </div>
+    <div className="flex items-center space-x-3">
+      <img
+        src="/email.webp"
+        alt="Email Icon"
+        className="w-8 h-8"
+      />
+      <a
+        href="/Funds"
+        className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
+        style={{ fontFamily: 'Open Sans, sans-serif' }}
+      >
+        Subscribe to Email Updates
       </a>
     </div>
   </div>
