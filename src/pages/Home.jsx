@@ -65,25 +65,27 @@ const Step1 = () => {
     </div>
 
     <div className="flex flex-col items-center w-full">
-  {/* Slider Bar with Gradient */}
-  <div className="relative w-full">
+{/* Slider Bar with Gradient */}
+<div className="relative w-full">
+  <div className="flex items-center justify-between w-full">
+    {/* Left Label */}
+    <span className="text-sm text-gray-600">Low Risk</span>
+    {/* Slider */}
     <input
       type="range"
       min="1"
       max="10"
       value={riskLevel}
       onChange={handleRiskChange}
-      className="slider w-full appearance-none h-3 rounded-full bg-gradient-to-r from-green-500 to-red-500 focus:outline-none"
+      className="slider w-full appearance-none h-3 rounded-full bg-gradient-to-r from-green-500 to-red-500 focus:outline-none mx-2"
       style={{
         marginBottom: '16px',
       }}
     />
-    {/* Slider Labels */}
-    <div className="flex justify-between text-sm text-gray-600 mt-2">
-      <span>Low Risk</span>
-      <span>High Risk</span>
-    </div>
+    {/* Right Label */}
+    <span className="text-sm text-gray-600">High Risk</span>
   </div>
+</div>
 
 
       {/* Risk Level Display */}

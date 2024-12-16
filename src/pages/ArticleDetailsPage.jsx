@@ -53,7 +53,7 @@ function ArticleDetailsPage() {
       </div>
 
       {/* Article Content */}
-<section className="container mx-auto px-6 py-12 lg:py-16">
+      <section className="container mx-auto px-6 py-12 lg:py-16">
   <div className="bg-white rounded-lg shadow-lg p-8 lg:p-12">
     <div
       className="prose max-w-none lg:prose-lg prose-green"
