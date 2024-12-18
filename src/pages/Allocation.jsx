@@ -334,86 +334,132 @@ function Allocation() {
                 </div>
               </motion.div>
 
-              <section className="mt-16 bg-white rounded-lg shadow-lg p-8">
-                <motion.h2
-                  className="text-3xl font-extrabold text-green-800 mb-6 text-center"
-                  initial={{ y: -20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                >
-                  Ready to Invest?
-                </motion.h2>
-                <p className="text-gray-700 max-w-2xl mx-auto text-center mb-6">
-                  You can invest through a variety of platforms, each offering different approaches, tools, and fee structures.
-                </p>
-                <div className="text-center mb-10">
-                  <a
-                    href="/articles/brokerage-platforms"
-                    className="inline-flex items-center text-blue-700 hover:text-blue-900 underline"
-                  >
-                    Learn More About Brokerage Options <FiExternalLink className="ml-1" />
-                  </a>
-                </div>
-                
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  {/* Trading 212 Portfolio Card */}
-                  <motion.div
-                    className="bg-green-50 border border-green-200 rounded-lg p-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
-                    <h3 className="text-2xl font-bold text-green-700 mb-4">Invest with Trading 212</h3>
-                    <p className="text-gray-700 mb-4">
-                      Based on your risk tolerance, we’ve identified a suitable pre-built portfolio on Trading 212. 
-                      Simply choose your risk level to see the recommended portfolio.
-                    </p>
-                    
-                    <label className="block mb-4">
-                      <span className="text-gray-700 font-semibold">Your Risk Level:</span>
-                      <select
-                        className="mt-1 block w-full p-3 border border-green-300 rounded focus:outline-none focus:ring-2 focus:ring-green-600"
-                        value={selectedRiskLevel}
-                        onChange={(e) => setSelectedRiskLevel(parseInt(e.target.value, 10))}
-                      >
-                        {Array.from({ length: 10 }, (_, i) => i + 1).map((level) => (
-                          <option key={level} value={level}>
-                            {level} - {level <= 3 ? 'Lower Risk' : level <= 7 ? 'Moderate Risk' : 'Higher Risk'}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
+              <section className="mt-16 bg-white rounded-lg shadow-lg p-8 relative overflow-hidden">
+  {/* Background accents */}
+  <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-green-100 pointer-events-none" />
 
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                      <p className="text-gray-800 mb-4">
-                        Recommended Portfolio for Risk Level {selectedRiskLevel}:
-                      </p>
-                      <a
-                        href={trading212Links[selectedRiskLevel]}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-green-700 hover:text-green-900 underline"
-                      >
-                        View Trading 212 Portfolio <FiExternalLink className="ml-1" />
-                      </a>
-                    </div>
-                  </motion.div>
+  <motion.h2
+    className="text-3xl font-extrabold text-green-800 mb-6 text-center relative z-10"
+    initial={{ y: -20, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+  >
+    Ready to Invest?
+  </motion.h2>
+  <p className="text-gray-700 max-w-2xl mx-auto text-center mb-6 relative z-10">
+    Choose a platform that fits your style—pre-built portfolios or hands-on investing. 
+    Your journey, your call.
+  </p>
 
-                  {/* Other Brokerages Card */}
-                  <motion.div
-                    className="bg-blue-50 border border-blue-200 rounded-lg p-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
-                    <h3 className="text-2xl font-bold text-blue-700 mb-4">Invest via Other Brokerages</h3>
-                    <p className="text-gray-700">
-                      If you prefer another platform, simply choose a brokerage that best aligns with your needs and goals. 
-                      You can then follow the steps provided by that platform to invest in the allocations you've decided upon.
-                    </p>
-                    <p className="mt-4 text-gray-700">
-                      Remember to review fees, available assets, and user experience to ensure it’s the right fit for you.
-                    </p>
-                  </motion.div>
-                </div>
-              </section>
+  <div className="text-center mb-10 relative z-10">
+    <a
+      href="/articles/brokerage-platforms"
+      className="inline-flex items-center text-blue-700 hover:text-blue-900 underline font-medium transition duration-300"
+    >
+      Learn More About Brokerage Options <FiExternalLink className="ml-1" />
+    </a>
+  </div>
+  
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
+    {/* Trading 212 Portfolio Card */}
+    <motion.div
+      className="border border-green-200 rounded-lg p-6 bg-white relative overflow-hidden"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Decorative gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-white opacity-90 pointer-events-none rounded-lg" />
+      
+      <h3 className="text-2xl font-bold text-green-700 mb-4 relative z-10 flex items-center">
+        <span className="mr-2">Invest with Trading 212</span>
+        <img src="/icons/invest-icon.svg" alt="Invest icon" className="w-6 h-6" />
+      </h3>
+      <p className="text-gray-700 mb-4 relative z-10">
+        We’ve identified a suitable pre-built portfolio based on your chosen risk tolerance.
+      </p>
+
+      {/* Display chosen risk tolerance (from parent slider) */}
+      <div className="mb-4 relative z-10">
+        <span className="block text-gray-700 font-semibold mb-1">Your Chosen Risk Level:</span>
+        <div className="p-3 border border-green-300 rounded-lg bg-green-50 flex items-center justify-between">
+          <span className="font-bold text-green-800">Level {riskTolerance}</span>
+          <span className="text-sm text-green-600">
+            {riskTolerance <= 3
+              ? 'Lower Risk'
+              : riskTolerance <= 7
+              ? 'Moderate Risk'
+              : 'Higher Risk'}
+          </span>
+        </div>
+      </div>
+
+      <div className="bg-white p-4 rounded-lg shadow-md relative z-10">
+        <p className="text-gray-800 mb-4 font-medium">
+          Recommended Portfolio for Risk Level {riskTolerance}:
+        </p>
+        <a
+          href={trading212Links[riskTolerance]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center text-green-700 hover:text-green-900 underline font-semibold transition duration-300"
+        >
+          View Trading 212 Portfolio <FiExternalLink className="ml-1" />
+        </a>
+      </div>
+    </motion.div>
+
+    {/* Other Brokerages Card */}
+    <motion.div
+      className="border border-blue-200 rounded-lg p-6 bg-white relative overflow-hidden"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Decorative gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white opacity-90 pointer-events-none rounded-lg" />
+
+      <h3 className="text-2xl font-bold text-blue-700 mb-4 relative z-10 flex items-center">
+        <span className="mr-2">Invest via Other Brokerages</span>
+        <img src="/icons/scale-invest.svg" alt="Brokerage icon" className="w-6 h-6" />
+      </h3>
+      <p className="text-gray-700 relative z-10 mb-4">
+        Prefer another platform? Follow these quick steps:
+      </p>
+      <ul className="list-none space-y-3 relative z-10 pl-0">
+        <li className="flex items-start">
+          <img src="/icons/funds.svg" alt="Funds icon" className="w-6 h-6 mr-3" />
+          <div>
+            <span className="font-semibold text-gray-800">1. Add Funds</span>
+            <p className="text-sm text-gray-600">Deposit money into your chosen brokerage account.</p>
+          </div>
+        </li>
+        <li className="flex items-start">
+          <img src="/icons/search.svg" alt="Search icon" className="w-6 h-6 mr-3" />
+          <div>
+            <span className="font-semibold text-gray-800">2. Find Your Assets</span>
+            <p className="text-sm text-gray-600">Search for the ticker symbols of the assets you identified.</p>
+          </div>
+        </li>
+        <li className="flex items-start">
+          <img src="/icons/invest.svg" alt="Invest icon" className="w-6 h-6 mr-3" />
+          <div>
+            <span className="font-semibold text-gray-800">3. Invest</span>
+            <p className="text-sm text-gray-600">
+              Purchase shares. If you can’t invest the full amount due to share sizes, 
+              keep the remaining funds in your account or allocate them to another asset.
+            </p>
+          </div>
+        </li>
+      </ul>
+      <p className="mt-6 text-gray-700 text-sm relative z-10">
+        Always review fees, available assets, and user experience to ensure it’s the right fit for you.
+      </p>
+    </motion.div>
+  </div>
+</section>
+
 
 
 
