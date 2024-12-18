@@ -19,7 +19,34 @@ function Assets() {
   const toggleSubSection = (subSection) => {
     setExpandedSubSection(expandedSubSection === subSection ? null : subSection);
   };
-
+const taxSubSections = [
+  {
+    title: 'Capital Gains Tax',
+    description: 'Capital Gains Tax (CGT) in the UK is a tax on the profit you make when you sell or dispose of an asset that has increased in value. The tax is only charged on the gain (the difference between what you paid for the asset and what you sold it for), not on the total sale price. For example, if you bought an asset for £10,000 and sold it for £15,000, your gain is £5,000. You would pay CGT on this £5,000, depending on your tax situation.'
+  },
+  {
+    title: 'Dividend Tax',
+    description: (
+      <>
+        <p>
+          <strong>Dividend Tax</strong> is a tax applied to the income you receive from dividends paid by companies you own shares in. Dividends are distributions of a company’s profits to its shareholders. If you hold investments in a taxable account, you may owe tax on these dividends, depending on your total income and the dividend tax allowance.
+        </p>
+        <p>
+          In the UK, you have a tax-free dividend allowance each tax year (currently £1,000 for 2024/25). Any dividends above this allowance are taxed at rates based on your income tax band:
+        </p>
+        <ul className="list-disc pl-6">
+          <li><strong>Basic-rate taxpayers:</strong> 8.75%</li>
+          <li><strong>Higher-rate taxpayers:</strong> 33.75%</li>
+          <li><strong>Additional-rate taxpayers:</strong> 39.35%</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    title: 'Tax-Efficient Accounts',
+    description: 'Tax-efficient accounts, such as ISAs and pensions, allow you to grow your investments while reducing your tax liability. Discover their benefits and usage below.'
+  }
+];
   // Risk Tolerance Quiz
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [quizResult, setQuizResult] = useState(null);
@@ -473,19 +500,19 @@ function Assets() {
           >
             i
           </button>
-        </h3>
-        <h3 className="text-lg font-semibold text-gray-800 flex items-center">
-          Diversification Score:{' '}
-          <span className="font-bold text-green-600 ml-2">
-            {(diversificationScore * 100).toFixed(0)}%
-          </span>
-          <button
-            className="ml-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full hover:bg-green-600"
-            onClick={() => setShowModal({ ...showModal, diversification: true })}
-          >
-            i
-          </button>
-        </h3>
+          </h3>
+<h3 className="text-lg font-semibold text-gray-800 flex items-center">
+  Diversification Score:{' '}
+  <span className="font-bold text-green-600 ml-2">
+    {(diversificationScore * 100).toFixed(0)}%
+  </span>
+  <button
+    className="ml-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full hover:bg-green-600"
+    onClick={() => setShowModal({ ...showModal, diversification: true })}
+  >
+    i
+  </button>
+</h3>
       </div>
 
       {/* Modal for Risk */}
@@ -702,37 +729,35 @@ function Assets() {
                   Taxes can significantly impact your investment returns. Understanding them is crucial.
                 </p>
                 {/* Tax Subsections */}
-                {['Capital Gains Tax', 'Dividend Tax', 'Tax-Efficient Accounts'].map(
-                  (subSection, idx) => (
-                    <div key={idx} className="mb-4">
-                      <button
-                        className="w-full text-left flex justify-between items-center bg-gray-100 py-3 px-5 rounded-lg shadow-sm hover:bg-gray-200 transition duration-300"
-                        onClick={() => toggleSubSection(subSection)}
-                      >
-                        <span className="text-gray-700 font-semibold">
-                          {subSection}
-                        </span>
-                        {expandedSubSection === subSection ? (
-                          <FiChevronUp className="h-5 w-5 text-gray-700" />
-                        ) : (
-                          <FiChevronDown className="h-5 w-5 text-gray-700" />
-                        )}
-                      </button>
-                      {expandedSubSection === subSection && (
-                        <motion.div
-                          className="mt-2 p-4 bg-gray-50 rounded-lg shadow-inner"
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                        >
-                          <p className="text-gray-600">
-                            {`Detailed information about ${subSection.toLowerCase()} and how it affects your investments.`}
-                          </p>
-                        </motion.div>
-                      )}
-                    </div>
-                  )
-                )}
-              </motion.div>
+                {taxSubSections.map((subSection, idx) => (
+      <div key={idx} className="mb-4">
+        <button
+          className="w-full text-left flex justify-between items-center bg-gray-100 py-3 px-5 rounded-lg shadow-sm hover:bg-gray-200 transition duration-300"
+          onClick={() => toggleSubSection(subSection.title)}
+        >
+          <span className="text-gray-700 font-semibold">
+            {subSection.title}
+          </span>
+          {expandedSubSection === subSection.title ? (
+            <FiChevronUp className="h-5 w-5 text-gray-700" />
+          ) : (
+            <FiChevronDown className="h-5 w-5 text-gray-700" />
+          )}
+        </button>
+        {expandedSubSection === subSection.title && (
+          <motion.div
+            className="mt-2 p-4 bg-gray-50 rounded-lg shadow-inner"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+          >
+            <p className="text-gray-600">
+              {subSection.description}
+            </p>
+          </motion.div>
+        )}
+      </div>
+    ))}
+  </motion.div>
             )}
           </div>
         </div>

@@ -513,7 +513,7 @@ function Allocation() {
                     )}
                 </div>
               </motion.div>
-              {/* Upcoming Additions Section */}
+              
 <motion.div
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
@@ -527,21 +527,21 @@ function Allocation() {
     We're bringing you the latest opportunities to diversify and grow. Explore the future of investing with our upcoming funds:
   </p>
   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-    {/* Commodity Fund */}
+    {/* Tactical Asset Allocation Fund */}
     <motion.div
       whileHover={{ scale: 1.05, boxShadow: "0px 10px 20px rgba(0, 128, 0, 0.2)" }}
       className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition"
     >
       <img
-        src="/icons/commodity.svg"
-        alt="Commodity Fund Icon"
+        src="/icons/tactical.svg"
+        alt="Tactical Asset Allocation Icon"
         className="w-16 h-16 mb-4"
       />
       <h3 className="text-xl font-semibold text-green-700 mb-2">
-        Macro Fund
+        Tactical Asset Allocation
       </h3>
       <p className="text-gray-700 text-center mb-4">
-        Unlock the potential of high-performing commodities and protect your portfolio against market volatility.
+        Adapt your portfolio with precision using data-driven strategies to optimise risk and return across diverse markets.
       </p>
       <a
         href="/funds"
@@ -551,21 +551,21 @@ function Allocation() {
       </a>
     </motion.div>
 
-    {/* Tech Equity Fund */}
+    {/* Savings Fund */}
     <motion.div
       whileHover={{ scale: 1.05, boxShadow: "0px 10px 20px rgba(0, 128, 0, 0.2)" }}
       className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition"
     >
       <img
-        src="/icons/tech.svg"
-        alt="Tech Equity Fund Icon"
+        src="/icons/savings.svg"
+        alt="Savings Fund Icon"
         className="w-16 h-16 mb-4"
       />
       <h3 className="text-xl font-semibold text-green-700 mb-2">
-        Tech Equity Fund
+        Savings Fund
       </h3>
       <p className="text-gray-700 text-center mb-4">
-        Invest in the technology shaping tomorrow with exposure to industry leaders and innovators.
+        Secure your future with our tailored savings solutions designed to grow steadily while protecting your capital.
       </p>
       <a
         href="/funds"
@@ -575,27 +575,27 @@ function Allocation() {
       </a>
     </motion.div>
 
-    {/* Crypto Fund */}
+    {/* Private Markets Fund */}
     <motion.div
       whileHover={{ scale: 1.05, boxShadow: "0px 10px 20px rgba(0, 128, 0, 0.2)" }}
       className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition"
     >
       <img
-        src="/icons/crypto.svg"
-        alt="Crypto Icon"
+        src="/icons/private-markets.svg"
+        alt="Private Markets Icon"
         className="w-16 h-16 mb-4"
       />
       <h3 className="text-xl font-semibold text-green-700 mb-2">
-        Crypto Investments
+        Private Markets
       </h3>
       <p className="text-gray-700 text-center mb-4">
-        Dive into the digital frontier and gain exposure to the world of blockchain and cryptocurrency.
+        Access exclusive investment opportunities in private markets, including real estate, venture capital, and private equity.
       </p>
       <a
-        href="/crypto-article"
+        href="/funds"
         className="text-green-600 underline hover:text-green-800 transition"
       >
-        Read the Article
+        Learn More
       </a>
     </motion.div>
   </div>
