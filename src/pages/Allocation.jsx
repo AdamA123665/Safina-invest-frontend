@@ -37,7 +37,7 @@ function Allocation() {
     7: 'https://www.trading212.com/portfolio/aggressive-growth',
     8: 'https://www.trading212.com/portfolio/high-growth',
     9: 'https://www.trading212.com/portfolio/very-high-growth',
-    10: 'https://www.trading212.com/portfolio/extreme-growth',
+    10: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ0vRXXSXTRqPt7',
   };
 
   // Removed reference to riskLevel, using a default value of 5
