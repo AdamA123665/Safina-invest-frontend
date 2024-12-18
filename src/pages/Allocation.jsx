@@ -40,8 +40,7 @@ function Allocation() {
     10: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ0vRXXSXTRqPt7',
   };
 
-  // Removed reference to riskLevel, using a default value of 5
-  const [selectedRiskLevel, setSelectedRiskLevel] = useState(5);
+
 
   const COLORS = [
     '#0088FE',
