@@ -1,12 +1,12 @@
 // src/pages/Assets.jsx
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { useForm } from 'react-hook-form';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { FaRegLightbulb, FaPiggyBank, FaChartLine, FaRegCalendarAlt, FaBalanceScale, FaUniversity } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+
 function Assets() {
   const [expandedSection, setExpandedSection] = useState(null);
   const [expandedSubSection, setExpandedSubSection] = useState(null);
@@ -19,107 +19,384 @@ function Assets() {
   const toggleSubSection = (subSection) => {
     setExpandedSubSection(expandedSubSection === subSection ? null : subSection);
   };
-const taxSubSections = [
-  {
-    title: 'Capital Gains Tax',
-    description: 'Capital Gains Tax (CGT) in the UK is a tax on the profit you make when you sell or dispose of an asset that has increased in value. The tax is only charged on the gain (the difference between what you paid for the asset and what you sold it for), not on the total sale price. For example, if you bought an asset for £10,000 and sold it for £15,000, your gain is £5,000. You would pay CGT on this £5,000, depending on your tax situation.'
-  },
-  {
-    title: 'Dividend Tax',
-    description: (
-      <>
-        <p>
-          <strong>Dividend Tax</strong> is a tax applied to the income you receive from dividends paid by companies you own shares in. Dividends are distributions of a company’s profits to its shareholders. If you hold investments in a taxable account, you may owe tax on these dividends, depending on your total income and the dividend tax allowance.
-        </p>
-        <p>
-          In the UK, you have a tax-free dividend allowance each tax year (currently £1,000 for 2024/25). Any dividends above this allowance are taxed at rates based on your income tax band:
-        </p>
-        <ul className="list-disc pl-6">
-          <li><strong>Basic-rate taxpayers:</strong> 8.75%</li>
-          <li><strong>Higher-rate taxpayers:</strong> 33.75%</li>
-          <li><strong>Additional-rate taxpayers:</strong> 39.35%</li>
-        </ul>
-      </>
-    ),
-  },
-  {
-    title: 'Tax-Efficient Accounts',
-    description: 'Tax-efficient accounts, such as ISAs and pensions, allow you to grow your investments while reducing your tax liability. Discover their benefits and usage below.'
-  }
-];
-  // Risk Tolerance Quiz
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const [quizResult, setQuizResult] = useState(null);
 
-  const onSubmitQuiz = (data) => {
-    let score = 0;
-    for (const key in data) {
-      score += parseInt(data[key], 10);
+  const taxSubSections = [
+    {
+      title: 'Capital Gains Tax',
+      description: 'Capital Gains Tax (CGT) in the UK is a tax on the profit you make when you sell or dispose of an asset that has increased in value. The tax is only charged on the gain (the difference between what you paid for the asset and what you sold it for), not on the total sale price. For example, if you bought an asset for £10,000 and sold it for £15,000, your gain is £5,000. You would pay CGT on this £5,000, depending on your tax situation.'
+    },
+    {
+      title: 'Dividend Tax',
+      description: (
+        <>
+          <p>
+            <strong>Dividend Tax</strong> is a tax applied to the income you receive from dividends paid by companies you own shares in. Dividends are distributions of a company’s profits to its shareholders. If you hold investments in a taxable account, you may owe tax on these dividends, depending on your total income and the dividend tax allowance.
+          </p>
+          <p>
+            In the UK, you have a tax-free dividend allowance each tax year (currently £1,000 for 2024/25). Any dividends above this allowance are taxed at rates based on your income tax band:
+          </p>
+          <ul className="list-disc pl-6">
+            <li><strong>Basic-rate taxpayers:</strong> 8.75%</li>
+            <li><strong>Higher-rate taxpayers:</strong> 33.75%</li>
+            <li><strong>Additional-rate taxpayers:</strong> 39.35%</li>
+          </ul>
+        </>
+      ),
+    },
+    {
+      title: 'Tax-Efficient Accounts',
+      description: 'Tax-efficient accounts, such as ISAs and pensions, allow you to grow your investments while reducing your tax liability. Discover their benefits and usage below.'
     }
-    if (score <= 5) setQuizResult('Conservative Investor');
-    else if (score <= 10) setQuizResult('Moderate Investor');
-    else setQuizResult('Aggressive Investor');
+  ];
+
+  // Risk Tolerance Quiz States and Logic
+  const [step, setStep] = useState(0);
+  const [name, setName] = useState('');
+  const [, setScore] = useState(0);
+  const [answers, setAnswers] = useState([]);
+  
+  const questions  = useMemo(() =>  [
+    {
+      question: "What is your primary investing goal and time horizon?",
+      options: [
+        { label: "I’m investing for retirement decades away, I want maximum growth over the long term.", value: 3 },
+        { label: "I have a medium-term goal (5-10 years), aiming for growth with some stability.", value: 1 },
+        { label: "I’m investing short-term (1-3 years), preserving capital is key.", value: -1 },
+      ]
+    },
+    {
+      question: "How do you feel if your portfolio drops by 15% in a few months?",
+      options: [
+        { label: "I’m calm, this is a long-term game. I might even buy more.", value: 3 },
+        { label: "I’m uneasy but I’ll hold and wait it out.", value: 1 },
+        { label: "I’d be very stressed and likely sell to prevent further losses.", value: -2 },
+      ]
+    },
+    {
+      question: "The headlines scream ‘Markets Crash!’ – how do you respond?",
+      options: [
+        { label: "It’s a buying opportunity; I trust my long-term plan.", value: 2 },
+        { label: "I get nervous, but I stay invested.", value: 0 },
+        { label: "I’d reduce exposure, seeking safer assets.", value: -2 },
+      ]
+    },
+    {
+      question: "Your preferred portfolio style?",
+      options: [
+        { label: "Aggressive growth: emerging markets, tech, etc.", value: 3 },
+        { label: "Balanced mix: stocks, bonds, maybe some alternatives.", value: 1 },
+        { label: "Conservative: stable bonds, dividend stocks, cash.", value: -1 },
+      ]
+    },
+    {
+      question: "If investing was a sport, which would you choose?",
+      options: [
+        { label: "Skydiving: excitement, risk, potential big payoff.", value: 2 },
+        { label: "Hiking: steady progress with moderate challenges.", value: 1 },
+        { label: "A calm stroll: minimal surprises, very steady.", value: -1 },
+      ]
+    },
+    {
+      question: "How experienced are you with investing?",
+      options: [
+        { label: "Very experienced; I understand fluctuations are normal.", value: 2 },
+        { label: "Somewhat experienced; I know basics but can get nervous.", value: 1 },
+        { label: "Not experienced; this is all new and uncertain.", value: 0 },
+      ]
+    },
+    {
+      question: "Your reaction if your portfolio gained 20% last year?",
+      options: [
+        { label: "Thrilled! Let’s aim even higher.", value: 2 },
+        { label: "Happy but cautious, I’ll enjoy this gain and hold steady.", value: 1 },
+        { label: "Anxious that it’s just luck; might lock in gains now.", value: 0 },
+      ]
+    },
+    {
+      question: "If you received a large inheritance tomorrow, what’s your approach?",
+      options: [
+        { label: "Invest aggressively into high-growth sectors quickly.", value: 2 },
+        { label: "Diversify across stocks, bonds, real estate.", value: 1 },
+        { label: "Keep most in cash or ultra-safe assets initially.", value: -1 },
+      ]
+    },
+    {
+      question: "How stable is your income and emergency savings?",
+      options: [
+        { label: "Very stable job and solid emergency fund for a year.", value: 2 },
+        { label: "Stable job, some emergency savings for a few months.", value: 1 },
+        { label: "Uncertain income, minimal emergency savings.", value: -1 },
+      ]
+    },
+    {
+      question: "Do you enjoy researching new investments?",
+      options: [
+        { label: "Yes! I love discovering new opportunities and trends.", value: 2 },
+        { label: "Somewhat, I do basic research before investing.", value: 1 },
+        { label: "Not really, I prefer safer or professionally managed options.", value: 0 },
+      ]
+    },
+    {
+      question: "When you think about investing, what’s your top priority?",
+      options: [
+        { label: "Maximizing returns, even if it means big swings.", value: 2 },
+        { label: "Growing steadily while limiting downside risk.", value: 1 },
+        { label: "Protecting capital above all else.", value: -1 },
+      ]
+    },
+    {
+      question: "If a friend suggests a high-risk, high-reward stock idea, you:",
+      options: [
+        { label: "Jump on it after quick due diligence. Opportunity knocks!", value: 2 },
+        { label: "Check carefully, maybe invest a small portion.", value: 1 },
+        { label: "Avoid it. I’m not comfortable with big unknowns.", value: -1 },
+      ]
+    },
+  ], []);
+
+  // Initialize answers array if not done
+  React.useEffect(() => {
+    if (answers.length === 0) {
+      setAnswers(Array(questions.length).fill(null));
+    }
+  }, [answers, questions]);
+
+  const handleNameSubmit = () => {
+    if (name.trim() !== '') {
+      setStep(step + 1);
+    } else {
+      alert("Please enter your name before starting the quiz.");
+    }
   };
-    const [investment, setInvestment] = useState(10000);
-    const [allocation, setAllocation] = useState({
-      Stocks: 40,
-      Bonds: 30,
-      RealEstate: 20,
-      Cash: 10,
-    });
-    const [feedback, setFeedback] = useState('');
-    const [showModal, setShowModal] = useState({ risk: false, diversification: false });
-  
-    const assetRiskLevels = {
-      Stocks: 'High',
-      Bonds: 'Medium',
-      RealEstate: 'Medium',
-      Cash: 'Low',
-    };
-  
-    const assetColors = ['#4A90E2', '#50E3C2', '#F5A623', '#B8E986'];
-  
-    const calculateRisk = (allocation) => {
-      const riskWeights = { Stocks: 1, Bonds: 0.5, RealEstate: 0.7, Cash: 0 };
-      return Object.entries(allocation).reduce(
-        (risk, [asset, value]) => risk + riskWeights[asset] * value,
-        0
-      );
-    };
-  
-    const handleAllocationChange = (asset, value) => {
-      value = parseFloat(value);
-      const otherAssets = Object.keys(allocation).filter((key) => key !== asset);
-      const totalOther = otherAssets.reduce((sum, key) => sum + allocation[key], 0);
-  
-      if (totalOther + value > 100) {
-        setFeedback('Total allocation cannot exceed 100%!');
-        return;
+
+  const handleAnswerSelect = (optionValue) => {
+    const updatedAnswers = [...answers];
+    updatedAnswers[step - 1] = optionValue;
+    setAnswers(updatedAnswers);
+  };
+
+  const goNext = () => {
+    if (step === 0) {
+      handleNameSubmit();
+    } else {
+      if (answers[step - 1] !== null) {
+        setStep(step + 1);
+      } else {
+        alert("Please select an answer before proceeding.");
       }
-  
-      const newAllocation = {
-        ...allocation,
-        [asset]: value,
-      };
-  
-      const remaining = 100 - value;
-      const adjustedOtherAssets = otherAssets.map((key) => ({
-        key,
-        value: (allocation[key] / totalOther) * remaining,
-      }));
-  
-      adjustedOtherAssets.forEach(({ key, value }) => {
-        newAllocation[key] = Math.max(value, 0);
-      });
-  
-      setAllocation(newAllocation);
-      setFeedback('');
+    }
+  };
+
+  const goBack = () => {
+    if (step > 0) {
+      setStep(step - 1);
+    }
+  };
+
+  const calculateResult = () => {
+    const rawScore = answers.reduce((sum, val) => sum + (val || 0), 0);
+
+    const minScore = -10;
+    const maxScore = 24;
+    const clamped = Math.max(minScore, Math.min(rawScore, maxScore));
+    const riskLevel = Math.round(
+      1 + ((clamped - minScore) / (maxScore - minScore)) * 9
+    );
+
+    const annualReturn = 6 + (riskLevel - 1);
+    return { riskLevel, annualReturn };
+  };
+
+  const renderQuiz = () => {
+    // Step 0: Name input
+    if (step === 0) {
+      return (
+        <div className="max-w-md mx-auto p-8 bg-white rounded-lg shadow-md mt-10">
+          <h1 className="text-2xl font-bold mb-4">
+            Welcome to the Portfolio Horizons Risk Profiler!
+          </h1>
+          <p className="mb-4">
+            I’m your personal elite wealth manager, ready to dive deep into your
+            investing psyche. We’ll talk goals, comfort with risk, market
+            volatility, and much more. At the end, I’ll suggest a risk level (1-10)
+            along with a potential annual return scenario (6% to 16%).
+          </p>
+          <p className="mb-4">Let’s begin with your name:</p>
+          <input
+            type="text"
+            placeholder="Enter your name"
+            className="border p-2 w-full mb-4 rounded"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <button
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            onClick={goNext}
+          >
+            Start Quiz
+          </button>
+        </div>
+      );
+    }
+
+    // Steps 1 through questions.length: show questions
+    if (step > 0 && step <= questions.length) {
+      const qIndex = step - 1;
+      const { question, options } = questions[qIndex];
+      const selectedOption = answers[qIndex];
+
+      return (
+        <div className="max-w-md mx-auto p-8 bg-white rounded-lg shadow-md mt-10">
+          <h2 className="text-xl font-bold mb-4">
+            {`Question ${step}/${questions.length}`}
+          </h2>
+          {step === 1 && (
+            <p className="mb-4">
+              Great to have you here, {name.trim() || "friend"}. Let’s get to know
+              you as an investor.
+            </p>
+          )}
+          <p className="font-semibold mb-6">{question}</p>
+
+          <div className="space-y-4">
+            {options.map((opt, idx) => (
+              <label
+                key={idx}
+                className={`block p-4 border rounded cursor-pointer ${
+                  selectedOption === opt.value
+                    ? "border-green-600 bg-green-50"
+                    : "hover:bg-gray-50"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name={`question-${qIndex}`}
+                  className="mr-2"
+                  checked={selectedOption === opt.value}
+                  onChange={() => handleAnswerSelect(opt.value)}
+                />
+                {opt.label}
+              </label>
+            ))}
+          </div>
+          <div className="flex justify-between mt-6">
+            {step > 1 && (
+              <button
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+                onClick={goBack}
+              >
+                Back
+              </button>
+            )}
+            <button
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 ml-auto"
+              onClick={goNext}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // Final step: Show results
+    const { riskLevel, annualReturn } = calculateResult();
+
+    return (
+      <div className="max-w-md mx-auto p-8 bg-white rounded-lg shadow-md mt-10">
+        <h2 className="text-2xl font-bold mb-4">Your Results Are In!</h2>
+        <p className="mb-4">
+          All right, {name.trim() || "Investor"}. Based on our conversation and
+          your answers, I’d approximate your risk tolerance level at:
+        </p>
+        <p className="text-xl font-bold text-green-600 mb-4">
+          Risk Level: {riskLevel}/10
+        </p>
+        <p className="mb-4">
+          This suggests a target annual return around: <strong>{annualReturn}%</strong> per year.
+          Remember, higher returns come with higher risk. Make sure you’re
+          comfortable with the journey as well as the destination.
+        </p>
+        <p className="mb-6">
+          Thank you for taking the Portfolio Horizons Risk Profiler! Stay
+          thoughtful, stay curious, and invest with confidence.
+        </p>
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          onClick={() => {
+            // Reset quiz if user wants to retake
+            setStep(0);
+            setScore(0);
+            setAnswers(Array(questions.length).fill(null));
+          }}
+        >
+          Retake Quiz
+        </button>
+      </div>
+    );
+  };
+
+
+  // The rest of your allocation, risk calculation, etc.
+  const [investment, setInvestment] = useState(10000);
+  const [allocation, setAllocation] = useState({
+    Stocks: 40,
+    Bonds: 30,
+    RealEstate: 20,
+    Cash: 10,
+  });
+  const [feedback, setFeedback] = useState('');
+  const [showModal, setShowModal] = useState({ risk: false, diversification: false });
+
+  const assetRiskLevels = {
+    Stocks: 'High',
+    Bonds: 'Medium',
+    RealEstate: 'Medium',
+    Cash: 'Low',
+  };
+
+  const assetColors = ['#4A90E2', '#50E3C2', '#F5A623', '#B8E986'];
+
+  const calculateRisk = (allocation) => {
+    const riskWeights = { Stocks: 1, Bonds: 0.5, RealEstate: 0.7, Cash: 0 };
+    return Object.entries(allocation).reduce(
+      (risk, [asset, value]) => risk + riskWeights[asset] * value,
+      0
+    );
+  };
+
+  const handleAllocationChange = (asset, value) => {
+    value = parseFloat(value);
+    const otherAssets = Object.keys(allocation).filter((key) => key !== asset);
+    const totalOther = otherAssets.reduce((sum, key) => sum + allocation[key], 0);
+
+    if (totalOther + value > 100) {
+      setFeedback('Total allocation cannot exceed 100%!');
+      return;
+    }
+
+    const newAllocation = {
+      ...allocation,
+      [asset]: value,
     };
-  
-    const diversificationScore = Object.values(allocation).filter((v) => v > 0).length / 4;
+
+    const remaining = 100 - value;
+    const adjustedOtherAssets = otherAssets.map((key) => ({
+      key,
+      value: (allocation[key] / totalOther) * remaining,
+    }));
+
+    adjustedOtherAssets.forEach(({ key, value }) => {
+      newAllocation[key] = Math.max(value, 0);
+    });
+
+    setAllocation(newAllocation);
+    setFeedback('');
+  };
+
+  const diversificationScore = Object.values(allocation).filter((v) => v > 0).length / 4;
 
   const [timeHorizon, setTimeHorizon] = useState(10); // Default time horizon in years
-
   const [investmentGoal, setInvestmentGoal] = useState('Retirement');
 
   const goalDescriptions = {
@@ -181,7 +458,6 @@ const taxSubSections = [
           </motion.p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {/* Asset Cards */}
           {[
             {
               title: 'Savings Accounts',
@@ -252,9 +528,8 @@ const taxSubSections = [
           ))}
         </div>
       </div>
-      <div className="container mx-auto">
-        
 
+      <div className="container mx-auto">
         {/* Section: Good to Know */}
         <div className="mb-16">
           <h2 className="text-4xl font-bold text-green-700 mb-8 flex items-center">
@@ -299,73 +574,7 @@ const taxSubSections = [
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                   >
-                    <form onSubmit={handleSubmit(onSubmitQuiz)} className="bg-gray-50 p-6 rounded-lg shadow-inner">
-                      {/* Question 1 */}
-                      <div className="mb-4">
-                        <label className="block text-gray-700 mb-2">
-                          1. How would you react if your investment drops by 10%?
-                        </label>
-                        <select
-                          {...register("q1", { required: true })}
-                          className="w-full p-2 border border-gray-300 rounded"
-                        >
-                          <option value="1">Panic and sell immediately</option>
-                          <option value="2">Feel uncomfortable but hold</option>
-                          <option value="3">See it as a buying opportunity</option>
-                        </select>
-                        {errors.q1 && <p className="text-red-500 mt-2">This field is required</p>}
-                      </div>
-                      {/* Question 2 */}
-                      <div className="mb-4">
-                        <label className="block text-gray-700 mb-2">
-                          2. What is your investment horizon?
-                        </label>
-                        <select
-                          {...register("q2", { required: true })}
-                          className="w-full p-2 border border-gray-300 rounded"
-                        >
-                          <option value="1">Less than 3 years</option>
-                          <option value="2">3 to 7 years</option>
-                          <option value="3">More than 7 years</option>
-                        </select>
-                        {errors.q2 && <p className="text-red-500 mt-2">This field is required</p>}
-                      </div>
-                      {/* Question 3 */}
-                      <div className="mb-4">
-                        <label className="block text-gray-700 mb-2">
-                          3. What is your main investment goal?
-                        </label>
-                        <select
-                          {...register("q3", { required: true })}
-                          className="w-full p-2 border border-gray-300 rounded"
-                        >
-                          <option value="1">Preserve capital</option>
-                          <option value="2">Grow capital moderately</option>
-                          <option value="3">Maximize growth</option>
-                        </select>
-                        {errors.q3 && <p className="text-red-500 mt-2">This field is required</p>}
-                      </div>
-                      {/* Submit Button */}
-                      <button
-                        type="submit"
-                        className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300 w-full"
-                      >
-                        See My Result
-                      </button>
-                    </form>
-                    {/* Quiz Result */}
-                    {quizResult && (
-                      <div className="mt-6 bg-green-50 p-6 rounded-lg shadow-inner">
-                        <h3 className="text-2xl font-bold text-green-800 mb-2">
-                          Your Risk Profile: {quizResult}
-                        </h3>
-                        <p className="text-gray-700">
-                          {quizResult === 'Conservative Investor' && 'You prefer minimal risk and prioritize capital preservation.'}
-                          {quizResult === 'Moderate Investor' && 'You are comfortable with some risk to achieve moderate growth.'}
-                          {quizResult === 'Aggressive Investor' && 'You are willing to take higher risks for potentially higher returns.'}
-                        </p>
-                      </div>
-                    )}
+                    {renderQuiz()}
                   </motion.div>
                 )}
               </motion.div>
@@ -500,19 +709,19 @@ const taxSubSections = [
           >
             i
           </button>
-          </h3>
-<h3 className="text-lg font-semibold text-gray-800 flex items-center">
-  Diversification Score:{' '}
-  <span className="font-bold text-green-600 ml-2">
-    {(diversificationScore * 100).toFixed(0)}%
-  </span>
-  <button
-    className="ml-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full hover:bg-green-600"
-    onClick={() => setShowModal({ ...showModal, diversification: true })}
-  >
-    i
-  </button>
-</h3>
+        </h3>
+        <h3 className="text-lg font-semibold text-gray-800 flex items-center">
+          Diversification Score:{' '}
+          <span className="font-bold text-green-600 ml-2">
+            {(diversificationScore * 100).toFixed(0)}%
+          </span>
+          <button
+            className="ml-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full hover:bg-green-600"
+            onClick={() => setShowModal({ ...showModal, diversification: true })}
+          >
+            i
+          </button>
+        </h3>
       </div>
 
       {/* Modal for Risk */}

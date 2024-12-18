@@ -7,16 +7,13 @@ import {
   Pie,
   Cell,
   Tooltip as RechartsTooltip,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Legend,
 } from 'recharts';
 import { FaInfoCircle } from 'react-icons/fa';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import { motion } from 'framer-motion';
+import { FiExternalLink } from 'react-icons/fi'; // Import this icon
 import 'tailwindcss/tailwind.css';
+import { LineChart, Line, XAxis, YAxis, Legend } from 'recharts';
 
 function Allocation() {
   const assetRefs = useRef({});
@@ -29,6 +26,22 @@ function Allocation() {
   const [showMetricModal, setShowMetricModal] = useState(false);
   const [showSPInfo, setShowSPInfo] = useState(false);
   const [expandedAsset, setExpandedAsset] = useState(null);
+
+  const trading212Links = {
+    1: 'https://www.trading212.com/portfolio/ultra-conservative',
+    2: 'https://www.trading212.com/portfolio/conservative',
+    3: 'https://www.trading212.com/portfolio/moderately-conservative',
+    4: 'https://www.trading212.com/portfolio/balanced',
+    5: 'https://www.trading212.com/portfolio/moderate-growth',
+    6: 'https://www.trading212.com/portfolio/growth',
+    7: 'https://www.trading212.com/portfolio/aggressive-growth',
+    8: 'https://www.trading212.com/portfolio/high-growth',
+    9: 'https://www.trading212.com/portfolio/very-high-growth',
+    10: 'https://www.trading212.com/portfolio/extreme-growth',
+  };
+
+  // Removed reference to riskLevel, using a default value of 5
+  const [selectedRiskLevel, setSelectedRiskLevel] = useState(5);
 
   const COLORS = [
     '#0088FE',
@@ -321,27 +334,88 @@ function Allocation() {
                 </div>
               </motion.div>
 
-              {/* How to Implement Your Portfolio */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="bg-white rounded-xl shadow-lg p-6"
-              >
-                <h2 className="text-2xl font-bold text-green-700 mb-4">
-                  Step 3: Implement Your Portfolio
-                </h2>
-                <p className="text-gray-700">
-                  Ready to invest? Learn how to implement your optimized portfolio
-                  step-by-step.
-                </p>
-                <a
-                  href="/how-to-implement"
-                  className="text-green-600 underline mt-2 inline-block"
+              <section className="mt-16 bg-white rounded-lg shadow-lg p-8">
+                <motion.h2
+                  className="text-3xl font-extrabold text-green-800 mb-6 text-center"
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
                 >
-                  Read the Article
-                </a>
-              </motion.div>
+                  Ready to Invest?
+                </motion.h2>
+                <p className="text-gray-700 max-w-2xl mx-auto text-center mb-6">
+                  You can invest through a variety of platforms, each offering different approaches, tools, and fee structures.
+                </p>
+                <div className="text-center mb-10">
+                  <a
+                    href="/articles/brokerage-platforms"
+                    className="inline-flex items-center text-blue-700 hover:text-blue-900 underline"
+                  >
+                    Learn More About Brokerage Options <FiExternalLink className="ml-1" />
+                  </a>
+                </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Trading 212 Portfolio Card */}
+                  <motion.div
+                    className="bg-green-50 border border-green-200 rounded-lg p-6"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    <h3 className="text-2xl font-bold text-green-700 mb-4">Invest with Trading 212</h3>
+                    <p className="text-gray-700 mb-4">
+                      Based on your risk tolerance, we’ve identified a suitable pre-built portfolio on Trading 212. 
+                      Simply choose your risk level to see the recommended portfolio.
+                    </p>
+                    
+                    <label className="block mb-4">
+                      <span className="text-gray-700 font-semibold">Your Risk Level:</span>
+                      <select
+                        className="mt-1 block w-full p-3 border border-green-300 rounded focus:outline-none focus:ring-2 focus:ring-green-600"
+                        value={selectedRiskLevel}
+                        onChange={(e) => setSelectedRiskLevel(parseInt(e.target.value, 10))}
+                      >
+                        {Array.from({ length: 10 }, (_, i) => i + 1).map((level) => (
+                          <option key={level} value={level}>
+                            {level} - {level <= 3 ? 'Lower Risk' : level <= 7 ? 'Moderate Risk' : 'Higher Risk'}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+
+                    <div className="bg-white p-4 rounded-lg shadow-md">
+                      <p className="text-gray-800 mb-4">
+                        Recommended Portfolio for Risk Level {selectedRiskLevel}:
+                      </p>
+                      <a
+                        href={trading212Links[selectedRiskLevel]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-green-700 hover:text-green-900 underline"
+                      >
+                        View Trading 212 Portfolio <FiExternalLink className="ml-1" />
+                      </a>
+                    </div>
+                  </motion.div>
+
+                  {/* Other Brokerages Card */}
+                  <motion.div
+                    className="bg-blue-50 border border-blue-200 rounded-lg p-6"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    <h3 className="text-2xl font-bold text-blue-700 mb-4">Invest via Other Brokerages</h3>
+                    <p className="text-gray-700">
+                      If you prefer another platform, simply choose a brokerage that best aligns with your needs and goals. 
+                      You can then follow the steps provided by that platform to invest in the allocations you've decided upon.
+                    </p>
+                    <p className="mt-4 text-gray-700">
+                      Remember to review fees, available assets, and user experience to ensure it’s the right fit for you.
+                    </p>
+                  </motion.div>
+                </div>
+              </section>
+
+
 
               {/* Portfolio vs. S&P 500 Performance */}
               <motion.div
