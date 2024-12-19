@@ -392,11 +392,11 @@ function Allocation() {
       <div className="relative p-8">
         <h3 className="text-2xl font-bold text-blue-800 mb-6 flex items-center">
           <img
-            src="/public/trading212-removebg-preview.png"
+            src="/trading212-removebg-preview.png"
             alt="Trading 212 icon"
             className="w-8 h-8 mr-3"
           />
-          Invest with Trading 212
+          Invest with 1 click at Trading 212
         </h3>
         <p className="text-gray-700 mb-4">
           Based on your chosen risk tolerance, we’ve curated a recommended pre-built portfolio. Get started quickly and confidently.
@@ -417,20 +417,30 @@ function Allocation() {
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <p className="text-gray-800 mb-4 font-medium">
-            Recommended Portfolio for Risk Level {riskTolerance}:
-          </p>
-          <a
-            href={trading212Links[riskTolerance]}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center bg-blue-700 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-800 hover:shadow-lg font-semibold transition duration-300"
-          >
-            View Trading 212 Portfolio
-            <FiExternalLink className="ml-2 text-white" />
-          </a>
-        </div>
+        <div className="bg-white p-6 rounded-xl shadow-lg space-y-6">
+  {/* Header */}
+  <div className="text-center">
+    <h2 className="text-2xl font-bold text-gray-800">
+      Invest in Your Portfolio with Just One Click
+    </h2>
+    <p className="text-gray-600 mt-2">
+      Simply click the button below to go to Trading 212, add funds to your portfolio, and you’re all set to grow your investments effortlessly.
+    </p>
+  </div>
+
+  {/* Call-to-Action Button */}
+  <div className="text-center">
+    <a
+      href={trading212Links[riskTolerance]}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-700 text-white text-lg font-semibold px-8 py-4 rounded-lg shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300"
+    >
+      View Trading 212 Portfolio
+    </a>
+
+      </div>
+      </div>
       </div>
     </motion.div>
 
@@ -762,7 +772,7 @@ function Allocation() {
       className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition"
     >
       <img
-        src="/public/TAA.jpg"
+        src="/TAA.jpg"
         alt="Tactical Asset Allocation Icon"
         className="w-16 h-16 mb-4"
       />
@@ -786,7 +796,7 @@ function Allocation() {
       className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition"
     >
       <img
-        src="/public/savings.jpg"
+        src="/savings.jpg"
         alt="Savings Fund Icon"
         className="w-16 h-16 mb-4"
       />
@@ -810,7 +820,7 @@ function Allocation() {
       className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition"
     >
       <img
-        src="/public/private markets.jpg"
+        src="/private markets.jpg"
         alt="Private Markets Icon"
         className="w-16 h-16 mb-4"
       />

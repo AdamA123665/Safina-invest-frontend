@@ -284,8 +284,46 @@ const Step2 = () => {
     </motion.div>
   );
 };
-
 const Step3 = () => {
+  // Define your state and handlers inside the component:
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState(null); // 'success', 'error', 'loading'
+
+  const openModal = (e) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEmail('');
+    setStatus(null);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('loading');
+
+    try {
+      const response = await fetch('http://localhost:5000/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Subscription failed');
+      }
+
+      setStatus('success');
+    } catch (error) {
+      console.error(error);
+      setStatus('error');
+    }
+  };
+
   return (
     <motion.div
       className="flex flex-col md:flex-row items-center"
@@ -297,7 +335,7 @@ const Step3 = () => {
       {/* Animated Man Image */}
       <div className="w-full md:w-1/2 flex justify-center">
         <motion.img
-          src="legs back.webp" // Replace with your actual animated image path
+          src="legs back.webp"
           alt="Sit Back and Relax"
           className="w-64 h-auto"
           whileHover={{ scale: 1.3, rotate: -10 }}
@@ -305,59 +343,127 @@ const Step3 = () => {
         />
       </div>
       <div className="w-full md:w-1/2 mt-8 md:mt-0 md:px-12">
-  <h3 className="text-3xl font-bold mb-6" style={{ color: '#065F46' }}>
-    Step 3: Invest and Relax
-  </h3>
-  <p className="text-gray-700 mb-6 text-lg" style={{ fontFamily: 'Open Sans, sans-serif' }}>
-    Use our Trading 212 portfolio integration or your preferred brokerage account to invest. 
-    We recommend starting small by investing regularly each month. Subscribe to our email updates 
-    for quarterly allocation changes, market insights, and tailored recommendations.
-  </p>
-  <div className="space-y-4">
-    <div className="flex items-center space-x-3">
-      <img
-        src="/trading212-removebg-preview.png"
-        alt="Trading 212 Logo"
-        className="w-8 h-8"
-      />
-      <a
-        href="/Allocation"
-        className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
-        style={{ fontFamily: 'Open Sans, sans-serif' }}
-      >
-        Trading 212 portfolios
-      </a>
-    </div>
-    <div className="flex items-center space-x-3">
-      <span className="text-emerald-600">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.5v15m7-7.5H5" />
-        </svg>
-      </span>
-      <a
-        href="/research"
-        className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
-        style={{ fontFamily: 'Open Sans, sans-serif' }}
-      >
-        Learn About Brokerage Platforms
-      </a>
-    </div>
-    <div className="flex items-center space-x-3">
-      <img
-        src="/email.webp"
-        alt="Email Icon"
-        className="w-8 h-8"
-      />
-      <a
-        href="/Funds"
-        className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
-        style={{ fontFamily: 'Open Sans, sans-serif' }}
-      >
-        Subscribe to Email Updates
-      </a>
-    </div>
-  </div>
+        <h3 className="text-3xl font-bold mb-6" style={{ color: '#065F46' }}>
+          Step 3: Invest and Relax
+        </h3>
+        <p
+          className="text-gray-700 mb-6 text-lg"
+          style={{ fontFamily: 'Open Sans, sans-serif' }}
+        >
+          Use our Trading 212 portfolio integration or your preferred brokerage account to invest.
+          We recommend starting small by investing regularly each month. Subscribe to our email
+          updates for quarterly allocation changes, market insights, and tailored recommendations.
+        </p>
+        <div className="space-y-4">
+          <div className="flex items-center space-x-3">
+            <img
+              src="/trading212-removebg-preview.png"
+              alt="Trading 212 Logo"
+              className="w-8 h-8"
+            />
+            <a
+              href="/Allocation"
+              className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
+              style={{ fontFamily: 'Open Sans, sans-serif' }}
+            >
+              Trading 212 portfolios
+            </a>
+          </div>
+          <div className="flex items-center space-x-3">
+            <span className="text-emerald-600">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-8 w-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.5v15m7-7.5H5" />
+              </svg>
+            </span>
+            <a
+              href="/research"
+              className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
+              style={{ fontFamily: 'Open Sans, sans-serif' }}
+            >
+              Learn About Brokerage Platforms
+            </a>
+          </div>
+          <div className="flex items-center space-x-3">
+            <img src="/email.webp" alt="Email Icon" className="w-8 h-8" />
+            <div>
+              <button
+                onClick={openModal}
+                className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
+                style={{ fontFamily: 'Open Sans, sans-serif' }}
+              >
+                Subscribe to Email Updates
+              </button>
 
+              {isModalOpen && (
+                <div
+                  className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 p-4"
+                  aria-modal="true"
+                  role="dialog"
+                  aria-labelledby="subscription-modal-title"
+                >
+                  <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative">
+                    {/* Close Button */}
+                    <button
+                      onClick={closeModal}
+                      className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+                      aria-label="Close Modal"
+                    >
+                      ✕
+                    </button>
+
+                    {/* Modal Content */}
+                    <h2 id="subscription-modal-title" className="text-2xl font-bold text-emerald-700 mb-4">
+                      Subscribe to Our Updates
+                    </h2>
+                    <p className="text-gray-700 mb-6">
+                      Enter your email below to receive the latest news, updates, and offers.
+                    </p>
+
+                    {status === 'success' ? (
+                      <div className="bg-emerald-50 border-l-4 border-emerald-400 p-4 rounded mb-4 text-emerald-700">
+                        Thank you! You’re now subscribed.
+                      </div>
+                    ) : (
+                      <form onSubmit={handleSubmit}>
+                        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">
+                          Email Address
+                        </label>
+                        <input
+                          id="email"
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="w-full p-2 border border-gray-300 rounded mb-4"
+                          placeholder="you@example.com"
+                          disabled={status === 'loading'}
+                        />
+                        <button
+                          type="submit"
+                          className="w-full bg-emerald-600 text-white font-semibold py-2 rounded hover:bg-emerald-700 transition-colors duration-200"
+                          disabled={status === 'loading'}
+                        >
+                          {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                        </button>
+                        {status === 'error' && (
+                          <p className="text-red-600 text-sm mt-2">
+                            There was an error subscribing. Please try again.
+                          </p>
+                        )}
+                      </form>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </motion.div>
   );
@@ -448,8 +554,6 @@ const PortfolioOptimizer = () => {
         </section>
       );
     }
-
-  
   
     return (
       <div className="relative min-h-screen text-gray-900 font-sans overflow-hidden bg-green-100">
