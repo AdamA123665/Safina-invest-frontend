@@ -125,7 +125,7 @@ const Step1 = () => {
         </svg>
       </span>
       <a
-        href="/articles"
+        href="/articles/understanding-investing-risk"
         className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
         style={{ fontFamily: 'Open Sans, sans-serif' }}
       >
@@ -139,7 +139,7 @@ const Step1 = () => {
         </svg>
       </span>
       <a
-        href="/articles"
+        href="/assets"
         className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
         style={{ fontFamily: 'Open Sans, sans-serif' }}
       >
@@ -258,7 +258,7 @@ const Step2 = () => {
         </svg>
       </span>
       <a
-        href="/Funds"
+        href="/Allocation"
         className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
         style={{ fontFamily: 'Open Sans, sans-serif' }}
       >
@@ -272,7 +272,7 @@ const Step2 = () => {
         </svg>
       </span>
       <a
-        href="/brokerage-options"
+        href="/research"
         className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
         style={{ fontFamily: 'Open Sans, sans-serif' }}
       >
@@ -335,7 +335,7 @@ const Step3 = () => {
         </svg>
       </span>
       <a
-        href="/subscribe"
+        href="/research"
         className="text-emerald-600 font-semibold hover:text-emerald-700 text-lg transition-colors duration-200"
         style={{ fontFamily: 'Open Sans, sans-serif' }}
       >

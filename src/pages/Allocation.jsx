@@ -14,10 +14,10 @@ import { motion } from 'framer-motion';
 import { FiExternalLink } from 'react-icons/fi'; // Import this icon
 import 'tailwindcss/tailwind.css';
 import { LineChart, Line, XAxis, YAxis, Legend } from 'recharts';
-
+import { format, parseISO } from 'date-fns';
+import { AnimatePresence } from 'framer-motion'
 function Allocation() {
   const assetRefs = useRef({});
-  const [initialInvestment, setInitialInvestment] = useState(1000);
   const [riskTolerance, setRiskTolerance] = useState(5);
   const [portfolioData, setPortfolioData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -90,11 +90,30 @@ function Allocation() {
     fetchPortfolioData();
   };
 
+  const [initialInvestment, setInitialInvestment] = useState(''); // store as a string initially
+
   const handleInitialInvestmentChange = (e) => {
-    const value = Number(e.target.value);
-    if (value >= 100 && value <= 1000000) {
-      setInitialInvestment(value);
+    const inputVal = e.target.value;
+  
+    // Only allow empty input or digits
+    if (inputVal === '' || /^[0-9]*$/.test(inputVal)) {
+      setInitialInvestment(inputVal);
     }
+  };
+  
+  const handleInitialInvestmentBlur = () => {
+    let numericVal = parseInt(initialInvestment, 10);
+  
+    // If empty or invalid, set to min by default
+    if (isNaN(numericVal)) {
+      numericVal = 100;
+    }
+  
+    // Clamp to range
+    if (numericVal < 100) numericVal = 100;
+    if (numericVal > 1000000) numericVal = 1000000;
+  
+    setInitialInvestment(numericVal.toString());
   };
 
   const riskMetricExplanations = {
@@ -168,11 +187,10 @@ function Allocation() {
                   How much do you plan on investing? (Min £100, Max £1,000,000)
                 </label>
                 <input
-                  type="number"
-                  min="100"
-                  max="1000000"
+                  type="text"
                   value={initialInvestment}
                   onChange={handleInitialInvestmentChange}
+                  onBlur={handleInitialInvestmentBlur}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
@@ -333,128 +351,146 @@ function Allocation() {
                 </div>
               </motion.div>
 
-              <section className="mt-16 bg-white rounded-lg shadow-lg p-8 relative overflow-hidden">
-  {/* Background accents */}
-  <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-green-100 pointer-events-none" />
+              <section className="relative py-16 bg-gradient-to-br from-green-50 to-green-100 overflow-hidden">
+  {/* Soft decorative shapes */}
+  <div className="absolute top-0 left-0 w-64 h-64 bg-green-200 rounded-full opacity-20 transform -translate-x-1/2 -translate-y-1/2" />
+  <div className="absolute bottom-0 right-0 w-64 h-64 bg-green-200 rounded-full opacity-20 transform translate-x-1/2 translate-y-1/2" />
 
-  <motion.h2
-    className="text-3xl font-extrabold text-green-800 mb-6 text-center relative z-10"
-    initial={{ y: -20, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
+  <motion.div
+    className="relative z-10 max-w-3xl mx-auto text-center px-4"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
   >
-    Ready to Invest?
-  </motion.h2>
-  <p className="text-gray-700 max-w-2xl mx-auto text-center mb-6 relative z-10">
-    Choose a platform that fits your style—pre-built portfolios or hands-on investing. 
-    Your journey, your call.
-  </p>
-
-  <div className="text-center mb-10 relative z-10">
+    <h2 className="text-4xl sm:text-5xl font-extrabold text-green-900 mb-6">
+      Ready to Begin Your Investment Journey?
+    </h2>
+    <p className="text-lg text-gray-700 mb-8">
+      Whether you prefer a ready-made portfolio or want to pick your own assets, we make it simple to get started. Choose your path and start growing your wealth.
+    </p>
     <a
       href="/articles/brokerage-platforms"
-      className="inline-flex items-center text-blue-700 hover:text-blue-900 underline font-medium transition duration-300"
+      className="inline-flex items-center justify-center bg-blue-700 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-800 hover:shadow-lg font-semibold transition-all duration-300"
     >
-      Learn More About Brokerage Options <FiExternalLink className="ml-1" />
+      Learn More About Brokerage Options
+      <FiExternalLink className="ml-2 text-white" />
     </a>
-  </div>
-  
-  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
+  </motion.div>
+
+  <div className="relative z-10 max-w-6xl mx-auto mt-16 px-4 grid grid-cols-1 lg:grid-cols-2 gap-12">
     {/* Trading 212 Portfolio Card */}
     <motion.div
-      className="border border-green-200 rounded-lg p-6 bg-white relative overflow-hidden"
-      initial={{ opacity: 0, y: 10 }}
+      className="relative bg-white border border-blue-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.6 }}
     >
-      {/* Decorative gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-white opacity-90 pointer-events-none rounded-lg" />
-      
-      <h3 className="text-2xl font-bold text-green-700 mb-4 relative z-10 flex items-center">
-        <span className="mr-2">Invest with Trading 212</span>
-        <img src="/icons/invest-icon.svg" alt="Invest icon" className="w-6 h-6" />
-      </h3>
-      <p className="text-gray-700 mb-4 relative z-10">
-        We’ve identified a suitable pre-built portfolio based on your chosen risk tolerance.
-      </p>
+      {/* Decorative gradient for card */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white opacity-90 pointer-events-none rounded-xl" />
 
-      {/* Display chosen risk tolerance (from parent slider) */}
-      <div className="mb-4 relative z-10">
-        <span className="block text-gray-700 font-semibold mb-1">Your Chosen Risk Level:</span>
-        <div className="p-3 border border-green-300 rounded-lg bg-green-50 flex items-center justify-between">
-          <span className="font-bold text-green-800">Level {riskTolerance}</span>
-          <span className="text-sm text-green-600">
-            {riskTolerance <= 3
-              ? 'Lower Risk'
-              : riskTolerance <= 7
-              ? 'Moderate Risk'
-              : 'Higher Risk'}
-          </span>
-        </div>
-      </div>
-
-      <div className="bg-white p-4 rounded-lg shadow-md relative z-10">
-        <p className="text-gray-800 mb-4 font-medium">
-          Recommended Portfolio for Risk Level {riskTolerance}:
+      <div className="relative p-8">
+        <h3 className="text-2xl font-bold text-blue-800 mb-6 flex items-center">
+          <img
+            src="/public/trading212-removebg-preview.png"
+            alt="Trading 212 icon"
+            className="w-8 h-8 mr-3"
+          />
+          Invest with Trading 212
+        </h3>
+        <p className="text-gray-700 mb-4">
+          Based on your chosen risk tolerance, we’ve curated a recommended pre-built portfolio. Get started quickly and confidently.
         </p>
-        <a
-          href={trading212Links[riskTolerance]}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center text-green-700 hover:text-green-900 underline font-semibold transition duration-300"
-        >
-          View Trading 212 Portfolio <FiExternalLink className="ml-1" />
-        </a>
+
+        {/* Risk Tolerance Display */}
+        <div className="mb-6">
+          <span className="block text-gray-700 font-semibold mb-2">Your Chosen Risk Level:</span>
+          <div className="p-4 border border-blue-200 rounded-lg bg-blue-50 flex items-center justify-between">
+            <span className="font-bold text-blue-800">Level {riskTolerance}</span>
+            <span className="text-sm text-blue-600">
+              {riskTolerance <= 3
+                ? 'Lower Risk'
+                : riskTolerance <= 7
+                ? 'Moderate Risk'
+                : 'Higher Risk'}
+            </span>
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded-lg shadow-md">
+          <p className="text-gray-800 mb-4 font-medium">
+            Recommended Portfolio for Risk Level {riskTolerance}:
+          </p>
+          <a
+            href={trading212Links[riskTolerance]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center bg-blue-700 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-800 hover:shadow-lg font-semibold transition duration-300"
+          >
+            View Trading 212 Portfolio
+            <FiExternalLink className="ml-2 text-white" />
+          </a>
+        </div>
       </div>
     </motion.div>
 
     {/* Other Brokerages Card */}
     <motion.div
-      className="border border-blue-200 rounded-lg p-6 bg-white relative overflow-hidden"
-      initial={{ opacity: 0, y: 10 }}
+      className="relative bg-white border border-yellow-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.6 }}
     >
-      {/* Decorative gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white opacity-90 pointer-events-none rounded-lg" />
+      <div className="absolute inset-0 bg-gradient-to-br from-yellow-50 to-white opacity-90 pointer-events-none rounded-xl" />
 
-      <h3 className="text-2xl font-bold text-blue-700 mb-4 relative z-10 flex items-center">
-        <span className="mr-2">Invest via Other Brokerages</span>
-        <img src="/icons/scale-invest.svg" alt="Brokerage icon" className="w-6 h-6" />
-      </h3>
-      <p className="text-gray-700 relative z-10 mb-4">
-        Prefer another platform? Follow these quick steps:
-      </p>
-      <ul className="list-none space-y-3 relative z-10 pl-0">
-        <li className="flex items-start">
-          <img src="/icons/funds.svg" alt="Funds icon" className="w-6 h-6 mr-3" />
-          <div>
-            <span className="font-semibold text-gray-800">1. Add Funds</span>
-            <p className="text-sm text-gray-600">Deposit money into your chosen brokerage account.</p>
-          </div>
-        </li>
-        <li className="flex items-start">
-          <img src="/icons/search.svg" alt="Search icon" className="w-6 h-6 mr-3" />
-          <div>
-            <span className="font-semibold text-gray-800">2. Find Your Assets</span>
-            <p className="text-sm text-gray-600">Search for the ticker symbols of the assets you identified.</p>
-          </div>
-        </li>
-        <li className="flex items-start">
-          <img src="/icons/invest.svg" alt="Invest icon" className="w-6 h-6 mr-3" />
-          <div>
-            <span className="font-semibold text-gray-800">3. Invest</span>
-            <p className="text-sm text-gray-600">
-              Purchase shares. If you can’t invest the full amount due to share sizes, 
-              keep the remaining funds in your account or allocate them to another asset.
-            </p>
-          </div>
-        </li>
-      </ul>
-      <p className="mt-6 text-gray-700 text-sm relative z-10">
-        Always review fees, available assets, and user experience to ensure it’s the right fit for you.
-      </p>
+      <div className="relative p-8">
+        <h3 className="text-2xl font-bold text-yellow-800 mb-6 flex items-center">
+          <img
+            src="/icons/scale-invest.svg"
+            alt="Brokerage icon"
+            className="w-8 h-8 mr-3"
+          />
+          Invest via Other Brokerages
+        </h3>
+        <p className="text-gray-700 mb-6">
+          If you prefer using another platform, these simple steps will guide you through the process:
+        </p>
+
+        <ul className="space-y-4 text-gray-700">
+          <li className="flex items-start">
+            <div className="flex-shrink-0 mr-3">
+              <div className="w-8 h-8 rounded-full bg-yellow-200 flex items-center justify-center font-bold text-yellow-800">1</div>
+            </div>
+            <div>
+              <span className="font-semibold text-gray-800">Add Funds</span>
+              <p className="text-sm text-gray-600">Deposit money into your chosen brokerage account.</p>
+            </div>
+          </li>
+          <li className="flex items-start">
+            <div className="flex-shrink-0 mr-3">
+              <div className="w-8 h-8 rounded-full bg-yellow-200 flex items-center justify-center font-bold text-yellow-800">2</div>
+            </div>
+            <div>
+              <span className="font-semibold text-gray-800">Find Your Assets</span>
+              <p className="text-sm text-gray-600">Search for the ticker symbols of the assets you identified.</p>
+            </div>
+          </li>
+          <li className="flex items-start">
+            <div className="flex-shrink-0 mr-3">
+              <div className="w-8 h-8 rounded-full bg-yellow-200 flex items-center justify-center font-bold text-yellow-800">3</div>
+            </div>
+            <div>
+              <span className="font-semibold text-gray-800">Invest</span>
+              <p className="text-sm text-gray-600">Purchase shares. If share sizes limit your full investment, allocate the remainder elsewhere or keep it for future buys.</p>
+            </div>
+          </li>
+        </ul>
+
+        <p className="mt-8 text-gray-700 text-sm">
+          Before committing, review fees, asset availability, and user experience. Choose what best supports your financial goals.
+        </p>
+      </div>
     </motion.div>
   </div>
 </section>
@@ -462,39 +498,225 @@ function Allocation() {
 
 
 
-              {/* Portfolio vs. S&P 500 Performance */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="bg-white rounded-xl shadow-lg p-6 relative"
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.3 }}
+  className="bg-white rounded-xl shadow-lg p-6"
+>
+  <div className="flex items-center justify-between mb-4">
+    <h2 className="text-xl sm:text-2xl font-extrabold text-gray-800">
+      Portfolio vs. S&P 500
+    </h2>
+    <button
+      type="button"
+      onClick={() => setShowSPInfo(true)}
+      className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+      aria-label="More information"
+    >
+      <FaInfoCircle className="h-5 w-5" />
+    </button>
+  </div>
+
+  <p className="text-gray-600 text-sm mb-6 max-w-md">
+    Track how your portfolio’s returns compare against the S&P 500 benchmark over time.
+  </p>
+
+  <div className="w-full h-96">
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart
+        data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
+          date,
+          Portfolio:
+            portfolioData.dashboard_data.performance.series.find((s) => s.name === 'Portfolio')?.values[idx] || 0,
+          'S&P 500':
+            portfolioData.dashboard_data.performance.series.find((s) => s.name === 'S&P 500')?.values[idx] || 0,
+        }))}
+        margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
+      >
+        <defs>
+          <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#10B981" stopOpacity={0.7} />
+            <stop offset="100%" stopColor="#10B981" stopOpacity={0.1} />
+          </linearGradient>
+          <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#EF4444" stopOpacity={0.7} />
+            <stop offset="100%" stopColor="#EF4444" stopOpacity={0.1} />
+          </linearGradient>
+        </defs>
+
+        <XAxis
+          dataKey="date"
+          tick={{ fill: '#4B5563', fontSize: 12 }}
+          axisLine={{ stroke: '#E5E7EB' }}
+          tickLine={{ stroke: '#E5E7EB' }}
+          tickFormatter={(dateStr) => {
+            const parsedDate = parseISO(dateStr);
+            return format(parsedDate, 'MMM yyyy');
+          }}
+        />
+        <YAxis
+          tick={{ fill: '#4B5563', fontSize: 12 }}
+          tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+          axisLine={{ stroke: '#E5E7EB' }}
+          tickLine={{ stroke: '#E5E7EB' }}
+        />
+        <RechartsTooltip
+          contentStyle={{ backgroundColor: 'white', borderRadius: '8px', border: '1px solid #E5E7EB', padding: '10px' }}
+          labelStyle={{ fontWeight: '600', marginBottom: '5px' }}
+          formatter={(value) => `${(value * 100).toFixed(2)}%`}
+          labelFormatter={(label) => {
+            const parsed = parseISO(label);
+            return format(parsed, 'do MMM yyyy');
+          }}
+        />
+        <Legend
+          verticalAlign="top"
+          align="right"
+          wrapperStyle={{ top: -10, right: 0, fontSize: '14px', color: '#4B5563' }}
+        />
+
+        {/* Portfolio Line */}
+        <Line
+          type="monotone"
+          dataKey="Portfolio"
+          stroke="#10B981"
+          strokeWidth={3}
+          dot={false}
+          activeDot={{ r: 5, fill: '#10B981', strokeWidth: 2, stroke: '#ffffff' }}
+          fill="url(#colorPortfolio)"
+          fillOpacity={0.1}
+        />
+
+        {/* S&P 500 Line */}
+        <Line
+          type="monotone"
+          dataKey="S&P 500"
+          stroke="#EF4444"
+          strokeWidth={3}
+          dot={false}
+          activeDot={{ r: 5, fill: '#EF4444', strokeWidth: 2, stroke: '#ffffff' }}
+          fill="url(#colorSP500)"
+          fillOpacity={0.1}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  </div>
+</motion.div>
+
+{/* Asset Cards */}
+<motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.6, delay: 0.8 }}
+  className="bg-white rounded-xl shadow-lg p-6"
+>
+  <h2 className="text-2xl font-bold text-green-700 mb-4">
+    Learn More About Your Assets
+  </h2>
+
+  {/* ETFs List */}
+  <div className="space-y-6">
+    {portfolioData && portfolioData.dashboard_data.asset_info.map((asset, index) => {
+      // Assign a color to the asset
+      const color = COLORS[index % COLORS.length];
+      
+      // Prepare performance data for the graph
+      const performanceData =
+        portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
+          date,
+          value:
+            portfolioData.dashboard_data.performance.series.find(
+              (s) => s.name === asset.name
+            )?.values[idx] || 0,
+        }));
+
+      // Calculate YTD return
+      const thisYear = new Date().getFullYear();
+      const thisYearData = performanceData.filter(
+        (d) => new Date(d.date).getFullYear() === thisYear
+      );
+
+      let ytdReturn = null;
+      if (thisYearData.length > 1) {
+        const firstValue = thisYearData[0].value;
+        const lastValue = thisYearData[thisYearData.length - 1].value;
+        if (firstValue !== 0) {
+          ytdReturn = ((lastValue / firstValue) - 1) * 100;
+        }
+      }
+
+      // Check if this specific asset is expanded
+      const isExpanded = expandedAsset === asset.ticker;
+
+      return (
+        <motion.div
+          key={asset.ticker}
+          ref={(el) => (assetRefs.current[asset.ticker] = el)} // Assign ref here
+          layout
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className={`bg-gray-50 rounded-xl shadow-md border-2 transition-all duration-300 ${isExpanded ? 'p-6' : 'p-4'} hover:shadow-lg`}
+          style={{ borderColor: color }}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col">
+              <h3
+                className="text-lg md:text-xl font-bold"
+                style={{ color: color }}
               >
-                <h2 className="text-2xl font-bold text-green-700 mb-4">
-                  Portfolio Performance vs. S&P 500
-                  <FaInfoCircle
-                    className="text-green-600 h-5 w-5 ml-2 cursor-pointer inline-block"
-                    onClick={() => setShowSPInfo(true)}
-                  />
-                </h2>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart
-                    data={portfolioData.dashboard_data.performance.dates.map(
-                      (date, idx) => ({
-                        date,
-                        Portfolio:
-                          portfolioData.dashboard_data.performance.series.find(
-                            (s) => s.name === 'Portfolio'
-                          )?.values[idx] || 0,
-                        'S&P 500':
-                          portfolioData.dashboard_data.performance.series.find(
-                            (s) => s.name === 'S&P 500'
-                          )?.values[idx] || 0,
-                      })
-                    )}
-                  >
-                    <XAxis dataKey="date" tick={{ fill: '#6B7280' }} />
+                {asset.name}
+              </h3>
+              <div className="text-sm text-gray-600 flex items-center space-x-4 mt-1">
+                <span>
+                  Ticker: <span className="font-medium">{asset.ticker}</span>
+                </span>
+                {ytdReturn !== null && (
+                  <span>
+                    YTD Return:{' '}
+                    <span
+                      className={`font-medium ${
+                        ytdReturn >= 0 ? 'text-green-700' : 'text-red-600'
+                      }`}
+                    >
+                      {ytdReturn.toFixed(2)}%
+                    </span>
+                  </span>
+                )}
+              </div>
+            </div>
+            <button
+              onClick={() => toggleExpand(asset.ticker)}
+              className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
+            >
+              {isExpanded ? (
+                <ChevronUpIcon className="h-6 w-6" />
+              ) : (
+                <ChevronDownIcon className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+
+          {/* Expandable Section */}
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.4, ease: 'easeInOut' }}
+                className="overflow-hidden"
+              >
+                <p className="text-sm mt-4 mb-4 text-gray-700">{asset.info}</p>
+                <ResponsiveContainer width="100%" height={200}>
+                  <LineChart data={performanceData}>
+                    <XAxis
+                      dataKey="date"
+                      tick={{ fill: '#6B7280', fontSize: 12 }}
+                    />
                     <YAxis
-                      tick={{ fill: '#6B7280' }}
+                      tick={{ fill: '#6B7280', fontSize: 12 }}
                       tickFormatter={(value) =>
                         `${(value * 100).toFixed(0)}%`
                       }
@@ -502,136 +724,24 @@ function Allocation() {
                     <RechartsTooltip
                       formatter={(value) => `${(value * 100).toFixed(2)}%`}
                     />
-                    <Legend />
                     <Line
                       type="monotone"
-                      dataKey="Portfolio"
-                      stroke="#10B981"
-                      dot={false}
-                      strokeWidth={3}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="S&P 500"
-                      stroke="#EF4444"
+                      dataKey="value"
+                      stroke={color}
                       dot={false}
                       strokeWidth={3}
                     />
                   </LineChart>
                 </ResponsiveContainer>
               </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      );
+    })}
+  </div>
+</motion.div>
 
-              {/* Asset Cards */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                className="bg-white rounded-xl shadow-lg p-6"
-              >
-                <h2 className="text-2xl font-bold text-green-700 mb-4">
-                  Learn More About Your Assets
-                </h2>
-                {/* ETFs List */}
-                <div className="space-y-6">
-                  {portfolioData &&
-                    portfolioData.dashboard_data.asset_info.map(
-                      (asset, index) => {
-                        // Assign a color to the asset
-                        const color = COLORS[index % COLORS.length];
-                        
-                        // Prepare performance data for the graph
-                        const performanceData =
-                          portfolioData.dashboard_data.performance.dates.map(
-                            (date, idx) => ({
-                              date,
-                              value:
-                                portfolioData.dashboard_data.performance.series.find(
-                                  (s) => s.name === asset.name
-                                )?.values[idx] || 0,
-                            })
-                          );
-
-                        // Check if this specific asset is expanded
-                        const isExpanded = expandedAsset === asset.ticker;
-
-                        return (
-                          <motion.div
-                            key={index}
-                            ref={(el) => (assetRefs.current[asset.ticker] = el)} // Assign ref here
-                            layout
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5 }}
-                            className={`bg-gray-50 rounded-xl shadow-md border-2 transition-all duration-300 ${
-                              isExpanded ? 'p-6' : 'p-4'
-                            }`}
-                            style={{
-                              borderColor: color,
-                            }}
-                          >
-                            <div className="flex justify-between items-center">
-                              <h3
-                                className="text-lg md:text-xl font-bold"
-                                style={{ color: color }}
-                              >
-                                {asset.name}
-                              </h3>
-                              <button
-                                onClick={() => toggleExpand(asset.ticker)}
-                                className="text-gray-500 hover:text-gray-700"
-                              >
-                                {isExpanded ? (
-                                  <ChevronUpIcon className="h-6 w-6" />
-                                ) : (
-                                  <ChevronDownIcon className="h-6 w-6" />
-                                )}
-                              </button>
-                            </div>
-                            <p className="text-sm text-gray-600">
-                              Ticker:{' '}
-                              <span className="font-medium">
-                                {asset.ticker}
-                              </span>
-                            </p>
-                            {isExpanded && (
-                              <div className="mt-4">
-                                <p className="text-sm mb-4 text-gray-700">
-                                  {asset.info}
-                                </p>
-                                <ResponsiveContainer width="100%" height={200}>
-                                  <LineChart data={performanceData}>
-                                    <XAxis
-                                      dataKey="date"
-                                      tick={{ fill: '#6B7280' }}
-                                    />
-                                    <YAxis
-                                      tick={{ fill: '#6B7280' }}
-                                      tickFormatter={(value) =>
-                                        `${(value * 100).toFixed(0)}%`
-                                      }
-                                    />
-                                    <RechartsTooltip
-                                      formatter={(value) =>
-                                        `${(value * 100).toFixed(2)}%`
-                                      }
-                                    />
-                                    <Line
-                                      type="monotone"
-                                      dataKey="value"
-                                      stroke={color}
-                                      dot={false}
-                                      strokeWidth={3}
-                                    />
-                                  </LineChart>
-                                </ResponsiveContainer>
-                              </div>
-                            )}
-                          </motion.div>
-                        );
-                      }
-                    )}
-                </div>
-              </motion.div>
               
 <motion.div
   initial={{ opacity: 0 }}
@@ -652,7 +762,7 @@ function Allocation() {
       className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition"
     >
       <img
-        src="/icons/tactical.svg"
+        src="/public/TAA.jpg"
         alt="Tactical Asset Allocation Icon"
         className="w-16 h-16 mb-4"
       />
@@ -676,7 +786,7 @@ function Allocation() {
       className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition"
     >
       <img
-        src="/icons/savings.svg"
+        src="/public/savings.jpg"
         alt="Savings Fund Icon"
         className="w-16 h-16 mb-4"
       />
@@ -700,7 +810,7 @@ function Allocation() {
       className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center hover:shadow-lg transition"
     >
       <img
-        src="/icons/private-markets.svg"
+        src="/public/private markets.jpg"
         alt="Private Markets Icon"
         className="w-16 h-16 mb-4"
       />
@@ -729,10 +839,10 @@ function Allocation() {
     </p>
     <div className="flex justify-center mt-4">
       <a
-        href="/funds"
+        href="/research"
         className="bg-white text-green-700 font-semibold px-6 py-2 rounded-full shadow-md hover:bg-gray-100 transition"
       >
-        Explore Funds
+        Explore Research
       </a>
     </div>
   </div>
