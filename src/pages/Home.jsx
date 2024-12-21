@@ -8,9 +8,8 @@ import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is in
 import "./heroSection.css";
 import './heroadd.css';
 // Example icons – replace these with your own images/paths:
-import lockIcon from './icons/lockIcon.png';
-import shieldIcon from './icons/shieldIcon.png';
-import magnifierIcon from './icons/magnifierIcon.png';
+// Example icons – replace these with your own images/paths:
+
 const Step1 = () => {
   const [riskLevel, setRiskLevel] = useState(5);
 
@@ -642,11 +641,7 @@ function PortfolioOptimizer() {
         {/* Feature 1 */}
         <div className="heroadd-feature">
           {/* Icon */}
-          <img 
-            src={lockIcon} 
-            alt="Data driven" 
-            className="heroadd-icon" 
-          />
+          <img src="/jardollar.png" alt="Jar Dollar" />
           {/* Title */}
           <h2 className="heroadd-title">Data driven</h2>
           {/* Description */}
@@ -658,11 +653,8 @@ function PortfolioOptimizer() {
 
         {/* Feature 2 */}
         <div className="heroadd-feature">
-          <img 
-            src={shieldIcon} 
-            alt="Market Leader" 
-            className="heroadd-icon" 
-          />
+         <img src="/ETF.png" alt="ETF" />
+          
           <h2 className="heroadd-title">Market Leader</h2>
           <p className="heroadd-text">
             Regulated by major financial authorities, 
@@ -672,11 +664,7 @@ function PortfolioOptimizer() {
 
         {/* Feature 3 */}
         <div className="heroadd-feature">
-          <img 
-            src={magnifierIcon} 
-            alt="Personalised" 
-            className="heroadd-icon" 
-          />
+        <img src="/adam.png" alt="Adam" />
           <h2 className="heroadd-title">Personalised</h2>
           <p className="heroadd-text">
             Tailored to your values and goals, so you can invest 
