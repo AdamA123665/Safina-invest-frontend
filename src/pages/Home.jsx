@@ -469,46 +469,19 @@ const Step3 = () => {
 };
 const WORDS = ["invest", "save", "be sharia compliant", "grow"];
 
-// We'll create a total pinned region of 400% the viewport height
-// (one 'screen' height for each of the 4 words).
 function PortfolioOptimizer() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [, setPortfolioData] = useState(null);
 
-  // Index of the currently displayed word in the rotating wheel
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // Index float of which word is front/center (0..3).
+  // We'll derive top/bottom from this index with interpolation.
+  const [indexFloat, setIndexFloat] = useState(0);
 
   const pinnedRef = useRef(null);
   const navigate = useNavigate();
 
-  // -- 1) Fetch portfolio data (example) --
-  useEffect(() => {
-    const fetchPortfolioData = async () => {
-      try {
-        const response = await fetch(
-          "https://safinabackend.azurewebsites.net/api/portfolio/optimize",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              initial_investment: 1000,
-              risk_tolerance: 10, // Aggressive
-            }),
-          }
-        );
-        if (!response.ok) throw new Error("Failed to fetch portfolio data");
-        const data = await response.json();
-        setPortfolioData(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchPortfolioData();
-  }, []);
-
-  // -- 2) Fetch top 3 articles (example) --
+  // -- 1) Example: Fetch articles (or portfolio data) --
   useEffect(() => {
     const fetchArticles = async () => {
       try {
@@ -528,56 +501,85 @@ function PortfolioOptimizer() {
     fetchArticles();
   }, []);
 
-  // -- 3) Scroll logic: figure out how far user has scrolled in pinned zone and set word index --
+  // -- 2) Scroll logic to set indexFloat in [0..3] based on how far we’ve scrolled --
   useEffect(() => {
     function handleScroll() {
       if (!pinnedRef.current) return;
 
-      // The total pinned container is 400vh. The actual "scrollable" portion
-      // inside that region is pinnedHeight - window.innerHeight.
-      // Because 1 "screen" is used to show each of the 4 words.
       const pinnedOffsetTop = pinnedRef.current.offsetTop;
       const pinnedHeight = pinnedRef.current.offsetHeight; // ~400vh
+      const screenHeight = window.innerHeight;
       const scrollY = window.scrollY;
 
-      // If the user hasn't reached the pinned section, show the first word (index 0).
+      // If user is above pinned zone, set indexFloat=0
       if (scrollY < pinnedOffsetTop) {
-        setCurrentIndex(0);
+        setIndexFloat(0);
         return;
       }
 
-      // If the user has scrolled past the pinned region, show the last word (index 3).
-      const maxScrollInsidePinned = pinnedHeight - window.innerHeight;
-      if (scrollY > pinnedOffsetTop + maxScrollInsidePinned) {
-        setCurrentIndex(WORDS.length - 1);
+      // If user is below pinned zone, set indexFloat=3 (the last word)
+      const maxScrollInside = pinnedHeight - screenHeight; // how much we can scroll inside pinned
+      if (scrollY > pinnedOffsetTop + maxScrollInside) {
+        setIndexFloat(WORDS.length - 1);
         return;
       }
 
-      // Otherwise, we are in the pinned region. Let's find the fraction:
-      const scrolledInside = scrollY - pinnedOffsetTop; // how far inside pinned region
-      const fraction = scrolledInside / maxScrollInsidePinned; // 0..1
+      // Otherwise, we’re within the pinned zone. fraction in [0..1]
+      const scrolledInside = scrollY - pinnedOffsetTop;
+      const fraction = scrolledInside / maxScrollInside; // in [0..1]
 
-      // Multiply fraction by total words to see which "segment" we’re on
-      // 0..(WORDS.length)
-      const newIndex = Math.floor(fraction * WORDS.length);
-
-      // clamp index to 0..(WORDS.length - 1)
-      const clampedIndex = Math.min(Math.max(newIndex, 0), WORDS.length - 1);
-      setCurrentIndex(clampedIndex);
+      // Multiply fraction * (WORDS.length - 1) to get a float in [0..3]
+      const val = fraction * (WORDS.length - 1);
+      setIndexFloat(val);
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // -- 3) Derive top/center/bottom words & transform them for the "wheel" effect --
+  // baseIndex is which word is front/center
+  const baseIndex = Math.floor(indexFloat); // integer in [0..3]
+  const offset = indexFloat - baseIndex; // fraction in [0..1]
+
+  // We'll define top/center/bottom as baseIndex-1, baseIndex, baseIndex+1
+  // with modulo wrap for each index.
+  function wrapIndex(i) {
+    return (i + WORDS.length) % WORDS.length;
+  }
+
+  const topIndex = wrapIndex(baseIndex - 1);
+  const centerIndex = wrapIndex(baseIndex);
+  const bottomIndex = wrapIndex(baseIndex + 1);
+
+  // We’ll build 3 objects describing style transforms for each word.
+  // For a "wheel" effect, the center word is big in the middle,
+  // the top word transitions from above to center, etc.
+  // Tweak these values for your perfect vertical spacing + scale.
+
+  // Top word: starts ~ -40% Y, smaller scale, partial opacity
+  // As offset goes 0..1, it moves downward toward the center.
+  const topY = -40 + offset * 40; // -40% → 0%
+  const topScale = 0.7 + offset * 0.3; // 0.7 → 1.0
+  const topOpacity = 0.4 + offset * 0.6; // 0.4 → 1.0
+
+  // Center word: starts in the middle, then moves down to bottom as offset goes 0..1.
+  const centerY = offset * 40; // 0% → 40%
+  const centerScale = 1 - offset * 0.3; // 1 → 0.7
+  const centerOpacity = 1 - offset * 0.6; // 1.0 → 0.4
+
+  // Bottom word: starts 40% below center, small scale, partial opacity
+  // As offset goes 0..1, it transitions further downward out of view (or into next).
+  const bottomY = 40 + offset * 40; // 40% → 80%
+  const bottomScale = 0.7 - offset * 0.3; // 0.7 → 0.4
+  const bottomOpacity = 0.4 - offset * 0.4; // 0.4 → 0.0
 
   // -- 4) Navigate to article detail (example) --
   const openArticle = (id) => {
     navigate(`/articles/${id.toLowerCase()}`);
   };
 
-  // -- 5) Loading & Error States (example) --
+  // -- 5) Loading / Error placeholders --
   if (loading) {
     return (
       <section id="research">
@@ -587,7 +589,6 @@ function PortfolioOptimizer() {
       </section>
     );
   }
-
   if (error) {
     return (
       <section id="research">
@@ -600,49 +601,62 @@ function PortfolioOptimizer() {
     );
   }
 
-  // -- 6) Compute top & bottom word indices for "rotating wheel" effect --
-  const topIndex = (currentIndex - 1 + WORDS.length) % WORDS.length;
-  const bottomIndex = (currentIndex + 1) % WORDS.length;
-
   return (
     <div>
-      {/* Pinned area: 400% of the viewport so user scrolls through 4 segments */}
+      {/* 
+        1) A container 400vh tall so user scrolls in 4 segments. 
+        2) "hero-inner" is sticky to keep the words in place during that scroll.
+      */}
       <div ref={pinnedRef} className="pinned-hero">
         <div className="hero-inner">
-          {/* Rotating Wheel */}
+          {/* We Help You (above the wheel) */}
+
           <div className="word-wheel">
-            <div className="word top-word">{WORDS[topIndex]}</div>
-            <div className="word middle-word">{WORDS[currentIndex]}</div>
-            <div className="word bottom-word">{WORDS[bottomIndex]}</div>
-          </div>
+  {/* Inline “We Help You” + center word */}
+  <span className="wheel-heading-inline">We Help You</span>
+  <div
+    className="wheel-word"
+    style={{
+      transform: `translateY(${centerY}%) scale(${centerScale})`,
+      opacity: centerOpacity,
+      zIndex: 2
+    }}
+  >
+    {WORDS[centerIndex]}
+  </div>
+
+  {/* Top word */}
+  <div
+    className="wheel-word"
+    style={{
+      transform: `translateY(${topY}%) scale(${topScale})`,
+      opacity: topOpacity,
+      zIndex: 1
+    }}
+  >
+    {WORDS[topIndex]}
+  </div>
+
+  {/* Bottom word */}
+  <div
+    className="wheel-word"
+    style={{
+      transform: `translateY(${bottomY}%) scale(${bottomScale})`,
+      opacity: bottomOpacity,
+      zIndex: 1
+    }}
+  >
+    {WORDS[bottomIndex]}
+  </div>
+</div>
 
           <p className="hero-subheading">
-            An investing platform that uses AI-driven asset allocation
-            to help you reach your financial goals in just 3 simple steps.
+            An investing platform that uses AI-driven asset allocation to help
+            you reach your financial goals in just 3 simple steps.
           </p>
           <button className="cta-button">Get Started</button>
         </div>
       </div>
-
-      {/* Articles Section */}
-      <section id="research" className="container mx-auto px-4 py-20">
-        <h2 className="text-2xl mb-8 text-center font-bold">Latest Articles</h2>
-        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-3">
-          {articles.map((article) => (
-            <div
-              key={article.id}
-              className="p-4 border rounded shadow hover:shadow-lg cursor-pointer"
-              onClick={() => openArticle(article.title)}
-            >
-              <h3 className="font-semibold text-lg mb-2">{article.title}</h3>
-              <p className="text-sm text-gray-600">
-                {article.description || "No description available."}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
 <section
       id="about"
       className="relative py-20"

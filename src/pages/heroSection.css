@@ -104,6 +104,11 @@
     max-width: 1200px;
     margin: 0 auto;
   }
+  .wheel-heading-inline {
+    font-size: 1.4rem;
+    margin-right: 12px;
+    color: #222;
+  }
   
   /* Example responsive tweaks */
   @media (max-width: 768px) {
