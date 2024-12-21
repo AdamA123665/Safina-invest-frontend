@@ -7,6 +7,7 @@ import 'swiper/css/navigation';
 import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is installed
 import "./heroSection.css";
 import './heroadd.css';
+import { FaChartLine, FaTrophy, FaUser } from "react-icons/fa";
 // Example icons – replace these with your own images/paths:
 // Example icons – replace these with your own images/paths:
 
@@ -471,6 +472,9 @@ const Step3 = () => {
     </motion.div>
   );
 };
+
+
+// The words that will appear in the hero
 const WORDS = ["invest", "save", "be sharia compliant", "grow"];
 
 function PortfolioOptimizer() {
@@ -479,15 +483,14 @@ function PortfolioOptimizer() {
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
+  // Pinned container reference
+  const pinnedRef = useRef(null);
+
   // Index float of which word is front/center (0..3).
   // We'll derive top/bottom from this index with interpolation.
-
-  const pinnedRef = useRef(null);
   const [indexFloat, setIndexFloat] = useState(0);
 
-  // Pinned container reference
-
-  // -- 1) Example: Fetch articles (or portfolio data) --
+  // -- 1) Fetch articles (or portfolio data) --
   useEffect(() => {
     const fetchArticles = async () => {
       try {
@@ -506,8 +509,6 @@ function PortfolioOptimizer() {
     };
     fetchArticles();
   }, []);
-
-
 
   // -- 2) Scroll logic to set indexFloat in [0..3] based on how far we’ve scrolled --
   useEffect(() => {
@@ -535,7 +536,7 @@ function PortfolioOptimizer() {
       // Otherwise, we're in the pinned zone:
       const scrolledInside = scrollY - pinnedOffsetTop;
       const fraction = scrolledInside / maxScrollInside; // [0..1]
-      // Multiply fraction by (3) -> [0..3]
+      // Multiply fraction by (WORDS.length - 1) -> [0..3]
       setIndexFloat(fraction * (WORDS.length - 1));
     };
 
@@ -543,45 +544,43 @@ function PortfolioOptimizer() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-      // -- 4) Navigate to article detail (example) --
-      const openArticle = (id) => {
-        navigate(`/articles/${id.toLowerCase()}`);
-      };
-    
-      // -- 5) Loading / Error placeholders --
-      if (loading) {
-        return (
-          <section id="research">
-            <div className="container mx-auto px-4 py-20 text-center">
-              <p className="text-xl">Loading...</p>
-            </div>
-          </section>
-        );
-      }
-      if (error) {
-        return (
-          <section id="research">
-            <div className="container mx-auto px-4 py-20 text-center">
-              <p className="text-xl text-red-500">
-                Failed to load articles. Please try again later.
-              </p>
-            </div>
-          </section>
-        );
-      }
+  // -- 3) Navigate to article detail (example) --
+  const openArticle = (id) => {
+    navigate(`/articles/${id.toLowerCase()}`);
+  };
 
-  // We'll show a smooth transition between the current word and the next word.
-  // e.g., if indexFloat = 1.3, "save" is ~70% in, "be sharia compliant" is ~30% visible, etc.
-  const baseIndex = Math.floor(indexFloat);         // 0,1,2,3
-  const offset = indexFloat - baseIndex;            // fraction in [0..1]
+  // -- 4) Loading / Error placeholders --
+  if (loading) {
+    return (
+      <section id="research">
+        <div className="container mx-auto px-4 py-20 text-center">
+          <p className="text-xl">Loading...</p>
+        </div>
+      </section>
+    );
+  }
+  if (error) {
+    return (
+      <section id="research">
+        <div className="container mx-auto px-4 py-20 text-center">
+          <p className="text-xl text-red-500">
+            Failed to load articles. Please try again later.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  // -- 5) Handle animated words logic --
+  const baseIndex = Math.floor(indexFloat); // 0,1,2,3
+  const offset = indexFloat - baseIndex;    // fraction in [0..1]
   const oldWordIndex = baseIndex;
   const newWordIndex = Math.min(baseIndex + 1, WORDS.length - 1); // clamp so we don't go beyond last
 
-  // For the fade/slide transitions:
-  // oldWord moves up (translateY negative), newWord comes up from below
-  // The offset in [0..1] determines how far along we are in the transition.
+  // For the fade/slide transitions (bottom-to-top):
+  // oldWord moves up (translateY negative), newWord comes from below (+)
   const oldOpacity = 1 - offset;
-  const oldTranslate = -offset * 30; // up to -30% Y
+  const oldTranslate = -offset * 30; // from 0 to -30% Y
   const newOpacity = offset;
   const newTranslate = 30 - offset * 30; // from +30% Y to 0
 
@@ -591,30 +590,42 @@ function PortfolioOptimizer() {
         Pinned container for 4 segments => 400vh. 
         .hero-inner is sticky so it stays in view while you scroll this region.
       */}
-      <div ref={pinnedRef} className="pinned-hero">
-        <div className="hero-inner">
-          <h1 className="hero-line">
-            {/* The static text */}
-            <span className="hero-title">We Help You </span>
-
+      <div ref={pinnedRef} className="pinned-hero min-h-screen" style={{ height: "400vh" }}>
+        <div
+          className="hero-inner sticky top-0 flex flex-col justify-center items-center h-screen
+          bg-gradient-to-b from-white to-gray-100" 
+        >
+          {/* BIG BOLD Title */}
+          <h1
+            className="font-extrabold text-5xl md:text-7xl mb-4 text-gray-900"
+            style={{ textAlign: "center" }}
+          >
+            We Help You{" "}
             {/* The old (current) word, sliding/fading out */}
             <span
-              className="changing-word"
+              className="relative block"
               style={{
+                position: "absolute",
+                left: "0",
+                color: "#10B981", // Green or choose any accent color
                 opacity: oldOpacity,
-                transform: `translateY(${oldTranslate}%)`
+                transform: `translateY(${oldTranslate}%)`,
+                transition: "transform 0.2s ease, opacity 0.2s ease"
               }}
             >
               {WORDS[oldWordIndex]}
             </span>
-
             {/* The new (incoming) word, sliding/fading in (only if different) */}
             {oldWordIndex !== newWordIndex && (
               <span
-                className="changing-word"
+                className="relative block"
                 style={{
+                  position: "absolute",
+                  left: "0",
+                  color: "#10B981", // Green accent color
                   opacity: newOpacity,
-                  transform: `translateY(${newTranslate}%)`
+                  transform: `translateY(${newTranslate}%)`,
+                  transition: "transform 0.2s ease, opacity 0.2s ease"
                 }}
               >
                 {WORDS[newWordIndex]}
@@ -622,57 +633,68 @@ function PortfolioOptimizer() {
             )}
           </h1>
 
-          <p className="hero-subheading">
+          <p
+            className="hero-subheading text-lg md:text-2xl text-gray-600 max-w-3xl text-center px-4"
+            style={{ marginTop: "2rem" }}
+          >
             An investing platform that uses AI-driven asset allocation
             to help you reach your financial goals in just 3 simple steps.
           </p>
 
-          <button className="cta-button">Get Started</button>
+          <button
+            className="cta-button mt-8 px-8 py-4 bg-green-500 text-white rounded-full 
+                       hover:bg-green-600 transition-colors"
+          >
+            Get Started
+          </button>
         </div>
       </div>
 
-      <section className="heroadd">
-      {/* Large heading at the top */}
-      <h1 className="heroadd-main-title">Invest with confidence</h1>
+      {/* 
+        Secondary Section 
+        - Title first, then icon, then description
+      */}
+      <section className="pb-20 bg-white">
+        <div className="container mx-auto px-4">
+          {/* Large heading at the top */}
+          <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-12 text-gray-900">
+            Invest with Confidence
+          </h2>
 
-      {/* Three columns / feature cards */}
-      <div className="heroadd-features">
+          {/* Feature Cards */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+            {/* Feature 1 */}
+            <div className="heroadd-feature p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+              <FaChartLine className="text-green-500 text-5xl mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Data Driven</h3>
+              <p className="text-gray-600">
+                We harness advanced analytics to power 
+                Sharia-compliant investments for optimal performance.
+              </p>
+            </div>
 
-        {/* Feature 1 */}
-        <div className="heroadd-feature">
-          {/* Icon */}
-          <img src="/jardollar.png" alt="Jar Dollar" />
-          {/* Title */}
-          <h2 className="heroadd-title">Data driven</h2>
-          {/* Description */}
-          <p className="heroadd-text">
-            We harness advanced analytics to power 
-            Sharia-compliant investments for optimal performance.
-          </p>
+            {/* Feature 2 */}
+            <div className="heroadd-feature p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+              <FaTrophy className="text-green-500 text-5xl mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Market Leader</h3>
+              <p className="text-gray-600">
+                Regulated by major financial authorities, 
+                setting trends in Islamic finance since our inception.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="heroadd-feature p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+              <FaUser className="text-green-500 text-5xl mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Personalised</h3>
+              <p className="text-gray-600">
+                Tailored to your values and goals, so you can invest 
+                with confidence and peace of mind.
+              </p>
+            </div>
+          </div>
         </div>
-
-        {/* Feature 2 */}
-        <div className="heroadd-feature">
-         <img src="/ETF.png" alt="ETF" />
-          
-          <h2 className="heroadd-title">Market Leader</h2>
-          <p className="heroadd-text">
-            Regulated by major financial authorities, 
-            setting trends in Islamic finance since our inception.
-          </p>
-        </div>
-
-        {/* Feature 3 */}
-        <div className="heroadd-feature">
-        <img src="/adam.png" alt="Adam" />
-          <h2 className="heroadd-title">Personalised</h2>
-          <p className="heroadd-text">
-            Tailored to your values and goals, so you can invest 
-            with confidence and peace of mind.
-          </p>
-        </div>
-      </div>
-    </section>
+      </section>
 <section
       id="about"
       className="relative py-20"
