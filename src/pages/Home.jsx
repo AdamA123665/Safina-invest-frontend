@@ -592,17 +592,20 @@ function PortfolioOptimizer() {
   className="hero-inner sticky top-0 flex flex-col justify-center items-center 
   h-screen bg-green-50"
 >
-  {/* BIG BOLD Title with animated words inline */}
-  <div className="flex flex-wrap items-center justify-center">
-    {/* Static text */}
-    <h1 className="font-extrabold text-5xl md:text-7xl text-gray-900">
-      We Help You
-    </h1>
+  <h1
+    className="font-extrabold text-5xl md:text-7xl text-gray-900 
+               flex items-center leading-none"
+  >
+    {/* "We Help You" static text */}
+    <span>We Help You</span>
 
-    {/* Inline animated words */}
+    {/* Extra spacing between static text and dynamic words */}
+    <span className="ml-2" /> 
+
+    {/* Container for animated words */}
     <span
-      className="relative inline-block ml-4"
-      style={{ width: "11ch" /* adjust for the largest word */ }}
+      className="relative inline-block"
+      style={{ width: "11ch" /* Enough space for the longest word */ }}
     >
       {/* Outgoing word */}
       <span
@@ -613,11 +616,12 @@ function PortfolioOptimizer() {
           transform: `translateY(${oldTranslate}%)`,
           opacity: oldOpacity,
           transition: "transform 0.4s ease, opacity 0.4s ease",
-          color: "#059669" // green color
+          color: "#059669"
         }}
       >
         {WORDS[oldWordIndex]}
       </span>
+
       {/* Incoming word */}
       {oldWordIndex !== newWordIndex && (
         <span
@@ -635,7 +639,7 @@ function PortfolioOptimizer() {
         </span>
       )}
     </span>
-  </div>
+  </h1>
 
   <p className="mt-6 text-lg md:text-2xl text-gray-700 max-w-3xl text-center px-4">
     An investing platform that uses AI-driven asset allocation to help
