@@ -70,7 +70,7 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
         {isHome && (
           <Link to="/" className="flex items-center space-x-2">
             <img
-              src={`${process.env.PUBLIC_URL}/safina_invest_logo-removebg-preview.png`}
+              src={`${process.env.PUBLIC_URL}/safina_invest_logo.png`}
               alt="Safina Invest Logo"
               style={{
                 width: '80px',
@@ -81,13 +81,38 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
         )}
 
         {/* Desktop Navigation */}
-        <nav className="hidden sm:flex space-x-4">
-          <Link className="text-gray-800 hover:text-green-600 transition" to="/allocation">Allocation</Link>
-          <Link className="text-gray-800 hover:text-green-600 transition" to="/assets">Assets</Link>
-          <Link className="text-gray-800 hover:text-green-600 transition" to="/research">Research</Link>
-          <Link className="text-gray-800 hover:text-green-600 transition" to="/about">About</Link>
-          <Link className="text-gray-800 hover:text-green-600 transition" to="/Funds">Funds</Link>
-        </nav>
+<nav className="hidden sm:flex space-x-4">
+  <Link
+    className="px-4 py-2 text-gray-800 bg-gray-100 rounded-full shadow-md hover:bg-green-600 hover:text-white transition-transform transform hover:scale-105 active:scale-95"
+    to="/assets"
+  >
+    Learn
+  </Link>
+  <Link
+    className="px-4 py-2 text-gray-800 bg-gray-100 rounded-full shadow-md hover:bg-green-600 hover:text-white transition-transform transform hover:scale-105 active:scale-95"
+    to="/allocation"
+  >
+    Invest
+  </Link>
+  <Link
+    className="px-4 py-2 text-gray-800 bg-gray-100 rounded-full shadow-md hover:bg-green-600 hover:text-white transition-transform transform hover:scale-105 active:scale-95"
+    to="/research"
+  >
+    Research
+  </Link>
+  <Link
+    className="px-4 py-2 text-gray-800 bg-gray-100 rounded-full shadow-md hover:bg-green-600 hover:text-white transition-transform transform hover:scale-105 active:scale-95"
+    to="/about"
+  >
+    About
+  </Link>
+  <Link
+    className="px-4 py-2 text-gray-800 bg-gray-100 rounded-full shadow-md hover:bg-green-600 hover:text-white transition-transform transform hover:scale-105 active:scale-95"
+    to="/Funds"
+  >
+    Funds
+  </Link>
+</nav>
 
         {/* Mobile Menu Toggle */}
         <button
@@ -106,53 +131,72 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
       </div>
 
       {/* Mobile Navigation Menu */}
-      {isMobileMenuOpen && (
-        <nav
-          className="sm:hidden fixed top-16 left-0 bg-gray-800 bg-opacity-90 p-4"
-          style={{
-            borderRadius: '0 10px 10px 0',
-            boxShadow: '2px 0 12px rgba(0, 0, 0, 0.2)',
-          }}
-        >
-          <div className="flex flex-col space-y-4">
-            <Link
-              className="text-white text-lg hover:text-green-300 transition"
-              to="/allocation"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Allocation
-            </Link>
-            <Link
-              className="text-white text-lg hover:text-green-300 transition"
-              to="/assets"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Assets
-            </Link>
-            <Link
-              className="text-white text-lg hover:text-green-300 transition"
-              to="/research"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Research
-            </Link>
-            <Link
-              className="text-white text-lg hover:text-green-300 transition"
-              to="/about"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              About
-            </Link>
-            <Link
-              className="text-white text-lg hover:text-green-300 transition"
-              to="/Funds"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Funds
-            </Link>
-          </div>
-        </nav>
-      )}
+{isMobileMenuOpen && (
+  <nav 
+    className="sm:hidden fixed inset-0 z-50 bg-gray-900 bg-opacity-95 flex flex-col justify-center items-center space-y-8 transition-opacity duration-300 ease-in-out"
+    style={{
+      backdropFilter: 'blur(6px)',
+    }}
+  >
+    {/* Close Button */}
+    <button 
+      className="absolute top-6 right-6 text-white focus:outline-none"
+      onClick={() => setMobileMenuOpen(false)}
+      aria-label="Close menu"
+    >
+      <svg 
+        className="w-8 h-8 hover:text-green-100 transition-transform transform hover:scale-110"
+        fill="none" 
+        stroke="currentColor" 
+        strokeWidth="2" 
+        viewBox="0 0 24 24" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+
+    <div className="flex flex-col space-y-8 text-center">
+    <Link
+        className="text-white text-2xl font-semibold hover:text-green-300 transition-transform transform hover:scale-105"
+        to="/assets"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        Learn
+      </Link>
+      <Link
+        className="text-white text-2xl font-semibold hover:text-green-300 transition-transform transform hover:scale-105"
+        to="/allocation"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        Invest
+      </Link>
+      <Link
+        className="text-white text-2xl font-semibold hover:text-green-300 transition-transform transform hover:scale-105"
+        to="/research"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        Research
+      </Link>
+      <Link
+        className="text-white text-2xl font-semibold hover:text-green-300 transition-transform transform hover:scale-105"
+        to="/about"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        About
+      </Link>
+      <Link
+        className="text-white text-2xl font-semibold hover:text-green-300 transition-transform transform hover:scale-105"
+        to="/Funds"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        Funds
+      </Link>
+    </div>
+  </nav>
+)}
     </header>
   );
 }
