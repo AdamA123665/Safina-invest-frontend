@@ -657,6 +657,48 @@ function PortfolioOptimizer() {
           <button className="cta-button">Get Started</button>
         </div>
       </div>
+
+      <section className="heroadd">
+      <div className="heroadd-content">
+        <h2 className="heroadd-title">Safina Islamic Investing</h2>
+        <h3 className="heroadd-subtitle">Invest with Confidence</h3>
+        
+        <div className="heroadd-features">
+          {/* Feature 1 */}
+          <div className="heroadd-feature">
+            {/* Replace with an actual icon/image if desired */}
+            <div className="heroadd-icon heroadd-icon--data" />
+            <h4>Data Driven</h4>
+            <p>
+              We use comprehensive market analysis and real-time insights 
+              to guide Sharia-compliant investment strategies.
+            </p>
+          </div>
+          
+          {/* Feature 2 */}
+          <div className="heroadd-feature">
+            {/* Replace with an actual icon/image if desired */}
+            <div className="heroadd-icon heroadd-icon--leader" />
+            <h4>Market Leader</h4>
+            <p>
+              Trusted by many and recognized as a pioneer in 
+              Islamic finance solutions since our inception.
+            </p>
+          </div>
+          
+          {/* Feature 3 */}
+          <div className="heroadd-feature">
+            {/* Replace with an actual icon/image if desired */}
+            <div className="heroadd-icon heroadd-icon--personal" />
+            <h4>Personalised</h4>
+            <p>
+              Tailored investment portfolios designed around 
+              your financial goals and ethical values.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 <section
       id="about"
       className="relative py-20"
