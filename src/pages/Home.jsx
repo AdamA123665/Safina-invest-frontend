@@ -467,25 +467,23 @@ const Step3 = () => {
     </motion.div>
   );
 };
-// The four words to display
 const WORDS = ["invest", "save", "be sharia compliant", "grow"];
 
-// We'll pin the hero until the user has scrolled through all four words.
-// Let's define the total "pin" height as 400% of the viewport (one for each word).
-const PINNED_SECTION_MULTIPLIER = 4; // 4 words => 400% of viewport
-
-const PortfolioOptimizer = () => {
+// We'll create a total pinned region of 400% the viewport height
+// (one 'screen' height for each of the 4 words).
+function PortfolioOptimizer() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [, setPortfolioData] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0); // Which word is displayed
+
+  // Index of the currently displayed word in the rotating wheel
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const pinnedRef = useRef(null);
   const navigate = useNavigate();
 
-  // We'll store a reference to the pinned container
-  const heroRef = useRef(null);
-
-  // -- 1. Fetch portfolio data (example) --
+  // -- 1) Fetch portfolio data (example) --
   useEffect(() => {
     const fetchPortfolioData = async () => {
       try {
@@ -510,7 +508,7 @@ const PortfolioOptimizer = () => {
     fetchPortfolioData();
   }, []);
 
-  // -- 2. Fetch top 3 articles (example) --
+  // -- 2) Fetch top 3 articles (example) --
   useEffect(() => {
     const fetchArticles = async () => {
       try {
@@ -530,57 +528,56 @@ const PortfolioOptimizer = () => {
     fetchArticles();
   }, []);
 
-  // -- 3. Scroll logic to track pinned area and update the word index --
+  // -- 3) Scroll logic: figure out how far user has scrolled in pinned zone and set word index --
   useEffect(() => {
-    const handleScroll = () => {
-      if (!heroRef.current) return;
+    function handleScroll() {
+      if (!pinnedRef.current) return;
 
-      // The top Y offset of our pinned container
-      const rect = heroRef.current.getBoundingClientRect();
-      // The total height we want to "pin" is 4x the viewport (4 words)
-      const pinHeight = window.innerHeight * PINNED_SECTION_MULTIPLIER;
+      // The total pinned container is 400vh. The actual "scrollable" portion
+      // inside that region is pinnedHeight - window.innerHeight.
+      // Because 1 "screen" is used to show each of the 4 words.
+      const pinnedOffsetTop = pinnedRef.current.offsetTop;
+      const pinnedHeight = pinnedRef.current.offsetHeight; // ~400vh
+      const scrollY = window.scrollY;
 
-      // If the top of the container is at or above 0, we're in the pinned zone
-      // As we scroll within [0 ... pinHeight], we update the word index
-      // Once we pass pinHeight, we unpin.
-      const startPin = rect.top;         // usually 0 once we start pinning
-      // const endPin = rect.top + pinHeight;
-
-      // scrolled portion is how far we are into the pinned zone
-      const scrolled = -startPin; // rect.top is negative once we scroll downward
-
-      if (scrolled >= 0 && scrolled <= pinHeight) {
-        // Calculate which segment we are in: 0..3
-        const segmentLength = pinHeight / WORDS.length; // each word is 1/4th
-        const index = Math.floor(scrolled / segmentLength);
-        // clamp index between 0 and WORDS.length - 1
-        let nextIndex = Math.min(Math.max(index, 0), WORDS.length - 1);
-        setCurrentIndex(nextIndex);
-
-        // Prevent page from actually scrolling beyond pinned area
-        // We'll do it by controlling the body "scroll" artificially:
-        // If we haven't reached the final word, freeze scroll
-        if (nextIndex < WORDS.length - 1) {
-          // We "fix" the container. This effect is done via CSS: .pinned
-          heroRef.current.style.position = "fixed";
-          heroRef.current.style.top = "0";
-        } else {
-          // Once we've reached the 4th word, let's unpin
-          heroRef.current.style.position = "relative";
-        }
+      // If the user hasn't reached the pinned section, show the first word (index 0).
+      if (scrollY < pinnedOffsetTop) {
+        setCurrentIndex(0);
+        return;
       }
-    };
+
+      // If the user has scrolled past the pinned region, show the last word (index 3).
+      const maxScrollInsidePinned = pinnedHeight - window.innerHeight;
+      if (scrollY > pinnedOffsetTop + maxScrollInsidePinned) {
+        setCurrentIndex(WORDS.length - 1);
+        return;
+      }
+
+      // Otherwise, we are in the pinned region. Let's find the fraction:
+      const scrolledInside = scrollY - pinnedOffsetTop; // how far inside pinned region
+      const fraction = scrolledInside / maxScrollInsidePinned; // 0..1
+
+      // Multiply fraction by total words to see which "segment" we’re on
+      // 0..(WORDS.length)
+      const newIndex = Math.floor(fraction * WORDS.length);
+
+      // clamp index to 0..(WORDS.length - 1)
+      const clampedIndex = Math.min(Math.max(newIndex, 0), WORDS.length - 1);
+      setCurrentIndex(clampedIndex);
+    }
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  // -- 4. Simple route for articles (example) --
+  // -- 4) Navigate to article detail (example) --
   const openArticle = (id) => {
     navigate(`/articles/${id.toLowerCase()}`);
   };
 
-  // -- Loading & error states (example) --
+  // -- 5) Loading & Error States (example) --
   if (loading) {
     return (
       <section id="research">
@@ -603,44 +600,46 @@ const PortfolioOptimizer = () => {
     );
   }
 
-  // -- 5. Compute top/center/bottom words for "rotating wheel" effect --
+  // -- 6) Compute top & bottom word indices for "rotating wheel" effect --
   const topIndex = (currentIndex - 1 + WORDS.length) % WORDS.length;
   const bottomIndex = (currentIndex + 1) % WORDS.length;
 
   return (
     <div>
-      {/* Pinned Hero Container: height is 400% of viewport to allow 4 steps */}
-      <div
-        ref={heroRef}
-        className="pinned-hero"
-        style={{ height: `${PINNED_SECTION_MULTIPLIER * 100}vh` }}
-      >
-        {/* Rotating wheel words */}
-        <div className="word-wheel">
-          <div className="word top-word">{WORDS[topIndex]}</div>
-          <div className="word middle-word">{WORDS[currentIndex]}</div>
-          <div className="word bottom-word">{WORDS[bottomIndex]}</div>
-        </div>
+      {/* Pinned area: 400% of the viewport so user scrolls through 4 segments */}
+      <div ref={pinnedRef} className="pinned-hero">
+        <div className="hero-inner">
+          {/* Rotating Wheel */}
+          <div className="word-wheel">
+            <div className="word top-word">{WORDS[topIndex]}</div>
+            <div className="word middle-word">{WORDS[currentIndex]}</div>
+            <div className="word bottom-word">{WORDS[bottomIndex]}</div>
+          </div>
 
-        <p className="hero-subheading">
-          An investing platform that uses AI-driven asset allocation
-          to help you reach your financial goals in just 3 simple steps.
-        </p>
-        <button className="cta-button">Get Started</button>
+          <p className="hero-subheading">
+            An investing platform that uses AI-driven asset allocation
+            to help you reach your financial goals in just 3 simple steps.
+          </p>
+          <button className="cta-button">Get Started</button>
+        </div>
       </div>
 
-      {/* Example final about section */}
-      <section
-        id="about"
-        className="relative py-20"
-        style={{ background: "#F9FAFB" }}
-      >
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl font-bold mb-4">About Us</h2>
-          <p className="max-w-xl mx-auto">
-            We are a platform dedicated to helping everyone invest easily,
-            using algorithms and AI-driven asset allocation.
-          </p>
+      {/* Articles Section */}
+      <section id="research" className="container mx-auto px-4 py-20">
+        <h2 className="text-2xl mb-8 text-center font-bold">Latest Articles</h2>
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-3">
+          {articles.map((article) => (
+            <div
+              key={article.id}
+              className="p-4 border rounded shadow hover:shadow-lg cursor-pointer"
+              onClick={() => openArticle(article.title)}
+            >
+              <h3 className="font-semibold text-lg mb-2">{article.title}</h3>
+              <p className="text-sm text-gray-600">
+                {article.description || "No description available."}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 

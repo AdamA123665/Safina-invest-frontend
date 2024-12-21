@@ -5,23 +5,39 @@
     box-sizing: border-box;
   }
   
-  /* Container that is pinned for the first X vh */
+  /* 
+    This container is 400% the viewport height 
+    so that the user can scroll in 4 segments (one per word). 
+  */
   .pinned-hero {
-    position: relative; /* We'll switch to fixed in JS once we start scrolling */
+    position: relative;
     width: 100%;
-    /* This height is set in JS to 400% of viewport for 4 words */
+    height: 400vh; /* 4 words => 400% */
     background: linear-gradient(135deg, #E7F0FF, #FFFFFF);
+  }
+  
+  /*
+    The sticky inner hero that occupies 1 screen height (100vh).
+    It remains pinned at the top until the user scrolls beyond the .pinned-hero container.
+  */
+  .hero-inner {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Hide overflow if words or transitions go beyond container */
+  
+    /* We can place a background color or not;
+       If you prefer a full-bleed gradient, keep it in .pinned-hero above. */
   }
   
   /* The rotating wheel container */
   .word-wheel {
     position: relative;
-    height: 120px; /* set enough space for 3 lines of text in a stack */
+    height: 120px; /* space for top, middle, bottom stacked words */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -40,35 +56,33 @@
     color: #0072ff;
   }
   
-  /* The top word, slightly above and faded */
   .top-word {
     top: 0;
     opacity: 0.3;
-    transform: translateY(-50%);
+    transform: translateY(-30%);
   }
   
-  /* The middle/active word */
   .middle-word {
     position: relative;
     top: 50%;
     transform: translateY(-50%);
     opacity: 1;
-    color: #222; /* highlight main word differently if you like */
+    color: #222; /* highlight main word */
   }
   
-  /* The bottom word, slightly below and faded */
   .bottom-word {
     bottom: 0;
     opacity: 0.3;
-    transform: translateY(50%);
+    transform: translateY(30%);
   }
   
-  /* Subheading, CTA, etc. */
+  /* Subheading & CTA */
   .hero-subheading {
     font-size: 1.2rem;
     max-width: 600px;
     text-align: center;
     margin-bottom: 20px;
+    color: #333;
   }
   
   .cta-button {
@@ -85,9 +99,19 @@
     background: #005ecc;
   }
   
-  /* Example container for the articles & about sections */
+  /* Container for the articles & about sections */
   .container {
     max-width: 1200px;
     margin: 0 auto;
+  }
+  
+  /* Example responsive tweaks */
+  @media (max-width: 768px) {
+    .word {
+      font-size: 1.8rem;
+    }
+    .hero-subheading {
+      font-size: 1rem;
+    }
   }
   
