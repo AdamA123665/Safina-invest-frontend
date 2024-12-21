@@ -584,83 +584,72 @@ function PortfolioOptimizer() {
 
   return (
     <div>
-      {/* 
-        HERO (pinned) 
-        This container has a height of ~400vh to allow the sticky effect.
-      */}
-      <div
-        ref={pinnedRef}
-        className="pinned-hero w-full"
-        style={{ height: "400vh" }}
-      >
         {/* 
           .hero-inner is sticky so it stays in view 
           while the user scrolls through the 400vh container.
         */}
         <div
-          className="hero-inner sticky top-0 flex flex-col justify-center items-center 
-          h-screen bg-green-50"
-        >
-          {/* Big Bold Title and inline animated words */}
-          <h1
-  className="font-extrabold text-5xl md:text-7xl text-gray-900 flex items-center justify-center gap-2"
-  style={{ textAlign: "center" }}
+  className="hero-inner sticky top-0 flex flex-col justify-center items-center 
+  h-screen bg-green-50"
 >
-  We Help You{" "}
-  {/* Animated words container */}
-  <span
-    className="relative inline-block"
-    style={{
-      display: "inline-block",
-      height: "1em", // Ensures the animated words take up the same height as the main text
-      overflow: "hidden",
-      verticalAlign: "middle", // Aligns with the main text
-    }}
-  >
-    {/* Old (outgoing) word */}
+  {/* BIG BOLD Title with animated words inline */}
+  <div className="flex flex-wrap items-center justify-center">
+    {/* Static text */}
+    <h1 className="font-extrabold text-5xl md:text-7xl text-gray-900">
+      We Help You
+    </h1>
+
+    {/* Inline animated words */}
     <span
-      style={{
-        position: "absolute",
-        left: 0,
-        transform: `translateY(${oldTranslate}%)`,
-        opacity: oldOpacity,
-        transition: "transform 0.4s ease, opacity 0.4s ease",
-        color: "#059669", // Green color
-      }}
+      className="relative inline-block ml-4"
+      style={{ width: "11ch" /* adjust for the largest word */ }}
     >
-      {WORDS[oldWordIndex]}
-    </span>
-    {/* New (incoming) word */}
-    {oldWordIndex !== newWordIndex && (
+      {/* Outgoing word */}
       <span
         style={{
           position: "absolute",
+          top: 0,
           left: 0,
-          transform: `translateY(${newTranslate}%)`,
-          opacity: newOpacity,
+          transform: `translateY(${oldTranslate}%)`,
+          opacity: oldOpacity,
           transition: "transform 0.4s ease, opacity 0.4s ease",
-          color: "#059669",
+          color: "#059669" // green color
         }}
       >
-        {WORDS[newWordIndex]}
+        {WORDS[oldWordIndex]}
       </span>
-    )}
-  </span>
-</h1>
+      {/* Incoming word */}
+      {oldWordIndex !== newWordIndex && (
+        <span
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            transform: `translateY(${newTranslate}%)`,
+            opacity: newOpacity,
+            transition: "transform 0.4s ease, opacity 0.4s ease",
+            color: "#059669"
+          }}
+        >
+          {WORDS[newWordIndex]}
+        </span>
+      )}
+    </span>
+  </div>
 
-          <p className="mt-6 text-lg md:text-2xl text-gray-700 max-w-3xl text-center px-4">
-            An investing platform that uses AI-driven asset allocation to help
-            you reach your financial goals in just 3 simple steps.
-          </p>
+  <p className="mt-6 text-lg md:text-2xl text-gray-700 max-w-3xl text-center px-4">
+    An investing platform that uses AI-driven asset allocation to help
+    you reach your financial goals in just 3 simple steps.
+  </p>
 
-          <button
-            className="mt-8 px-8 py-4 bg-green-600 text-white rounded-full 
-                       hover:bg-green-700 transition-colors"
-          >
-            Get Started
-          </button>
-        </div>
-      </div>
+  <button
+    className="mt-8 px-8 py-4 bg-green-600 text-white rounded-full 
+               hover:bg-green-700 transition-colors"
+  >
+    Get Started
+  </button>
+</div>
+
 
       {/* 
         Secondary Section (heroadd)
