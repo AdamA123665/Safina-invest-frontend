@@ -5,8 +5,9 @@
     box-sizing: border-box;
   }
   
-  /* 
-    pinned-hero: 400vh tall so user scrolls across 4 words total. 
+  /*
+    pinned-hero: 400vh so the user
+    scrolls in 4 segments for 4 words.
   */
   .pinned-hero {
     position: relative;
@@ -15,40 +16,47 @@
     background: linear-gradient(135deg, #E7F0FF, #FFFFFF);
   }
   
-  /*
-    .hero-inner is sticky at the top, occupying 100vh. 
-    As the user scrolls through the 400vh container, this stays in view.
+  /* 
+    hero-inner is sticky for the entire 400vh scroll
   */
   .hero-inner {
     position: sticky;
     top: 0;
-    height: 100vh; 
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
   
-  /* The single line with "We Help You" + transitioning words */
-  .hero-line {
-    font-size: 2rem;
+  /* Main heading ("We Help You") */
+  .hero-heading {
+    font-size: 2.5rem;
     font-weight: 700;
-    color: #222; /* color for "We Help You" */
+    color: #222;
+    margin-bottom: 30px;
+  }
+  
+  /* Container that stacks the 4 words vertically */
+  .words-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px; /* if you want a narrower column */
+    margin: 0 auto 30px; /* space below the stack */
+    height: 300px; /* enough vertical space for word transitions */
+    overflow: hidden; /* hide anything that goes outside */
+  }
+  
+  /* Each word in the vertical stack */
+  .word-item {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    color: #0072ff; /* different color from "We Help You" */
     text-align: center;
-    margin-bottom: 1.5rem;
-    position: relative;
-  }
   
-  /* "We Help You" has normal color, the changing words have a highlight color. */
-  .hero-title {
-    margin-right: 6px;
-  }
-  
-  /* The changing word(s). We'll do absolute or inline? 
-     If you need to handle overlapping words, you can absolutely position them. */
-  .changing-word {
-    display: inline-block;
-    position: relative;
+    /* Smooth transitions for movement & fade */
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   }
   

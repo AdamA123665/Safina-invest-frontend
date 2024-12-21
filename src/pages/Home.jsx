@@ -7,6 +7,10 @@ import 'swiper/css/navigation';
 import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is installed
 import "./heroSection.css";
 import './heroadd.css';
+// Example icons – replace these with your own images/paths:
+import lockIcon from './icons/lockIcon.png';
+import shieldIcon from './icons/shieldIcon.png';
+import magnifierIcon from './icons/magnifierIcon.png';
 const Step1 = () => {
   const [riskLevel, setRiskLevel] = useState(5);
 
@@ -508,41 +512,36 @@ function PortfolioOptimizer() {
 
   // -- 2) Scroll logic to set indexFloat in [0..3] based on how far we’ve scrolled --
   useEffect(() => {
-    function handleScroll() {
+    const handleScroll = () => {
       if (!pinnedRef.current) return;
 
-      // The pinned container is 400vh tall
       const pinnedOffsetTop = pinnedRef.current.offsetTop;
       const pinnedHeight = pinnedRef.current.offsetHeight; // ~400vh
       const viewportHeight = window.innerHeight;
       const scrollY = window.scrollY;
 
-      // If user is above pinned area, show first word (indexFloat=0)
+      // If user hasn't reached pinned zone, set indexFloat=0
       if (scrollY < pinnedOffsetTop) {
         setIndexFloat(0);
         return;
       }
 
-      // If user is below pinned area, show last word (indexFloat=3)
-      const maxScrollInside = pinnedHeight - viewportHeight; // how far we can scroll inside pinned
+      // If user has scrolled past pinned zone, set indexFloat=3 (last word)
+      const maxScrollInside = pinnedHeight - viewportHeight;
       if (scrollY > pinnedOffsetTop + maxScrollInside) {
         setIndexFloat(WORDS.length - 1);
         return;
       }
 
-      // Otherwise, we are within the pinned area:
+      // Otherwise, we're in the pinned zone:
       const scrolledInside = scrollY - pinnedOffsetTop;
-      const fraction = scrolledInside / maxScrollInside; // fraction in [0..1]
-
-      // Multiply fraction by (WORDS.length - 1) -> 0..3
-      const val = fraction * (WORDS.length - 1);
-      setIndexFloat(val);
-    }
+      const fraction = scrolledInside / maxScrollInside; // [0..1]
+      // Multiply fraction by (3) -> [0..3]
+      setIndexFloat(fraction * (WORDS.length - 1));
+    };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
       // -- 4) Navigate to article detail (example) --
@@ -590,37 +589,33 @@ function PortfolioOptimizer() {
   return (
     <div>
       {/* 
-        This is our pinned hero container. 
-        Height=400vh so each word has roughly 1 screen's worth of scroll.
+        Pinned container for 4 segments => 400vh. 
+        .hero-inner is sticky so it stays in view while you scroll this region.
       */}
       <div ref={pinnedRef} className="pinned-hero">
         <div className="hero-inner">
-          {/* Single line: "We Help You" + 2 stacked spans for the transitioning words */}
           <h1 className="hero-line">
+            {/* The static text */}
             <span className="hero-title">We Help You </span>
 
-            {/* The old (current) word, partially fading/sliding out */}
+            {/* The old (current) word, sliding/fading out */}
             <span
               className="changing-word"
               style={{
                 opacity: oldOpacity,
-                transform: `translateY(${oldTranslate}%)`,
-                // pick color for the changing word
-                color: "#0072ff",
+                transform: `translateY(${oldTranslate}%)`
               }}
             >
               {WORDS[oldWordIndex]}
             </span>
 
-            {/* The new (incoming) word, partially fading/sliding in */}
+            {/* The new (incoming) word, sliding/fading in (only if different) */}
             {oldWordIndex !== newWordIndex && (
               <span
                 className="changing-word"
                 style={{
                   opacity: newOpacity,
-                  transform: `translateY(${newTranslate}%)`,
-                  // same color or different as you like
-                  color: "#0072ff",
+                  transform: `translateY(${newTranslate}%)`
                 }}
               >
                 {WORDS[newWordIndex]}
@@ -629,51 +624,64 @@ function PortfolioOptimizer() {
           </h1>
 
           <p className="hero-subheading">
-            An investing platform that uses AI-driven asset allocation to help
-            you reach your financial goals in just 3 simple steps.
+            An investing platform that uses AI-driven asset allocation
+            to help you reach your financial goals in just 3 simple steps.
           </p>
+
           <button className="cta-button">Get Started</button>
         </div>
       </div>
 
       <section className="heroadd">
-      <div className="heroadd-content">
-        <h2 className="heroadd-title">Safina Islamic Investing</h2>
-        <h3 className="heroadd-subtitle">Invest with Confidence</h3>
-        
-        <div className="heroadd-features">
-          {/* Feature 1 */}
-          <div className="heroadd-feature">
-            {/* Replace with an actual icon/image if desired */}
-            <div className="heroadd-icon heroadd-icon--data" />
-            <h4>Data Driven</h4>
-            <p>
-              We use comprehensive market analysis and real-time insights 
-              to guide Sharia-compliant investment strategies.
-            </p>
-          </div>
-          
-          {/* Feature 2 */}
-          <div className="heroadd-feature">
-            {/* Replace with an actual icon/image if desired */}
-            <div className="heroadd-icon heroadd-icon--leader" />
-            <h4>Market Leader</h4>
-            <p>
-              Trusted by many and recognized as a pioneer in 
-              Islamic finance solutions since our inception.
-            </p>
-          </div>
-          
-          {/* Feature 3 */}
-          <div className="heroadd-feature">
-            {/* Replace with an actual icon/image if desired */}
-            <div className="heroadd-icon heroadd-icon--personal" />
-            <h4>Personalised</h4>
-            <p>
-              Tailored investment portfolios designed around 
-              your financial goals and ethical values.
-            </p>
-          </div>
+      {/* Large heading at the top */}
+      <h1 className="heroadd-main-title">Invest with confidence</h1>
+
+      {/* Three columns / feature cards */}
+      <div className="heroadd-features">
+
+        {/* Feature 1 */}
+        <div className="heroadd-feature">
+          {/* Icon */}
+          <img 
+            src={lockIcon} 
+            alt="Data driven" 
+            className="heroadd-icon" 
+          />
+          {/* Title */}
+          <h2 className="heroadd-title">Data driven</h2>
+          {/* Description */}
+          <p className="heroadd-text">
+            We harness advanced analytics to power 
+            Sharia-compliant investments for optimal performance.
+          </p>
+        </div>
+
+        {/* Feature 2 */}
+        <div className="heroadd-feature">
+          <img 
+            src={shieldIcon} 
+            alt="Market Leader" 
+            className="heroadd-icon" 
+          />
+          <h2 className="heroadd-title">Market Leader</h2>
+          <p className="heroadd-text">
+            Regulated by major financial authorities, 
+            setting trends in Islamic finance since our inception.
+          </p>
+        </div>
+
+        {/* Feature 3 */}
+        <div className="heroadd-feature">
+          <img 
+            src={magnifierIcon} 
+            alt="Personalised" 
+            className="heroadd-icon" 
+          />
+          <h2 className="heroadd-title">Personalised</h2>
+          <p className="heroadd-text">
+            Tailored to your values and goals, so you can invest 
+            with confidence and peace of mind.
+          </p>
         </div>
       </div>
     </section>

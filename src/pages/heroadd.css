@@ -1,0 +1,55 @@
+/* Container section */
+.heroadd {
+    width: 100%;
+    padding: 4rem 1rem;       /* Adjust spacing as needed */
+    background-color: #ffffff;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  
+  /* Main heading: "Invest with confidence" */
+  .heroadd-main-title {
+    font-size: 2rem;          /* Adjust size to match your style */
+    font-weight: bold;
+    margin-bottom: 3rem;      /* Spacing below heading */
+  }
+  
+  /* Wrapper for the three features */
+  .heroadd-features {
+    display: flex;
+    flex-wrap: wrap;          /* Allows wrapping on smaller screens */
+    justify-content: center;  /* Center horizontally */
+    gap: 2rem;                /* Space between the columns */
+  }
+  
+  /* Each feature card */
+  .heroadd-feature {
+    flex: 1 1 250px;   /* Grows/shrinks, with a min width ~250px */
+    max-width: 300px;  /* Optional upper limit for each feature card */
+    text-align: center;
+    margin-bottom: 2rem; /* Spacing in case you want extra margin at the bottom */
+  }
+  
+  /* Icon style */
+  .heroadd-icon {
+    width: 64px;        /* Adjust icon size as desired */
+    height: 64px;       /* Adjust icon size as desired */
+    margin-bottom: 1rem;
+  }
+  
+  /* Smaller heading for each feature */
+  .heroadd-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600; /* Semi-bold */
+  }
+  
+  /* Paragraph text for each feature */
+  .heroadd-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #333;
+    margin: 0 auto; /* Center text block if narrower line width is desired */
+    max-width: 250px; /* Optional narrower text width */
+  }
+  
