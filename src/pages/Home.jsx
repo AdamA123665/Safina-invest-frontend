@@ -584,76 +584,77 @@ function PortfolioOptimizer() {
 
   return (
     <div>
+      {/* 
+        HERO (pinned) 
+        This container has a height of ~400vh to allow the sticky effect.
+      */}
+      <div
+        ref={pinnedRef}
+        className="pinned-hero w-full"
+        style={{ height: "400vh" }}
+      >
         {/* 
           .hero-inner is sticky so it stays in view 
           while the user scrolls through the 400vh container.
         */}
         <div
-  className="hero-inner sticky top-0 flex flex-col justify-center items-center 
-  h-screen bg-green-50"
->
-  <h1
-    className="font-extrabold text-5xl md:text-7xl text-gray-900 
-               flex items-center leading-none"
-  >
-    {/* "We Help You" static text */}
-    <span>We Help You</span>
-
-    {/* Extra spacing between static text and dynamic words */}
-    <span className="ml-2" /> 
-
-    {/* Container for animated words */}
-    <span
-      className="relative inline-block"
-      style={{ width: "11ch" /* Enough space for the longest word */ }}
-    >
-      {/* Outgoing word */}
-      <span
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          transform: `translateY(${oldTranslate}%)`,
-          opacity: oldOpacity,
-          transition: "transform 0.4s ease, opacity 0.4s ease",
-          color: "#059669"
-        }}
-      >
-        {WORDS[oldWordIndex]}
-      </span>
-
-      {/* Incoming word */}
-      {oldWordIndex !== newWordIndex && (
-        <span
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            transform: `translateY(${newTranslate}%)`,
-            opacity: newOpacity,
-            transition: "transform 0.4s ease, opacity 0.4s ease",
-            color: "#059669"
-          }}
+          className="hero-inner sticky top-0 flex flex-col justify-center items-center 
+          h-screen bg-green-50"
         >
-          {WORDS[newWordIndex]}
-        </span>
-      )}
-    </span>
-  </h1>
+          {/* Big Bold Title and inline animated words */}
+          <h1 className="font-extrabold text-5xl md:text-7xl text-gray-900 flex flex-wrap items-center justify-center gap-2 px-2 text-center">
+            We Help You
+            {/* A parent span to hold both words stacked absolutely on top of each other */}
+            <span
+              className="relative inline-block"
+              style={{ width: "11ch" /* just enough space for the largest word */ }}
+            >
+              {/* Old (outgoing) word */}
+              <span
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  transform: `translateY(${oldTranslate}%)`,
+                  opacity: oldOpacity,
+                  transition: "transform 0.4s ease, opacity 0.4s ease",
+                  color: "#059669" // a deeper green from Tailwind palette
+                }}
+              >
+                {WORDS[oldWordIndex]}
+              </span>
+              {/* New (incoming) word, only if different */}
+              {oldWordIndex !== newWordIndex && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    transform: `translateY(${newTranslate}%)`,
+                    opacity: newOpacity,
+                    transition: "transform 0.4s ease, opacity 0.4s ease",
+                    color: "#059669"
+                  }}
+                >
+                  {WORDS[newWordIndex]}
+                </span>
+              )}
+            </span>
+          </h1>
 
-  <p className="mt-6 text-lg md:text-2xl text-gray-700 max-w-3xl text-center px-4">
-    An investing platform that uses AI-driven asset allocation to help
-    you reach your financial goals in just 3 simple steps.
-  </p>
+          <p className="mt-6 text-lg md:text-2xl text-gray-700 max-w-3xl text-center px-4">
+            An investing platform that uses AI-driven asset allocation to help
+            you reach your financial goals in just 3 simple steps.
+          </p>
 
-  <button
-    className="mt-8 px-8 py-4 bg-green-600 text-white rounded-full 
-               hover:bg-green-700 transition-colors"
-  >
-    Get Started
-  </button>
-</div>
-
+          <button
+            className="mt-8 px-8 py-4 bg-green-600 text-white rounded-full 
+                       hover:bg-green-700 transition-colors"
+          >
+            Get Started
+          </button>
+        </div>
+      </div>
 
       {/* 
         Secondary Section (heroadd)
