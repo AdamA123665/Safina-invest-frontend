@@ -1,116 +1,93 @@
-/* Global resets */
+/* Basic reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
   
-  body {
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    color: #333;
-    scroll-behavior: smooth;
-  }
-  
-  /* Hero Section Container */
-  .hero-section {
-    min-height: 100vh;
+  /* Container that is pinned for the first X vh */
+  .pinned-hero {
+    position: relative; /* We'll switch to fixed in JS once we start scrolling */
     width: 100%;
+    /* This height is set in JS to 400% of viewport for 4 words */
     background: linear-gradient(135deg, #E7F0FF, #FFFFFF);
-    overflow-x: hidden; /* prevent horizontal scrollbar if any small offsets occur */
-  }
-  
-  /* Navigation */
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 5vw;
-  }
-  
-  .logo {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #333;
-  }
-  
-  .menu {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-  }
-  
-  .menu li a {
-    text-decoration: none;
-    color: #333;
-    transition: color 0.3s;
-  }
-  
-  .menu li a:hover {
-    color: #0072ff;
-  }
-  
-  /* Hero Content */
-  .hero-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    padding: 80px 5vw;
-    min-height: calc(100vh - 60px); /* Approx subtract nav height */
     justify-content: center;
+    overflow: hidden; /* Hide overflow if words or transitions go beyond container */
   }
   
-  .hero-heading {
-    font-size: 3.5rem;
-    font-weight: 900;
+  /* The rotating wheel container */
+  .word-wheel {
+    position: relative;
+    height: 120px; /* set enough space for 3 lines of text in a stack */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 20px;
-    color: #222;
-    line-height: 1.2;
   }
   
-  .rotating-word {
+  /* Each word in the wheel */
+  .word {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    transition: opacity 0.4s, transform 0.4s;
     color: #0072ff;
-    display: inline-block;
-    transition: opacity 0.4s ease-in-out;
   }
   
-  .fade-out {
-    opacity: 0;
+  /* The top word, slightly above and faded */
+  .top-word {
+    top: 0;
+    opacity: 0.3;
+    transform: translateY(-50%);
   }
   
+  /* The middle/active word */
+  .middle-word {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+    color: #222; /* highlight main word differently if you like */
+  }
+  
+  /* The bottom word, slightly below and faded */
+  .bottom-word {
+    bottom: 0;
+    opacity: 0.3;
+    transform: translateY(50%);
+  }
+  
+  /* Subheading, CTA, etc. */
   .hero-subheading {
     font-size: 1.2rem;
-    max-width: 700px;
-    margin-bottom: 40px;
-    line-height: 1.4;
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 20px;
   }
   
   .cta-button {
     background: #0072ff;
     color: #fff;
-    padding: 15px 30px;
+    padding: 12px 24px;
     font-size: 1rem;
     border: none;
-    border-radius: 6px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background 0.3s;
   }
   
   .cta-button:hover {
     background: #005ecc;
   }
   
-  /* Responsiveness: Adjust font sizes for smaller screens */
-  @media (max-width: 768px) {
-    .hero-heading {
-      font-size: 2.2rem;
-    }
-    .hero-subheading {
-      font-size: 1rem;
-    }
-    .cta-button {
-      padding: 12px 24px;
-      font-size: 0.9rem;
-    }
+  /* Example container for the articles & about sections */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
   }
   

@@ -467,96 +467,25 @@ const Step3 = () => {
     </motion.div>
   );
 };
-// -- Hero Section Constants & Component --
+// The four words to display
 const WORDS = ["invest", "save", "be sharia compliant", "grow"];
-const SCROLL_THRESHOLDS = [0, 400, 800, 1200];
-const SCROLL_IDLE_TIMEOUT = 3000;
-const AUTO_ROTATE_INTERVAL = 3000;
 
-function HeroSection() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [fadeOut, setFadeOut] = useState(false);
-  const lastScrollTimeRef = useRef(Date.now());
+// We'll pin the hero until the user has scrolled through all four words.
+// Let's define the total "pin" height as 400% of the viewport (one for each word).
+const PINNED_SECTION_MULTIPLIER = 4; // 4 words => 400% of viewport
 
-  const updateIndex = (newIndex) => {
-    // Fade out
-    setFadeOut(true);
-
-    // After fade-out completes, change the word, then fade back in
-    setTimeout(() => {
-      setCurrentIndex(newIndex);
-      setFadeOut(false);
-    }, 400); // Match the CSS transition duration
-  };
-
-  // Scroll-based updates
-  useEffect(() => {
-    const handleScroll = () => {
-      lastScrollTimeRef.current = Date.now();
-      const scrollY = window.scrollY;
-
-      let newIndex = 0;
-      if (scrollY >= SCROLL_THRESHOLDS[3]) {
-        newIndex = 3;
-      } else if (scrollY >= SCROLL_THRESHOLDS[2]) {
-        newIndex = 2;
-      } else if (scrollY >= SCROLL_THRESHOLDS[1]) {
-        newIndex = 1;
-      } else {
-        newIndex = 0;
-      }
-
-      if (newIndex !== currentIndex) {
-        updateIndex(newIndex);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-    // eslint-disable-next-line
-  }, [currentIndex]);
-
-  // Auto-rotation logic
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = Date.now();
-      // If user hasn't scrolled recently, auto-rotate
-      if (now - lastScrollTimeRef.current > SCROLL_IDLE_TIMEOUT) {
-        const nextIndex = (currentIndex + 1) % WORDS.length;
-        updateIndex(nextIndex);
-      }
-    }, AUTO_ROTATE_INTERVAL);
-
-    return () => clearInterval(interval);
-  }, [currentIndex]);
-
-  return (
-    <section className="hero-content">
-      <h1 className="hero-heading">
-        We Help You{" "}
-        <span className={`rotating-word ${fadeOut ? "fade-out" : ""}`}>
-          {WORDS[currentIndex]}
-        </span>
-      </h1>
-      <p className="hero-subheading">
-        An investing platform that uses AI-driven asset allocation to help
-        you reach your financial goals in just 3 simple steps.
-      </p>
-      <button className="cta-button">Get Started</button>
-    </section>
-  );
-}
-
-// -- Portfolio Optimizer Component --
 const PortfolioOptimizer = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [portfolioData, setPortfolioData] = useState(null);
-  const [, setSelectedAsset] = useState(null);
+  const [, setPortfolioData] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0); // Which word is displayed
   const navigate = useNavigate();
 
-  // Fetch aggressive portfolio data
+  // We'll store a reference to the pinned container
+  const heroRef = useRef(null);
+
+  // -- 1. Fetch portfolio data (example) --
   useEffect(() => {
     const fetchPortfolioData = async () => {
       try {
@@ -567,11 +496,10 @@ const PortfolioOptimizer = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               initial_investment: 1000,
-              risk_tolerance: 10 // 10 = Aggressive
+              risk_tolerance: 10, // Aggressive
             }),
           }
         );
-
         if (!response.ok) throw new Error("Failed to fetch portfolio data");
         const data = await response.json();
         setPortfolioData(data);
@@ -579,22 +507,10 @@ const PortfolioOptimizer = () => {
         console.error(err);
       }
     };
-
     fetchPortfolioData();
   }, []);
 
-  // Select first asset if available
-  useEffect(() => {
-    if (
-      portfolioData &&
-      portfolioData.dashboard_data &&
-      portfolioData.dashboard_data.asset_info
-    ) {
-      setSelectedAsset(portfolioData.dashboard_data.asset_info[0]);
-    }
-  }, [portfolioData, setSelectedAsset]);
-
-  // Fetch top 3 articles
+  // -- 2. Fetch top 3 articles (example) --
   useEffect(() => {
     const fetchArticles = async () => {
       try {
@@ -603,7 +519,7 @@ const PortfolioOptimizer = () => {
         );
         if (!response.ok) throw new Error("Failed to fetch articles");
         const data = await response.json();
-        setArticles(data.slice(0, 3)); // Take first 3 articles
+        setArticles(data.slice(0, 3));
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -611,16 +527,60 @@ const PortfolioOptimizer = () => {
         setLoading(false);
       }
     };
-
     fetchArticles();
   }, []);
 
-  // Navigate to article detail
+  // -- 3. Scroll logic to track pinned area and update the word index --
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!heroRef.current) return;
+
+      // The top Y offset of our pinned container
+      const rect = heroRef.current.getBoundingClientRect();
+      // The total height we want to "pin" is 4x the viewport (4 words)
+      const pinHeight = window.innerHeight * PINNED_SECTION_MULTIPLIER;
+
+      // If the top of the container is at or above 0, we're in the pinned zone
+      // As we scroll within [0 ... pinHeight], we update the word index
+      // Once we pass pinHeight, we unpin.
+      const startPin = rect.top;         // usually 0 once we start pinning
+      // const endPin = rect.top + pinHeight;
+
+      // scrolled portion is how far we are into the pinned zone
+      const scrolled = -startPin; // rect.top is negative once we scroll downward
+
+      if (scrolled >= 0 && scrolled <= pinHeight) {
+        // Calculate which segment we are in: 0..3
+        const segmentLength = pinHeight / WORDS.length; // each word is 1/4th
+        const index = Math.floor(scrolled / segmentLength);
+        // clamp index between 0 and WORDS.length - 1
+        let nextIndex = Math.min(Math.max(index, 0), WORDS.length - 1);
+        setCurrentIndex(nextIndex);
+
+        // Prevent page from actually scrolling beyond pinned area
+        // We'll do it by controlling the body "scroll" artificially:
+        // If we haven't reached the final word, freeze scroll
+        if (nextIndex < WORDS.length - 1) {
+          // We "fix" the container. This effect is done via CSS: .pinned
+          heroRef.current.style.position = "fixed";
+          heroRef.current.style.top = "0";
+        } else {
+          // Once we've reached the 4th word, let's unpin
+          heroRef.current.style.position = "relative";
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // -- 4. Simple route for articles (example) --
   const openArticle = (id) => {
     navigate(`/articles/${id.toLowerCase()}`);
   };
 
-  // Loading state
+  // -- Loading & error states (example) --
   if (loading) {
     return (
       <section id="research">
@@ -631,7 +591,6 @@ const PortfolioOptimizer = () => {
     );
   }
 
-  // Error state
   if (error) {
     return (
       <section id="research">
@@ -644,51 +603,46 @@ const PortfolioOptimizer = () => {
     );
   }
 
-  // Main content after loading
+  // -- 5. Compute top/center/bottom words for "rotating wheel" effect --
+  const topIndex = (currentIndex - 1 + WORDS.length) % WORDS.length;
+  const bottomIndex = (currentIndex + 1) % WORDS.length;
+
   return (
     <div>
-      {/* Example Nav or Hero container */}
-      <nav className="nav">
-        <div className="logo">InvestApp</div>
-        <ul className="menu">
-          <li>
-            <a href="#features">Features</a>
-          </li>
-          <li>
-            <a href="#pricing">Pricing</a>
-          </li>
-          <li>
-            <a href="#login">Login</a>
-          </li>
-        </ul>
-      </nav>
+      {/* Pinned Hero Container: height is 400% of viewport to allow 4 steps */}
+      <div
+        ref={heroRef}
+        className="pinned-hero"
+        style={{ height: `${PINNED_SECTION_MULTIPLIER * 100}vh` }}
+      >
+        {/* Rotating wheel words */}
+        <div className="word-wheel">
+          <div className="word top-word">{WORDS[topIndex]}</div>
+          <div className="word middle-word">{WORDS[currentIndex]}</div>
+          <div className="word bottom-word">{WORDS[bottomIndex]}</div>
+        </div>
 
-      {/* HeroSection */}
-      <HeroSection />
+        <p className="hero-subheading">
+          An investing platform that uses AI-driven asset allocation
+          to help you reach your financial goals in just 3 simple steps.
+        </p>
+        <button className="cta-button">Get Started</button>
+      </div>
 
-      {/* Articles Section */}
-      <section id="research" className="container mx-auto px-4 py-20">
-        <h2 className="text-2xl mb-8 text-center font-bold">Latest Articles</h2>
-        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-3">
-          {articles.map((article) => (
-            <div
-              key={article.id}
-              className="p-4 border rounded shadow hover:shadow-lg cursor-pointer"
-              onClick={() => openArticle(article.title)}
-            >
-              <h3 className="font-semibold text-lg mb-2">{article.title}</h3>
-              <p className="text-sm text-gray-600">
-                {article.description || "No description available."}
-              </p>
-            </div>
-          ))}
+      {/* Example final about section */}
+      <section
+        id="about"
+        className="relative py-20"
+        style={{ background: "#F9FAFB" }}
+      >
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-2xl font-bold mb-4">About Us</h2>
+          <p className="max-w-xl mx-auto">
+            We are a platform dedicated to helping everyone invest easily,
+            using algorithms and AI-driven asset allocation.
+          </p>
         </div>
       </section>
-
-      
-
-
-
 
 <section
       id="about"
