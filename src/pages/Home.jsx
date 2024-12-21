@@ -602,45 +602,51 @@ function PortfolioOptimizer() {
           h-screen bg-green-50"
         >
           {/* Big Bold Title and inline animated words */}
-          <h1 className="font-extrabold text-5xl md:text-7xl text-gray-900 flex flex-wrap items-center justify-center gap-2 px-2 text-center">
-            We Help You
-            {/* A parent span to hold both words stacked absolutely on top of each other */}
-            <span
-              className="relative inline-block"
-              style={{ width: "11ch" /* just enough space for the largest word */ }}
-            >
-              {/* Old (outgoing) word */}
-              <span
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  transform: `translateY(${oldTranslate}%)`,
-                  opacity: oldOpacity,
-                  transition: "transform 0.4s ease, opacity 0.4s ease",
-                  color: "#059669" // a deeper green from Tailwind palette
-                }}
-              >
-                {WORDS[oldWordIndex]}
-              </span>
-              {/* New (incoming) word, only if different */}
-              {oldWordIndex !== newWordIndex && (
-                <span
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    transform: `translateY(${newTranslate}%)`,
-                    opacity: newOpacity,
-                    transition: "transform 0.4s ease, opacity 0.4s ease",
-                    color: "#059669"
-                  }}
-                >
-                  {WORDS[newWordIndex]}
-                </span>
-              )}
-            </span>
-          </h1>
+          <h1
+  className="font-extrabold text-5xl md:text-7xl text-gray-900 flex items-center justify-center gap-2"
+  style={{ textAlign: "center" }}
+>
+  We Help You{" "}
+  {/* Animated words container */}
+  <span
+    className="relative inline-block"
+    style={{
+      display: "inline-block",
+      height: "1em", // Ensures the animated words take up the same height as the main text
+      overflow: "hidden",
+      verticalAlign: "middle", // Aligns with the main text
+    }}
+  >
+    {/* Old (outgoing) word */}
+    <span
+      style={{
+        position: "absolute",
+        left: 0,
+        transform: `translateY(${oldTranslate}%)`,
+        opacity: oldOpacity,
+        transition: "transform 0.4s ease, opacity 0.4s ease",
+        color: "#059669", // Green color
+      }}
+    >
+      {WORDS[oldWordIndex]}
+    </span>
+    {/* New (incoming) word */}
+    {oldWordIndex !== newWordIndex && (
+      <span
+        style={{
+          position: "absolute",
+          left: 0,
+          transform: `translateY(${newTranslate}%)`,
+          opacity: newOpacity,
+          transition: "transform 0.4s ease, opacity 0.4s ease",
+          color: "#059669",
+        }}
+      >
+        {WORDS[newWordIndex]}
+      </span>
+    )}
+  </span>
+</h1>
 
           <p className="mt-6 text-lg md:text-2xl text-gray-700 max-w-3xl text-center px-4">
             An investing platform that uses AI-driven asset allocation to help
