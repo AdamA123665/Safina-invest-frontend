@@ -6,83 +6,60 @@
   }
   
   /* 
-    This container is 400% the viewport height 
-    so that the user can scroll in 4 segments (one per word). 
+    pinned-hero: 400vh tall so user scrolls across 4 words total. 
   */
   .pinned-hero {
     position: relative;
     width: 100%;
-    height: 400vh; /* 4 words => 400% */
+    height: 400vh;
     background: linear-gradient(135deg, #E7F0FF, #FFFFFF);
   }
   
   /*
-    The sticky inner hero that occupies 1 screen height (100vh).
-    It remains pinned at the top until the user scrolls beyond the .pinned-hero container.
+    .hero-inner is sticky at the top, occupying 100vh. 
+    As the user scrolls through the 400vh container, this stays in view.
   */
   .hero-inner {
     position: sticky;
     top: 0;
-    height: 100vh;
-  
+    height: 100vh; 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  
-    /* We can place a background color or not;
-       If you prefer a full-bleed gradient, keep it in .pinned-hero above. */
   }
   
-  /* The rotating wheel container */
-  .word-wheel {
-    position: relative;
-    height: 120px; /* space for top, middle, bottom stacked words */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  /* Each word in the wheel */
-  .word {
-    position: absolute;
-    width: 100%;
+  /* The single line with "We Help You" + transitioning words */
+  .hero-line {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #222; /* color for "We Help You" */
     text-align: center;
-    font-size: 2.5rem;
-    font-weight: bold;
-    transition: opacity 0.4s, transform 0.4s;
-    color: #0072ff;
-  }
-  
-  .top-word {
-    top: 0;
-    opacity: 0.3;
-    transform: translateY(-30%);
-  }
-  
-  .middle-word {
+    margin-bottom: 1.5rem;
     position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 1;
-    color: #222; /* highlight main word */
   }
   
-  .bottom-word {
-    bottom: 0;
-    opacity: 0.3;
-    transform: translateY(30%);
+  /* "We Help You" has normal color, the changing words have a highlight color. */
+  .hero-title {
+    margin-right: 6px;
+  }
+  
+  /* The changing word(s). We'll do absolute or inline? 
+     If you need to handle overlapping words, you can absolutely position them. */
+  .changing-word {
+    display: inline-block;
+    position: relative;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   }
   
   /* Subheading & CTA */
   .hero-subheading {
-    font-size: 1.2rem;
+    font-size: 1rem;
     max-width: 600px;
     text-align: center;
     margin-bottom: 20px;
     color: #333;
+    padding: 0 10px;
   }
   
   .cta-button {
@@ -97,26 +74,5 @@
   
   .cta-button:hover {
     background: #005ecc;
-  }
-  
-  /* Container for the articles & about sections */
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .wheel-heading-inline {
-    font-size: 1.4rem;
-    margin-right: 12px;
-    color: #222;
-  }
-  
-  /* Example responsive tweaks */
-  @media (max-width: 768px) {
-    .word {
-      font-size: 1.8rem;
-    }
-    .hero-subheading {
-      font-size: 1rem;
-    }
   }
   
