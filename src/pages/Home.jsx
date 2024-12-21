@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { ResponsiveContainer } from 'recharts';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { AreaChart, Area, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { Link } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is installed
+import "./heroSection.css";
 const Step1 = () => {
   const [riskLevel, setRiskLevel] = useState(5);
 
@@ -468,31 +467,112 @@ const Step3 = () => {
     </motion.div>
   );
 };
+// -- Hero Section Constants & Component --
+const WORDS = ["invest", "save", "be sharia compliant", "grow"];
+const SCROLL_THRESHOLDS = [0, 400, 800, 1200];
+const SCROLL_IDLE_TIMEOUT = 3000;
+const AUTO_ROTATE_INTERVAL = 3000;
+
+function HeroSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [fadeOut, setFadeOut] = useState(false);
+  const lastScrollTimeRef = useRef(Date.now());
+
+  const updateIndex = (newIndex) => {
+    // Fade out
+    setFadeOut(true);
+
+    // After fade-out completes, change the word, then fade back in
+    setTimeout(() => {
+      setCurrentIndex(newIndex);
+      setFadeOut(false);
+    }, 400); // Match the CSS transition duration
+  };
+
+  // Scroll-based updates
+  useEffect(() => {
+    const handleScroll = () => {
+      lastScrollTimeRef.current = Date.now();
+      const scrollY = window.scrollY;
+
+      let newIndex = 0;
+      if (scrollY >= SCROLL_THRESHOLDS[3]) {
+        newIndex = 3;
+      } else if (scrollY >= SCROLL_THRESHOLDS[2]) {
+        newIndex = 2;
+      } else if (scrollY >= SCROLL_THRESHOLDS[1]) {
+        newIndex = 1;
+      } else {
+        newIndex = 0;
+      }
+
+      if (newIndex !== currentIndex) {
+        updateIndex(newIndex);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+    // eslint-disable-next-line
+  }, [currentIndex]);
+
+  // Auto-rotation logic
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now();
+      // If user hasn't scrolled recently, auto-rotate
+      if (now - lastScrollTimeRef.current > SCROLL_IDLE_TIMEOUT) {
+        const nextIndex = (currentIndex + 1) % WORDS.length;
+        updateIndex(nextIndex);
+      }
+    }, AUTO_ROTATE_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+
+  return (
+    <section className="hero-content">
+      <h1 className="hero-heading">
+        We Help You{" "}
+        <span className={`rotating-word ${fadeOut ? "fade-out" : ""}`}>
+          {WORDS[currentIndex]}
+        </span>
+      </h1>
+      <p className="hero-subheading">
+        An investing platform that uses AI-driven asset allocation to help
+        you reach your financial goals in just 3 simple steps.
+      </p>
+      <button className="cta-button">Get Started</button>
+    </section>
+  );
+}
+
+// -- Portfolio Optimizer Component --
 const PortfolioOptimizer = () => {
-    const [articles, setArticles] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);   
-    const [portfolioData, setPortfolioData] = useState(null);
-    const [, setSelectedAsset] = useState(null);
-    const navigate = useNavigate();
-    
-   // Fetch aggressive portfolio data
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [portfolioData, setPortfolioData] = useState(null);
+  const [, setSelectedAsset] = useState(null);
+  const navigate = useNavigate();
+
+  // Fetch aggressive portfolio data
   useEffect(() => {
     const fetchPortfolioData = async () => {
       try {
         const response = await fetch(
-          'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
+          "https://safinabackend.azurewebsites.net/api/portfolio/optimize",
           {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               initial_investment: 1000,
-              risk_tolerance: 10, // Assuming 10 represents aggressive
+              risk_tolerance: 10 // 10 = Aggressive
             }),
           }
         );
 
-        if (!response.ok) throw new Error('Failed to fetch portfolio data');
+        if (!response.ok) throw new Error("Failed to fetch portfolio data");
         const data = await response.json();
         setPortfolioData(data);
       } catch (err) {
@@ -502,273 +582,110 @@ const PortfolioOptimizer = () => {
 
     fetchPortfolioData();
   }, []);
-  
-    useEffect(() => {
-      if (
-        portfolioData &&
-        portfolioData.dashboard_data &&
-        portfolioData.dashboard_data.asset_info
-      ) {
-        setSelectedAsset(portfolioData.dashboard_data.asset_info[0]);
+
+  // Select first asset if available
+  useEffect(() => {
+    if (
+      portfolioData &&
+      portfolioData.dashboard_data &&
+      portfolioData.dashboard_data.asset_info
+    ) {
+      setSelectedAsset(portfolioData.dashboard_data.asset_info[0]);
+    }
+  }, [portfolioData, setSelectedAsset]);
+
+  // Fetch top 3 articles
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch(
+          "https://safinabackend.azurewebsites.net/api/articles"
+        );
+        if (!response.ok) throw new Error("Failed to fetch articles");
+        const data = await response.json();
+        setArticles(data.slice(0, 3)); // Take first 3 articles
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setError(true);
+        setLoading(false);
       }
-    }, [portfolioData, setSelectedAsset]);
-
-    useEffect(() => {
-      const fetchArticles = async () => {
-        try {
-          const response = await fetch('https://safinabackend.azurewebsites.net/api/articles');
-          if (!response.ok) throw new Error('Failed to fetch articles');
-          const data = await response.json();
-          setArticles(data.slice(0, 3)); // Only take the first 3 articles
-          setLoading(false);
-        } catch (err) {
-          console.error(err);
-          setError(true);
-          setLoading(false);
-        }
-      };
-  
-      fetchArticles();
-    }, []);
-  
-    const openArticle = (id) => {
-      navigate(`/articles/${id.toLowerCase()}`); // Ensure your routes are set up accordingly
     };
-  
-    if (loading) {
-      return (
-        <section id="research">
-          <div className="container mx-auto px-4 py-20 text-center">
-            <p className="text-xl">Loading...</p>
-          </div>
-        </section>
-      );
-    }
-  
-    if (error) {
-      return (
-        <section id="research">
-          <div className="container mx-auto px-4 py-20 text-center">
-            <p className="text-xl text-red-500">Failed to load articles. Please try again later.</p>
-          </div>
-        </section>
-      );
-    }
-  
+
+    fetchArticles();
+  }, []);
+
+  // Navigate to article detail
+  const openArticle = (id) => {
+    navigate(`/articles/${id.toLowerCase()}`);
+  };
+
+  // Loading state
+  if (loading) {
     return (
-      <div className="relative min-h-screen text-gray-900 font-sans overflow-hidden bg-green-100">
-  {/* Hero Section */}
-  <section className="relative w-full flex flex-col items-center justify-center px-4 md:px-8 py-20">
-    {/* Content Container */}
-    <div className="max-w-5xl mx-auto text-center relative z-10">
-      <h1
-        className="text-4xl md:text-6xl font-semibold tracking-tight mb-6"
-        style={{
-          fontFamily: 'Lora, serif',
-          color: '#006C5B', // Darker text for contrast on light background
-          textShadow: '1px 1px 4px rgba(0,0,0,0.1)',
-        }}
-      >
-        Investment portfolios driven by data
-      </h1>
-
-      <p
-        className="text-xl md:text-2xl font-light mb-8 max-w-3xl mx-auto"
-        style={{
-          fontFamily: 'Open Sans, sans-serif',
-          color: '#1F2937',
-        }}
-      >
-        Unlock sustainable growth through data-driven strategies and expert guidance.
-      </p>
-
-      <div className="flex flex-col items-center space-y-6 md:space-y-8 mb-12">
-        {/* Primary CTA Button */}
-        <a
-          href="#how-to-invest"
-          className="relative inline-block px-10 py-4 text-lg font-semibold rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl focus:outline-none"
-          style={{
-            backgroundColor: '#006C5B',
-            color: '#FFFFFF',
-          }}
-        >
-          Start Investing
-        </a>
-        <div
-          className="mt-2 inline-block px-4 py-1 text-sm font-medium rounded-full shadow-md"
-          style={{
-            backgroundColor: ' #FFFFFF',
-            color: '#006C5B',
-          }}
-        >
-          Sharia Compliant
+      <section id="research">
+        <div className="container mx-auto px-4 py-20 text-center">
+          <p className="text-xl">Loading...</p>
         </div>
-      </div>
+      </section>
+    );
+  }
 
-      {/* Chart Area */}
-      <motion.div
-        className="relative flex justify-center"
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1 }}
-      >
-        {portfolioData && (
-          <div
-            className="relative p-6 rounded-3xl shadow-xl bg-white/50 backdrop-blur-xl border border-white/30 max-w-4xl w-full"
-            style={{
-              boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
-            }}
-          >
-            <div className="flex items-center justify-between mb-4 relative">
-              <div className="flex-grow"></div>
-              <div
-                className="text-sm text-gray-600"
-                style={{
-                  fontFamily: 'Open Sans, sans-serif',
-                  marginLeft: 'auto',
-                  alignSelf: 'flex-end',
-                }}
-              >
-                (10-year view)
-              </div>
-            </div>
+  // Error state
+  if (error) {
+    return (
+      <section id="research">
+        <div className="container mx-auto px-4 py-20 text-center">
+          <p className="text-xl text-red-500">
+            Failed to load articles. Please try again later.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
-            <div className="w-full h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
-                    date: new Date(date).toLocaleDateString('en-US', {
-                      month: 'short',
-                      year: '2-digit',
-                    }),
-                    Portfolio:
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'Portfolio'
-                      )?.values[idx] || 0,
-                    SP500:
-                      portfolioData.dashboard_data.performance.series.find(
-                        (s) => s.name === 'S&P 500'
-                      )?.values[idx] || 0,
-                  }))}
-                  margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
-                >
-                  <defs>
-                    <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#4B5563" stopOpacity={0.2}/>
-                      <stop offset="100%" stopColor="#4B5563" stopOpacity={0}/>
-                    </linearGradient>
-                    <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#10B981" stopOpacity={0.2}/>
-                      <stop offset="100%" stopColor="#10B981" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <XAxis
-                    dataKey="date"
-                    tick={{
-                      fill: '#4B5563',
-                      fontSize: '14px',
-                      fontFamily: 'Lora, serif',
-                    }}
-                    tickLine={false}
-                    axisLine={{ stroke: '#D1D5DB' }}
-                  />
-                  <YAxis
-                    orientation="right"
-                    tick={{
-                      fill: '#4B5563',
-                      fontSize: '14px',
-                      fontFamily: 'Lora, serif',
-                    }}
-                    tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
-                    axisLine={{ stroke: '#D1D5DB' }}
-                    tickLine={false}
-                  />
-                  <Tooltip
-                    formatter={(value) => `${(value * 100).toFixed(2)}%`}
-                    contentStyle={{
-                      background: '#ffffff',
-                      border: '1px solid #E5E7EB',
-                      borderRadius: '8px',
-                      boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)',
-                      padding: '8px 12px',
-                      fontFamily: 'Lora, serif',
-                      fontSize: '14px',
-                    }}
-                  />
-                  <Legend
-                    wrapperStyle={{
-                      paddingTop: '16px',
-                      color: '#4B5563',
-                      fontFamily: 'Lora, serif',
-                      fontWeight: '500',
-                    }}
-                    iconType="circle"
-                    iconSize={10}
-                    align="center"
-                    layout="horizontal"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="Portfolio"
-                    stroke="#4B5563"
-                    fill="url(#colorPortfolio)"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="SP500"
-                    stroke="#10B981"
-                    fill="url(#colorSP500)"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
+  // Main content after loading
+  return (
+    <div>
+      {/* Example Nav or Hero container */}
+      <nav className="nav">
+        <div className="logo">InvestApp</div>
+        <ul className="menu">
+          <li>
+            <a href="#features">Features</a>
+          </li>
+          <li>
+            <a href="#pricing">Pricing</a>
+          </li>
+          <li>
+            <a href="#login">Login</a>
+          </li>
+        </ul>
+      </nav>
 
-            {/* Neon Highlight Tag */}
+      {/* HeroSection */}
+      <HeroSection />
+
+      {/* Articles Section */}
+      <section id="research" className="container mx-auto px-4 py-20">
+        <h2 className="text-2xl mb-8 text-center font-bold">Latest Articles</h2>
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-3">
+          {articles.map((article) => (
             <div
-              className="absolute bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
-              style={{
-                top: '80px',
-                left: '20px',
-                fontFamily: 'Lora, serif',
-                transform: 'rotate(-5deg)',
-                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
-                animation: 'pulseBadge 2s infinite',
-                cursor: 'default',
-              }}
+              key={article.id}
+              className="p-4 border rounded shadow hover:shadow-lg cursor-pointer"
+              onClick={() => openArticle(article.title)}
             >
-              +300% Growth!
+              <h3 className="font-semibold text-lg mb-2">{article.title}</h3>
+              <p className="text-sm text-gray-600">
+                {article.description || "No description available."}
+              </p>
             </div>
-          </div>
-        )}
-      </motion.div>
+          ))}
+        </div>
+      </section>
 
-    </div>
-  </section>
-
-  {/* Custom CSS Animations */}
-  <style jsx>{`
-    @keyframes pulseBadge {
-      0% { transform: scale(1) rotate(-5deg); }
-      50% { transform: scale(1.05) rotate(-5deg); }
-      100% { transform: scale(1) rotate(-5deg); }
-    }
-
-    .recharts-surface {
-      background-color: transparent;
-    }
-    .recharts-tooltip-wrapper {
-      transition: all 0.2s ease;
-    }
-    .recharts-legend-item {
-      font-family: 'Lora, serif';
-      font-size: 14px;
-      font-weight: bold;
-    }
-  `}</style>
+      
 
 
 

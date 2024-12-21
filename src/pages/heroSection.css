@@ -1,0 +1,116 @@
+/* Global resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #333;
+    scroll-behavior: smooth;
+  }
+  
+  /* Hero Section Container */
+  .hero-section {
+    min-height: 100vh;
+    width: 100%;
+    background: linear-gradient(135deg, #E7F0FF, #FFFFFF);
+    overflow-x: hidden; /* prevent horizontal scrollbar if any small offsets occur */
+  }
+  
+  /* Navigation */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5vw;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .menu li a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s;
+  }
+  
+  .menu li a:hover {
+    color: #0072ff;
+  }
+  
+  /* Hero Content */
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 80px 5vw;
+    min-height: calc(100vh - 60px); /* Approx subtract nav height */
+    justify-content: center;
+  }
+  
+  .hero-heading {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    color: #222;
+    line-height: 1.2;
+  }
+  
+  .rotating-word {
+    color: #0072ff;
+    display: inline-block;
+    transition: opacity 0.4s ease-in-out;
+  }
+  
+  .fade-out {
+    opacity: 0;
+  }
+  
+  .hero-subheading {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin-bottom: 40px;
+    line-height: 1.4;
+  }
+  
+  .cta-button {
+    background: #0072ff;
+    color: #fff;
+    padding: 15px 30px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .cta-button:hover {
+    background: #005ecc;
+  }
+  
+  /* Responsiveness: Adjust font sizes for smaller screens */
+  @media (max-width: 768px) {
+    .hero-heading {
+      font-size: 2.2rem;
+    }
+    .hero-subheading {
+      font-size: 1rem;
+    }
+    .cta-button {
+      padding: 12px 24px;
+      font-size: 0.9rem;
+    }
+  }
+  
