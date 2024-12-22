@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Add this CSS to your global stylesheet or a relevant CSS module */
+
+/* Enable 3D transforms and preserve 3D for the flipping container */
+.perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  
+  .flip-card-flipped {
+    transform: rotateY(180deg);
+  }
+  
+  .flip-card-back {
+    transform: rotateY(180deg);
+  }
+  
