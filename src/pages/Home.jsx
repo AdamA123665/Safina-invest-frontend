@@ -492,33 +492,67 @@ const PortfolioOptimizer = () => {
   const [flippedCard, setFlippedCard] = useState(null);
   const [transitionProgress, setTransitionProgress] = useState(0);
   const [isFinalPhase, setIsFinalPhase] = useState(false);
+  const [isPortfolioFetched, setIsPortfolioFetched] = useState(false);
 
-  // Fetch aggressive portfolio data
+  // Handle scroll for phase transitions
   useEffect(() => {
-    const fetchPortfolioData = async () => {
-      try {
-        const response = await fetch(
-          'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              initial_investment: 1000,
-              risk_tolerance: 10, // Assuming 10 represents aggressive
-            }),
-          }
-        );
+    const handleScroll = () => {
+      if (isFinalPhase) return; // Do not update phases if final phase is reached
 
-        if (!response.ok) throw new Error('Failed to fetch portfolio data');
-        const data = await response.json();
-        setPortfolioData(data);
-      } catch (err) {
-        console.error(err);
+      const scrolled = window.scrollY;
+      const vh = window.innerHeight;
+
+      if (scrolled < vh) {
+        setPhase(0);
+        setTransitionProgress(0);
+      } else if (scrolled < 2 * vh) {
+        setPhase(1);
+        setTransitionProgress(0);
+      } else if (scrolled < 3 * vh) {
+        setPhase(2);
+        // Calculate transition progress between phase 2 and 3
+        setTransitionProgress((scrolled - 2 * vh) / vh);
+      } else {
+        setPhase(3);
+        setTransitionProgress(1);
+        setIsFinalPhase(true); // Lock into final phase
       }
     };
 
-    fetchPortfolioData();
-  }, []);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check in case the user is not at the top
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isFinalPhase]); // Depend on isFinalPhase
+
+  // Fetch aggressive portfolio data once phase 3 is reached
+  useEffect(() => {
+    if (phase === 3 && !isPortfolioFetched) {
+      const fetchPortfolioData = async () => {
+        try {
+          const response = await fetch(
+            'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                initial_investment: 1000,
+                risk_tolerance: 10, // Assuming 10 represents aggressive
+              }),
+            }
+          );
+
+          if (!response.ok) throw new Error('Failed to fetch portfolio data');
+          const data = await response.json();
+          setPortfolioData(data);
+          setIsPortfolioFetched(true); // Prevent future fetches
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      fetchPortfolioData();
+    }
+  }, [phase, isPortfolioFetched]);
 
   // Set selected asset when portfolioData changes
   useEffect(() => {
@@ -549,37 +583,6 @@ const PortfolioOptimizer = () => {
 
     fetchArticles();
   }, []);
-
-  // Handle scroll for phase transitions
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isFinalPhase) return; // Do not update phases if final phase is reached
-
-      const scrolled = window.scrollY;
-      const vh = window.innerHeight;
-
-      if (scrolled < vh) {
-        setPhase(0);
-        setTransitionProgress(0);
-      } else if (scrolled < 2 * vh) {
-        setPhase(1);
-        setTransitionProgress(0);
-      } else if (scrolled < 3 * vh) {
-        setPhase(2);
-        // Calculate transition progress between phase 2 and 3
-        setTransitionProgress((scrolled - 2 * vh) / vh);
-      } else {
-        setPhase(3);
-        setTransitionProgress(1);
-        setIsFinalPhase(true); // Lock into final phase
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial check in case the user is not at the top
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isFinalPhase]); // Depend on isFinalPhase
 
   // Handle mouse move for parallax
   const handleMouseMove = (e) => {
