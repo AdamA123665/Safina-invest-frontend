@@ -11,38 +11,61 @@ import {
 
 const words = ['saving', 'investing', 'staying shariah compliant'];
 
-// Sample performance data
-const performanceData = [
-  { name: 'Jan', value: 4000, projected: 4200 },
-  { name: 'Feb', value: 3000, projected: 3500 },
-  { name: 'Mar', value: 2000, projected: 3000 },
-  { name: 'Apr', value: 2780, projected: 3200 },
-  { name: 'May', value: 1890, projected: 3100 },
-  { name: 'Jun', value: 2390, projected: 3300 },
-  { name: 'Jul', value: 3490, projected: 3400 },
-  { name: 'Aug', value: 2000, projected: 3100 },
-  { name: 'Sep', value: 3000, projected: 3500 },
-  { name: 'Oct', value: 4000, projected: 4200 },
-  { name: 'Nov', value: 3800, projected: 4000 },
-  { name: 'Dec', value: 4500, projected: 4500 },
-];
-
 const RefinedHero = () => {
-  // Track which "phase" of the hero we're in based on scroll
-  const [phase, setPhase] = useState(0);
-
-  // Track mouse position for subtle parallax
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const heroRef = useRef(null);
-
-  // State for flipping cards on hover
-  const [flippedCard, setFlippedCard] = useState(null);
-
-  // State for transition progress between phase 2 and 3
-  const [transitionProgress, setTransitionProgress] = useState(0);
-
-  // State to determine if final phase has been reached
-  const [isFinalPhase, setIsFinalPhase] = useState(false);
+    const [phase, setPhase] = useState(0);
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const heroRef = useRef(null);
+    const [flippedCard, setFlippedCard] = useState(null);
+    const [transitionProgress, setTransitionProgress] = useState(0);
+    const [isFinalPhase, setIsFinalPhase] = useState(false);
+  
+    // State for dynamic performance data
+    const [performanceData, setPerformanceData] = useState([]);
+  
+    // Fetch portfolio data from backend
+    useEffect(() => {
+      const fetchPortfolioData = async () => {
+        try {
+          const response = await fetch(
+            'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                initial_investment: 1000,
+                risk_tolerance: 10, // Assuming 10 represents aggressive
+              }),
+            }
+          );
+  
+          if (!response.ok) throw new Error('Failed to fetch portfolio data');
+          const data = await response.json();
+  
+          // Transform the API response into the format required for the chart
+          const transformedData = data.dashboard_data.performance.dates.map(
+            (date, idx) => ({
+              name: new Date(date).toLocaleDateString('en-US', {
+                month: 'short',
+              }),
+              value:
+                data.dashboard_data.performance.series.find(
+                  (s) => s.name === 'Portfolio'
+                )?.values[idx] || 0,
+              projected:
+                data.dashboard_data.performance.series.find(
+                  (s) => s.name === 'Projected'
+                )?.values[idx] || 0,
+            })
+          );
+  
+          setPerformanceData(transformedData);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+  
+      fetchPortfolioData();
+    }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -365,8 +388,6 @@ const RefinedHero = () => {
             </div>
           </div>
         </section>
-
-        {/* Additional Sections Can Be Added Here */}
       </div>
     </div>
   );

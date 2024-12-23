@@ -6,15 +6,6 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is installed
 import NewHero from './Trial';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
-import { ArrowRight } from 'lucide-react';
 const Step1 = () => {
   const [riskLevel, setRiskLevel] = useState(5);
 
@@ -567,120 +558,7 @@ const PortfolioOptimizer = () => {
       <div className="app-container">
     <NewHero />
       
-    <section className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              {/* Text / CTA */}
-              <div>
-                <h2 className="text-4xl md:text-5xl font-bold mb-6 text-green-800">
-                  Driven by Data
-                </h2>
-                <p className="text-lg md:text-xl text-gray-600 mb-8">
-                  Make informed decisions with our advanced analytics and real-time market insights.
-                  Our data-driven approach ensures optimal performance while maintaining strict
-                  Shariah compliance.
-                </p>
-                <button
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 transition-colors rounded-lg text-white font-semibold shadow-md"
-                  onClick={() => (window.location.href = '/analytics')}
-                >
-                  Explore Analytics <ArrowRight className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Chart + Stat Boxes */}
-              <div className="bg-gray-100 rounded-2xl p-8 shadow-lg">
-                {/* Volatility & YTD Return */}
-                <div className="flex flex-col md:flex-row md:items-center gap-6 mb-6">
-                  {/* Volatility */}
-                  <div className="flex-1 bg-green-100 border border-gray-200 rounded-lg p-4 flex flex-col items-center">
-                    <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">
-                      Volatility
-                    </span>
-                    <span className="text-2xl font-bold text-green-700">12.5%</span>
-                  </div>
-                  {/* YTD Return */}
-                  <div className="flex-1 bg-green-100 border border-gray-200 rounded-lg p-4 flex flex-col items-center">
-                    <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">
-                      YTD Return
-                    </span>
-                    <span className="text-2xl font-bold text-green-700">+8.7%</span>
-                  </div>
-                </div>
-
-                <ResponsiveContainer width="100%" height={300}>
-  <LineChart 
-    data={portfolioData.dashboard_data.performance.dates.map((date, idx) => ({
-      date: new Date(date).toLocaleDateString('en-US', {
-        month: 'short',
-        year: '2-digit',
-      }),
-      Portfolio:
-        portfolioData.dashboard_data.performance.series.find(
-          (s) => s.name === 'Portfolio'
-        )?.values[idx] || 0,
-      SP500:
-        portfolioData.dashboard_data.performance.series.find(
-          (s) => s.name === 'S&P 500'
-        )?.values[idx] || 0,
-    }))}
-    margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
-  >
-    <defs>
-      <linearGradient id="performanceGradient" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="5%" stopColor="#10B981" stopOpacity={0.8} />
-        <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
-      </linearGradient>
-      <linearGradient id="projectedGradient" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8} />
-        <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
-      </linearGradient>
-    </defs>
-    <XAxis
-      dataKey="date"
-      axisLine={false}
-      tickLine={false}
-      tick={{ fill: '#6B7280' }}
-    />
-    <YAxis
-      axisLine={false}
-      tickLine={false}
-      tick={{ fill: '#6B7280' }}
-      domain={['auto', 'auto']}
-    />
-    <Tooltip
-      contentStyle={{
-        backgroundColor: '#F3F4F6',
-        border: 'none',
-        borderRadius: '0.5rem',
-        color: '#374151',
-      }}
-    />
-    <Line
-      type="monotone"
-      dataKey="Portfolio"
-      stroke="#10B981"
-      strokeWidth={3}
-      dot={false}
-      fill="url(#performanceGradient)"
-      fillOpacity={1}
-    />
-    <Line
-      type="monotone"
-      dataKey="SP500"
-      stroke="#3B82F6"
-      strokeWidth={2}
-      strokeDasharray="5 5"
-      dot={false}
-      fill="url(#projectedGradient)"
-      fillOpacity={1}
-    />
-  </LineChart>
-</ResponsiveContainer>
-              </div>
-            </div>
-          </div>
-        </section>
+    
 
 <section
       id="about"
