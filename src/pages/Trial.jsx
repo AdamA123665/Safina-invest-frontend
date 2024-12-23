@@ -4,6 +4,7 @@ import {
   LineChart,
   Line,
   XAxis,
+  YAxis,
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
@@ -23,66 +24,73 @@ const RefinedHero = () => {
     const [ytdReturn, setYtdReturn] = useState(null);
     // Fetch portfolio data from backend
     // Fetch portfolio data from backend
-useEffect(() => {
-    const fetchPortfolioData = async () => {
-      try {
-        const response = await fetch(
-          'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              initial_investment: 1000,
-              risk_tolerance: 10, // Assuming 10 represents aggressive
-            }),
+    useEffect(() => {
+        const fetchPortfolioData = async () => {
+          try {
+            const response = await fetch(
+              'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  initial_investment: 1000,
+                  risk_tolerance: 10, // Assuming 10 represents aggressive
+                }),
+              }
+            );
+    
+            if (!response.ok) throw new Error('Failed to fetch portfolio data');
+            const data = await response.json();
+    
+            const currentDate = new Date();
+            const lastYearDate = new Date();
+            lastYearDate.setFullYear(currentDate.getFullYear() - 1);
+    
+            const portfolioSeries = data.dashboard_data.performance.series.find(
+              (s) => s.name === 'Portfolio'
+            )?.values || [];
+            const dates = data.dashboard_data.performance.dates || [];
+    
+            // Filter data for the last 12 months
+            const filteredData = dates
+              .map((date, idx) => ({
+                date: new Date(date),
+                value: portfolioSeries[idx],
+              }))
+              .filter((item) => item.date >= lastYearDate);
+    
+            // Calculate YTD return
+            const calculatedYtdReturn =
+              filteredData.length > 1
+                ? ((filteredData[filteredData.length - 1].value -
+                    filteredData[0].value) /
+                    filteredData[0].value) *
+                  100
+                : 0;
+    
+            // Transform data for the chart
+            const transformedData = filteredData.map((item) => ({
+              name: item.date.toLocaleDateString('en-US', { month: 'short' }),
+              value: item.value,
+            }));
+    
+            setPerformanceData(transformedData);
+            setYtdReturn(calculatedYtdReturn.toFixed(1));
+          } catch (err) {
+            console.error(err);
           }
-        );
-  
-        if (!response.ok) throw new Error('Failed to fetch portfolio data');
-        const data = await response.json();
-  
-        // Get the current date and filter data for the last 12 months
-        const currentDate = new Date();
-        const lastYearDate = new Date();
-        lastYearDate.setFullYear(currentDate.getFullYear() - 1);
-  
-        const portfolioSeries = data.dashboard_data.performance.series.find(
-          (s) => s.name === 'Portfolio'
-        )?.values || [];
-        const dates = data.dashboard_data.performance.dates || [];
-  
-        // Filter data for the last 12 months
-        const filteredData = dates
-          .map((date, idx) => ({
-            date: new Date(date),
-            value: portfolioSeries[idx],
-          }))
-          .filter((item) => item.date >= lastYearDate);
-  
-        // Calculate YTD return
-        const ytdReturn =
-          filteredData.length > 1
-            ? ((filteredData[filteredData.length - 1].value -
-                filteredData[0].value) /
-                filteredData[0].value) *
-              100
-            : 0;
-  
-        // Transform data for the chart
-        const transformedData = filteredData.map((item) => ({
-          name: item.date.toLocaleDateString('en-US', { month: 'short' }),
-          value: item.value,
-        }));
-  
-        setPerformanceData(transformedData);
-        setYtdReturn(ytdReturn.toFixed(1)); // Rounded to 1 decimal place
-      } catch (err) {
-        console.error(err);
-      }
-    };
-  
-    fetchPortfolioData();
-  }, []);
+        };
+    
+        fetchPortfolioData();
+      }, []);
+    
+      // Determine dynamic scaling for Y-axis
+      const minValue = performanceData.length > 0 ? Math.min(...performanceData.map((d) => d.value)) : 0;
+      const maxValue = performanceData.length > 0 ? Math.max(...performanceData.map((d) => d.value)) : 0;
+      const yAxisDomain = [
+        minValue - 0.05 * minValue, // Slightly lower than the minimum value
+        maxValue + 0.2 * (maxValue - minValue), // Scale for a ~20% rise
+      ];
   
 
   useEffect(() => {
@@ -340,50 +348,64 @@ useEffect(() => {
                     <span className="text-2xl font-bold text-green-700">12.5%</span>
                   </div>
                   {/* YTD Return */}
-    <div className="flex-1 bg-green-100 border border-gray-200 rounded-lg p-4 flex flex-col items-center">
-      <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">
-        YTD Return
-      </span>
-      <span className="text-2xl font-bold text-green-700">
-        {ytdReturn ? `+${ytdReturn}%` : 'N/A'}
-      </span>
-    </div>
+        <div className="flex-1 bg-green-100 border border-gray-200 rounded-lg p-4 flex flex-col items-center">
+          <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">
+            YTD Return
+          </span>
+          <span className="text-2xl font-bold text-green-700">
+            {ytdReturn !== null ? `+${ytdReturn}%` : 'N/A'}
+          </span>
+        </div>
+      </div>
 
-    {/* Responsive Line Chart */}
-    <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={performanceData}>
-        <defs>
-          <linearGradient id="performanceGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#10B981" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
-          </linearGradient>
-        </defs>
-        <XAxis
-          dataKey="name"
-          axisLine={false}
-          tickLine={false}
-          tick={{ fill: '#6B7280' }}
-          interval={Math.max(1, Math.floor(performanceData.length / 4) - 1)} // Show approximately 4 months
-        />
-        <Tooltip
-          contentStyle={{
-            backgroundColor: '#F3F4F6',
-            border: 'none',
-            borderRadius: '0.5rem',
-            color: '#374151',
-          }}
-        />
-        <Line
-          type="monotone"
-          dataKey="value"
-          stroke="#10B981"
-          strokeWidth={3}
-          dot={false}
-          fill="url(#performanceGradient)"
-          fillOpacity={1}
-        />
-      </LineChart>
-    </ResponsiveContainer>
+      {/* Graph section */}
+      <div className="w-full h-80">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={performanceData}>
+            <defs>
+              <linearGradient
+                id="performanceGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop offset="5%" stopColor="#10B981" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <XAxis
+              dataKey="name"
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: '#6B7280' }}
+              interval={Math.max(1, Math.floor(performanceData.length / 4) - 1)} // Show approximately 4 months
+            />
+            <YAxis
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: '#6B7280' }}
+              domain={yAxisDomain} // Dynamically scale based on portfolio values
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: '#F3F4F6',
+                border: 'none',
+                borderRadius: '0.5rem',
+                color: '#374151',
+              }}
+            />
+            <Line
+              type="monotone"
+              dataKey="value"
+              stroke="#10B981"
+              strokeWidth={3}
+              dot={false}
+              fill="url(#performanceGradient)"
+              fillOpacity={1}
+            />
+          </LineChart>
+        </ResponsiveContainer>
               </div>
             </div>
           </div>

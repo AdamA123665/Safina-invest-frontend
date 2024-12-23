@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo,useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import 'swiper/css';
@@ -475,6 +475,7 @@ const PortfolioOptimizer = () => {
     const [portfolioData, setPortfolioData] = useState(null);
     const [, setSelectedAsset] = useState(null);
     const navigate = useNavigate();
+    const howContainerRef = useRef(null);
     
    // Fetch aggressive portfolio data
   useEffect(() => {
@@ -746,7 +747,7 @@ const PortfolioOptimizer = () => {
       `}</style>
     </section>
 
-    <div className="how-container">
+    <div ref={howContainerRef} className="how-container">
   <How />
 {/* How to Invest Section */}
 <section id="how-to-invest" className="relative py-20 overflow-hidden bg-green-50  "  >

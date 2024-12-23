@@ -32,7 +32,7 @@ const CompleteInvestmentJourney = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [riskLevel, setRiskLevel] = useState(5);
   const [email, setEmail] = useState('');
-
+  const howContainerRef = useRef(null);
    // Generate stock-like data for the graph
    const generateStockData = () => {
     const data = [];
@@ -152,17 +152,21 @@ const CompleteInvestmentJourney = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
+      const howContainer = howContainerRef.current;
+      if (!howContainer) return;
+  
+      const scrollPosition = window.scrollY - howContainer.offsetTop;
       const windowHeight = window.innerHeight;
-      const howContainer = document.querySelector('.how-container');
       const sections = howContainer.querySelectorAll('section');
-      
+  
       sections.forEach((section, index) => {
-        const sectionTop = section.offsetTop + howContainer.offsetTop;
+        const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
-        
-        if (scrollPosition >= sectionTop - windowHeight / 3 && 
-            scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+  
+        if (
+          scrollPosition >= sectionTop - windowHeight / 3 &&
+          scrollPosition < sectionTop + sectionHeight - windowHeight / 3
+        ) {
           setActiveSection(index);
         }
       });
