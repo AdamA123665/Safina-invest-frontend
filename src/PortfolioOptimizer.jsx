@@ -7,6 +7,7 @@ import Funds from './pages/Funds';
 import Research from './pages/Research';
 import About from './pages/About';
 import Trial from './pages/Trial';
+import Test2 from './pages/Test2';
 import "./index.css";
 import ArticleDetailsPage from './pages/ArticleDetailsPage';
 import { XIcon, HomeIcon } from '@heroicons/react/outline';
@@ -28,6 +29,7 @@ function PortfolioOptimizer() {
           <Route path="/about" element={<About />} />
           <Route path="/Funds" element={<Funds />} />
           <Route path="/trial" element={<Trial />} />
+          <Route path="/Test2" element={<Test2 />} />
           <Route path="/articles/:id" element={<ArticleDetailsPage />} />
         </Routes>
       </div>
@@ -119,6 +121,12 @@ function Navbar({ isMobileMenuOpen, setMobileMenuOpen }) {
     to="/trial"
   >
     trial
+  </Link>
+  <Link
+    className="px-4 py-2 text-gray-800 bg-gray-100 rounded-full shadow-md hover:bg-green-600 hover:text-white transition-transform transform hover:scale-105 active:scale-95"
+    to="/Test2"
+  >
+    Test2
   </Link>
 </nav>
 
