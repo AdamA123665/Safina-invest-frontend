@@ -6,7 +6,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is installed
 import NewHero from './Trial';
-import How from './Test2';
+import CompleteInvestmentJourney from './Test2';
 const Step1 = () => {
   const [riskLevel, setRiskLevel] = useState(5);
 
@@ -748,7 +748,7 @@ const PortfolioOptimizer = () => {
     </section>
 
     <div ref={howContainerRef} className="how-container">
-  <How />
+  <CompleteInvestmentJourney parentRef={howContainerRef} />
 {/* How to Invest Section */}
 <section id="how-to-invest" className="relative py-20 overflow-hidden bg-green-50  "  >
   <div className="container mx-auto px-4">

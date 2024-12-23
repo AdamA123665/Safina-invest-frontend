@@ -5,6 +5,7 @@ import {
   Line,
   XAxis,
   YAxis,
+  Legend,
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
@@ -358,54 +359,65 @@ const RefinedHero = () => {
         </div>
       </div>
 
-      {/* Graph section */}
-      <div className="w-full h-80">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={performanceData}>
-            <defs>
-              <linearGradient
-                id="performanceGradient"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop offset="5%" stopColor="#10B981" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <XAxis
-              dataKey="name"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: '#6B7280' }}
-              interval={Math.max(1, Math.floor(performanceData.length / 4) - 1)} // Show approximately 4 months
-            />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: '#6B7280' }}
-              domain={yAxisDomain} // Dynamically scale based on portfolio values
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: '#F3F4F6',
-                border: 'none',
-                borderRadius: '0.5rem',
-                color: '#374151',
-              }}
-            />
-            <Line
-              type="monotone"
-              dataKey="value"
-              stroke="#10B981"
-              strokeWidth={3}
-              dot={false}
-              fill="url(#performanceGradient)"
-              fillOpacity={1}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+     {/* Graph section */}
+<div className="w-full h-80">
+  <ResponsiveContainer width="100%" height="100%">
+    <LineChart data={performanceData}>
+      <defs>
+        <linearGradient
+          id="performanceGradient"
+          x1="0"
+          y1="0"
+          x2="0"
+          y2="1"
+        >
+          <stop offset="5%" stopColor="#10B981" stopOpacity={0.8} />
+          <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
+        </linearGradient>
+      </defs>
+      <XAxis
+        dataKey="name"
+        axisLine={false}
+        tickLine={false}
+        tick={{ fill: '#6B7280' }}
+        interval={Math.max(1, Math.floor(performanceData.length / 4) - 1)} // Show approximately 4 months
+      />
+      <YAxis 
+    hide={true}
+    domain={yAxisDomain}
+  />
+      <Tooltip
+        contentStyle={{
+          backgroundColor: '#F3F4F6',
+          border: 'none',
+          borderRadius: '0.5rem',
+          color: '#374151',
+        }}
+      />
+      <Line
+        type="monotone"
+        dataKey="value"
+        stroke="#10B981"
+        strokeWidth={3}
+        dot={false}
+        fill="url(#performanceGradient)"
+        fillOpacity={1}
+      />
+      <Legend
+        wrapperStyle={{
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          textAlign: 'center',
+          fontSize: '0.8rem',
+          color: '#6B7280',
+        }}
+        payload={[
+          { value: 'YTD Returns of Aggressive Portfolio', type: 'line', id: '1', color: '#10B981' },
+        ]}
+      />
+    </LineChart>
+  </ResponsiveContainer>
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { 
@@ -27,12 +27,11 @@ function AlertDescription({ severity, message, description }) {
       </Alert>
     );
   }
-const CompleteInvestmentJourney = () => {
-  const scrollRef = useRef(null);
+const CompleteInvestmentJourney = ({ parentRef }) => {
+const [showProgressBar, setShowProgressBar] = useState(true);
   const [activeSection, setActiveSection] = useState(0);
   const [riskLevel, setRiskLevel] = useState(5);
   const [email, setEmail] = useState('');
-  const howContainerRef = useRef(null);
    // Generate stock-like data for the graph
    const generateStockData = () => {
     const data = [];
@@ -152,34 +151,76 @@ const CompleteInvestmentJourney = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const howContainer = howContainerRef.current;
-      if (!howContainer) return;
-  
-      const scrollPosition = window.scrollY - howContainer.offsetTop;
-      const windowHeight = window.innerHeight;
+      if (!parentRef?.current) return;
+
+      const howContainer = parentRef.current;
+      const containerRect = howContainer.getBoundingClientRect();
+      
+      // Get sections within this component
       const sections = howContainer.querySelectorAll('section');
-  
+      
+      // Only show progress bar when within the How container
+      const isWithinContainer = 
+        containerRect.top <= 0 && 
+        containerRect.bottom >= window.innerHeight;
+      
+      setShowProgressBar(isWithinContainer);
+
+      // Update active section
       sections.forEach((section, index) => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-  
+        const rect = section.getBoundingClientRect();
         if (
-          scrollPosition >= sectionTop - windowHeight / 3 &&
-          scrollPosition < sectionTop + sectionHeight - windowHeight / 3
+          rect.top <= window.innerHeight / 2 && 
+          rect.bottom >= window.innerHeight / 2
         ) {
           setActiveSection(index);
         }
       });
     };
-  
+
     window.addEventListener('scroll', handleScroll);
+    // Initial check
+    handleScroll();
+
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [parentRef]);
 
   return (
-    <div ref={scrollRef} className="relative min-h-screen bg-slate-950 text-white">
-      {/* Step Progress Bar */}
-      <div className="fixed left-8 top-1/2 -translate-y-1/2 z-50">
+    <div className="relative bg-slate-950 text-white">
+      {/* Progress Bar - Mobile */}
+      {showProgressBar && (
+        <div 
+          className="sticky top-0 z-50 bg-slate-950/90 backdrop-blur lg:hidden"
+          style={{
+            transform: showProgressBar ? 'translateY(0)' : 'translateY(-100%)',
+            transition: 'transform 0.3s ease-in-out'
+          }}
+        >
+          <div className="flex justify-between p-4 overflow-x-auto">
+            {sections.map((section, index) => {
+              const Icon = section.icon;
+              const isActive = activeSection >= index;
+              return (
+                <div key={section.id} className="flex-shrink-0 px-2">
+                  <motion.div
+                    className={`
+                      w-8 h-8 rounded-full flex items-center justify-center mb-2
+                      transition-all duration-300
+                      ${isActive ? 'bg-blue-500' : 'bg-gray-800'}
+                    `}
+                  >
+                    <Icon className="w-4 h-4" />
+                  </motion.div>
+                  <span className="text-xs whitespace-nowrap">{section.title}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Desktop Progress Bar */}
+      <div className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-50">
         <div className="relative space-y-16">
           {sections.map((section, index) => {
             const Icon = section.icon;
@@ -189,31 +230,23 @@ const CompleteInvestmentJourney = () => {
             return (
               <div key={section.id} className="relative">
                 <div className="relative flex items-center space-x-4">
-                  {/* Icon and Step */}
                   <motion.div
                     className={`
                       w-10 h-10 rounded-full flex items-center justify-center
-                      transition-all duration-300
-                      ${isActive ? 'bg-blue-500 scale-110' : 'bg-gray-800'}
+                      ${isActive ? 'bg-blue-500' : 'bg-gray-800'}
                     `}
-                    whileHover={{ scale: 1.1 }}
                   >
                     <Icon className="w-5 h-5" />
                   </motion.div>
-
-                  {/* Step Number and Title */}
-                  <motion.div 
-                    className="flex items-center space-x-3"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.2 }}
-                  >
-                    <span className="text-sm font-medium text-blue-400">Step {section.step}</span>
+                  
+                  <motion.div className="flex items-center space-x-3">
+                    <span className="text-sm font-medium text-blue-400">
+                      Step {section.step}
+                    </span>
                     <span className="text-sm font-medium">{section.title}</span>
                   </motion.div>
                 </div>
 
-                {/* Progress Line */}
                 {!isLastSection && (
                   <div className="absolute left-5 top-12 w-px h-12 -translate-x-1/2">
                     <motion.div
