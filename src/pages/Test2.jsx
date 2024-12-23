@@ -150,15 +150,15 @@ const CompleteInvestmentJourney = () => {
     }
   ];
 
-  // Scroll handling
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
       const windowHeight = window.innerHeight;
-      const sections = document.querySelectorAll('section');
+      const howContainer = document.querySelector('.how-container');
+      const sections = howContainer.querySelectorAll('section');
       
       sections.forEach((section, index) => {
-        const sectionTop = section.offsetTop;
+        const sectionTop = section.offsetTop + howContainer.offsetTop;
         const sectionHeight = section.clientHeight;
         
         if (scrollPosition >= sectionTop - windowHeight / 3 && 
@@ -167,7 +167,7 @@ const CompleteInvestmentJourney = () => {
         }
       });
     };
-
+  
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);

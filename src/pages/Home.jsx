@@ -746,8 +746,8 @@ const PortfolioOptimizer = () => {
       `}</style>
     </section>
 
-    <div className="app-container">
-    <How />
+    <div className="how-container">
+  <How />
 {/* How to Invest Section */}
 <section id="how-to-invest" className="relative py-20 overflow-hidden bg-green-50  "  >
   <div className="container mx-auto px-4">

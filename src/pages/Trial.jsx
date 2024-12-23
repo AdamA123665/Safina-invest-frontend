@@ -4,7 +4,6 @@ import {
   LineChart,
   Line,
   XAxis,
-  YAxis,
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
@@ -21,51 +20,70 @@ const RefinedHero = () => {
   
     // State for dynamic performance data
     const [performanceData, setPerformanceData] = useState([]);
-  
+    const [ytdReturn, setYtdReturn] = useState(null);
     // Fetch portfolio data from backend
-    useEffect(() => {
-      const fetchPortfolioData = async () => {
-        try {
-          const response = await fetch(
-            'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                initial_investment: 1000,
-                risk_tolerance: 10, // Assuming 10 represents aggressive
-              }),
-            }
-          );
+    // Fetch portfolio data from backend
+useEffect(() => {
+    const fetchPortfolioData = async () => {
+      try {
+        const response = await fetch(
+          'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              initial_investment: 1000,
+              risk_tolerance: 10, // Assuming 10 represents aggressive
+            }),
+          }
+        );
   
-          if (!response.ok) throw new Error('Failed to fetch portfolio data');
-          const data = await response.json();
+        if (!response.ok) throw new Error('Failed to fetch portfolio data');
+        const data = await response.json();
   
-          // Transform the API response into the format required for the chart
-          const transformedData = data.dashboard_data.performance.dates.map(
-            (date, idx) => ({
-              name: new Date(date).toLocaleDateString('en-US', {
-                month: 'short',
-              }),
-              value:
-                data.dashboard_data.performance.series.find(
-                  (s) => s.name === 'Portfolio'
-                )?.values[idx] || 0,
-              projected:
-                data.dashboard_data.performance.series.find(
-                  (s) => s.name === 'Projected'
-                )?.values[idx] || 0,
-            })
-          );
+        // Get the current date and filter data for the last 12 months
+        const currentDate = new Date();
+        const lastYearDate = new Date();
+        lastYearDate.setFullYear(currentDate.getFullYear() - 1);
   
-          setPerformanceData(transformedData);
-        } catch (err) {
-          console.error(err);
-        }
-      };
+        const portfolioSeries = data.dashboard_data.performance.series.find(
+          (s) => s.name === 'Portfolio'
+        )?.values || [];
+        const dates = data.dashboard_data.performance.dates || [];
   
-      fetchPortfolioData();
-    }, []);
+        // Filter data for the last 12 months
+        const filteredData = dates
+          .map((date, idx) => ({
+            date: new Date(date),
+            value: portfolioSeries[idx],
+          }))
+          .filter((item) => item.date >= lastYearDate);
+  
+        // Calculate YTD return
+        const ytdReturn =
+          filteredData.length > 1
+            ? ((filteredData[filteredData.length - 1].value -
+                filteredData[0].value) /
+                filteredData[0].value) *
+              100
+            : 0;
+  
+        // Transform data for the chart
+        const transformedData = filteredData.map((item) => ({
+          name: item.date.toLocaleDateString('en-US', { month: 'short' }),
+          value: item.value,
+        }));
+  
+        setPerformanceData(transformedData);
+        setYtdReturn(ytdReturn.toFixed(1)); // Rounded to 1 decimal place
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  
+    fetchPortfolioData();
+  }, []);
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -322,70 +340,53 @@ const RefinedHero = () => {
                     <span className="text-2xl font-bold text-green-700">12.5%</span>
                   </div>
                   {/* YTD Return */}
-                  <div className="flex-1 bg-green-100 border border-gray-200 rounded-lg p-4 flex flex-col items-center">
-                    <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">
-                      YTD Return
-                    </span>
-                    <span className="text-2xl font-bold text-green-700">+8.7%</span>
-                  </div>
-                </div>
+    <div className="flex-1 bg-green-100 border border-gray-200 rounded-lg p-4 flex flex-col items-center">
+      <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">
+        YTD Return
+      </span>
+      <span className="text-2xl font-bold text-green-700">
+        {ytdReturn ? `+${ytdReturn}%` : 'N/A'}
+      </span>
+    </div>
 
-                {/* Responsive Line Chart */}
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={performanceData}>
-                    <defs>
-                      <linearGradient id="performanceGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10B981" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
-                      </linearGradient>
-                      <linearGradient id="projectedGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <XAxis
-                      dataKey="name"
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fill: '#6B7280' }}
-                    />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fill: '#6B7280' }}
-                      domain={['auto', 'auto']}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: '#F3F4F6',
-                        border: 'none',
-                        borderRadius: '0.5rem',
-                        color: '#374151',
-                      }}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#10B981"
-                      strokeWidth={3}
-                      dot={false}
-                      fill="url(#performanceGradient)"
-                      fillOpacity={1}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="projected"
-                      stroke="#3B82F6"
-                      strokeWidth={2}
-                      strokeDasharray="5 5"
-                      dot={false}
-                      fill="url(#projectedGradient)"
-                      fillOpacity={1}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+    {/* Responsive Line Chart */}
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart data={performanceData}>
+        <defs>
+          <linearGradient id="performanceGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#10B981" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <XAxis
+          dataKey="name"
+          axisLine={false}
+          tickLine={false}
+          tick={{ fill: '#6B7280' }}
+          interval={Math.max(1, Math.floor(performanceData.length / 4) - 1)} // Show approximately 4 months
+        />
+        <Tooltip
+          contentStyle={{
+            backgroundColor: '#F3F4F6',
+            border: 'none',
+            borderRadius: '0.5rem',
+            color: '#374151',
+          }}
+        />
+        <Line
+          type="monotone"
+          dataKey="value"
+          stroke="#10B981"
+          strokeWidth={3}
+          dot={false}
+          fill="url(#performanceGradient)"
+          fillOpacity={1}
+        />
+      </LineChart>
+    </ResponsiveContainer>
               </div>
             </div>
+          </div>
           </div>
         </section>
       </div>
