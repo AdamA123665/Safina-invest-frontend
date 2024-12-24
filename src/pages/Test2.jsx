@@ -158,9 +158,9 @@ const [showProgressBar, setShowProgressBar] = useState(true);
       
       // More precise containment check - only show when the How section is actively being viewed
       const isWithinHow = 
-        howRect.top <= 100 && // A small buffer at the top
-        howRect.bottom >= window.innerHeight &&
-        howRect.top >= -howRect.height; // Hide when we've scrolled past the section
+        howRect.top < window.innerHeight && 
+        howRect.bottom > 0;
+ // Hide when we've scrolled past the section
       
       setShowProgressBar(isWithinHow);
 
