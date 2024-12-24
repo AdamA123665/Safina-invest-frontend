@@ -5,7 +5,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is installed
-import NewHero from './newhero2';
+import RefinedHero from './newhero2';
 import CompleteInvestmentJourney from './Test2';
 const Step1 = () => {
   const [riskLevel, setRiskLevel] = useState(5);
@@ -476,6 +476,7 @@ const PortfolioOptimizer = () => {
     const [, setSelectedAsset] = useState(null);
     const navigate = useNavigate();
     const howContainerRef = useRef(null);
+    const heroContainerRef = useRef(null);
     
    // Fetch aggressive portfolio data
   useEffect(() => {
@@ -557,8 +558,17 @@ const PortfolioOptimizer = () => {
     }
   
     return (
-      <div className="app-container">
-    <NewHero />
+      <div
+      ref={heroContainerRef}
+      className="hero-container"
+      style={{
+        // Removed height and overflow for better integration
+        // height: '100vh',
+        // overflow: 'auto',
+        position: 'relative', // Retain if needed
+      }}
+    >
+      <RefinedHero parentRef={heroContainerRef} />
       
     
 
@@ -747,8 +757,8 @@ const PortfolioOptimizer = () => {
       `}</style>
     </section>
 
-    <div ref={howContainerRef} className="how-container">
-  <CompleteInvestmentJourney parentRef={howContainerRef} />
+    <div className="how-container">
+      <CompleteInvestmentJourney />
 {/* How to Invest Section */}
 <section id="how-to-invest" className="relative py-20 overflow-hidden bg-green-50  "  >
   <div className="container mx-auto px-4">

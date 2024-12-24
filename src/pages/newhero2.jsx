@@ -206,7 +206,7 @@ const RefinedHero = () => {
         =============================
       */}
       {!isFinalPhase && (
-        <div className="relative h-[250vh]"> {/* Changed from min-h-screen to h-[300vh] */}
+        <div className="relative h-[300vh]"> {/* Changed from min-h-screen to h-[300vh] */}
           {/* Sticky container for text */}
           <div className="sticky top-0 h-screen flex items-center justify-center pointer-events-none">
             <div

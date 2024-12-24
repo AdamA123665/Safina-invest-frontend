@@ -31,7 +31,7 @@ function AlertDescription({ severity, message, description }) {
   );
 }
 
-const CompleteInvestmentJourney = ({ parentRef }) => {
+const CompleteInvestmentJourney = () => {
   const [showProgressBar, setShowProgressBar] = useState(false); // Initialize as false
   const [activeSection, setActiveSection] = useState(0);
   const [riskLevel, setRiskLevel] = useState(5);
@@ -183,7 +183,7 @@ const CompleteInvestmentJourney = ({ parentRef }) => {
     return () => {
       if (target) observer.unobserve(target);
     };
-  }, [sectionRef]);
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -207,7 +207,7 @@ const CompleteInvestmentJourney = ({ parentRef }) => {
     handleActiveSection(); // Initial check
     
     return () => window.removeEventListener('scroll', handleActiveSection);
-  }, [sectionRef]);
+  }, []);
 
   return (
     <div className="relative bg-slate-950 text-white">
@@ -297,7 +297,7 @@ const CompleteInvestmentJourney = ({ parentRef }) => {
       )}
 
       {/* Main Content */}
-      <div className="pl-48">
+      <div className="pl-48" ref={sectionRef}>
         {/* Risk Assessment Section */}
         <section className="min-h-screen py-24">
           <motion.div
@@ -316,36 +316,36 @@ const CompleteInvestmentJourney = ({ parentRef }) => {
             <div className="grid grid-cols-2 gap-8">
               <div className="space-y-8">
                 {/* Risk Slider */}
-          <motion.div
-            className="bg-white/5 rounded-xl p-8 backdrop-blur"
-            whileHover={{ scale: 1.02 }}
-          >
-            <h3 className="text-xl font-semibold mb-6">Quick Risk Assessment</h3>
-            <div className="space-y-4">
-              <input
-                type="range"
-                min="1"
-                max="10"
-                value={riskLevel}
-                onChange={(e) => setRiskLevel(parseInt(e.target.value))}
-                className="w-full h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
-              />
-              <div className="flex justify-between text-sm text-gray-400">
-                <span>Conservative</span>
-                <span>Moderate</span>
-                <span>Aggressive</span>
-              </div>
-              <div className="mt-4 p-4 bg-blue-500/10 rounded-lg">
-                <p className="text-sm text-blue-300">
-                  Risk Level {riskLevel}: {
-                    riskLevel <= 3 ? 'Conservative - Lower risk, stable returns' :
-                    riskLevel <= 7 ? 'Moderate - Balanced risk and return' :
-                    'Aggressive - Higher risk, potential for higher returns'
-                  }
-                </p>
-              </div>
-            </div>
-          </motion.div>
+                <motion.div
+                  className="bg-white/5 rounded-xl p-8 backdrop-blur"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <h3 className="text-xl font-semibold mb-6">Quick Risk Assessment</h3>
+                  <div className="space-y-4">
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      value={riskLevel}
+                      onChange={(e) => setRiskLevel(parseInt(e.target.value))}
+                      className="w-full h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+                    />
+                    <div className="flex justify-between text-sm text-gray-400">
+                      <span>Conservative</span>
+                      <span>Moderate</span>
+                      <span>Aggressive</span>
+                    </div>
+                    <div className="mt-4 p-4 bg-blue-500/10 rounded-lg">
+                      <p className="text-sm text-blue-300">
+                        Risk Level {riskLevel}: {
+                          riskLevel <= 3 ? 'Conservative - Lower risk, stable returns' :
+                          riskLevel <= 7 ? 'Moderate - Balanced risk and return' :
+                          'Aggressive - Higher risk, potential for higher returns'
+                        }
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
 
                 {/* Risk Quiz Link */}
                 <motion.a
@@ -388,191 +388,190 @@ const CompleteInvestmentJourney = ({ parentRef }) => {
                 </motion.a>
               </div>
 
-             {/* Risk-Return Visualization */}
-{/* Risk-Return Visualization */}
-<div className="bg-white/5 rounded-xl p-8 backdrop-blur">
-  <h3 className="text-xl font-semibold mb-6">Risk-Return Profiles</h3>
-  {/* Separate container for chart with its own background */}
-  <div className="bg-white/5 rounded-lg p-4 mb-8">
-    <div className="h-96">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={stockData} margin={{ top: 20, right: 20, bottom: 35, left: 20 }}>
-          {Array.from({ length: 10 }, (_, i) => i + 1).map((risk) => (
-            <Line
-              key={risk}
-              type="monotone"
-              dataKey={`risk${risk}`}
-              stroke={risk === riskLevel ? '#3B82F6' : '#4B5563'}
-              strokeWidth={risk === riskLevel ? 3 : 1}
-              dot={false}
-              opacity={risk === riskLevel ? 1 : 0.3}
-            />
-          ))}
-          <XAxis 
-            dataKey="year" 
-            stroke="#94A3B8"
-            tick={false}
-            label={{ 
-              value: 'Time', 
-              position: 'bottom',
-              offset: 20,
-              fill: '#94A3B8'
-            }}
-          />
-          <YAxis 
-            stroke="#94A3B8"
-            tick={false}
-            label={{
-              value: 'Growth',
-              angle: -90,
-              position: 'left',
-              offset: 0,
-              fill: '#94A3B8'
-            }}
-          />
-          <Tooltip content={<CustomTooltip />} />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  </div>
+              {/* Risk-Return Visualization */}
+              <div className="bg-white/5 rounded-xl p-8 backdrop-blur">
+                <h3 className="text-xl font-semibold mb-6">Risk-Return Profiles</h3>
+                {/* Separate container for chart with its own background */}
+                <div className="bg-white/5 rounded-lg p-4 mb-8">
+                  <div className="h-96">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={stockData} margin={{ top: 20, right: 20, bottom: 35, left: 20 }}>
+                        {Array.from({ length: 10 }, (_, i) => i + 1).map((risk) => (
+                          <Line
+                            key={risk}
+                            type="monotone"
+                            dataKey={`risk${risk}`}
+                            stroke={risk === riskLevel ? '#3B82F6' : '#4B5563'}
+                            strokeWidth={risk === riskLevel ? 3 : 1}
+                            dot={false}
+                            opacity={risk === riskLevel ? 1 : 0.3}
+                          />
+                        ))}
+                        <XAxis 
+                          dataKey="year" 
+                          stroke="#94A3B8"
+                          tick={false}
+                          label={{ 
+                            value: 'Time', 
+                            position: 'bottom',
+                            offset: 20,
+                            fill: '#94A3B8'
+                          }}
+                        />
+                        <YAxis 
+                          stroke="#94A3B8"
+                          tick={false}
+                          label={{
+                            value: 'Growth',
+                            angle: -90,
+                            position: 'left',
+                            offset: 0,
+                            fill: '#94A3B8'
+                          }}
+                        />
+                        <Tooltip content={<CustomTooltip />} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
 
-  {/* Disclaimer without background */}
-  <div className="text-xs text-gray-500 italic">
-    For illustrative purposes only. Past performance is not indicative of future results. 
-    The graph above is a simplified visualization of potential risk-return relationships. 
-    Actual investment outcomes may vary significantly based on market conditions, 
-    economic factors, and other variables.
-  </div>
-</div>
-        </div>
+                {/* Disclaimer without background */}
+                <div className="text-xs text-gray-500 italic">
+                  For illustrative purposes only. Past performance is not indicative of future results. 
+                  The graph above is a simplified visualization of potential risk-return relationships. 
+                  Actual investment outcomes may vary significantly based on market conditions, 
+                  economic factors, and other variables.
+                </div>
+              </div>
+            </div>
           </motion.div>
         </section>
 
         <section className="min-h-screen py-24 bg-gradient-to-b from-slate-950 to-slate-900">
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="max-w-6xl mx-auto"
-      >
-        <div className="mb-16">
-          <h2 className="text-4xl font-bold mb-6">Strategic Asset Allocation</h2>
-          <p className="text-xl text-gray-300 max-w-2xl">
-            Experience dynamic portfolio management that adapts to market conditions while maintaining your risk preferences.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-12">
-          {/* Left Column - Methodology */}
           <motion.div
-            className="bg-white/5 rounded-xl p-8 backdrop-blur h-[600px]"
-            whileHover={{ scale: 1.01 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="max-w-6xl mx-auto"
           >
-            <div className="flex items-center space-x-4 mb-6">
-              <RefreshCcw className="w-6 h-6 text-blue-400" />
-              <h3 className="text-xl font-semibold">Our Methodology</h3>
+            <div className="mb-16">
+              <h2 className="text-4xl font-bold mb-6">Strategic Asset Allocation</h2>
+              <p className="text-xl text-gray-300 max-w-2xl">
+                Experience dynamic portfolio management that adapts to market conditions while maintaining your risk preferences.
+              </p>
             </div>
-            <p className="text-gray-300 mb-8">
-              Our research-backed approach combines sophisticated multi-asset portfolios with 
-              dynamic allocation strategies to optimize your investment outcomes.
-            </p>
-            
-            {/* Methodology Cards */}
-            <div className="space-y-6">
-              <div className="p-4 bg-blue-500/10 rounded-lg">
-                <h4 className="text-base font-semibold mb-2 flex items-center">
-                  <Shield className="w-4 h-4 mr-2 text-blue-400" />
-                  Risk Management
-                </h4>
-                <p className="text-sm text-gray-400">
-                  Advanced diversification strategies across asset classes, regions, and sectors
-                  to reduce volatility while maintaining growth potential.
-                </p>
-              </div>
-              
-              <div className="p-4 bg-blue-500/10 rounded-lg">
-                <h4 className="text-base font-semibold mb-2 flex items-center">
-                  <Globe className="w-4 h-4 mr-2 text-blue-400" />
-                  Global Diversification
-                </h4>
-                <p className="text-sm text-gray-400">
-                  Strategic exposure to worldwide markets, optimizing geographical allocation
-                  based on market conditions and opportunities.
-                </p>
-              </div>
-              
-              <div className="p-4 bg-blue-500/10 rounded-lg">
-                <h4 className="text-base font-semibold mb-2 flex items-center">
-                  <BarChart3 className="w-4 h-4 mr-2 text-blue-400" />
-                  Active Rebalancing
-                </h4>
-                <p className="text-sm text-gray-400">
-                  Regular portfolio adjustments to maintain optimal risk levels and capitalize
-                  on market opportunities.
-                </p>
-              </div>
-            </div>
-          </motion.div>
 
-          {/* Right Column - Allocation Tool */}
-          <motion.div
-            className="bg-white/5 rounded-xl p-8 backdrop-blur h-[600px] flex flex-col"
-            whileHover={{ scale: 1.01 }}
-          >
-            <div className="text-center mb-2 text-xs text-gray-400">
-              For illustrative purposes only
-            </div>
-            
-            <div className="flex items-center space-x-4 mb-6">
-              <ChartPie className="w-6 h-6 text-purple-400" />
-              <h3 className="text-xl font-semibold">Portfolio Allocation</h3>
-            </div>
-            
-            {/* Dynamic Portfolio Balance */}
-            <div className="space-y-6 flex-grow">
-              {portfolioData.map(({ asset, percentage }) => (
-                <div key={asset} className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="capitalize">{asset}</span>
-                    <span>{percentage}%</span>
+            <div className="grid grid-cols-2 gap-12">
+              {/* Left Column - Methodology */}
+              <motion.div
+                className="bg-white/5 rounded-xl p-8 backdrop-blur h-[600px]"
+                whileHover={{ scale: 1.01 }}
+              >
+                <div className="flex items-center space-x-4 mb-6">
+                  <RefreshCcw className="w-6 h-6 text-blue-400" />
+                  <h3 className="text-xl font-semibold">Our Methodology</h3>
+                </div>
+                <p className="text-gray-300 mb-8">
+                  Our research-backed approach combines sophisticated multi-asset portfolios with 
+                  dynamic allocation strategies to optimize your investment outcomes.
+                </p>
+                
+                {/* Methodology Cards */}
+                <div className="space-y-6">
+                  <div className="p-4 bg-blue-500/10 rounded-lg">
+                    <h4 className="text-base font-semibold mb-2 flex items-center">
+                      <Shield className="w-4 h-4 mr-2 text-blue-400" />
+                      Risk Management
+                    </h4>
+                    <p className="text-sm text-gray-400">
+                      Advanced diversification strategies across asset classes, regions, and sectors
+                      to reduce volatility while maintaining growth potential.
+                    </p>
                   </div>
-                  <div className="w-full bg-gray-800 rounded-full h-3 overflow-hidden">
-                    <motion.div
-                      className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${percentage}%` }}
-                      transition={{ duration: 0.5 }}
-                    />
+                  
+                  <div className="p-4 bg-blue-500/10 rounded-lg">
+                    <h4 className="text-base font-semibold mb-2 flex items-center">
+                      <Globe className="w-4 h-4 mr-2 text-blue-400" />
+                      Global Diversification
+                    </h4>
+                    <p className="text-sm text-gray-400">
+                      Strategic exposure to worldwide markets, optimizing geographical allocation
+                      based on market conditions and opportunities.
+                    </p>
+                  </div>
+                  
+                  <div className="p-4 bg-blue-500/10 rounded-lg">
+                    <h4 className="text-base font-semibold mb-2 flex items-center">
+                      <BarChart3 className="w-4 h-4 mr-2 text-blue-400" />
+                      Active Rebalancing
+                    </h4>
+                    <p className="text-sm text-gray-400">
+                      Regular portfolio adjustments to maintain optimal risk levels and capitalize
+                      on market opportunities.
+                    </p>
                   </div>
                 </div>
-              ))}
+              </motion.div>
 
-              <div className="mt-12 p-6 bg-blue-500/10 rounded-lg">
-                <h4 className="font-semibold mb-2">About Our Portfolio Allocation Tool</h4>
-                <p className="text-sm text-gray-300 mb-4">
-                  Access our algorithmic portfolio allocation tool to receive a personalized 
-                  investment strategy based on your risk profile and financial goals.
-                </p>
-              </div>
-            </div>
+              {/* Right Column - Allocation Tool */}
+              <motion.div
+                className="bg-white/5 rounded-xl p-8 backdrop-blur h-[600px] flex flex-col"
+                whileHover={{ scale: 1.01 }}
+              >
+                <div className="text-center mb-2 text-xs text-gray-400">
+                  For illustrative purposes only
+                </div>
+                
+                <div className="flex items-center space-x-4 mb-6">
+                  <ChartPie className="w-6 h-6 text-purple-400" />
+                  <h3 className="text-xl font-semibold">Portfolio Allocation</h3>
+                </div>
+                
+                {/* Dynamic Portfolio Balance */}
+                <div className="space-y-6 flex-grow">
+                  {portfolioData.map(({ asset, percentage }) => (
+                    <div key={asset} className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="capitalize">{asset}</span>
+                        <span>{percentage}%</span>
+                      </div>
+                      <div className="w-full bg-gray-800 rounded-full h-3 overflow-hidden">
+                        <motion.div
+                          className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${percentage}%` }}
+                          transition={{ duration: 0.5 }}
+                        />
+                      </div>
+                    </div>
+                  ))}
 
-            {/* Call to Action */}
-            <motion.a
-              href="/allocation-tool"
-              className="mt-8 w-full bg-blue-500 hover:bg-blue-600 text-white py-4 px-6 rounded-lg flex items-center justify-center space-x-2 transition-colors"
-              whileHover={{ scale: 1.02 }}
-            >
-              <span className="font-semibold">Access Portfolio Allocation Tool</span>
-              <ChartPie className="w-5 h-5" />
-            </motion.a>
+                  <div className="mt-12 p-6 bg-blue-500/10 rounded-lg">
+                    <h4 className="font-semibold mb-2">About Our Portfolio Allocation Tool</h4>
+                    <p className="text-sm text-gray-300 mb-4">
+                      Access our algorithmic portfolio allocation tool to receive a personalized 
+                      investment strategy based on your risk profile and financial goals.
+                    </p>
+                  </div>
+                </div>
 
-            <div className="mt-4 text-xs text-gray-400 text-center">
-              Get your personalized asset allocation strategy in minutes
+                {/* Call to Action */}
+                <motion.a
+                  href="/allocation-tool"
+                  className="mt-8 w-full bg-blue-500 hover:bg-blue-600 text-white py-4 px-6 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <span className="font-semibold">Access Portfolio Allocation Tool</span>
+                  <ChartPie className="w-5 h-5" />
+                </motion.a>
+
+                <div className="mt-4 text-xs text-gray-400 text-center">
+                  Get your personalized asset allocation strategy in minutes
+                </div>
+              </motion.div>
             </div>
           </motion.div>
-        </div>
-      </motion.div>
-    </section>
+        </section>
 
         {/* Invest & Relax Section */}
         <section className="min-h-screen py-24">
@@ -647,52 +646,56 @@ const CompleteInvestmentJourney = ({ parentRef }) => {
               </motion.div>
 
               <div className="space-y-4">
-      <motion.div
-        className="bg-white/5 p-8 rounded-xl backdrop-blur"
-        whileHover={{ scale: 1.02 }}
-      >
-        <h3 className="text-xl font-semibold mb-6">Stay Updated</h3>
-        <p className="text-gray-400 mb-6">
-          Get personalized insights and market updates delivered to your inbox.
-        </p>
-        <form onSubmit={handleSubmit} className="flex space-x-4">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            className="flex-1 px-4 py-2 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled={status === 'loading'}
-            required
-          />
-          <button
-            type="submit"
-            className="px-6 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={status === 'loading'}
-          >
-            {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
-          </button>
-        </form>
-      </motion.div>
+                <motion.div
+                  className="bg-white/5 p-8 rounded-xl backdrop-blur"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <h3 className="text-xl font-semibold mb-6">Stay Updated</h3>
+                  <p className="text-gray-400 mb-6">
+                    Get personalized insights and market updates delivered to your inbox.
+                  </p>
+                  <form onSubmit={handleSubmit} className="flex space-x-4">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className="flex-1 px-4 py-2 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      disabled={status === 'loading'}
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="px-6 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={status === 'loading'}
+                    >
+                      {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                    </button>
+                  </form>
+                </motion.div>
 
-      {status === 'success' && (
-        <Alert variant="default" className="bg-green-500/10 text-green-500 border-green-500/20">
-          <CheckCircle className="h-4 w-4" />
-          <AlertDescription>
-            Thanks for subscribing! Check your email for confirmation.
-          </AlertDescription>
-        </Alert>
-      )}
+                {status === 'success' && (
+                  <Alert variant="default" className="bg-green-500/10 text-green-500 border-green-500/20">
+                    <CheckCircle className="h-4 w-4" />
+                    <AlertDescription
+                      severity="success"
+                      message="Success!"
+                      description="Thanks for subscribing! Check your email for confirmation."
+                    />
+                  </Alert>
+                )}
 
-      {status === 'error' && (
-        <Alert variant="destructive" className="bg-red-500/10 text-red-500 border-red-500/20">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>
-            {errorMessage || 'Failed to subscribe. Please try again.'}
-          </AlertDescription>
-        </Alert>
-      )}
-    </div>
+                {status === 'error' && (
+                  <Alert variant="destructive" className="bg-red-500/10 text-red-500 border-red-500/20">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription
+                      severity="error"
+                      message="Error!"
+                      description={errorMessage || 'Failed to subscribe. Please try again.'}
+                    />
+                  </Alert>
+                )}
+              </div>
             </div>
           </motion.div>
         </section>
