@@ -1,4 +1,3 @@
-// RefinedHero.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import { ArrowRight, TrendingUp, Wallet, Settings } from 'lucide-react';
 import {
@@ -13,7 +12,7 @@ import {
 
 const words = ['saving', 'investing', 'staying shariah compliant'];
 
-const RefinedHero = ({ parentRef }) => { // Accept parentRef as a prop
+const RefinedHero = () => {
   const [phase, setPhase] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const heroRef = useRef(null);
@@ -106,19 +105,19 @@ const RefinedHero = ({ parentRef }) => { // Accept parentRef as a prop
     const handleScroll = () => {
       if (isFinalPhase) return; // Do not update phases if final phase is reached
 
-      const scrolled = parentRef.current.scrollTop;
-      const containerHeight = parentRef.current.clientHeight;
+      const scrolled = window.scrollY;
+      const vh = window.innerHeight;
 
-      if (scrolled < containerHeight) {
+      if (scrolled < vh) {
         setPhase(0);
         setTransitionProgress(0);
-      } else if (scrolled < 2 * containerHeight) {
+      } else if (scrolled < 2 * vh) {
         setPhase(1);
         setTransitionProgress(0);
-      } else if (scrolled < 3 * containerHeight) {
+      } else if (scrolled < 3 * vh) {
         setPhase(2);
         // Calculate transition progress between phase 2 and 3
-        setTransitionProgress((scrolled - 2 * containerHeight) / containerHeight);
+        setTransitionProgress((scrolled - 2 * vh) / vh);
       } else {
         setPhase(3);
         setTransitionProgress(1);
@@ -126,12 +125,38 @@ const RefinedHero = ({ parentRef }) => { // Accept parentRef as a prop
       }
     };
 
-    const container = parentRef.current;
-    container.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     // Initial check in case the user is not at the top
     handleScroll();
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [isFinalPhase, parentRef]);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isFinalPhase]);
+
+  // Remove the Intersection Observer as it's no longer needed
+  // Previous code:
+  /*
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsFinalPhase(true);
+          }
+        });
+      },
+      { threshold: 0.5 } // Adjust as needed
+    );
+
+    if (finalHeroRef.current) {
+      observer.observe(finalHeroRef.current);
+    }
+
+    return () => {
+      if (finalHeroRef.current) {
+        observer.unobserve(finalHeroRef.current);
+      }
+    };
+  }, []);
+  */
 
   // Handle mouse move for parallax
   const handleMouseMove = (e) => {
@@ -172,19 +197,18 @@ const RefinedHero = ({ parentRef }) => { // Accept parentRef as a prop
 
   return (
     <div
-      className="w-full bg-gradient-to-br from-green-800 via-green-700 to-blue-800 text-white relative"
+      className="w-full bg-gradient-to-br from-green-800 via-green-700 to-blue-800 text-white"
       onMouseMove={handleMouseMove}
       ref={heroRef}
-      style={{ height: '400vh' }} // Ensure the container has enough height for scrolling
     >
       {/* 
         =============================
           INITIAL HERO SECTION (Phases 0-2)
-          Positioned absolutely within the main container
+          Rendered only when not in final phase
         =============================
       */}
       {!isFinalPhase && (
-        <div className="absolute top-0 left-0 w-full h-screen">
+        <div className="relative h-[300vh]"> {/* Changed from min-h-screen to h-[300vh] */}
           {/* Sticky container for text */}
           <div className="sticky top-0 h-screen flex items-center justify-center pointer-events-none">
             <div
@@ -225,15 +249,16 @@ const RefinedHero = ({ parentRef }) => { // Accept parentRef as a prop
       {/* 
         =============================
           FINAL HERO SECTION (Phase 3)
-          Positioned absolutely within the main container
+          Always rendered below the initial hero
         =============================
       */}
       <div
         ref={finalHeroRef}
-        className={`absolute top-0 left-0 w-full h-screen bg-green-900/80 backdrop-blur-md z-20 transition-opacity duration-700 ${
+        className={`bg-green-900/80 backdrop-blur-md z-20 transition-opacity duration-700 ${
           isFinalPhase ? 'opacity-100' : 'opacity-0'
         }`}
         style={{
+          minHeight: '100vh',
           padding: '2rem',
         }}
       >
@@ -291,7 +316,7 @@ const RefinedHero = ({ parentRef }) => { // Accept parentRef as a prop
                     </div>
 
                     {/* Back side */}
-                    <div className="absolute inset-0 bg-green-800/90 rounded-2xl p-6 backface-hidden rotateY-180">
+                    <div className="absolute inset-0 bg-green-800/90 rounded-2xl p-6 backface-hidden flip-card-back rotateY-180">
                       <div className="h-full flex flex-col justify-between">
                         <div>
                           <h3 className="text-2xl font-bold mb-4">{card.title}</h3>
@@ -316,7 +341,6 @@ const RefinedHero = ({ parentRef }) => { // Accept parentRef as a prop
       {/* 
         =============================
           DATA/ANALYTICS SECTION
-          Positioned after the hero sections within the main container
         =============================
       */}
       <section className="py-20 bg-white">
