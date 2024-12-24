@@ -21,6 +21,9 @@ const RefinedHero = () => {
   const [transitionProgress, setTransitionProgress] = useState(0);
   const [isFinalPhase, setIsFinalPhase] = useState(false);
 
+  // **New State:** Tracks if a transition to the final phase is in progress
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
   // State for dynamic performance data
   const [performanceData, setPerformanceData] = useState([]);
   const [ytdReturn, setYtdReturn] = useState(null);
@@ -103,7 +106,7 @@ const RefinedHero = () => {
   // Handle scroll for phase transitions
   useEffect(() => {
     const handleScroll = () => {
-      if (isFinalPhase) return; // Do not update phases if final phase is reached
+      if (isFinalPhase || isTransitioning) return; // Do not update phases if final phase is reached or transitioning
 
       const scrolled = window.scrollY;
       const vh = window.innerHeight;
@@ -119,9 +122,24 @@ const RefinedHero = () => {
         // Calculate transition progress between phase 2 and 3
         setTransitionProgress((scrolled - 2 * vh) / vh);
       } else {
-        setPhase(3);
-        setTransitionProgress(1);
-        setIsFinalPhase(true); // Lock into final phase
+        // **Initiate Transition to Final Phase**
+        if (!isFinalPhase && !isTransitioning) {
+          setIsTransitioning(true); // Start transition
+          // **Disable Scrolling**
+          document.body.style.overflow = 'hidden';
+
+          // **Set a Timeout for the Transition Duration (e.g., 1 second)**
+          setTimeout(() => {
+            setPhase(3);
+            setTransitionProgress(1);
+            setIsFinalPhase(true); // Lock into final phase
+
+            // **Re-enable Scrolling**
+            document.body.style.overflow = '';
+
+            setIsTransitioning(false); // End transition
+          }, 1000); // Transition duration in milliseconds
+        }
       }
     };
 
@@ -129,34 +147,14 @@ const RefinedHero = () => {
     // Initial check in case the user is not at the top
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isFinalPhase]);
+  }, [isFinalPhase, isTransitioning]);
 
-  // Remove the Intersection Observer as it's no longer needed
-  // Previous code:
-  /*
+  // **Cleanup Scroll Lock on Unmount**
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsFinalPhase(true);
-          }
-        });
-      },
-      { threshold: 0.5 } // Adjust as needed
-    );
-
-    if (finalHeroRef.current) {
-      observer.observe(finalHeroRef.current);
-    }
-
     return () => {
-      if (finalHeroRef.current) {
-        observer.unobserve(finalHeroRef.current);
-      }
+      document.body.style.overflow = '';
     };
   }, []);
-  */
 
   // Handle mouse move for parallax
   const handleMouseMove = (e) => {
@@ -197,7 +195,7 @@ const RefinedHero = () => {
 
   return (
     <div
-      className="w-full bg-gradient-to-br from-green-800 via-green-700 to-blue-800 text-white"
+      className="w-full bg-gradient-to-br from-green-800 via-green-700 to-blue-800 text-white relative"
       onMouseMove={handleMouseMove}
       ref={heroRef}
     >
@@ -208,7 +206,7 @@ const RefinedHero = () => {
         =============================
       */}
       {!isFinalPhase && (
-        <div className="relative h-[300vh]"> {/* Changed from min-h-screen to h-[300vh] */}
+        <div className="relative h-[250vh]"> {/* Changed from min-h-screen to h-[300vh] */}
           {/* Sticky container for text */}
           <div className="sticky top-0 h-screen flex items-center justify-center pointer-events-none">
             <div
@@ -255,7 +253,7 @@ const RefinedHero = () => {
       <div
         ref={finalHeroRef}
         className={`bg-green-900/80 backdrop-blur-md z-20 transition-opacity duration-700 ${
-          isFinalPhase ? 'opacity-100' : 'opacity-0'
+          isFinalPhase ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         style={{
           minHeight: '100vh',

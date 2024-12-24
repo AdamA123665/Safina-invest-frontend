@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { motion, } from 'framer-motion';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { 
   Shield, 
@@ -12,28 +12,36 @@ import {
   Activity, 
   Lock,
   Info,
-  Globe, BarChart3
+  Globe, 
+  BarChart3,
+  AlertCircle, 
+  CheckCircle 
 } from 'lucide-react';
-import { AlertCircle, CheckCircle } from 'lucide-react';
 import Alert from '@mui/material/Alert';
+
 function AlertDescription({ severity, message, description }) {
-    return (
-      <Alert severity={severity}>
-        <div>
-          <strong>{message}</strong>
-          <br />
-          <span style={{ fontSize: 'smaller', color: 'gray' }}>{description}</span>
-        </div>
-      </Alert>
-    );
-  }
+  return (
+    <Alert severity={severity}>
+      <div>
+        <strong>{message}</strong>
+        <br />
+        <span style={{ fontSize: 'smaller', color: 'gray' }}>{description}</span>
+      </div>
+    </Alert>
+  );
+}
+
 const CompleteInvestmentJourney = ({ parentRef }) => {
-const [showProgressBar, setShowProgressBar] = useState(true);
+  const [showProgressBar, setShowProgressBar] = useState(false); // Initialize as false
   const [activeSection, setActiveSection] = useState(0);
   const [riskLevel, setRiskLevel] = useState(5);
   const [email, setEmail] = useState('');
-   // Generate stock-like data for the graph
-   const generateStockData = () => {
+  
+  // Reference for the section to observe
+  const sectionRef = useRef(null);
+
+  // Generate stock-like data for the graph
+  const generateStockData = () => {
     const data = [];
     const numPoints = 20; // Number of data points
     let maxOverallValue = 0; // To normalize y-values later
@@ -98,8 +106,8 @@ const [showProgressBar, setShowProgressBar] = useState(true);
     { asset: 'Bonds', percentage: 10 },
     { asset: 'Alternatives', percentage: 30 }
   ];
+  
   // Portfolio evolution data
-
   const [status, setStatus] = useState('idle'); // idle, loading, success, error
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -126,7 +134,7 @@ const [showProgressBar, setShowProgressBar] = useState(true);
       setStatus('error');
       setErrorMessage(error.message);
     }
-};
+  };
 
   const sections = [
     { 
@@ -150,40 +158,56 @@ const [showProgressBar, setShowProgressBar] = useState(true);
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!parentRef?.current) return;
+    const target = sectionRef.current;
+    if (!target) return;
 
-      const howContainer = parentRef.current;
-      const howRect = howContainer.getBoundingClientRect();
-      
-      // More precise containment check - only show when the How section is actively being viewed
-      const isWithinHow = 
-        howRect.top < window.innerHeight && 
-        howRect.bottom > 0;
- // Hide when we've scrolled past the section
-      
-      setShowProgressBar(isWithinHow);
-
-      // Only update active section if we're within the How section
-      if (isWithinHow) {
-        const sections = howContainer.querySelectorAll('section');
-        sections.forEach((section, index) => {
-          const rect = section.getBoundingClientRect();
-          if (
-            rect.top <= window.innerHeight / 2 && 
-            rect.bottom >= window.innerHeight / 2
-          ) {
-            setActiveSection(index);
-          }
-        });
-      }
+    const observerOptions = {
+      root: null, // relative to viewport
+      rootMargin: '0px',
+      threshold: 0.1 // 10% of the section is visible
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setShowProgressBar(true);
+        } else {
+          setShowProgressBar(false);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    observer.observe(target);
+
+    return () => {
+      if (target) observer.unobserve(target);
+    };
+  }, [sectionRef]);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const handleActiveSection = () => {
+      const howContainer = sectionRef.current;
+      const sections = howContainer.querySelectorAll('section');
+      sections.forEach((section, index) => {
+        const rect = section.getBoundingClientRect();
+        if (
+          rect.top <= window.innerHeight / 2 && 
+          rect.bottom >= window.innerHeight / 2
+        ) {
+          setActiveSection(index);
+        }
+      });
+    };
+
+    // Use a separate scroll listener for active section
+    window.addEventListener('scroll', handleActiveSection);
+    handleActiveSection(); // Initial check
     
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [parentRef]);
+    return () => window.removeEventListener('scroll', handleActiveSection);
+  }, [sectionRef]);
 
   return (
     <div className="relative bg-slate-950 text-white">
@@ -219,7 +243,7 @@ const [showProgressBar, setShowProgressBar] = useState(true);
         </div>
       )}
 
-      {/* Desktop Progress Bar - Now conditional */}
+      {/* Desktop Progress Bar */}
       {showProgressBar && (
         <div 
           className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-50"
@@ -270,7 +294,7 @@ const [showProgressBar, setShowProgressBar] = useState(true);
             })}
           </div>
         </div>
-        )}
+      )}
 
       {/* Main Content */}
       <div className="pl-48">
