@@ -6,6 +6,8 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is installed
 import RefinedHero from './newhero2';
+import Tools from './tools';
+import Savings from './savings';
 import CompleteInvestmentJourney from './Test2';
 const Step1 = () => {
   const [riskLevel, setRiskLevel] = useState(5);
@@ -758,6 +760,11 @@ const PortfolioOptimizer = () => {
 
     <div className="how-container">
       <CompleteInvestmentJourney />
+
+      <div className="tools-container">
+      <Tools />
+    <div className="savings-container">
+    <Savings />
 {/* How to Invest Section */}
 <section id="how-to-invest" className="relative py-20 overflow-hidden bg-green-50  "  >
   <div className="container mx-auto px-4">
@@ -956,6 +963,8 @@ const PortfolioOptimizer = () => {
     }}
   ></div>
 </section>
+      </div>
+      </div>
       </div>
       </div>
     );
