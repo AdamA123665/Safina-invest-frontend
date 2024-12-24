@@ -154,34 +154,34 @@ const [showProgressBar, setShowProgressBar] = useState(true);
       if (!parentRef?.current) return;
 
       const howContainer = parentRef.current;
-      const containerRect = howContainer.getBoundingClientRect();
+      const howRect = howContainer.getBoundingClientRect();
       
-      // Get sections within this component
-      const sections = howContainer.querySelectorAll('section');
+      // More precise containment check - only show when the How section is actively being viewed
+      const isWithinHow = 
+        howRect.top <= 100 && // A small buffer at the top
+        howRect.bottom >= window.innerHeight &&
+        howRect.top >= -howRect.height; // Hide when we've scrolled past the section
       
-      // Only show progress bar when within the How container
-      const isWithinContainer = 
-        containerRect.top <= 0 && 
-        containerRect.bottom >= window.innerHeight;
-      
-      setShowProgressBar(isWithinContainer);
+      setShowProgressBar(isWithinHow);
 
-      // Update active section
-      sections.forEach((section, index) => {
-        const rect = section.getBoundingClientRect();
-        if (
-          rect.top <= window.innerHeight / 2 && 
-          rect.bottom >= window.innerHeight / 2
-        ) {
-          setActiveSection(index);
-        }
-      });
+      // Only update active section if we're within the How section
+      if (isWithinHow) {
+        const sections = howContainer.querySelectorAll('section');
+        sections.forEach((section, index) => {
+          const rect = section.getBoundingClientRect();
+          if (
+            rect.top <= window.innerHeight / 2 && 
+            rect.bottom >= window.innerHeight / 2
+          ) {
+            setActiveSection(index);
+          }
+        });
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
-    // Initial check
-    handleScroll();
-
+    handleScroll(); // Initial check
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, [parentRef]);
 
@@ -271,7 +271,7 @@ const [showProgressBar, setShowProgressBar] = useState(true);
           </div>
         </div>
         )}
-            
+
       {/* Main Content */}
       <div className="pl-48">
         {/* Risk Assessment Section */}

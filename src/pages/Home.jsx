@@ -5,7 +5,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is installed
-import NewHero from './Trial';
+import NewHero from './newhero2';
 import CompleteInvestmentJourney from './Test2';
 const Step1 = () => {
   const [riskLevel, setRiskLevel] = useState(5);
