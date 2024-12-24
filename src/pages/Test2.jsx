@@ -219,52 +219,59 @@ const [showProgressBar, setShowProgressBar] = useState(true);
         </div>
       )}
 
-      {/* Desktop Progress Bar */}
-      <div className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-50">
-        <div className="relative space-y-16">
-          {sections.map((section, index) => {
-            const Icon = section.icon;
-            const isActive = activeSection >= index;
-            const isLastSection = index === sections.length - 1;
+      {/* Desktop Progress Bar - Now conditional */}
+      {showProgressBar && (
+        <div 
+          className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-50"
+          style={{
+            opacity: showProgressBar ? 1 : 0,
+            transition: 'opacity 0.3s ease-in-out'
+          }}
+        >
+          <div className="relative space-y-16">
+            {sections.map((section, index) => {
+              const Icon = section.icon;
+              const isActive = activeSection >= index;
+              const isLastSection = index === sections.length - 1;
 
-            return (
-              <div key={section.id} className="relative">
-                <div className="relative flex items-center space-x-4">
-                  <motion.div
-                    className={`
-                      w-10 h-10 rounded-full flex items-center justify-center
-                      ${isActive ? 'bg-blue-500' : 'bg-gray-800'}
-                    `}
-                  >
-                    <Icon className="w-5 h-5" />
-                  </motion.div>
-                  
-                  <motion.div className="flex items-center space-x-3">
-                    <span className="text-sm font-medium text-blue-400">
-                      Step {section.step}
-                    </span>
-                    <span className="text-sm font-medium">{section.title}</span>
-                  </motion.div>
-                </div>
-
-                {!isLastSection && (
-                  <div className="absolute left-5 top-12 w-px h-12 -translate-x-1/2">
+              return (
+                <div key={section.id} className="relative">
+                  <div className="relative flex items-center space-x-4">
                     <motion.div
-                      className="w-full bg-gradient-to-b from-blue-500 to-transparent"
-                      style={{
-                        height: isActive ? '100%' : '0%',
-                        transition: 'height 0.5s ease-out'
-                      }}
-                    />
+                      className={`
+                        w-10 h-10 rounded-full flex items-center justify-center
+                        ${isActive ? 'bg-blue-500' : 'bg-gray-800'}
+                      `}
+                    >
+                      <Icon className="w-5 h-5" />
+                    </motion.div>
+                    
+                    <motion.div className="flex items-center space-x-3">
+                      <span className="text-sm font-medium text-blue-400">
+                        Step {section.step}
+                      </span>
+                      <span className="text-sm font-medium">{section.title}</span>
+                    </motion.div>
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-  
 
+                  {!isLastSection && (
+                    <div className="absolute left-5 top-12 w-px h-12 -translate-x-1/2">
+                      <motion.div
+                        className="w-full bg-gradient-to-b from-blue-500 to-transparent"
+                        style={{
+                          height: isActive ? '100%' : '0%',
+                          transition: 'height 0.5s ease-out'
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        )}
+            
       {/* Main Content */}
       <div className="pl-48">
         {/* Risk Assessment Section */}
