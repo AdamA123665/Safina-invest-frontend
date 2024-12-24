@@ -475,7 +475,6 @@ const PortfolioOptimizer = () => {
     const [portfolioData, setPortfolioData] = useState(null);
     const [, setSelectedAsset] = useState(null);
     const navigate = useNavigate();
-    const howContainerRef = useRef(null);
     const heroContainerRef = useRef(null);
     
    // Fetch aggressive portfolio data
