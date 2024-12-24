@@ -758,13 +758,22 @@ const PortfolioOptimizer = () => {
       `}</style>
     </section>
 
-    <div className="how-container">
-      <CompleteInvestmentJourney />
+    <div className="grid grid-cols-1 gap-16 max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        {/* Investment Journey Section */}
+        <section className="w-full">
+          <CompleteInvestmentJourney />
+        </section>
 
-      <div className="tools-container">
-      <Tools />
-    <div className="savings-container">
-    <Savings />
+        {/* Tools Section */}
+        <section className="w-full">
+          <Tools />
+        </section>
+
+        {/* Savings Section */}
+        <section className="w-full">
+          <Savings />
+        </section>
+      </div>
 {/* How to Invest Section */}
 <section id="how-to-invest" className="relative py-20 overflow-hidden bg-green-50  "  >
   <div className="container mx-auto px-4">
@@ -964,9 +973,7 @@ const PortfolioOptimizer = () => {
   ></div>
 </section>
       </div>
-      </div>
-      </div>
-      </div>
+
     );
   }
   
