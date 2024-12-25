@@ -1,174 +1,221 @@
-import React, { useState, useRef } from 'react';
-import { Calculator, PieChart, TrendingUp, Clock, Target, BarChart3, ArrowRight, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { PiggyBank, Info, ChevronRight, TrendingUp, Shield } from 'lucide-react';
 
-const ToolsShowcase = () => {
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const carouselRef = useRef(null);
+const SavingsSection = () => {
+  const [, setActiveSection] = useState(null);
+  const [scrollY, setScrollY] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [hoveredCard, setHoveredCard] = useState(null);
 
-  const tools = [
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  const topPicks = [
     {
-      icon: Calculator,
-      title: "Asset Allocation",
-      description: "Optimize your portfolio with AI-powered insights that adapt to market conditions.",
-      gradient: "from-blue-500 to-blue-600"
+      bank: "Gatehouse Bank",
+      type: "Sharia-compliant",
+      rate: "5.35% EPR",
+      term: "12 months",
+      minDeposit: "£1,000",
+      access: "Fixed Term",
+      highlight: "Top Sharia Rate",
+      icon: <Shield className="h-4 w-4" />
     },
     {
-      icon: PieChart,
-      title: "Risk Assessment",
-      description: "Comprehensive risk analysis tools that evaluate your portfolio's exposure.",
-      gradient: "from-purple-500 to-purple-600"
+      bank: "Ulster Bank",
+      type: "Traditional",
+      rate: "5.20% AER",
+      term: "Easy Access",
+      minDeposit: "£1",
+      access: "Instant",
+      highlight: "Best Easy Access",
+      icon: <TrendingUp className="h-4 w-4" />
     },
     {
-      icon: TrendingUp,
-      title: "Performance Analytics",
-      description: "Track your investment performance with sophisticated metrics and benchmarks.",
-      gradient: "from-emerald-500 to-emerald-600"
-    },
-    {
-      icon: Clock,
-      title: "Rebalancing Timer",
-      description: "Smart portfolio rebalancing alerts to maintain your target allocation.",
-      gradient: "from-orange-500 to-orange-600"
-    },
-    {
-      icon: Target,
-      title: "Goal Planning",
-      description: "Set and monitor your investment milestones with intelligent tracking.",
-      gradient: "from-rose-500 to-rose-600"
-    },
-    {
-      icon: BarChart3,
-      title: "Market Analysis",
-      description: "Access real-time market insights and predictive analytics.",
-      gradient: "from-indigo-500 to-indigo-600"
+      bank: "Barclays",
+      type: "Traditional",
+      rate: "5.45% AER",
+      term: "24 months",
+      minDeposit: "£2,000",
+      access: "Fixed Term",
+      highlight: "Top Fixed Rate",
+      icon: <PiggyBank className="h-4 w-4" />
     }
   ];
 
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setStartX(e.pageX - carouselRef.current.offsetLeft);
-    setScrollLeft(carouselRef.current.scrollLeft);
+  const calculateParallax = (baseValue) => {
+    return baseValue + (scrollY * 0.1);
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
+  const calculateMouseParallax = (intensity = 1) => {
+    const x = (mousePosition.x - window.innerWidth / 2) * 0.01 * intensity;
+    const y = (mousePosition.y - window.innerHeight / 2) * 0.01 * intensity;
+    return `translate(${x}px, ${y}px)`;
   };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX - carouselRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    carouselRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleScroll = (direction) => {
-    const container = carouselRef.current;
-    const scrollAmount = container.offsetWidth * 0.8;
-    container.scrollBy({
-      left: direction * scrollAmount,
-      behavior: 'smooth'
-    });
-  };
-
-  // Constants for perfect proportions
-  const HERO_HEIGHT = 600; // Base height
-  const TOOL_HEIGHT = Math.floor(HERO_HEIGHT * 0.85); // Exactly 85% of hero height
-  const VERTICAL_OFFSET = Math.floor((HERO_HEIGHT - TOOL_HEIGHT) / 2); // Center offset
 
   return (
-    <section className="relative py-20 bg-gray-50">
-      <div className="max-w-[90%] mx-auto">
-        <div className="flex items-start relative">
-          {/* Hero Card */}
-          <div className="w-[320px] bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-xl shadow-lg">
-            <div className="h-[600px] flex flex-col justify-between p-10">
-              <div>
-                <h2 className="text-3xl font-bold mb-6">
-                  Investment Tools
-                </h2>
-                <p className="text-base text-gray-300 leading-relaxed">
-                  Unlock the power of professional-grade investment tools designed to optimize your strategy and maximize returns. Our comprehensive suite provides everything you need to make informed decisions.
-                </p>
-                <p className="text-base text-gray-300 leading-relaxed mt-4">
-                  From asset allocation to risk management, each tool is crafted to deliver institutional-grade capabilities with an intuitive interface.
-                </p>
-              </div>
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-8 overflow-hidden">
+      {/* Animated background elements */}
+      <div 
+        className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 blur-3xl transition-transform duration-700"
+        style={{ transform: calculateMouseParallax(0.5) }}
+      />
+      <div 
+        className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-100 rounded-full opacity-20 blur-3xl transition-transform duration-700"
+        style={{ transform: calculateMouseParallax(-0.5) }}
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+        {/* Left Column - Information */}
+        <div 
+          className="space-y-6" // Adjusted spacing
+          style={{ transform: `translateY(${calculateParallax(-20)}px)` }}
+        >
+          {/* Introduction Section */}
+          <div 
+            className="relative group cursor-pointer"
+            onMouseEnter={() => setActiveSection('intro')}
+            onMouseLeave={() => setActiveSection(null)}
+          >
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 flex items-center gap-3 relative"> {/* Increased and varied font sizes */}
+              <span className="absolute -left-6 w-1 h-10 bg-blue-600 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-300" />
+              <PiggyBank className="h-8 w-8 text-blue-600 transform group-hover:rotate-12 transition-transform duration-300" />
+              Smart Savings Start Here
+            </h1>
+            
+            <p className="text-lg md:text-xl text-gray-700 mb-8 leading-relaxed max-w-xl transform transition-all duration-300 group-hover:translate-x-2">
+              Building a strong savings foundation is crucial for financial security. Whether you're saving for an emergency fund, a major purchase, or long-term goals, choosing the right savings account can significantly impact your returns.
+            </p>
+          </div>
+
+          {/* Feature Cards */}
+          <div className="space-y-6">
+            <div 
+              className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-white transform hover:scale-[1.02] transition-all duration-300 cursor-pointer group"
+              onMouseEnter={() => setActiveSection('sharia')}
+              onMouseLeave={() => setActiveSection(null)}
+            >
+              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity duration-300" />
               
-              <div className="flex items-center text-blue-400 group cursor-pointer">
-                <span className="text-sm mr-2">Explore all tools</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </div>
+              <h3 className="text-2xl md:text-3xl font-semibold mb-3 flex items-center gap-2"> {/* Increased and varied font sizes */}
+                <Info className="h-5 w-5" />
+                Sharia-Compliant Savings
+              </h3>
+              <p className="text-blue-50 leading-relaxed text-base md:text-lg">
+                Sharia-compliant savings accounts follow Islamic banking principles. Instead of interest, they offer an Expected Profit Rate (EPR). These accounts invest in ethical, Sharia-compliant activities and avoid industries not permitted under Islamic law.
+              </p>
+            </div>
+
+            <div 
+              className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg transform hover:translate-y-[-4px] transition-all duration-300"
+              onMouseEnter={() => setActiveSection('access')}
+              onMouseLeave={() => setActiveSection(null)}
+            >
+              <h3 className="text-2xl md:text-3xl font-semibold mb-3">How to Open an Account</h3> {/* Increased font sizes */}
+              <p className="text-gray-700 leading-relaxed text-base md:text-lg">
+                You can open savings accounts either directly with banks or through platforms like Raisin UK. Raisin offers a marketplace of savings products for easy comparison and management.
+              </p>
             </div>
           </div>
 
-          {/* Scrollable Tools Section */}
-          <div 
-            ref={carouselRef}
-            className="flex space-x-6 overflow-x-auto hide-scrollbar relative -ml-6"
-            style={{
-              scrollSnapType: 'x mandatory',
-              WebkitOverflowScrolling: 'touch',
-            }}
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseUp}
+          {/* Call to Action */}
+          <a 
+            href="https://www.calculator.net/savings-calculator.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium group relative overflow-hidden px-4 py-2 rounded-lg"
           >
-            {tools.map((tool, index) => {
-              const Icon = tool.icon;
-              return (
-                <div
-                  key={index}
-                  className="min-w-[240px] snap-start"
-                  style={{ 
-                    marginTop: `${VERTICAL_OFFSET}px`
-                  }}
-                >
-                  <div className="bg-white hover:shadow-lg transition-all duration-300 group overflow-hidden rounded-xl shadow">
-                    <div 
-                      className="flex flex-col justify-between p-8"
-                      style={{ height: `${TOOL_HEIGHT}px` }}
-                    >
+            <span className="relative z-10 flex items-center gap-2 text-lg md:text-xl"> {/* Increased font size */}
+              Calculate potential returns
+              <ChevronRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" />
+            </span>
+            <div className="absolute inset-0 bg-blue-50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+          </a>
+        </div>
+
+        {/* Right Column - Top Picks */}
+        <div 
+          className="space-y-4"
+          style={{ transform: `translateY(${calculateParallax(20)}px)` }}
+        >
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Top Picks - December 2024</h2> {/* Increased font size */}
+
+          <div className="space-y-4">
+            {topPicks.map((pick, index) => (
+              <div 
+                key={index} 
+                className={`relative overflow-hidden rounded-lg bg-white p-4 transition-all duration-500 ${
+                  hoveredCard === index ? 'shadow-xl scale-[1.01]' : 'shadow-md'
+                }`}
+                onMouseEnter={() => setHoveredCard(index)}
+                onMouseLeave={() => setHoveredCard(null)}
+              >
+                <div 
+                  className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-50 opacity-0 transition-opacity duration-300 pointer-events-none"
+                  style={{ opacity: hoveredCard === index ? 0.3 : 0 }}
+                />
+                
+                <div className="relative z-10">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex items-start gap-2">
+                      <div 
+                        className={`p-1.5 rounded-lg ${
+                          hoveredCard === index ? 'bg-blue-100 text-blue-600' : 'bg-gray-50 text-gray-400'
+                        } transition-colors duration-300`}
+                      >
+                        {pick.icon}
+                      </div>
                       <div>
-                        <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${tool.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                          <Icon className="w-6 h-6 text-white" />
-                        </div>
-                        <h3 className="text-xl font-bold mb-4 text-gray-900">
-                          {tool.title}
-                        </h3>
-                        <p className="text-sm text-gray-600 leading-relaxed">
-                          {tool.description}
-                        </p>
+                        <h3 className="font-semibold text-base md:text-lg">{pick.bank}</h3> {/* Increased font size */}
+                        <span className="text-xs md:text-sm text-gray-500">{pick.type}</span> {/* Increased font size */}
                       </div>
-                      
-                      <div className="flex items-center text-blue-600 mt-4">
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
+                    </div>
+                    <span className="bg-blue-100 text-blue-800 text-xs md:text-sm font-medium px-2 py-0.5 rounded-full">
+                      {pick.highlight}
+                    </span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-0.5">
+                      <p className="text-xs md:text-sm text-gray-500">Rate</p>
+                      <p className="font-semibold text-base md:text-lg text-blue-600">{pick.rate}</p>
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-xs md:text-sm text-gray-500">Term</p>
+                      <p className="font-medium text-sm md:text-base">{pick.term}</p>
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-xs md:text-sm text-gray-500">Minimum Deposit</p>
+                      <p className="font-medium text-sm md:text-base">{pick.minDeposit}</p>
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-xs md:text-sm text-gray-500">Access</p>
+                      <p className="font-medium text-sm md:text-base">{pick.access}</p>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
-
-          {/* Navigation Arrow */}
-          <button 
-            onClick={() => handleScroll(1)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-30"
-            aria-label="Next tools"
-          >
-            <ChevronRight className="w-6 h-6 text-gray-600" />
-          </button>
         </div>
       </div>
-
-      {/* Gradient fade for scroll indication */}
-      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none"></div>
-    </section>
+    </div>
   );
 };
 
-export default ToolsShowcase;
+export default SavingsSection;

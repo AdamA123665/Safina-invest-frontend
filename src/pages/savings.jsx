@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PiggyBank, Info, ChevronRight, TrendingUp, Shield } from 'lucide-react';
 
 const SavingsSection = () => {
-  const [ setActiveSection] = useState(null);
+  const [, setActiveSection] = useState(null);
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -34,7 +34,7 @@ const SavingsSection = () => {
       minDeposit: "£1,000",
       access: "Fixed Term",
       highlight: "Top Sharia Rate",
-      icon: <Shield className="h-5 w-5" />
+      icon: <Shield className="h-4 w-4" />
     },
     {
       bank: "Ulster Bank",
@@ -44,7 +44,7 @@ const SavingsSection = () => {
       minDeposit: "£1",
       access: "Instant",
       highlight: "Best Easy Access",
-      icon: <TrendingUp className="h-5 w-5" />
+      icon: <TrendingUp className="h-4 w-4" />
     },
     {
       bank: "Barclays",
@@ -54,7 +54,7 @@ const SavingsSection = () => {
       minDeposit: "£2,000",
       access: "Fixed Term",
       highlight: "Top Fixed Rate",
-      icon: <PiggyBank className="h-5 w-5" />
+      icon: <PiggyBank className="h-4 w-4" />
     }
   ];
 
@@ -80,26 +80,30 @@ const SavingsSection = () => {
         style={{ transform: calculateMouseParallax(-0.5) }}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
         {/* Left Column - Information */}
         <div 
-          className="space-y-8"
+          className="space-y-6" // Adjusted spacing
           style={{ transform: `translateY(${calculateParallax(-20)}px)` }}
         >
-          <div className="relative group cursor-pointer"
-               onMouseEnter={() => setActiveSection('intro')}
-               onMouseLeave={() => setActiveSection(null)}>
-            <h1 className="text-4xl font-bold mb-6 flex items-center gap-3 relative">
-              <span className="absolute -left-6 w-1 h-8 bg-blue-600 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-300"/>
+          {/* Introduction Section */}
+          <div 
+            className="relative group cursor-pointer"
+            onMouseEnter={() => setActiveSection('intro')}
+            onMouseLeave={() => setActiveSection(null)}
+          >
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 flex items-center gap-3 relative"> {/* Increased and varied font sizes */}
+              <span className="absolute -left-6 w-1 h-10 bg-blue-600 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-300" />
               <PiggyBank className="h-8 w-8 text-blue-600 transform group-hover:rotate-12 transition-transform duration-300" />
               Smart Savings Start Here
             </h1>
             
-            <p className="text-lg text-gray-700 mb-8 leading-relaxed max-w-xl transform transition-all duration-300 group-hover:translate-x-2">
+            <p className="text-lg md:text-xl text-gray-700 mb-8 leading-relaxed max-w-xl transform transition-all duration-300 group-hover:translate-x-2">
               Building a strong savings foundation is crucial for financial security. Whether you're saving for an emergency fund, a major purchase, or long-term goals, choosing the right savings account can significantly impact your returns.
             </p>
           </div>
 
+          {/* Feature Cards */}
           <div className="space-y-6">
             <div 
               className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-white transform hover:scale-[1.02] transition-all duration-300 cursor-pointer group"
@@ -108,11 +112,11 @@ const SavingsSection = () => {
             >
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity duration-300" />
               
-              <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+              <h3 className="text-2xl md:text-3xl font-semibold mb-3 flex items-center gap-2"> {/* Increased and varied font sizes */}
                 <Info className="h-5 w-5" />
                 Sharia-Compliant Savings
               </h3>
-              <p className="text-blue-50 leading-relaxed">
+              <p className="text-blue-50 leading-relaxed text-base md:text-lg">
                 Sharia-compliant savings accounts follow Islamic banking principles. Instead of interest, they offer an Expected Profit Rate (EPR). These accounts invest in ethical, Sharia-compliant activities and avoid industries not permitted under Islamic law.
               </p>
             </div>
@@ -122,22 +126,23 @@ const SavingsSection = () => {
               onMouseEnter={() => setActiveSection('access')}
               onMouseLeave={() => setActiveSection(null)}
             >
-              <h3 className="text-xl font-semibold mb-3">How to Open an Account</h3>
-              <p className="text-gray-700 leading-relaxed">
+              <h3 className="text-2xl md:text-3xl font-semibold mb-3">How to Open an Account</h3> {/* Increased font sizes */}
+              <p className="text-gray-700 leading-relaxed text-base md:text-lg">
                 You can open savings accounts either directly with banks or through platforms like Raisin UK. Raisin offers a marketplace of savings products for easy comparison and management.
               </p>
             </div>
           </div>
 
+          {/* Call to Action */}
           <a 
             href="https://www.calculator.net/savings-calculator.html"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium group relative overflow-hidden px-4 py-2 rounded-lg"
           >
-            <span className="relative z-10 flex items-center gap-2">
+            <span className="relative z-10 flex items-center gap-2 text-lg md:text-xl"> {/* Increased font size */}
               Calculate potential returns
-              <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300" />
+              <ChevronRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" />
             </span>
             <div className="absolute inset-0 bg-blue-50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
           </a>
@@ -145,58 +150,62 @@ const SavingsSection = () => {
 
         {/* Right Column - Top Picks */}
         <div 
-          className="space-y-6"
+          className="space-y-4"
           style={{ transform: `translateY(${calculateParallax(20)}px)` }}
         >
-          <h2 className="text-2xl font-bold mb-8">Top Picks - December 2024</h2>
-          
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Top Picks - December 2024</h2> {/* Increased font size */}
+
           <div className="space-y-4">
             {topPicks.map((pick, index) => (
               <div 
                 key={index} 
-                className={`relative overflow-hidden rounded-lg bg-white p-6 transition-all duration-500 ${
-                  hoveredCard === index ? 'shadow-xl scale-[1.02]' : 'shadow-md'
+                className={`relative overflow-hidden rounded-lg bg-white p-4 transition-all duration-500 ${
+                  hoveredCard === index ? 'shadow-xl scale-[1.01]' : 'shadow-md'
                 }`}
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-50 opacity-0 transition-opacity duration-300 pointer-events-none"
-                     style={{ opacity: hoveredCard === index ? 0.5 : 0 }} />
+                <div 
+                  className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-50 opacity-0 transition-opacity duration-300 pointer-events-none"
+                  style={{ opacity: hoveredCard === index ? 0.3 : 0 }}
+                />
                 
                 <div className="relative z-10">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-start gap-3">
-                      <div className={`p-2 rounded-lg ${
-                        hoveredCard === index ? 'bg-blue-100 text-blue-600' : 'bg-gray-50 text-gray-400'
-                      } transition-colors duration-300`}>
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex items-start gap-2">
+                      <div 
+                        className={`p-1.5 rounded-lg ${
+                          hoveredCard === index ? 'bg-blue-100 text-blue-600' : 'bg-gray-50 text-gray-400'
+                        } transition-colors duration-300`}
+                      >
                         {pick.icon}
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg">{pick.bank}</h3>
-                        <span className="text-sm text-gray-500">{pick.type}</span>
+                        <h3 className="font-semibold text-base md:text-lg">{pick.bank}</h3> {/* Increased font size */}
+                        <span className="text-xs md:text-sm text-gray-500">{pick.type}</span> {/* Increased font size */}
                       </div>
                     </div>
-                    <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
+                    <span className="bg-blue-100 text-blue-800 text-xs md:text-sm font-medium px-2 py-0.5 rounded-full">
                       {pick.highlight}
                     </span>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-1">
-                      <p className="text-sm text-gray-500">Rate</p>
-                      <p className="font-semibold text-lg text-blue-600">{pick.rate}</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-0.5">
+                      <p className="text-xs md:text-sm text-gray-500">Rate</p>
+                      <p className="font-semibold text-base md:text-lg text-blue-600">{pick.rate}</p>
                     </div>
-                    <div className="space-y-1">
-                      <p className="text-sm text-gray-500">Term</p>
-                      <p className="font-medium">{pick.term}</p>
+                    <div className="space-y-0.5">
+                      <p className="text-xs md:text-sm text-gray-500">Term</p>
+                      <p className="font-medium text-sm md:text-base">{pick.term}</p>
                     </div>
-                    <div className="space-y-1">
-                      <p className="text-sm text-gray-500">Minimum Deposit</p>
-                      <p className="font-medium">{pick.minDeposit}</p>
+                    <div className="space-y-0.5">
+                      <p className="text-xs md:text-sm text-gray-500">Minimum Deposit</p>
+                      <p className="font-medium text-sm md:text-base">{pick.minDeposit}</p>
                     </div>
-                    <div className="space-y-1">
-                      <p className="text-sm text-gray-500">Access</p>
-                      <p className="font-medium">{pick.access}</p>
+                    <div className="space-y-0.5">
+                      <p className="text-xs md:text-sm text-gray-500">Access</p>
+                      <p className="font-medium text-sm md:text-base">{pick.access}</p>
                     </div>
                   </div>
                 </div>
