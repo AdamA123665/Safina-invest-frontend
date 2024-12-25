@@ -1,8 +1,6 @@
 import React, {
   useState,
-  useEffect,
-  useRef,
-  memo
+  useRef
 } from 'react';
 import {
   ResponsiveContainer,
@@ -20,7 +18,6 @@ import { format, parseISO } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiExternalLink } from 'react-icons/fi';
 import { FaInfoCircle } from 'react-icons/fa';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 import {
   ChevronDown,
   ChevronUp,
