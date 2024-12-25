@@ -245,96 +245,99 @@ const RefinedHero = () => {
       )}
 
       {/* 
-        =============================
-          FINAL HERO SECTION (Phase 3)
-          Always rendered below the initial hero
-        =============================
-      */}
+  =============================
+    FINAL HERO SECTION (Phase 3)
+    Always rendered below the initial hero
+  =============================
+*/}
+<div
+  ref={finalHeroRef}
+  className={`z-20 transition-opacity duration-700 ${
+    isFinalPhase ? 'opacity-100' : 'opacity-0 pointer-events-none'
+  }`}
+  style={{
+    minHeight: '100vh',
+    padding: '2rem',
+    background: 'linear-gradient(90deg, #e2eac3, #688d74)', // Updated background
+    backdropFilter: 'blur(10px)', // Equivalent to backdrop-blur-md
+    fontFamily: "'Poppins', sans-serif", // Applied Poppins font
+  }}
+>
+  <div className="max-w-6xl mx-auto px-4 py-12 text-center"> {/* Increased padding-top */}
+    {/* Static Title */}
+    <h1
+      className={`text-5xl md:text-6xl font-bold mb-8 transition-opacity duration-700 ${
+        isFinalPhase ? 'opacity-100' : 'opacity-0'
+      }`}
+    >
+      Grow Your Wealth
+    </h1>
+    {/* "Start Investing" Button */}
+    {isFinalPhase && (
+      <button
+        className="mt-6 px-8 py-4 bg-blue-500 hover:bg-blue-600 transition-colors rounded-lg text-white font-semibold shadow-md text-lg"
+        onClick={() => (window.location.href = '/invest')}
+      >
+        Start Investing
+      </button>
+    )}
+    {/* Flip Cards */}
+    {isFinalPhase && (
       <div
-        ref={finalHeroRef}
-        className={`bg-green-900/80 backdrop-blur-md z-20 transition-opacity duration-700 ${
-          isFinalPhase ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
+        className="mt-12 flex flex-col md:flex-row items-center justify-center gap-10 transition-opacity duration-700"
         style={{
-          minHeight: '100vh',
-          padding: '2rem',
+          opacity: isFinalPhase ? 1 : 0,
         }}
       >
-        <div className="max-w-6xl mx-auto px-4 py-6 text-center">
-          {/* Static Title */}
-          <h1
-            className={`text-3xl md:text-5xl font-bold mb-4 transition-opacity duration-700 ${
-              isFinalPhase ? 'opacity-100' : 'opacity-0'
-            }`}
+        {cards.map((card, index) => (
+          <div
+            key={index}
+            className="relative w-72 h-96 cursor-pointer perspective-1000"
+            style={{
+              // Slight tilt for casual stacked look
+              transform: `rotate(${(index - 1) * 1.5}deg)`,
+            }}
+            onMouseEnter={() => setFlippedCard(index)}
+            onMouseLeave={() => setFlippedCard(null)}
           >
-            Grow your wealth
-          </h1>
-          {/* "Start Investing" Button */}
-          {isFinalPhase && (
-            <button
-              className="mt-4 px-6 py-3 bg-blue-500 hover:bg-blue-600 transition-colors rounded-lg text-white font-semibold shadow-md"
-              onClick={() => (window.location.href = '/invest')}
-            >
-              Start Investing
-            </button>
-          )}
-          {/* Flip Cards */}
-          {isFinalPhase && (
             <div
-              className="mt-8 flex flex-col md:flex-row items-center justify-center gap-8 transition-opacity duration-700"
+              className={`absolute inset-0 transition-transform duration-700 transform-style-3d ${
+                flippedCard === index ? 'rotateY-180' : ''
+              }`}
               style={{
-                opacity: isFinalPhase ? 1 : 0,
+                transform:
+                  flippedCard === index ? 'rotateY(180deg)' : 'rotateY(0deg)',
               }}
             >
-              {cards.map((card, index) => (
-                <div
-                  key={index}
-                  className="relative w-72 h-96 cursor-pointer perspective-1000"
-                  style={{
-                    // Slight tilt for casual stacked look
-                    transform: `rotate(${(index - 1) * 1.5}deg)`,
-                  }}
-                  onMouseEnter={() => setFlippedCard(index)}
-                  onMouseLeave={() => setFlippedCard(null)}
-                >
-                  <div
-                    className={`absolute inset-0 transition-transform duration-700 transform-style-3d ${
-                      flippedCard === index ? 'rotateY-180' : ''
-                    }`}
-                    style={{
-                      transform:
-                        flippedCard === index ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                    }}
-                  >
-                    {/* Front side */}
-                    <div className="absolute inset-0 bg-green-800/80 rounded-2xl overflow-hidden backface-hidden flex flex-col items-center justify-center p-6">
-                      <card.icon className="w-16 h-16 text-blue-400 mb-4" />
-                      <h3 className="text-2xl font-bold mb-2">{card.title}</h3>
-                      <p className="text-gray-200 text-center">{card.description}</p>
-                    </div>
+              {/* Front side */}
+              <div className="absolute inset-0 bg-green-800/80 rounded-2xl overflow-hidden backface-hidden flex flex-col items-center justify-center p-6">
+                <card.icon className="w-16 h-16 text-blue-400 mb-4" />
+                <h3 className="text-2xl font-bold mb-2">{card.title}</h3>
+                <p className="text-gray-200 text-center">{card.description}</p>
+              </div>
 
-                    {/* Back side */}
-                    <div className="absolute inset-0 bg-green-800/90 rounded-2xl p-6 backface-hidden flip-card-back rotateY-180">
-                      <div className="h-full flex flex-col justify-between">
-                        <div>
-                          <h3 className="text-2xl font-bold mb-4">{card.title}</h3>
-                          <p className="text-gray-200">{card.details}</p>
-                        </div>
-                        <a
-                          href={card.link}
-                          className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors mt-4"
-                        >
-                          Learn More <ArrowRight className="w-5 h-5" />
-                        </a>
-                      </div>
-                    </div>
+              {/* Back side */}
+              <div className="absolute inset-0 bg-green-800/90 rounded-2xl p-6 backface-hidden flip-card-back rotateY-180">
+                <div className="h-full flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-2xl font-bold mb-4">{card.title}</h3>
+                    <p className="text-gray-200">{card.details}</p>
                   </div>
+                  <a
+                    href={card.link}
+                    className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors mt-4"
+                  >
+                    Learn More <ArrowRight className="w-5 h-5" />
+                  </a>
                 </div>
-              ))}
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+        ))}
       </div>
+    )}
+  </div>
+</div>
 
       {/* 
         =============================

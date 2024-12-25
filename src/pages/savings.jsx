@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PiggyBank, Info, ChevronRight, TrendingUp, Shield } from 'lucide-react';
+import { PiggyBank, Info, ChevronRight } from 'lucide-react';
 
 const SavingsSection = () => {
   const [, setActiveSection] = useState(null);
@@ -26,40 +26,13 @@ const SavingsSection = () => {
   }, []);
 
   const topPicks = [
-    {
-      bank: "Gatehouse Bank",
-      type: "Sharia-compliant",
-      rate: "5.35% EPR",
-      term: "12 months",
-      minDeposit: "£1,000",
-      access: "Fixed Term",
-      highlight: "Top Sharia Rate",
-      icon: <Shield className="h-4 w-4" />
-    },
-    {
-      bank: "Ulster Bank",
-      type: "Traditional",
-      rate: "5.20% AER",
-      term: "Easy Access",
-      minDeposit: "£1",
-      access: "Instant",
-      highlight: "Best Easy Access",
-      icon: <TrendingUp className="h-4 w-4" />
-    },
-    {
-      bank: "Barclays",
-      type: "Traditional",
-      rate: "5.45% AER",
-      term: "24 months",
-      minDeposit: "£2,000",
-      access: "Fixed Term",
-      highlight: "Top Fixed Rate",
-      icon: <PiggyBank className="h-4 w-4" />
-    }
+    // ... your topPicks data
   ];
 
   const calculateParallax = (baseValue) => {
-    return baseValue + (scrollY * 0.1);
+    // Limit the maximum translation
+    const translation = baseValue + (scrollY * 0.05); // Reduced factor
+    return translation > 100 ? 100 : translation < -100 ? -100 : translation;
   };
 
   const calculateMouseParallax = (intensity = 1) => {
@@ -69,18 +42,18 @@ const SavingsSection = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-8 overflow-hidden">
+    <div className="relative bg-gradient-to-br from-slate-50 to-blue-50 p-8">
       {/* Animated background elements */}
       <div 
-        className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 blur-3xl transition-transform duration-700"
+        className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 blur-3xl transition-transform duration-700 z-0"
         style={{ transform: calculateMouseParallax(0.5) }}
       />
       <div 
-        className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-100 rounded-full opacity-20 blur-3xl transition-transform duration-700"
+        className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-100 rounded-full opacity-20 blur-3xl transition-transform duration-700 z-0"
         style={{ transform: calculateMouseParallax(-0.5) }}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
         {/* Left Column - Information */}
         <div 
           className="space-y-6" // Adjusted spacing
@@ -92,7 +65,7 @@ const SavingsSection = () => {
             onMouseEnter={() => setActiveSection('intro')}
             onMouseLeave={() => setActiveSection(null)}
           >
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 flex items-center gap-3 relative"> {/* Increased and varied font sizes */}
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 flex items-center gap-3 relative">
               <span className="absolute -left-6 w-1 h-10 bg-blue-600 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-300" />
               <PiggyBank className="h-8 w-8 text-blue-600 transform group-hover:rotate-12 transition-transform duration-300" />
               Smart Savings Start Here
@@ -105,6 +78,7 @@ const SavingsSection = () => {
 
           {/* Feature Cards */}
           <div className="space-y-6">
+            {/* Sharia-Compliant Savings Card */}
             <div 
               className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-white transform hover:scale-[1.02] transition-all duration-300 cursor-pointer group"
               onMouseEnter={() => setActiveSection('sharia')}
@@ -112,7 +86,7 @@ const SavingsSection = () => {
             >
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity duration-300" />
               
-              <h3 className="text-2xl md:text-3xl font-semibold mb-3 flex items-center gap-2"> {/* Increased and varied font sizes */}
+              <h3 className="text-2xl md:text-3xl font-semibold mb-3 flex items-center gap-2">
                 <Info className="h-5 w-5" />
                 Sharia-Compliant Savings
               </h3>
@@ -121,12 +95,13 @@ const SavingsSection = () => {
               </p>
             </div>
 
+            {/* How to Open an Account Card */}
             <div 
               className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg transform hover:translate-y-[-4px] transition-all duration-300"
               onMouseEnter={() => setActiveSection('access')}
               onMouseLeave={() => setActiveSection(null)}
             >
-              <h3 className="text-2xl md:text-3xl font-semibold mb-3">How to Open an Account</h3> {/* Increased font sizes */}
+              <h3 className="text-2xl md:text-3xl font-semibold mb-3">How to Open an Account</h3>
               <p className="text-gray-700 leading-relaxed text-base md:text-lg">
                 You can open savings accounts either directly with banks or through platforms like Raisin UK. Raisin offers a marketplace of savings products for easy comparison and management.
               </p>
@@ -140,7 +115,7 @@ const SavingsSection = () => {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium group relative overflow-hidden px-4 py-2 rounded-lg"
           >
-            <span className="relative z-10 flex items-center gap-2 text-lg md:text-xl"> {/* Increased font size */}
+            <span className="relative z-10 flex items-center gap-2 text-lg md:text-xl">
               Calculate potential returns
               <ChevronRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" />
             </span>
@@ -153,7 +128,7 @@ const SavingsSection = () => {
           className="space-y-4"
           style={{ transform: `translateY(${calculateParallax(20)}px)` }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">Top Picks - December 2024</h2> {/* Increased font size */}
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">Top Picks - December 2024</h2>
 
           <div className="space-y-4">
             {topPicks.map((pick, index) => (
@@ -181,8 +156,8 @@ const SavingsSection = () => {
                         {pick.icon}
                       </div>
                       <div>
-                        <h3 className="font-semibold text-base md:text-lg">{pick.bank}</h3> {/* Increased font size */}
-                        <span className="text-xs md:text-sm text-gray-500">{pick.type}</span> {/* Increased font size */}
+                        <h3 className="font-semibold text-base md:text-lg">{pick.bank}</h3>
+                        <span className="text-xs md:text-sm text-gray-500">{pick.type}</span>
                       </div>
                     </div>
                     <span className="bg-blue-100 text-blue-800 text-xs md:text-sm font-medium px-2 py-0.5 rounded-full">
