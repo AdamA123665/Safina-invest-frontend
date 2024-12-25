@@ -10,44 +10,57 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-// Words to rotate
-const rotatingWords = ['saving', 'investing', 'staying shariah compliant'];
-
-// A small helper component to handle auto-rotating words with a fade transition
-const RotatingWords = ({ words }) => {
+// ========================================
+// RotatingWords (fade-and-slide animation)
+// ========================================
+const RotatingWords = ({ words, interval = 3000 }) => {
+  // Which word index is currently displayed
   const [index, setIndex] = useState(0);
-  const [fadeIn, setFadeIn] = useState(true);
+  // Tracks the animation phase: 'in' (visible) or 'out' (fading away)
+  const [phase, setPhase] = useState('in');
+
+  // Duration (ms) for the fade+slide animation
+  const TRANSITION_DURATION = 400;
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      // Fade out
-      setFadeIn(false);
-
-      // After fade-out duration, update word and fade in
+    const timer = setInterval(() => {
+      // Start fade-out + slide-up
+      setPhase('out');
       setTimeout(() => {
-        setIndex((i) => (i + 1) % words.length);
-        setFadeIn(true);
-      }, 500); // 500ms matches the transition duration
-    }, 3000); // Each full cycle (display + fade out) is 3s
+        // Switch word
+        setIndex((prev) => (prev + 1) % words.length);
+        // Immediately fade-in new word
+        setPhase('in');
+      }, TRANSITION_DURATION);
+    }, interval);
 
-    return () => clearInterval(interval);
-  }, [words]);
+    return () => clearInterval(timer);
+  }, [words, interval]);
 
   return (
     <span
-      className={`inline-block transition-opacity duration-500 ${
-        fadeIn ? 'opacity-100' : 'opacity-0'
-      }`}
+      style={{
+        display: 'inline-block',
+        transition: `opacity ${TRANSITION_DURATION}ms ease, 
+                     transform ${TRANSITION_DURATION}ms ease`,
+        opacity: phase === 'out' ? 0 : 1,
+        transform: phase === 'out' ? 'translateY(-10px)' : 'translateY(0)',
+      }}
     >
       {words[index]}
     </span>
   );
 };
 
+const rotatingWords = ['saving', 'investing', 'staying shariah compliant'];
+
 const RefinedHero = () => {
   // --- State & data fetch for the Chart ---
   const [performanceData, setPerformanceData] = useState([]);
   const [ytdReturn, setYtdReturn] = useState(null);
+
+  // For flipping cards on hover
+  const [flippedCard, setFlippedCard] = useState(null);
 
   // Fetch portfolio data from backend
   useEffect(() => {
@@ -157,16 +170,16 @@ const RefinedHero = () => {
     <div className="w-full text-white">
       {/*
         =========================================
-        Main Hero (Formerly 'phase 3' hero)
+        MAIN HERO
         =========================================
       */}
       <div
         className="relative z-20"
         style={{
+          // Classy gradient: soft teal-to-blue
           minHeight: '100vh',
-          padding: '2rem',
-          background: 'linear-gradient(90deg, #e2eac3, #688d74)', // Updated background
-          backdropFilter: 'blur(10px)',
+          padding: '3rem 2rem',
+          background: 'linear-gradient(120deg, #96c93d 0%, #00b09b 100%)',
           fontFamily: "'Poppins', sans-serif",
         }}
       >
@@ -174,40 +187,60 @@ const RefinedHero = () => {
           {/* Title */}
           <h1 className="text-5xl md:text-6xl font-bold mb-4">Grow Your Wealth</h1>
 
-          {/* Rotating Words */}
+          {/* Rotating Words (Fade-and-Slide) */}
           <h2 className="text-3xl md:text-4xl font-semibold text-green-900">
             by <RotatingWords words={rotatingWords} />
           </h2>
 
-          {/* "Start Investing" Button */}
-          <button
-            className="mt-10 px-8 py-4 bg-blue-500 hover:bg-blue-600 transition-colors rounded-lg text-white font-semibold shadow-md text-lg"
-            onClick={() => (window.location.href = '/invest')}
-          >
-            Start Investing
-          </button>
-
-          {/* Flip Cards */}
-          <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-10">
+          {/* Cards (Straight & Centered) */}
+          <div className="mt-16 flex flex-col md:flex-row items-center justify-center gap-10">
             {cards.map((card, index) => (
               <div
                 key={index}
                 className="relative w-72 h-96 cursor-pointer perspective-1000"
+                onMouseEnter={() => setFlippedCard(index)}
+                onMouseLeave={() => setFlippedCard(null)}
                 style={{
-                  // Slight tilt for a casual stacked look
-                  transform: `rotate(${(index - 1) * 1.5}deg)`,
+                  perspective: '1000px',
+                  // No tilt added here; they are all aligned
                 }}
               >
-                <div className="absolute inset-0 transition-transform duration-700 transform-style-3d">
+                <div
+                  className="absolute inset-0 transition-transform duration-700 transform-style-3d"
+                  style={{
+                    transform:
+                      flippedCard === index
+                        ? 'rotateY(180deg)'
+                        : 'rotateY(0deg)',
+                    transformStyle: 'preserve-3d',
+                  }}
+                >
                   {/* Front side */}
-                  <div className="absolute inset-0 bg-green-800/80 rounded-2xl overflow-hidden backface-hidden flex flex-col items-center justify-center p-6">
+                  <div
+                    className="absolute inset-0 rounded-2xl overflow-hidden backface-hidden flex flex-col items-center justify-center p-6"
+                    style={{
+                      backgroundColor: 'rgba(0, 128, 0, 0.5)',
+                      WebkitBackfaceVisibility: 'hidden',
+                      backfaceVisibility: 'hidden',
+                    }}
+                  >
                     <card.icon className="w-16 h-16 text-blue-400 mb-4" />
                     <h3 className="text-2xl font-bold mb-2">{card.title}</h3>
-                    <p className="text-gray-200 text-center">{card.description}</p>
+                    <p className="text-gray-200 text-center">
+                      {card.description}
+                    </p>
                   </div>
 
                   {/* Back side */}
-                  <div className="absolute inset-0 bg-green-800/90 rounded-2xl p-6 backface-hidden flip-card-back rotateY-180">
+                  <div
+                    className="absolute inset-0 rounded-2xl p-6 backface-hidden flip-card-back"
+                    style={{
+                      backgroundColor: 'rgba(0, 128, 0, 0.8)',
+                      transform: 'rotateY(180deg)',
+                      WebkitBackfaceVisibility: 'hidden',
+                      backfaceVisibility: 'hidden',
+                    }}
+                  >
                     <div className="h-full flex flex-col justify-between">
                       <div>
                         <h3 className="text-2xl font-bold mb-4">{card.title}</h3>
@@ -242,9 +275,9 @@ const RefinedHero = () => {
                 Driven by Data
               </h2>
               <p className="text-lg md:text-xl text-gray-600 mb-8">
-                Make informed decisions with our advanced analytics and real-time market
-                insights. Our data-driven approach ensures optimal performance while
-                maintaining strict Shariah compliance.
+                Make informed decisions with our advanced analytics and real-time
+                market insights. Our data-driven approach ensures optimal performance
+                while maintaining strict Shariah compliance.
               </p>
               <button
                 className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 transition-colors rounded-lg text-white font-semibold shadow-md"
@@ -298,7 +331,10 @@ const RefinedHero = () => {
                       tickLine={false}
                       tick={{ fill: '#6B7280' }}
                       // Approximate monthly ticks
-                      interval={Math.max(1, Math.floor(performanceData.length / 4) - 1)}
+                      interval={Math.max(
+                        1,
+                        Math.floor(performanceData.length / 4) - 1
+                      )}
                     />
                     <YAxis hide={true} domain={yAxisDomain} />
                     <Tooltip
