@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PiggyBank, Info, ChevronRight } from 'lucide-react';
+import { PiggyBank, Info, ChevronRight, Shield, TrendingUp } from 'lucide-react';
 
 const SavingsSection = () => {
   const [, setActiveSection] = useState(null);
@@ -26,7 +26,36 @@ const SavingsSection = () => {
   }, []);
 
   const topPicks = [
-    // ... your topPicks data
+    {
+        bank: "Gatehouse Bank",
+        type: "Sharia-compliant",
+        rate: "5.35% EPR",
+        term: "12 months",
+        minDeposit: "£1,000",
+        access: "Fixed Term",
+        highlight: "Top Sharia Rate",
+        icon: <Shield className="h-4 w-4" />
+      },
+      {
+        bank: "Ulster Bank",
+        type: "Traditional",
+        rate: "5.20% AER",
+        term: "Easy Access",
+        minDeposit: "£1",
+        access: "Instant",
+        highlight: "Best Easy Access",
+        icon: <TrendingUp className="h-4 w-4" />
+      },
+      {
+        bank: "Barclays",
+        type: "Traditional",
+        rate: "5.45% AER",
+        term: "24 months",
+        minDeposit: "£2,000",
+        access: "Fixed Term",
+        highlight: "Top Fixed Rate",
+        icon: <PiggyBank className="h-4 w-4" />
+      }
   ];
 
   const calculateParallax = (baseValue) => {
