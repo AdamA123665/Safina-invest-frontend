@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowRight, TrendingUp, Wallet, Settings } from 'lucide-react';
 import {
   LineChart,
@@ -10,21 +10,42 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const words = ['saving', 'investing', 'staying shariah compliant'];
+// Words to rotate
+const rotatingWords = ['saving', 'investing', 'staying shariah compliant'];
+
+// A small helper component to handle auto-rotating words with a fade transition
+const RotatingWords = ({ words }) => {
+  const [index, setIndex] = useState(0);
+  const [fadeIn, setFadeIn] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Fade out
+      setFadeIn(false);
+
+      // After fade-out duration, update word and fade in
+      setTimeout(() => {
+        setIndex((i) => (i + 1) % words.length);
+        setFadeIn(true);
+      }, 500); // 500ms matches the transition duration
+    }, 3000); // Each full cycle (display + fade out) is 3s
+
+    return () => clearInterval(interval);
+  }, [words]);
+
+  return (
+    <span
+      className={`inline-block transition-opacity duration-500 ${
+        fadeIn ? 'opacity-100' : 'opacity-0'
+      }`}
+    >
+      {words[index]}
+    </span>
+  );
+};
 
 const RefinedHero = () => {
-  const [phase, setPhase] = useState(0);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const heroRef = useRef(null);
-  const finalHeroRef = useRef(null);
-  const [flippedCard, setFlippedCard] = useState(null);
-  const [transitionProgress, setTransitionProgress] = useState(0);
-  const [isFinalPhase, setIsFinalPhase] = useState(false);
-
-  // **New State:** Tracks if a transition to the final phase is in progress
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  // State for dynamic performance data
+  // --- State & data fetch for the Chart ---
   const [performanceData, setPerformanceData] = useState([]);
   const [ytdReturn, setYtdReturn] = useState(null);
 
@@ -39,7 +60,7 @@ const RefinedHero = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               initial_investment: 1000,
-              risk_tolerance: 10, // Assuming 10 represents aggressive
+              risk_tolerance: 10, // Example risk tolerance
             }),
           }
         );
@@ -51,9 +72,10 @@ const RefinedHero = () => {
         const lastYearDate = new Date();
         lastYearDate.setFullYear(currentDate.getFullYear() - 1);
 
-        const portfolioSeries = data.dashboard_data.performance.series.find(
-          (s) => s.name === 'Portfolio'
-        )?.values || [];
+        const portfolioSeries =
+          data.dashboard_data.performance.series.find(
+            (s) => s.name === 'Portfolio'
+          )?.values || [];
         const dates = data.dashboard_data.performance.dates || [];
 
         // Filter data for the last 12 months
@@ -99,71 +121,9 @@ const RefinedHero = () => {
       ? Math.max(...performanceData.map((d) => d.value))
       : 0;
   const yAxisDomain = [
-    minValue - 0.05 * minValue, // Slightly lower than the minimum value
-    maxValue + 0.2 * (maxValue - minValue), // Scale for a ~20% rise
+    minValue - 0.05 * minValue,
+    maxValue + 0.2 * (maxValue - minValue),
   ];
-
-  // Handle scroll for phase transitions
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isFinalPhase || isTransitioning) return; // Do not update phases if final phase is reached or transitioning
-
-      const scrolled = window.scrollY;
-      const vh = window.innerHeight;
-
-      if (scrolled < vh) {
-        setPhase(0);
-        setTransitionProgress(0);
-      } else if (scrolled < 2 * vh) {
-        setPhase(1);
-        setTransitionProgress(0);
-      } else if (scrolled < 3 * vh) {
-        setPhase(2);
-        // Calculate transition progress between phase 2 and 3
-        setTransitionProgress((scrolled - 2 * vh) / vh);
-      } else {
-        // **Initiate Transition to Final Phase**
-        if (!isFinalPhase && !isTransitioning) {
-          setIsTransitioning(true); // Start transition
-          // **Disable Scrolling**
-          document.body.style.overflow = 'hidden';
-
-          // **Set a Timeout for the Transition Duration (e.g., 1 second)**
-          setTimeout(() => {
-            setPhase(3);
-            setTransitionProgress(1);
-            setIsFinalPhase(true); // Lock into final phase
-
-            // **Re-enable Scrolling**
-            document.body.style.overflow = '';
-
-            setIsTransitioning(false); // End transition
-          }, 1000); // Transition duration in milliseconds
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial check in case the user is not at the top
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isFinalPhase, isTransitioning]);
-
-  // **Cleanup Scroll Lock on Unmount**
-  useEffect(() => {
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, []);
-
-  // Handle mouse move for parallax
-  const handleMouseMove = (e) => {
-    const rect = heroRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    setMousePos({ x, y });
-  };
 
   // Cards configuration
   const cards = [
@@ -194,155 +154,84 @@ const RefinedHero = () => {
   ];
 
   return (
-    <div
-      className="w-full bg-gradient-to-br from-green-800 via-green-700 to-blue-800 text-white relative"
-      onMouseMove={handleMouseMove}
-      ref={heroRef}
-    >
-      {/* 
-        =============================
-          INITIAL HERO SECTION (Phases 0-2)
-          Rendered only when not in final phase
-        =============================
+    <div className="w-full text-white">
+      {/*
+        =========================================
+        Main Hero (Formerly 'phase 3' hero)
+        =========================================
       */}
-      {!isFinalPhase && (
-        <div className="relative h-[300vh]"> {/* Changed from min-h-screen to h-[300vh] */}
-          {/* Sticky container for text */}
-          <div className="sticky top-0 h-screen flex items-center justify-center pointer-events-none">
-            <div
-              className={`text-center transition-all duration-700`}
-              style={{
-                transform: `translate3d(${(mousePos.x * 0.02).toFixed(2)}px, ${
-                  (mousePos.y * 0.02).toFixed(2)
-                }px, 0)`,
-              }}
-            >
-              {/* Main Title */}
-              <h1
-                className="text-5xl md:text-7xl font-bold mb-4"
-                style={{
-                  transform: `translateY(-${transitionProgress * 50}px)`,
-                  transition: 'transform 0.7s ease-out',
-                }}
-              >
-                Grow your wealth
-              </h1>
-              {/* Subtitle with rotating words, hidden in phase 3 */}
-              {phase < 3 && (
-                <h2
-                  className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-400 mb-6"
-                  style={{
-                    opacity: 1 - transitionProgress,
-                    transition: 'opacity 0.7s ease-out',
-                  }}
-                >
-                  by {words[phase < 3 ? phase : 2]}
-                </h2>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 
-  =============================
-    FINAL HERO SECTION (Phase 3)
-    Always rendered below the initial hero
-  =============================
-*/}
-<div
-  ref={finalHeroRef}
-  className={`z-20 transition-opacity duration-700 ${
-    isFinalPhase ? 'opacity-100' : 'opacity-0 pointer-events-none'
-  }`}
-  style={{
-    minHeight: '100vh',
-    padding: '2rem',
-    background: 'linear-gradient(90deg, #e2eac3, #688d74)', // Updated background
-    backdropFilter: 'blur(10px)', // Equivalent to backdrop-blur-md
-    fontFamily: "'Poppins', sans-serif", // Applied Poppins font
-  }}
->
-  <div className="max-w-6xl mx-auto px-4 py-12 text-center"> {/* Increased padding-top */}
-    {/* Static Title */}
-    <h1
-      className={`text-5xl md:text-6xl font-bold mb-8 transition-opacity duration-700 ${
-        isFinalPhase ? 'opacity-100' : 'opacity-0'
-      }`}
-    >
-      Grow Your Wealth
-    </h1>
-    {/* "Start Investing" Button */}
-    {isFinalPhase && (
-      <button
-        className="mt-6 px-8 py-4 bg-blue-500 hover:bg-blue-600 transition-colors rounded-lg text-white font-semibold shadow-md text-lg"
-        onClick={() => (window.location.href = '/invest')}
-      >
-        Start Investing
-      </button>
-    )}
-    {/* Flip Cards */}
-    {isFinalPhase && (
       <div
-        className="mt-12 flex flex-col md:flex-row items-center justify-center gap-10 transition-opacity duration-700"
+        className="relative z-20"
         style={{
-          opacity: isFinalPhase ? 1 : 0,
+          minHeight: '100vh',
+          padding: '2rem',
+          background: 'linear-gradient(90deg, #e2eac3, #688d74)', // Updated background
+          backdropFilter: 'blur(10px)',
+          fontFamily: "'Poppins', sans-serif",
         }}
       >
-        {cards.map((card, index) => (
-          <div
-            key={index}
-            className="relative w-72 h-96 cursor-pointer perspective-1000"
-            style={{
-              // Slight tilt for casual stacked look
-              transform: `rotate(${(index - 1) * 1.5}deg)`,
-            }}
-            onMouseEnter={() => setFlippedCard(index)}
-            onMouseLeave={() => setFlippedCard(null)}
-          >
-            <div
-              className={`absolute inset-0 transition-transform duration-700 transform-style-3d ${
-                flippedCard === index ? 'rotateY-180' : ''
-              }`}
-              style={{
-                transform:
-                  flippedCard === index ? 'rotateY(180deg)' : 'rotateY(0deg)',
-              }}
-            >
-              {/* Front side */}
-              <div className="absolute inset-0 bg-green-800/80 rounded-2xl overflow-hidden backface-hidden flex flex-col items-center justify-center p-6">
-                <card.icon className="w-16 h-16 text-blue-400 mb-4" />
-                <h3 className="text-2xl font-bold mb-2">{card.title}</h3>
-                <p className="text-gray-200 text-center">{card.description}</p>
-              </div>
+        <div className="max-w-6xl mx-auto px-4 py-12 text-center">
+          {/* Title */}
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">Grow Your Wealth</h1>
 
-              {/* Back side */}
-              <div className="absolute inset-0 bg-green-800/90 rounded-2xl p-6 backface-hidden flip-card-back rotateY-180">
-                <div className="h-full flex flex-col justify-between">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-4">{card.title}</h3>
-                    <p className="text-gray-200">{card.details}</p>
+          {/* Rotating Words */}
+          <h2 className="text-3xl md:text-4xl font-semibold text-green-900">
+            by <RotatingWords words={rotatingWords} />
+          </h2>
+
+          {/* "Start Investing" Button */}
+          <button
+            className="mt-10 px-8 py-4 bg-blue-500 hover:bg-blue-600 transition-colors rounded-lg text-white font-semibold shadow-md text-lg"
+            onClick={() => (window.location.href = '/invest')}
+          >
+            Start Investing
+          </button>
+
+          {/* Flip Cards */}
+          <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-10">
+            {cards.map((card, index) => (
+              <div
+                key={index}
+                className="relative w-72 h-96 cursor-pointer perspective-1000"
+                style={{
+                  // Slight tilt for a casual stacked look
+                  transform: `rotate(${(index - 1) * 1.5}deg)`,
+                }}
+              >
+                <div className="absolute inset-0 transition-transform duration-700 transform-style-3d">
+                  {/* Front side */}
+                  <div className="absolute inset-0 bg-green-800/80 rounded-2xl overflow-hidden backface-hidden flex flex-col items-center justify-center p-6">
+                    <card.icon className="w-16 h-16 text-blue-400 mb-4" />
+                    <h3 className="text-2xl font-bold mb-2">{card.title}</h3>
+                    <p className="text-gray-200 text-center">{card.description}</p>
                   </div>
-                  <a
-                    href={card.link}
-                    className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors mt-4"
-                  >
-                    Learn More <ArrowRight className="w-5 h-5" />
-                  </a>
+
+                  {/* Back side */}
+                  <div className="absolute inset-0 bg-green-800/90 rounded-2xl p-6 backface-hidden flip-card-back rotateY-180">
+                    <div className="h-full flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-2xl font-bold mb-4">{card.title}</h3>
+                        <p className="text-gray-200">{card.details}</p>
+                      </div>
+                      <a
+                        href={card.link}
+                        className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors mt-4"
+                      >
+                        Learn More <ArrowRight className="w-5 h-5" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
-    )}
-  </div>
-</div>
 
-      {/* 
-        =============================
-          DATA/ANALYTICS SECTION
-        =============================
+      {/*
+        =========================================
+        DATA/ANALYTICS SECTION
+        =========================================
       */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
@@ -353,9 +242,9 @@ const RefinedHero = () => {
                 Driven by Data
               </h2>
               <p className="text-lg md:text-xl text-gray-600 mb-8">
-                Make informed decisions with our advanced analytics and real-time market insights.
-                Our data-driven approach ensures optimal performance while maintaining strict
-                Shariah compliance.
+                Make informed decisions with our advanced analytics and real-time market
+                insights. Our data-driven approach ensures optimal performance while
+                maintaining strict Shariah compliance.
               </p>
               <button
                 className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 transition-colors rounded-lg text-white font-semibold shadow-md"
@@ -408,7 +297,8 @@ const RefinedHero = () => {
                       axisLine={false}
                       tickLine={false}
                       tick={{ fill: '#6B7280' }}
-                      interval={Math.max(1, Math.floor(performanceData.length / 4) - 1)} // Show approximately 4 months
+                      // Approximate monthly ticks
+                      interval={Math.max(1, Math.floor(performanceData.length / 4) - 1)}
                     />
                     <YAxis hide={true} domain={yAxisDomain} />
                     <Tooltip
