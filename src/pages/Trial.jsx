@@ -1,23 +1,38 @@
-import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiExternalLink } from 'react-icons/fi';
-import { FaInfoCircle } from 'react-icons/fa';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  memo
+} from 'react';
 import {
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip as RechartsTooltip,
   LineChart,
   Line,
   XAxis,
   YAxis,
-  Legend,
-  Tooltip as RechartsTooltip,
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
+  Legend
 } from 'recharts';
 import { format, parseISO } from 'date-fns';
-import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiExternalLink } from 'react-icons/fi';
+import { FaInfoCircle } from 'react-icons/fa';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
+import {
+  ChevronDown,
+  ChevronUp,
+  TrendingUp,
+  Percent,
+  AlertTriangle,
+  Info
+} from 'lucide-react';
 
-// 1) Hard-coded risk profiles
+// ===========================
+// 1) Hard-coded Risk Profiles
+// ===========================
 const riskProfiles = {
   1: {
     label: 'Ultra Conservative',
@@ -71,7 +86,9 @@ const riskProfiles = {
   },
 };
 
-// 2) Basic Reusable UI Components
+// ===========================
+// 2) Reusable UI Components
+// ===========================
 const Slider = ({ value, onChange, min, max, step = 1, className }) => (
   <input
     type="range"
@@ -81,8 +98,9 @@ const Slider = ({ value, onChange, min, max, step = 1, className }) => (
     max={max}
     step={step}
     className={`w-full ${className}`}
-    // Color the slider thumb/track via accentColor
-    style={{ accentColor: riskProfiles[value]?.color ?? '#4ADE80' }}
+    style={{
+      accentColor: riskProfiles[value]?.color ?? '#4ADE80',
+    }}
   />
 );
 
@@ -93,7 +111,14 @@ const Input = ({ className, ...props }) => (
   />
 );
 
-const Button = ({ children, onClick, variant, className, disabled }) => {
+const Button = ({
+  children,
+  onClick,
+  variant,
+  className,
+  disabled,
+  ...props
+}) => {
   let baseStyles =
     'px-6 py-3 rounded-full font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all';
   let variantStyles = '';
@@ -117,33 +142,43 @@ const Button = ({ children, onClick, variant, className, disabled }) => {
       onClick={onClick}
       className={`${baseStyles} ${variantStyles} ${className}`}
       disabled={disabled}
+      {...props}
     >
       {children}
     </button>
   );
 };
 
+const MetricTooltip = ({ text }) => (
+  <div className="absolute z-20 p-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg">
+    {text}
+  </div>
+);
+
+// ===========================
 // 3) Main Component
-const Trial = () => {
+// ===========================
+const PortfolioJourney = () => {
   // Steps
   const [step, setStep] = useState(1);
 
-  // Form: risk level & amount
+  // Form: risk + amount
   const [riskLevel, setRiskLevel] = useState(5);
   const [amount, setAmount] = useState('');
   const [amountError, setAmountError] = useState('');
 
-  // Data from real API
+  // API data
   const [portfolioData, setPortfolioData] = useState(null);
-  const [apiError, setApiError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
 
-  // ETF expansions
+  // Expansions
   const [expandedTicker, setExpandedTicker] = useState(null);
   const assetRefs = useRef({});
+  const [activeMetric, setActiveMetric] = useState(null);
+  const tooltipRef = useRef(null);
 
-
-  // Colors for charts
+  // For chart colors
   const COLORS = [
     '#0088FE',
     '#00C49F',
@@ -155,7 +190,7 @@ const Trial = () => {
     '#7744DD',
   ];
 
-  // Trading212 links
+  // Trading 212 links
   const trading212Links = {
     1: 'https://www.trading212.com/ultra-conservative',
     2: 'https://www.trading212.com/very-conservative',
@@ -169,18 +204,16 @@ const Trial = () => {
     10: 'https://www.trading212.com/maximum-growth',
   };
 
-  // -----------------------------
-  // Step indicator
-  // -----------------------------
+  // --------------------------
+  // A) Step Indicator
+  // --------------------------
   const StepIndicator = ({ currentStep, totalSteps }) => (
     <div className="w-full mb-12">
       <div className="relative">
         <div className="h-4 bg-gradient-to-r from-blue-100 to-blue-50 rounded-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500 ease-out"
-            style={{
-              width: `${(currentStep / totalSteps) * 100}%`,
-            }}
+            style={{ width: `${(currentStep / totalSteps) * 100}%` }}
           />
         </div>
         <div className="flex justify-between mt-4">
@@ -211,13 +244,42 @@ const Trial = () => {
     </div>
   );
 
-  // -----------------------------
-  // Step 1: Form
-  // -----------------------------
+  // --------------------------
+  // B) Fetch from Real API
+  // --------------------------
+  const fetchPortfolioData = async () => {
+    setIsLoading(true);
+    setFetchError(null);
+    try {
+      const resp = await fetch(
+        'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            initial_investment: Number(amount),
+            risk_tolerance: riskLevel,
+          }),
+        }
+      );
+      if (!resp.ok) {
+        throw new Error('Failed to fetch portfolio data');
+      }
+      const data = await resp.json();
+      setPortfolioData(data);
+    } catch (err) {
+      setFetchError(err.message);
+    }
+    setIsLoading(false);
+  };
+
+  // --------------------------
+  // Step 1: RiskInput
+  // --------------------------
   const RiskInput = () => {
     const currentProfile = riskProfiles[riskLevel];
 
-    const validate = () => {
+    const validateAmount = () => {
       if (!amount) {
         setAmountError('Investment amount is required.');
         return false;
@@ -235,33 +297,11 @@ const Trial = () => {
       return true;
     };
 
-    const handleAnalyzeClick = async () => {
-      if (!validate()) return;
-      setIsLoading(true);
-      setApiError(null);
-
-      try {
-        const resp = await fetch(
-          'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              initial_investment: Number(amount),
-              risk_tolerance: riskLevel,
-            }),
-          }
-        );
-        if (!resp.ok) {
-          throw new Error('Failed to fetch portfolio data');
-        }
-        const data = await resp.json();
-        setPortfolioData(data);
+    const handleAnalyze = async () => {
+      if (!validateAmount()) return;
+      await fetchPortfolioData();
+      if (!fetchError) {
         setStep(2);
-      } catch (err) {
-        setApiError(err.message);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -282,18 +322,16 @@ const Trial = () => {
               className="flex-1"
             />
           </div>
-
-          {/* Risk Profile Bubble */}
           {currentProfile && (
             <div
-              className="p-4 border-l-4 rounded-lg relative mt-4"
+              className="p-4 border-l-4 rounded-lg relative"
               style={{
                 borderLeftColor: currentProfile.color,
                 backgroundColor: '#f9fafb',
               }}
             >
               <div className="flex items-start space-x-4">
-                <FaInfoCircle
+                <Info
                   className="flex-shrink-0 w-6 h-6 mt-1"
                   style={{ color: currentProfile.color }}
                 />
@@ -314,137 +352,159 @@ const Trial = () => {
         </div>
 
         <div className="space-y-6">
-          <label className="text-2xl font-semibold">Investment Amount (£)</label>
-          <Input
-            type="text"
-            placeholder="Enter amount between £100 and £1,000,000"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
+          <label className="text-2xl font-semibold">
+            Investment Amount (£)
+          </label>
+          <div className="relative">
+            <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+              £
+            </span>
+            <Input
+              type="text"
+              className="pl-8"
+              placeholder="Enter amount between £100 and £1,000,000"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+          </div>
           {amountError && (
             <p className="text-red-500 text-sm">{amountError}</p>
           )}
         </div>
 
-        <Button onClick={handleAnalyzeClick} className="w-full mt-6">
+        <Button onClick={handleAnalyze} className="w-full mt-6">
           Analyze Portfolio
         </Button>
         {isLoading && (
-          <p className="text-blue-600 text-center font-medium mt-2">
+          <p className="text-blue-600 text-center font-medium">
             Generating your portfolio...
           </p>
         )}
-        {apiError && (
-          <p className="text-red-500 text-center mt-2">{apiError}</p>
+        {fetchError && (
+          <p className="text-red-500 text-center">{fetchError}</p>
         )}
       </div>
     );
   };
 
-  // -----------------------------
-  // Step 2: Show portfolio
-  // -----------------------------
-  const toggleExpand = (ticker) => {
-    setExpandedTicker((prev) => (prev === ticker ? null : ticker));
-    if (assetRefs.current[ticker]) {
-      assetRefs.current[ticker].scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  // --------------------------
+  // Step 2 Subcomponents
+  // --------------------------
 
-  // A) Portfolio Stats
+  // 2A) PortfolioStats
   const PortfolioStats = () => {
     if (!portfolioData) return null;
     const { risk_metrics } = portfolioData.dashboard_data;
     const { labels, values } = risk_metrics;
 
-    // find relevant metrics
+    // Indices
     const idxExp = labels.indexOf('Expected Return');
     const idxVol = labels.indexOf('Volatility');
-    const idxMaxDD = labels.indexOf('Max Drawdown');
-    const idxSharpe = labels.indexOf('Sharpe Ratio');
+    const idxMD = labels.indexOf('Max Drawdown');
+    const idxSR = labels.indexOf('Sharpe Ratio');
 
-    const expectedReturn = idxExp >= 0 ? values[idxExp] * 100 : 0;
-    const volatility = idxVol >= 0 ? values[idxVol] * 100 : 0;
-    const maxDrawdown = idxMaxDD >= 0 ? values[idxMaxDD] * 100 : 0;
-    const sharpeRatio = idxSharpe >= 0 ? values[idxSharpe] : 0;
+    const expReturn = idxExp >= 0 ? values[idxExp] * 100 : 0;
+    const vol = idxVol >= 0 ? values[idxVol] * 100 : 0;
+    const maxDraw = idxMD >= 0 ? values[idxMD] * 100 : 0;
+    const sharpe = idxSR >= 0 ? values[idxSR] : 0;
 
-    const stats = [
+    const metrics = [
       {
         id: 'expectedReturn',
+        icon: TrendingUp,
         label: 'Expected Return',
-        value: `${expectedReturn.toFixed(2)}%`,
+        value: `${expReturn.toFixed(2)}%`,
+        description:
+          'The anticipated percentage gain of your portfolio over a specified period.',
       },
       {
         id: 'volatility',
+        icon: Percent,
         label: 'Volatility',
-        value: `${volatility.toFixed(2)}%`,
+        value: `${vol.toFixed(2)}%`,
+        description:
+          'Measures the fluctuation in your portfolio’s value, indicating risk level.',
       },
       {
         id: 'maxDrawdown',
+        icon: AlertTriangle,
         label: 'Max Drawdown',
-        value: `${maxDrawdown.toFixed(2)}%`,
+        value: `${maxDraw.toFixed(2)}%`,
+        description:
+          'The maximum observed loss from a peak to a trough of your portfolio.',
       },
       {
         id: 'sharpeRatio',
+        icon: TrendingUp,
         label: 'Sharpe Ratio',
-        value: sharpeRatio.toFixed(2),
+        value: sharpe.toFixed(2),
+        description:
+          'Indicates the risk-adjusted return of your portfolio.',
       },
     ];
 
     return (
-      <div className="bg-white shadow-lg rounded-xl p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">
-          Portfolio Risk Metrics
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {stats.map((m) => (
-            <div
-              key={m.id}
-              className="p-4 border rounded-lg flex flex-col justify-center"
-            >
-              <div className="text-sm text-gray-500 mb-1">{m.label}</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+        {metrics.map(({ id, icon: Icon, label, value, description }) => (
+          <div
+            key={id}
+            className="relative p-6 bg-white shadow-lg rounded-xl flex items-center space-x-4"
+          >
+            <Icon size={24} className="text-blue-600" />
+            <div>
+              <div className="flex items-center space-x-1">
+                <div className="text-sm text-gray-500">{label}</div>
+                <Info
+                  className="w-4 h-4 text-gray-500 cursor-pointer"
+                  onClick={() =>
+                    setActiveMetric(activeMetric === id ? null : id)
+                  }
+                />
+              </div>
               <div className="text-lg font-semibold text-gray-800">
-                {m.value}
+                {value}
               </div>
             </div>
-          ))}
-        </div>
+            {activeMetric === id && (
+              <div ref={tooltipRef}>
+                <MetricTooltip text={description} />
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     );
   };
 
-  // B) Doughnut Pie Chart with allocations
-  const AllocationDoughnut = () => {
+  // 2B) Doughnut Pie Chart for allocations
+  const AllocationPie = () => {
     if (!portfolioData) return null;
-    const w = portfolioData.portfolio_metrics.Weights;
-    // Convert to array for Recharts
-    const chartData = Object.entries(w).map(([ticker, fraction], i) => ({
+    const weights = portfolioData.portfolio_metrics.Weights;
+    // Convert to array
+    const pieData = Object.entries(weights).map(([ticker, frac]) => ({
       ticker,
-      allocation: fraction * 100,
+      value: frac * 100,
     }));
 
     return (
-      <div className="bg-white shadow-lg rounded-xl p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">
-          Asset Allocation
-        </h3>
-        <div className="w-full h-80">
+      <div className="h-96 my-8 bg-white shadow-lg rounded-xl p-6 flex flex-col items-center">
+        <h3 className="text-xl font-bold mb-4">Asset Allocation</h3>
+        <div className="w-full h-full">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={chartData}
-                dataKey="allocation"
+                data={pieData}
+                dataKey="value"
                 nameKey="ticker"
                 cx="50%"
                 cy="50%"
-                outerRadius={110}
-                innerRadius={70} // create doughnut shape
-                labelLine={false}
+                innerRadius={80}   // Doughnut shape
+                outerRadius={120}
               >
-                {chartData.map((entry, index) => (
+                {pieData.map((entry, idx) => (
                   <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
+                    key={entry.ticker}
+                    fill={COLORS[idx % COLORS.length]}
                   />
                 ))}
               </Pie>
@@ -458,102 +518,119 @@ const Trial = () => {
     );
   };
 
-  // C) Expandable ETF List
-  //    (with YTD calc and sub-chart under description)
-  const ETFList = () => {
+  // 2C) Expandable Asset Allocation List (on the left)
+  //     Each row: Name in bold, Ticker, separate column for %,
+  //     If expanded => show description + sub-chart
+  const AssetAllocationsList = () => {
     if (!portfolioData) return null;
     const { asset_info, performance } = portfolioData.dashboard_data;
-    const { dates, series } = performance;
+    const weights = portfolioData.portfolio_metrics.Weights;
+    // build array
+    const allocations = asset_info.map((a, idx) => {
+      const frac = weights[a.name] ?? 0;
+      return {
+        name: a.name,
+        ticker: a.ticker,
+        description: a.info,
+        allocation: (frac * 100).toFixed(2),
+      };
+    });
 
     return (
-      <div className="bg-white shadow-lg rounded-xl p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">
-          Learn More About Your Assets
-        </h3>
+      <div className="space-y-4">
+        {allocations.map((alloc, i) => {
+          const color = COLORS[i % COLORS.length];
+          // Build performance data for sub-chart
+          const assetSeries = performance.series.find(
+            (s) => s.name === alloc.name
+          );
+          const dates = performance.dates || [];
+          const perfData = dates.map((d, idx) => ({
+            date: d,
+            value: assetSeries?.values[idx] || 0,
+          }));
 
-        <div className="space-y-6">
-          {asset_info.map((asset, i) => {
-            const color = COLORS[i % COLORS.length];
-            // build performance array
-            const assetSeries = series.find((s) => s.name === asset.name);
-            const perfData = dates.map((d, idx) => ({
-              date: d,
-              value: assetSeries ? assetSeries.values[idx] : 0,
-            }));
-
-            // YTD return
-            const currentYear = new Date().getFullYear();
-            const ytdData = perfData.filter(
-              (p) => new Date(p.date).getFullYear() === currentYear
-            );
-            let ytdReturn = null;
-            if (ytdData.length > 1) {
-              const firstValue = ytdData[0].value;
-              const lastValue = ytdData[ytdData.length - 1].value;
-              if (firstValue !== 0) {
-                ytdReturn = ((lastValue / firstValue) - 1) * 100;
-              }
+          // Calculate YTD
+          const thisYear = new Date().getFullYear();
+          const ytdData = perfData.filter(
+            (p) => new Date(p.date).getFullYear() === thisYear
+          );
+          let ytdReturn = null;
+          if (ytdData.length > 1) {
+            const firstVal = ytdData[0].value;
+            const lastVal = ytdData[ytdData.length - 1].value;
+            if (firstVal !== 0) {
+              ytdReturn = ((lastVal / firstVal) - 1) * 100;
             }
+          }
 
-            const isExpanded = expandedTicker === asset.ticker;
+          const isExpanded = expandedTicker === alloc.ticker;
 
-            return (
-              <motion.div
-                key={asset.ticker}
-                ref={(el) => (assetRefs.current[asset.ticker] = el)}
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className={`bg-gray-50 rounded-xl shadow-md border-2 transition-all duration-300 ${
-                  isExpanded ? 'p-6' : 'p-4'
-                } hover:shadow-lg`}
-                style={{ borderColor: color }}
+          return (
+            <div
+              key={alloc.ticker}
+              className="overflow-hidden bg-white shadow-lg rounded-xl"
+              ref={(el) => (assetRefs.current[alloc.ticker] = el)}
+            >
+              <button
+                onClick={() =>
+                  setExpandedTicker(isExpanded ? null : alloc.ticker)
+                }
+                className="w-full p-6 text-left hover:bg-gray-50 transition-colors focus:outline-none relative"
               >
-                <div className="flex items-center justify-between">
-                  {/* Name & Ticker */}
-                  <div>
-                    <h4
-                      className="text-lg md:text-xl font-bold"
-                      style={{ color }}
-                    >
-                      {asset.name}
-                    </h4>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Ticker:{' '}
-                      <span className="font-medium">
-                        {asset.ticker}
+                <div className="flex justify-between items-center">
+                  <div className="flex space-x-4 items-center">
+                    <div
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: color }}
+                    />
+                    <div className="flex flex-col">
+                      <span className="font-medium text-lg text-gray-800">
+                        {alloc.name}
                       </span>
-                      {ytdReturn !== null && (
-                        <>
-                          {'  |  YTD Return: '}
-                          <span
-                            className={`font-medium ${
-                              ytdReturn >= 0
-                                ? 'text-green-700'
-                                : 'text-red-600'
-                            }`}
-                          >
-                            {ytdReturn.toFixed(2)}%
-                          </span>
-                        </>
-                      )}
-                    </p>
+                      <span className="text-sm text-gray-500">
+                        Ticker: {alloc.ticker}
+                      </span>
+                    </div>
                   </div>
-
-                  {/* Expand icon */}
-                  <button
-                    onClick={() => toggleExpand(asset.ticker)}
-                    className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
-                  >
+                  {/* Right side columns: Allocation & YTD */}
+                  <div className="flex items-center space-x-6">
+                    {/* Allocation column */}
+                    <div className="text-right">
+                      <div className="font-medium text-lg text-gray-800">
+                        {alloc.allocation}%
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        £
+                        {amount
+                          ? (
+                              Number(amount) * (Number(alloc.allocation) / 100)
+                            ).toLocaleString()
+                          : '0'}
+                      </div>
+                    </div>
+                    {/* YTD column */}
+                    <div className="text-right">
+                      <div
+                        className={`font-medium text-lg ${
+                          ytdReturn && ytdReturn >= 0
+                            ? 'text-green-500'
+                            : 'text-red-500'
+                        }`}
+                      >
+                        {ytdReturn !== null ? `${ytdReturn.toFixed(2)}%` : '0%'}
+                      </div>
+                      <div className="text-sm text-gray-500">YTD</div>
+                    </div>
+                    {/* Expand icon */}
                     {isExpanded ? (
-                      <ChevronUpIcon className="h-6 w-6" />
+                      <ChevronUp size={24} />
                     ) : (
-                      <ChevronDownIcon className="h-6 w-6" />
+                      <ChevronDown size={24} />
                     )}
-                  </button>
+                  </div>
                 </div>
-
+                {/* Expandable body */}
                 <AnimatePresence>
                   {isExpanded && (
                     <motion.div
@@ -561,21 +638,20 @@ const Trial = () => {
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.4, ease: 'easeInOut' }}
-                      className="overflow-hidden"
+                      className="mt-4 p-4 bg-gray-50 rounded-lg"
                     >
-                      <p className="text-sm mt-4 mb-4 text-gray-700">
-                        {asset.info}
+                      {/* Description */}
+                      <p className="text-gray-600 mb-4">
+                        {alloc.description}
                       </p>
-                      <div className="w-full h-48 sm:h-64">
+                      {/* Sub-chart */}
+                      <div className="w-full h-52 sm:h-64">
                         <ResponsiveContainer width="100%" height="100%">
                           <LineChart data={perfData}>
                             <XAxis
                               dataKey="date"
                               tick={{ fill: '#6B7280', fontSize: 12 }}
-                              tickFormatter={(dStr) => {
-                                const d = parseISO(dStr);
-                                return format(d, 'MMM yy');
-                              }}
+                              tickFormatter={(ds) => format(parseISO(ds), 'MMM yy')}
                             />
                             <YAxis
                               tick={{ fill: '#6B7280', fontSize: 12 }}
@@ -584,9 +660,7 @@ const Trial = () => {
                               }
                             />
                             <RechartsTooltip
-                              formatter={(val) =>
-                                `${(val * 100).toFixed(2)}%`
-                              }
+                              formatter={(val) => `${(val * 100).toFixed(2)}%`}
                             />
                             <Line
                               type="monotone"
@@ -601,39 +675,61 @@ const Trial = () => {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
-            );
-          })}
-        </div>
+              </button>
+            </div>
+          );
+        })}
       </div>
     );
   };
 
-  // D) Portfolio vs. S&P 500
+  // 2D) Portfolio vs. S&P 500 + 10-year
   const PortfolioVsSP = () => {
     if (!portfolioData) return null;
-    const { performance } = portfolioData.dashboard_data;
-    const { dates, series } = performance;
+    const { dates, series } = portfolioData.dashboard_data.performance;
+    if (!dates || !series?.length) return null;
 
-    // Build chart data array
-    const chartData = dates.map((date, idx) => ({
+    // Build line chart data
+    const chartData = dates.map((date, i) => ({
       date,
-      Portfolio: series.find((s) => s.name === 'Portfolio')?.values[idx] || 0,
-      'S&P 500': series.find((s) => s.name === 'S&P 500')?.values[idx] || 0,
+      Portfolio: series.find((s) => s.name === 'Portfolio')?.values[i] || 0,
+      'S&P 500': series.find((s) => s.name === 'S&P 500')?.values[i] || 0,
     }));
+
+    // 10-Year annualized return
+    let tenYearReturn = null;
+    // If we have at least 120 months (10 years)
+    if (dates.length >= 120) {
+      const startIndex = dates.length - 120;
+      const portfolioVals = series.find((s) => s.name === 'Portfolio')?.values;
+      if (portfolioVals) {
+        const firstFactor = portfolioVals[startIndex];
+        const lastFactor = portfolioVals[portfolioVals.length - 1];
+        if (firstFactor !== 0) {
+          const annualized = Math.pow(lastFactor / firstFactor, 1 / 10) - 1;
+          tenYearReturn = annualized * 100; // e.g. 12.34
+        }
+      }
+    }
 
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        className="bg-white rounded-xl shadow-lg p-6"
+        className="bg-white rounded-xl shadow-lg p-6 mt-8"
       >
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl sm:text-2xl font-extrabold text-gray-800">
             Portfolio vs. S&P 500
           </h2>
+          <FaInfoCircle className="text-gray-400" />
         </div>
+        {tenYearReturn !== null && (
+          <p className="text-gray-700 font-medium mb-2">
+            10-Year Annualized Return: {tenYearReturn.toFixed(2)}%
+          </p>
+        )}
         <p className="text-gray-600 text-sm mb-6 max-w-md">
           Track how your portfolio’s returns compare against the S&P 500
           benchmark over time.
@@ -659,14 +755,11 @@ const Trial = () => {
                 tick={{ fill: '#4B5563', fontSize: 12 }}
                 axisLine={{ stroke: '#E5E7EB' }}
                 tickLine={{ stroke: '#E5E7EB' }}
-                tickFormatter={(dateStr) => {
-                  const parsedDate = parseISO(dateStr);
-                  return format(parsedDate, 'MMM yyyy');
-                }}
+                tickFormatter={(dStr) => format(parseISO(dStr), 'MMM yyyy')}
               />
               <YAxis
                 tick={{ fill: '#4B5563', fontSize: 12 }}
-                tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+                tickFormatter={(val) => `${(val * 100).toFixed(0)}%`}
                 axisLine={{ stroke: '#E5E7EB' }}
                 tickLine={{ stroke: '#E5E7EB' }}
               />
@@ -677,8 +770,11 @@ const Trial = () => {
                   border: '1px solid #E5E7EB',
                   padding: '10px',
                 }}
-                labelStyle={{ fontWeight: '600', marginBottom: '5px' }}
-                formatter={(value) => `${(value * 100).toFixed(2)}%`}
+                labelStyle={{
+                  fontWeight: '600',
+                  marginBottom: '5px',
+                }}
+                formatter={(val) => `${(val * 100).toFixed(2)}%`}
                 labelFormatter={(label) => {
                   const parsed = parseISO(label);
                   return format(parsed, 'do MMM yyyy');
@@ -687,25 +783,42 @@ const Trial = () => {
               <Legend
                 verticalAlign="top"
                 align="right"
-                wrapperStyle={{ top: -10, right: 0, fontSize: '14px', color: '#4B5563' }}
+                wrapperStyle={{
+                  top: -10,
+                  right: 0,
+                  fontSize: '14px',
+                  color: '#4B5563',
+                }}
               />
+              {/* Portfolio line */}
               <Line
                 type="monotone"
                 dataKey="Portfolio"
                 stroke="#10B981"
                 strokeWidth={3}
                 dot={false}
-                activeDot={{ r: 5, fill: '#10B981', strokeWidth: 2, stroke: '#ffffff' }}
+                activeDot={{
+                  r: 5,
+                  fill: '#10B981',
+                  strokeWidth: 2,
+                  stroke: '#ffffff',
+                }}
                 fill="url(#colorPortfolio)"
                 fillOpacity={0.1}
               />
+              {/* S&P 500 line */}
               <Line
                 type="monotone"
                 dataKey="S&P 500"
                 stroke="#EF4444"
                 strokeWidth={3}
                 dot={false}
-                activeDot={{ r: 5, fill: '#EF4444', strokeWidth: 2, stroke: '#ffffff' }}
+                activeDot={{
+                  r: 5,
+                  fill: '#EF4444',
+                  strokeWidth: 2,
+                  stroke: '#ffffff',
+                }}
                 fill="url(#colorSP500)"
                 fillOpacity={0.1}
               />
@@ -716,21 +829,56 @@ const Trial = () => {
     );
   };
 
-  // E) Step 2 Layout
-  const OptimizedPortfolio = () => (
-    <div className="space-y-6">
-      <PortfolioStats />
-      <AllocationDoughnut />
-      <ETFList />
-      <PortfolioVsSP />
-    </div>
-  );
+  // Step 2 Container
+  const OptimizedPortfolio = () => {
+    return (
+      <div>
+        <h2 className="text-3xl font-bold mb-8 text-gray-800">
+          Optimized Portfolio
+        </h2>
 
-  // F) Step 3
+        <div className="flex flex-col lg:flex-row lg:space-x-8 space-y-8 lg:space-y-0">
+          {/* Left column: Stats + Asset Allocations */}
+          <div className="flex-1 space-y-6">
+            <PortfolioStats />
+            <AssetAllocationsList />
+          </div>
+
+          {/* Right column: Pie chart + Historical */}
+          <div className="flex-1">
+            <AllocationPie />
+            <PortfolioVsSP />
+          </div>
+        </div>
+
+        {/* Step nav */}
+        <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-12">
+          <Button
+            variant="outline"
+            onClick={() => setStep(1)}
+            className="w-full md:w-1/2"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => setStep(3)}
+            className="w-full md:w-1/2"
+          >
+            Continue
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
+  // --------------------------
+  // Step 3: Final CTA
+  // --------------------------
   const FinalCTA = () => (
     <section className="relative py-16 bg-gradient-to-br from-green-50 to-green-100 overflow-hidden">
       <div className="absolute top-0 left-0 w-64 h-64 bg-green-200 rounded-full opacity-20 transform -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 right-0 w-64 h-64 bg-green-200 rounded-full opacity-20 transform translate-x-1/2 translate-y-1/2" />
+
       <motion.div
         className="relative z-10 max-w-4xl mx-auto text-center px-4"
         initial={{ opacity: 0, y: 20 }}
@@ -753,6 +901,7 @@ const Trial = () => {
           <FiExternalLink className="ml-2 text-white" />
         </a>
       </motion.div>
+
       <div className="relative z-10 max-w-6xl mx-auto mt-16 px-4 grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Trading 212 Card */}
         <motion.div
@@ -895,26 +1044,36 @@ const Trial = () => {
           </div>
         </motion.div>
       </div>
+
       <div className="mt-8 flex justify-center">
-        <Button variant="outline" onClick={() => setStep(2)} className="w-1/2 sm:w-1/3">
+        <Button
+          variant="outline"
+          onClick={() => setStep(2)}
+          className="w-1/2 sm:w-1/3"
+        >
           Back to Portfolio
         </Button>
       </div>
     </section>
   );
 
-  // 4) Final Render
+  // --------------------------
+  // Final Render
+  // --------------------------
   return (
     <div className="max-w-7xl mx-auto p-8 space-y-12 bg-gray-100 min-h-screen">
       <StepIndicator currentStep={step} totalSteps={3} />
 
+      {/* Step 1 */}
       {step === 1 && <RiskInput />}
 
+      {/* Step 2 */}
       {step === 2 && portfolioData && <OptimizedPortfolio />}
 
+      {/* Step 3 */}
       {step === 3 && portfolioData && <FinalCTA />}
     </div>
   );
 };
 
-export default Trial;
+export default PortfolioJourney;
