@@ -7,7 +7,6 @@ import {
   Facebook,
   Twitter,
   Instagram,
-  User as LinkedIn,
   ChevronUp
 } from 'lucide-react';
 
@@ -59,18 +58,15 @@ const Footer = () => {
               Empowering investors with sophisticated tools and insights for optimal portfolio management.
             </p>
             <div className="flex space-x-4">
-              <a  className="text-gray-400 hover:text-green-500 transition-colors">
+              <Link to="/facebook" className="text-gray-400 hover:text-green-500 transition-colors">
                 <Facebook className="w-5 h-5" />
-              </a>
-              <a className="text-gray-400 hover:text-green-500 transition-colors">
+              </Link>
+              <Link to="/twitter" className="text-gray-400 hover:text-green-500 transition-colors">
                 <Twitter className="w-5 h-5" />
-              </a>
-              <a  className="text-gray-400 hover:text-green-500 transition-colors">
+              </Link>
+              <Link to="/instagram" className="text-gray-400 hover:text-green-500 transition-colors">
                 <Instagram className="w-5 h-5" />
-              </a>
-              <a  className="text-gray-400 hover:text-green-500 transition-colors">
-                <LinkedIn className="w-5 h-5" />
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -131,31 +127,31 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a
-                  
+                <Link
+                  to="/help-center"
                   className="text-gray-400 hover:text-green-500 transition-colors flex items-center group"
                 >
                   <span>Help Center</span>
                   <ArrowRight className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all" />
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  
+                <Link
+                  to="/privacy-policy"
                   className="text-gray-400 hover:text-green-500 transition-colors flex items-center group"
                 >
                   <span>Privacy Policy</span>
                   <ArrowRight className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all" />
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  
+                <Link
+                  to="/terms-of-service"
                   className="text-gray-400 hover:text-green-500 transition-colors flex items-center group"
                 >
                   <span>Terms of Service</span>
                   <ArrowRight className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all" />
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -200,18 +196,18 @@ const Footer = () => {
               © {new Date().getFullYear()} Safina Invest. All rights reserved.
             </p>
             <div className="flex space-x-6">
-              <a className="text-gray-500 hover:text-green-500 text-sm transition-colors">
+              <Link to="/privacy-policy" className="text-gray-500 hover:text-green-500 text-sm transition-colors">
                 Privacy
-              </a>
-              <a className="text-gray-500 hover:text-green-500 text-sm transition-colors">
+              </Link>
+              <Link to="/terms-of-service" className="text-gray-500 hover:text-green-500 text-sm transition-colors">
                 Terms
-              </a>
-              <a className="text-gray-500 hover:text-green-500 text-sm transition-colors">
+              </Link>
+              <Link to="/cookies" className="text-gray-500 hover:text-green-500 text-sm transition-colors">
                 Cookies
-              </a>
-              <a className="text-gray-500 hover:text-green-500 text-sm transition-colors">
+              </Link>
+              <Link to="/sitemap" className="text-gray-500 hover:text-green-500 text-sm transition-colors">
                 Sitemap
-              </a>
+              </Link>
             </div>
           </div>
         </div>
