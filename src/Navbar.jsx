@@ -24,6 +24,8 @@ const Navbar = () => {
     { path: '/research', label: 'Research' },
     { path: '/about', label: 'About'},
     { path: '/funds', label: 'Funds'},
+    { path: '/Trial', label: 'Trial'},
+    { path: '/Test2', label: 'Test2'},
   ];
 
   const handleItemHover = (index) => {

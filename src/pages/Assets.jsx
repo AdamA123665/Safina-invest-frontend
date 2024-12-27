@@ -14,9 +14,20 @@ import {
   FaChartLine,
   FaRegCalendarAlt,
   FaBalanceScale,
+  FaMoneyBillWave,
+  FaLeaf,
+  FaHome,
+  FaExchangeAlt,
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import { ResponsiveContainer, PieChart as RePieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import {
+  ResponsiveContainer,
+  PieChart as RePieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+} from 'recharts';
 import { useNavigate } from 'react-router-dom';
 
 const ModernAssetsPage = () => {
@@ -206,7 +217,9 @@ const ModernAssetsPage = () => {
     const minScore = -10;
     const maxScore = 24;
     const clamped = Math.max(minScore, Math.min(rawScore, maxScore));
-    const riskLevel = Math.round(1 + ((clamped - minScore) / (maxScore - minScore)) * 9);
+    const riskLevel = Math.round(
+      1 + ((clamped - minScore) / (maxScore - minScore)) * 9
+    );
 
     const annualReturn = 6 + (riskLevel - 1);
     return { riskLevel, annualReturn };
@@ -216,7 +229,7 @@ const ModernAssetsPage = () => {
     // Step 0: Name input
     if (step === 0) {
       return (
-        <div className="max-w-md mx-auto p-8 bg-white rounded-lg shadow-md mt-10">
+        <div className="max-w-md mx-auto p-8 bg-gray-800 rounded-lg shadow-md mt-10 text-white">
           <h1 className="text-2xl font-bold mb-4">Welcome to the Portfolio Horizons Risk Profiler!</h1>
           <p className="mb-4">
             I’m your personal elite wealth manager, ready to dive deep into your investing psyche. We’ll
@@ -227,11 +240,14 @@ const ModernAssetsPage = () => {
           <input
             type="text"
             placeholder="Enter your name"
-            className="border p-2 w-full mb-4 rounded"
+            className="border p-2 w-full mb-4 rounded text-black"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" onClick={goNext}>
+          <button
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            onClick={goNext}
+          >
             Start Quiz
           </button>
         </div>
@@ -245,7 +261,7 @@ const ModernAssetsPage = () => {
       const selectedOption = answers[qIndex];
 
       return (
-        <div className="max-w-md mx-auto p-8 bg-white rounded-lg shadow-md mt-10">
+        <div className="max-w-md mx-auto p-8 bg-gray-800 rounded-lg shadow-md mt-10 text-white">
           <h2 className="text-xl font-bold mb-4">{`Question ${step}/${questions.length}`}</h2>
           {step === 1 && (
             <p className="mb-4">
@@ -259,13 +275,15 @@ const ModernAssetsPage = () => {
               <label
                 key={idx}
                 className={`block p-4 border rounded cursor-pointer ${
-                  selectedOption === opt.value ? 'border-green-600 bg-green-50' : 'hover:bg-gray-50'
+                  selectedOption === opt.value
+                    ? 'border-green-600 bg-green-600/20'
+                    : 'hover:bg-gray-700'
                 }`}
               >
                 <input
                   type="radio"
                   name={`question-${qIndex}`}
-                  className="mr-2"
+                  className="mr-2 accent-green-600"
                   checked={selectedOption === opt.value}
                   onChange={() => handleAnswerSelect(opt.value)}
                 />
@@ -276,7 +294,7 @@ const ModernAssetsPage = () => {
           <div className="flex justify-between mt-6">
             {step > 1 && (
               <button
-                className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
                 onClick={goBack}
               >
                 Back
@@ -297,13 +315,13 @@ const ModernAssetsPage = () => {
     const { riskLevel, annualReturn } = calculateResult();
 
     return (
-      <div className="max-w-md mx-auto p-8 bg-white rounded-lg shadow-md mt-10">
+      <div className="max-w-md mx-auto p-8 bg-gray-800 rounded-lg shadow-md mt-10 text-white">
         <h2 className="text-2xl font-bold mb-4">Your Results Are In!</h2>
         <p className="mb-4">
           All right, {name.trim() || 'Investor'}. Based on our conversation and your answers, I’d approximate
           your risk tolerance level at:
         </p>
-        <p className="text-xl font-bold text-green-600 mb-4">Risk Level: {riskLevel}/10</p>
+        <p className="text-xl font-bold text-green-400 mb-4">Risk Level: {riskLevel}/10</p>
         <p className="mb-4">
           This suggests a target annual return around: <strong>{annualReturn}%</strong> per year. Remember,
           higher returns come with higher risk. Make sure you’re comfortable with the journey as well as the
@@ -350,7 +368,10 @@ const ModernAssetsPage = () => {
 
   const calculateRisk = (allocObj) => {
     const riskWeights = { Stocks: 1, Bonds: 0.5, RealEstate: 0.7, Cash: 0 };
-    return Object.entries(allocObj).reduce((risk, [asset, value]) => risk + riskWeights[asset] * value, 0);
+    return Object.entries(allocObj).reduce(
+      (risk, [asset, value]) => risk + riskWeights[asset] * value,
+      0
+    );
   };
 
   const handleAllocationChange = (asset, value) => {
@@ -383,7 +404,8 @@ const ModernAssetsPage = () => {
   };
 
   const diversificationScore =
-    Object.values(allocation).filter((v) => v > 0).length / Object.keys(allocation).length;
+    Object.values(allocation).filter((v) => v > 0).length /
+    Object.keys(allocation).length;
 
   // ------------------ Time Horizon Tool ------------------
   const [timeHorizon, setTimeHorizon] = useState(10); // Default time horizon in years
@@ -396,7 +418,8 @@ const ModernAssetsPage = () => {
       'Saving for a house typically requires a medium-term strategy focused on preserving capital while allowing moderate growth.',
     Education:
       'Investing for a child’s education combines medium-term growth with safety, ensuring funds are ready when needed.',
-    Travel: 'Saving for a dream vacation is a short-term goal, prioritizing low-risk investments to protect your capital.',
+    Travel:
+      'Saving for a dream vacation is a short-term goal, prioritizing low-risk investments to protect your capital.',
   };
 
   const goalStrategies = {
@@ -494,21 +517,21 @@ const ModernAssetsPage = () => {
       color: 'from-purple-600 to-pink-400',
       description: 'Experiment with portfolio diversification',
       expandedContent: (
-        <div className="mt-6 bg-gray-50 p-6 rounded-lg shadow-inner">
-          <div className="p-8 bg-gray-100 rounded-lg shadow-md">
-            <h1 className="text-2xl font-bold text-center text-gray-800">Asset Allocation & Diversification</h1>
-            <p className="text-gray-600 text-center mb-6">
+        <div className="mt-6 bg-gray-800 p-6 rounded-lg shadow-inner text-white">
+          <div className="p-8 bg-gray-900 rounded-lg shadow-md">
+            <h1 className="text-2xl font-bold text-center text-white">Asset Allocation & Diversification</h1>
+            <p className="text-gray-300 text-center mb-6">
               Learn how diversification reduces risk and improves portfolio stability.
             </p>
 
             <div className="space-y-4 mb-6">
               <div>
-                <label className="block text-gray-700 font-medium">Investment Amount ($)</label>
+                <label className="block text-gray-300 font-medium">Investment Amount ($)</label>
                 <input
                   type="number"
                   value={investment}
                   onChange={(e) => setInvestment(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500 text-black"
                   placeholder="Enter your investment amount"
                 />
               </div>
@@ -516,15 +539,15 @@ const ModernAssetsPage = () => {
               {/* Asset Allocation Sliders */}
               {Object.keys(allocation).map((asset) => (
                 <div key={asset} className="flex items-center justify-between space-x-4">
-                  <label className="w-1/4 text-gray-700 flex items-center">
+                  <label className="w-1/4 text-gray-300 flex items-center">
                     {asset}
                     <span
                       className={`ml-2 text-sm px-2 py-1 rounded ${
                         assetRiskLevels[asset] === 'High'
-                          ? 'bg-red-100 text-red-600'
+                          ? 'bg-red-500/10 text-red-300'
                           : assetRiskLevels[asset] === 'Medium'
-                          ? 'bg-yellow-100 text-yellow-600'
-                          : 'bg-green-100 text-green-600'
+                          ? 'bg-yellow-500/10 text-yellow-300'
+                          : 'bg-green-500/10 text-green-300'
                       }`}
                     >
                       {assetRiskLevels[asset]} Risk
@@ -538,7 +561,7 @@ const ModernAssetsPage = () => {
                     onChange={(e) => handleAllocationChange(asset, e.target.value)}
                     className="w-3/4"
                   />
-                  <span className="w-1/12 text-gray-700">{allocation[asset].toFixed(0)}%</span>
+                  <span className="w-1/12 text-gray-200">{allocation[asset].toFixed(0)}%</span>
                 </div>
               ))}
 
@@ -547,12 +570,15 @@ const ModernAssetsPage = () => {
 
             {/* Pie Chart Visualization */}
             <div className="flex flex-col items-center">
-              <h2 className="text-lg font-semibold text-gray-800">Your Portfolio</h2>
+              <h2 className="text-lg font-semibold text-white">Your Portfolio</h2>
               <div className="w-full h-64 mt-4">
                 <ResponsiveContainer>
                   <RePieChart>
                     <Pie
-                      data={Object.entries(allocation).map(([name, value]) => ({ name, value }))}
+                      data={Object.entries(allocation).map(([name, value]) => ({
+                        name,
+                        value,
+                      }))}
                       dataKey="value"
                       nameKey="name"
                       cx="50%"
@@ -566,17 +592,24 @@ const ModernAssetsPage = () => {
                       ))}
                     </Pie>
                     <Tooltip />
-                    <Legend layout="horizontal" align="center" verticalAlign="bottom" />
+                    <Legend
+                      layout="horizontal"
+                      align="center"
+                      verticalAlign="bottom"
+                      wrapperStyle={{ color: '#fff' }}
+                    />
                   </RePieChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
             {/* Risk and Diversification */}
-            <div className="mt-6 p-4 bg-white rounded-lg shadow-inner">
-              <h3 className="text-lg font-semibold text-gray-800 flex items-center">
+            <div className="mt-6 p-4 bg-gray-800 rounded-lg shadow-inner">
+              <h3 className="text-lg font-semibold text-white flex items-center">
                 Simulated Risk:{' '}
-                <span className="font-bold text-red-600 ml-2">{calculateRisk(allocation).toFixed(0)}%</span>
+                <span className="font-bold text-red-400 ml-2">
+                  {calculateRisk(allocation).toFixed(0)}%
+                </span>
                 <button
                   className="ml-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full hover:bg-green-600"
                   onClick={() => setShowModal({ ...showModal, risk: true })}
@@ -584,9 +617,9 @@ const ModernAssetsPage = () => {
                   i
                 </button>
               </h3>
-              <h3 className="text-lg font-semibold text-gray-800 flex items-center">
+              <h3 className="text-lg font-semibold text-white flex items-center mt-2">
                 Diversification Score:{' '}
-                <span className="font-bold text-green-600 ml-2">
+                <span className="font-bold text-green-400 ml-2">
                   {(diversificationScore * 100).toFixed(0)}%
                 </span>
                 <button
@@ -605,9 +638,9 @@ const ModernAssetsPage = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <div className="bg-white rounded-lg p-6 shadow-xl">
+                <div className="bg-gray-800 text-white rounded-lg p-6 shadow-xl">
                   <h2 className="text-lg font-bold mb-4">Simulated Risk</h2>
-                  <p className="text-gray-600">
+                  <p className="text-gray-300">
                     Simulated risk indicates how risky your portfolio is based on the proportion of
                     high-risk assets like stocks compared to low-risk assets like cash.
                   </p>
@@ -628,9 +661,9 @@ const ModernAssetsPage = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <div className="bg-white rounded-lg p-6 shadow-xl">
+                <div className="bg-gray-800 text-white rounded-lg p-6 shadow-xl">
                   <h2 className="text-lg font-bold mb-4">Diversification Score</h2>
-                  <p className="text-gray-600">
+                  <p className="text-gray-300">
                     Diversification measures how evenly your assets are distributed across different asset
                     classes, reducing overall risk and improving stability.
                   </p>
@@ -646,13 +679,13 @@ const ModernAssetsPage = () => {
 
             {/* Educational Tip */}
             <motion.div
-              className="mt-6 p-4 bg-green-100 rounded-lg shadow-inner"
+              className="mt-6 p-4 bg-green-900/40 rounded-lg shadow-inner"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h3 className="text-lg font-semibold text-green-700">Why Diversify?</h3>
-              <p className="text-gray-700">
+              <h3 className="text-lg font-semibold text-green-300">Why Diversify?</h3>
+              <p className="text-gray-300">
                 Diversification helps you reduce risk by spreading investments across different asset
                 classes. If one asset class underperforms, others may compensate for the loss, ensuring
                 stability and long-term growth.
@@ -669,14 +702,14 @@ const ModernAssetsPage = () => {
       color: 'from-green-600 to-teal-400',
       description: 'Plan investments around your life goals',
       expandedContent: (
-        <div className="mt-6 bg-gray-50 p-6 rounded-lg shadow-inner">
-          <h3 className="text-lg font-semibold text-gray-800 text-center">
+        <div className="mt-6 bg-gray-800 p-6 rounded-lg shadow-inner text-white">
+          <h3 className="text-lg font-semibold text-center">
             Plan Your Investments Around Your Life Goals
           </h3>
 
           {/* Time Horizon Slider */}
           <div className="mt-4">
-            <label className="block text-gray-700 font-medium mb-2">
+            <label className="block text-gray-300 font-medium mb-2">
               Select Your Time Horizon (Years)
             </label>
             <input
@@ -687,7 +720,7 @@ const ModernAssetsPage = () => {
               onChange={(e) => handleTimeHorizonChange(e.target.value)}
               className="w-full"
             />
-            <div className="flex justify-between text-gray-600 text-sm mt-2">
+            <div className="flex justify-between text-gray-400 text-sm mt-2">
               <span>1 Year</span>
               <span>{timeHorizon} Years</span>
               <span>30+ Years</span>
@@ -695,18 +728,20 @@ const ModernAssetsPage = () => {
           </div>
 
           {feedback && (
-            <p className="mt-4 text-sm text-gray-700 bg-green-100 p-3 rounded-md">{feedback}</p>
+            <p className="mt-4 text-sm text-gray-200 bg-gray-700 p-3 rounded-md">
+              {feedback}
+            </p>
           )}
 
           {/* Investment Goals Selector */}
           <div className="mt-6">
-            <label className="block text-gray-700 font-medium mb-2">
+            <label className="block text-gray-300 font-medium mb-2">
               Select Your Investment Goal
             </label>
             <select
               value={investmentGoal}
               onChange={(e) => setInvestmentGoal(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500 text-black"
             >
               <option value="Retirement">Retirement</option>
               <option value="House">Save for a House</option>
@@ -716,12 +751,12 @@ const ModernAssetsPage = () => {
           </div>
 
           {/* Investment Strategy */}
-          <div className="mt-6 p-4 bg-white rounded-lg shadow-md">
-            <h4 className="text-lg font-semibold text-gray-800">Strategy for {investmentGoal}</h4>
-            <p className="mt-2 text-gray-600">{goalDescriptions[investmentGoal]}</p>
-            <ul className="mt-4 space-y-2">
+          <div className="mt-6 p-4 bg-gray-900 rounded-lg shadow-md">
+            <h4 className="text-lg font-semibold">Strategy for {investmentGoal}</h4>
+            <p className="mt-2 text-gray-300">{goalDescriptions[investmentGoal]}</p>
+            <ul className="mt-4 space-y-2 text-gray-200">
               {Object.entries(selectedStrategy).map(([key, value]) => (
-                <li key={key} className="flex justify-between text-gray-700">
+                <li key={key} className="flex justify-between">
                   <span>{key}:</span>
                   <span>{value}%</span>
                 </li>
@@ -731,13 +766,13 @@ const ModernAssetsPage = () => {
 
           {/* Educational Tip */}
           <motion.div
-            className="mt-6 p-4 bg-green-100 rounded-lg shadow-inner"
+            className="mt-6 p-4 bg-green-900/40 rounded-lg shadow-inner"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-lg font-semibold text-green-700">Why Time Horizon and Goals Matter?</h3>
-            <p className="text-gray-700">
+            <h3 className="text-lg font-semibold text-green-300">Why Time Horizon and Goals Matter?</h3>
+            <p className="text-gray-300">
               Your time horizon determines how much risk you can take, while your goals shape your
               investment strategy. Aligning your investments with life goals ensures you’re on track to
               achieve them without unnecessary risk.
@@ -749,13 +784,13 @@ const ModernAssetsPage = () => {
   ];
 
   // -----------------------------------------------
-  // Asset Classes
+  // Asset Classes (updated icons)
   // -----------------------------------------------
   const assetClasses = [
     {
       id: 'equities',
       title: 'Equities',
-      icon: <BarChart className="w-8 h-8" />,
+      icon: <FaChartLine className="w-8 h-8" />,
       riskLevel: 'High',
       riskColor: 'from-blue-500 to-purple-500',
       expectedReturn: '8-12%',
@@ -765,7 +800,7 @@ const ModernAssetsPage = () => {
     {
       id: 'sukuk',
       title: 'Sukuk',
-      icon: <BarChart className="w-8 h-8" />,
+      icon: <FaBalanceScale className="w-8 h-8" />,
       riskLevel: 'Low',
       riskColor: 'from-green-500 to-teal-500',
       expectedReturn: '3-5%',
@@ -774,7 +809,7 @@ const ModernAssetsPage = () => {
     {
       id: 'private-markets',
       title: 'Private Markets',
-      icon: <BarChart className="w-8 h-8" />,
+      icon: <FaMoneyBillWave className="w-8 h-8" />,
       riskLevel: 'High',
       riskColor: 'from-pink-500 to-red-500',
       expectedReturn: '12-20%',
@@ -783,25 +818,27 @@ const ModernAssetsPage = () => {
     {
       id: 'commodities',
       title: 'Commodities',
-      icon: <BarChart className="w-8 h-8" />,
+      icon: <FaLeaf className="w-8 h-8" />,
       riskLevel: 'Moderate',
       riskColor: 'from-yellow-500 to-amber-500',
       expectedReturn: '5-10%',
-      description: 'Physical goods like metals, oil, and agricultural products. Provide diversification.',
+      description:
+        'Physical goods like metals, oil, and agricultural products. Provide diversification.',
     },
     {
       id: 'real-estate',
       title: 'Real Estate',
-      icon: <BarChart className="w-8 h-8" />,
+      icon: <FaHome className="w-8 h-8" />,
       riskLevel: 'Moderate',
       riskColor: 'from-indigo-500 to-purple-500',
       expectedReturn: '6-10%',
-      description: 'Property investments can offer rental income and capital appreciation.',
+      description:
+        'Property investments can offer rental income and capital appreciation.',
     },
     {
       id: 'etfs',
       title: 'ETFs',
-      icon: <BarChart className="w-8 h-8" />,
+      icon: <FaExchangeAlt className="w-8 h-8" />,
       riskLevel: 'Varied',
       riskColor: 'from-gray-500 to-blue-500',
       expectedReturn: '5-10%',
@@ -831,7 +868,9 @@ const ModernAssetsPage = () => {
                   className={`absolute inset-0 bg-gradient-to-br ${card.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
                 />
                 <div className="relative z-10">
-                  <div className={`p-3 rounded-lg bg-gradient-to-br ${card.color} inline-block mb-4`}>
+                  <div
+                    className={`p-3 rounded-lg bg-gradient-to-br ${card.color} inline-block mb-4`}
+                  >
                     {card.icon}
                   </div>
                   <h3 className="text-xl font-bold mb-2">{card.title}</h3>
@@ -858,13 +897,21 @@ const ModernAssetsPage = () => {
               <div key={tool.id}>
                 <div
                   className={`relative bg-gray-800/30 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-500
-                  ${expandedTool && expandedTool !== tool.id ? 'opacity-50' : 'hover:scale-105'}`}
+                  ${
+                    expandedTool && expandedTool !== tool.id
+                      ? 'opacity-50'
+                      : 'hover:scale-105'
+                  }`}
                 >
                   <div
                     className="p-6 cursor-pointer border border-gray-700/50 rounded-xl"
-                    onClick={() => setExpandedTool(expandedTool === tool.id ? null : tool.id)}
+                    onClick={() =>
+                      setExpandedTool(expandedTool === tool.id ? null : tool.id)
+                    }
                   >
-                    <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${tool.color} flex items-center justify-center mb-4`}>
+                    <div
+                      className={`w-16 h-16 rounded-full bg-gradient-to-br ${tool.color} flex items-center justify-center mb-4`}
+                    >
                       {tool.icon}
                     </div>
                     <h3 className="text-xl font-bold mb-2">{tool.title}</h3>
@@ -880,7 +927,7 @@ const ModernAssetsPage = () => {
             ))}
           </div>
 
-          {/* Expanded Content (no absolute positioning — placed in normal flow) */}
+          {/* Expanded Content (in normal flow) */}
           {expandedTool && (
             <div
               className="bg-gray-800/30 backdrop-blur-xl border border-gray-700/50 rounded-xl overflow-hidden transition-all duration-500 px-8 py-8"
@@ -914,7 +961,11 @@ const ModernAssetsPage = () => {
               <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl opacity-0 group-hover:opacity-100 blur transition duration-500" />
               <div className="relative bg-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-gray-700/50">
                 <div className="flex items-center justify-between mb-6">
-                  <div className={`p-3 rounded-lg bg-gradient-to-br ${asset.riskColor}`}>{asset.icon}</div>
+                  <div
+                    className={`p-3 rounded-lg bg-gradient-to-br ${asset.riskColor}`}
+                  >
+                    {asset.icon}
+                  </div>
                   <div className="text-right">
                     <span className="text-sm text-gray-400">Risk Level</span>
                     <div className="text-xl font-bold">{asset.riskLevel}</div>
@@ -939,12 +990,12 @@ const ModernAssetsPage = () => {
         </div>
       </div>
 
-      {/* ------------------- RESOURCES & NEXT STEPS + CTA (from old code) ------------------- */}
-      <section className="bg-gradient-to-b from-green-50 to-green-100 py-16 px-4 text-black">
+      {/* ------------------- RESOURCES & NEXT STEPS + CTA ------------------- */}
+      <section className="bg-gray-800 py-16 px-4 text-white">
         <div className="max-w-7xl mx-auto">
           {/* Resources and Next Steps */}
           <div className="mb-16">
-            <h2 className="text-4xl font-bold text-green-700 mb-8 flex items-center">
+            <h2 className="text-4xl font-bold mb-8 flex items-center text-green-400">
               <FaRegLightbulb className="mr-3" /> Resources and Next Steps
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -972,12 +1023,17 @@ const ModernAssetsPage = () => {
               ].map((resource, idx) => (
                 <motion.div
                   key={idx}
-                  className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
+                  className="bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
                   whileHover={{ scale: 1.02 }}
                 >
-                  <h3 className="text-2xl font-semibold text-green-800 mb-3">{resource.title}</h3>
-                  <p className="text-gray-700 mb-4">{resource.description}</p>
-                  <a href={resource.link} className="text-green-600 hover:text-green-800 font-semibold">
+                  <h3 className="text-2xl font-semibold text-green-300 mb-3">
+                    {resource.title}
+                  </h3>
+                  <p className="text-gray-300 mb-4">{resource.description}</p>
+                  <a
+                    href={resource.link}
+                    className="text-green-400 hover:text-green-200 font-semibold"
+                  >
                     Read More &rarr;
                   </a>
                 </motion.div>
@@ -987,7 +1043,11 @@ const ModernAssetsPage = () => {
 
           {/* Call to Action */}
           <div className="text-center">
-            <motion.h2 className="text-4xl font-bold text-green-700 mb-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <motion.h2
+              className="text-4xl font-bold text-green-400 mb-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
               Ready to Start Your Investment Journey?
             </motion.h2>
             <motion.button
