@@ -19,11 +19,11 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { path: '/assets', label: 'Learn', icon: '📚' },
-    { path: '/allocation', label: 'Invest', icon: '📈' },
-    { path: '/research', label: 'Research', icon: '🔍' },
-    { path: '/about', label: 'About', icon: '💡' },
-    { path: '/funds', label: 'Funds', icon: '💰' },
+    { path: '/assets', label: 'Learn' },
+    { path: '/allocation', label: 'Invest' },
+    { path: '/research', label: 'Research' },
+    { path: '/about', label: 'About'},
+    { path: '/funds', label: 'Funds'},
   ];
 
   const handleItemHover = (index) => {

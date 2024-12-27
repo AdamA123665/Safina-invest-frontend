@@ -59,16 +59,16 @@ const Footer = () => {
               Empowering investors with sophisticated tools and insights for optimal portfolio management.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-green-500 transition-colors">
+              <a  className="text-gray-400 hover:text-green-500 transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-green-500 transition-colors">
+              <a className="text-gray-400 hover:text-green-500 transition-colors">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-green-500 transition-colors">
+              <a  className="text-gray-400 hover:text-green-500 transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-green-500 transition-colors">
+              <a  className="text-gray-400 hover:text-green-500 transition-colors">
                 <LinkedIn className="w-5 h-5" />
               </a>
             </div>
@@ -132,7 +132,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  
                   className="text-gray-400 hover:text-green-500 transition-colors flex items-center group"
                 >
                   <span>Help Center</span>
@@ -141,7 +141,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  
                   className="text-gray-400 hover:text-green-500 transition-colors flex items-center group"
                 >
                   <span>Privacy Policy</span>
@@ -150,7 +150,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  
                   className="text-gray-400 hover:text-green-500 transition-colors flex items-center group"
                 >
                   <span>Terms of Service</span>
@@ -200,16 +200,16 @@ const Footer = () => {
               © {new Date().getFullYear()} Safina Invest. All rights reserved.
             </p>
             <div className="flex space-x-6">
-              <a href="#" className="text-gray-500 hover:text-green-500 text-sm transition-colors">
+              <a className="text-gray-500 hover:text-green-500 text-sm transition-colors">
                 Privacy
               </a>
-              <a href="#" className="text-gray-500 hover:text-green-500 text-sm transition-colors">
+              <a className="text-gray-500 hover:text-green-500 text-sm transition-colors">
                 Terms
               </a>
-              <a href="#" className="text-gray-500 hover:text-green-500 text-sm transition-colors">
+              <a className="text-gray-500 hover:text-green-500 text-sm transition-colors">
                 Cookies
               </a>
-              <a href="#" className="text-gray-500 hover:text-green-500 text-sm transition-colors">
+              <a className="text-gray-500 hover:text-green-500 text-sm transition-colors">
                 Sitemap
               </a>
             </div>
