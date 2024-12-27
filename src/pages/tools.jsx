@@ -1,14 +1,5 @@
 import React, { useState, useRef } from 'react';
-import {
-  Calculator,
-  PieChart,
-  TrendingUp,
-  Clock,
-  Target,
-  BarChart3,
-  ArrowRight,
-  ChevronRight
-} from 'lucide-react';
+import { Calculator, PieChart, TrendingUp, Clock, Target, BarChart3, ArrowRight, ChevronRight } from 'lucide-react';
 
 const ToolsShowcase = () => {
   const [isDragging, setIsDragging] = useState(false);
@@ -21,38 +12,38 @@ const ToolsShowcase = () => {
       icon: Calculator,
       title: "Asset Allocation",
       description: "Optimize your portfolio with AI-powered insights that adapt to market conditions.",
-      gradient: "from-blue-500 to-blue-600",
+      gradient: "from-blue-500 to-blue-600"
     },
     {
       icon: PieChart,
       title: "Risk Assessment",
       description: "Comprehensive risk analysis tools that evaluate your portfolio's exposure.",
-      gradient: "from-purple-500 to-purple-600",
+      gradient: "from-purple-500 to-purple-600"
     },
     {
       icon: TrendingUp,
       title: "Performance Analytics",
       description: "Track your investment performance with sophisticated metrics and benchmarks.",
-      gradient: "from-emerald-500 to-emerald-600",
+      gradient: "from-emerald-500 to-emerald-600"
     },
     {
       icon: Clock,
       title: "Rebalancing Timer",
       description: "Smart portfolio rebalancing alerts to maintain your target allocation.",
-      gradient: "from-orange-500 to-orange-600",
+      gradient: "from-orange-500 to-orange-600"
     },
     {
       icon: Target,
       title: "Goal Planning",
       description: "Set and monitor your investment milestones with intelligent tracking.",
-      gradient: "from-rose-500 to-rose-600",
+      gradient: "from-rose-500 to-rose-600"
     },
     {
       icon: BarChart3,
       title: "Market Analysis",
       description: "Access real-time market insights and predictive analytics.",
-      gradient: "from-indigo-500 to-indigo-600",
-    },
+      gradient: "from-indigo-500 to-indigo-600"
+    }
   ];
 
   const handleMouseDown = (e) => {
@@ -78,38 +69,34 @@ const ToolsShowcase = () => {
     const scrollAmount = container.offsetWidth * 0.8;
     container.scrollBy({
       left: direction * scrollAmount,
-      behavior: 'smooth',
+      behavior: 'smooth'
     });
   };
 
   // Constants for perfect proportions
   const HERO_HEIGHT = 600; // Base height
-  const TOOL_HEIGHT = Math.floor(HERO_HEIGHT * 0.85); // 85% of hero height
+  const TOOL_HEIGHT = Math.floor(HERO_HEIGHT * 0.85); // Exactly 85% of hero height
   const VERTICAL_OFFSET = Math.floor((HERO_HEIGHT - TOOL_HEIGHT) / 2); // Center offset
 
   return (
     <section className="relative py-20 bg-gray-50">
       <div className="max-w-[90%] mx-auto">
-        {/* 
-          Use flex-col for mobile (stacked) and flex-row for larger screens.
-        */}
-        <div className="flex flex-col md:flex-row items-start relative">
-          {/* Hero Card (full width on mobile, fixed width on md+) */}
-          <div className="w-full md:w-[320px] bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-xl shadow-lg">
+        <div className="flex items-start relative">
+          {/* Hero Card */}
+          <div className="w-[320px] bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-xl shadow-lg">
             <div className="h-[600px] flex flex-col justify-between p-10">
               <div>
-                <h2 className="text-3xl font-bold mb-6">Investment Tools</h2>
+                <h2 className="text-3xl font-bold mb-6">
+                  Investment Tools
+                </h2>
                 <p className="text-base text-gray-300 leading-relaxed">
-                  Unlock the power of professional-grade investment tools designed
-                  to optimize your strategy and maximize returns. Our comprehensive
-                  suite provides everything you need to make informed decisions.
+                  Unlock the power of professional-grade investment tools designed to optimize your strategy and maximize returns. Our comprehensive suite provides everything you need to make informed decisions.
                 </p>
                 <p className="text-base text-gray-300 leading-relaxed mt-4">
-                  From asset allocation to risk management, each tool is crafted to
-                  deliver institutional-grade capabilities with an intuitive interface.
+                  From asset allocation to risk management, each tool is crafted to deliver institutional-grade capabilities with an intuitive interface.
                 </p>
               </div>
-
+              
               <div className="flex items-center text-blue-400 group cursor-pointer">
                 <span className="text-sm mr-2">Explore all tools</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -118,29 +105,10 @@ const ToolsShowcase = () => {
           </div>
 
           {/* Scrollable Tools Section */}
-          {/* 
-            On mobile: 
-              - Stack items vertically (flex-col), 
-              - use space-y-6, 
-              - allow vertical scroll (overflow-y-auto).
-            On desktop:
-              - Keep horizontal scroll, 
-              - use space-x-6, 
-              - keep the original dragging logic.
-          */}
-          <div
+          <div 
             ref={carouselRef}
-            className="
-              md:flex md:space-x-6
-              overflow-y-auto md:overflow-x-auto
-              hide-scrollbar
-              relative
-              mt-8 md:mt-0
-              md:-ml-6
-              flex flex-col space-y-6
-            "
+            className="flex space-x-6 overflow-x-auto hide-scrollbar relative -ml-6"
             style={{
-              // Only apply scrollSnap on desktop
               scrollSnapType: 'x mandatory',
               WebkitOverflowScrolling: 'touch',
             }}
@@ -154,22 +122,18 @@ const ToolsShowcase = () => {
               return (
                 <div
                   key={index}
-                  // For desktop layout, the snap-start and offset are the same
-                  // But you can conditionally add or remove them on mobile if desired
                   className="min-w-[240px] snap-start"
-                  style={{
-                    marginTop: `${VERTICAL_OFFSET}px`,
+                  style={{ 
+                    marginTop: `${VERTICAL_OFFSET}px`
                   }}
                 >
                   <div className="bg-white hover:shadow-lg transition-all duration-300 group overflow-hidden rounded-xl shadow">
-                    <div
+                    <div 
                       className="flex flex-col justify-between p-8"
                       style={{ height: `${TOOL_HEIGHT}px` }}
                     >
                       <div>
-                        <div
-                          className={`w-12 h-12 rounded-lg bg-gradient-to-br ${tool.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
-                        >
+                        <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${tool.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                           <Icon className="w-6 h-6 text-white" />
                         </div>
                         <h3 className="text-xl font-bold mb-4 text-gray-900">
@@ -179,7 +143,7 @@ const ToolsShowcase = () => {
                           {tool.description}
                         </p>
                       </div>
-
+                      
                       <div className="flex items-center text-blue-600 mt-4">
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </div>
@@ -190,26 +154,10 @@ const ToolsShowcase = () => {
             })}
           </div>
 
-          {/* Navigation Arrow: Visible on desktop only */}
-          <button
+          {/* Navigation Arrow */}
+          <button 
             onClick={() => handleScroll(1)}
-            className="
-              hidden md:flex
-              absolute
-              right-4
-              top-1/2
-              -translate-y-1/2
-              w-12
-              h-12
-              bg-white
-              rounded-full
-              shadow-lg
-              items-center
-              justify-center
-              hover:bg-gray-50
-              transition-colors
-              z-30
-            "
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-30"
             aria-label="Next tools"
           >
             <ChevronRight className="w-6 h-6 text-gray-600" />
@@ -217,8 +165,8 @@ const ToolsShowcase = () => {
         </div>
       </div>
 
-      {/* Gradient fade for scroll indication (desktop horizontal fade only) */}
-      <div className="hidden md:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none"></div>
+      {/* Gradient fade for scroll indication */}
+      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none"></div>
     </section>
   );
 };

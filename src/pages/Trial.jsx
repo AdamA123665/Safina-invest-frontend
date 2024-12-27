@@ -12,7 +12,6 @@ import {
   Legend
 } from 'recharts';
 import { format, parseISO } from 'date-fns';
-import { motion, AnimatePresence } from 'framer-motion';
 import { FiExternalLink } from 'react-icons/fi';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 import {
@@ -29,53 +28,53 @@ const riskProfiles = {
   1: {
     label: 'Ultra Conservative',
     color: '#4ADE80',
-    description: 'Capital preservation is your top priority',
+    description: 'Capital preservation is your top priority'
   },
   2: {
     label: 'Very Conservative',
     color: '#86EFAC',
-    description: 'Focus on stability with minimal growth',
+    description: 'Focus on stability with minimal growth'
   },
   3: {
     label: 'Conservative',
     color: '#BAF5D0',
-    description: 'Steady, reliable growth with low risk',
+    description: 'Steady, reliable growth with low risk'
   },
   4: {
     label: 'Moderately Conservative',
     color: '#FDE68A',
-    description: 'Balanced approach leaning towards safety',
+    description: 'Balanced approach leaning towards safety'
   },
   5: {
     label: 'Balanced',
     color: '#FCD34D',
-    description: 'Equal focus on growth and protection',
+    description: 'Equal focus on growth and protection'
   },
   6: {
     label: 'Moderately Aggressive',
     color: '#FBBF24',
-    description: 'Growth-oriented with calculated risks',
+    description: 'Growth-oriented with calculated risks'
   },
   7: {
     label: 'Aggressive',
     color: '#F59E0B',
-    description: 'High growth potential with higher volatility',
+    description: 'High growth potential with higher volatility'
   },
   8: {
     label: 'Very Aggressive',
     color: '#EA580C',
-    description: 'Maximum growth with substantial risk',
+    description: 'Maximum growth with substantial risk'
   },
   9: {
     label: 'Ultra Aggressive',
     color: '#DC2626',
-    description: 'Pursuing exceptional returns',
+    description: 'Pursuing exceptional returns'
   },
   10: {
     label: 'Maximum Growth',
     color: '#B91C1C',
-    description: 'Seeking the highest possible returns',
-  },
+    description: 'Seeking the highest possible returns'
+  }
 };
 
 // ===========================
@@ -91,7 +90,7 @@ const Slider = ({ value, onChange, min, max, step = 1, className }) => (
     step={step}
     className={`w-full ${className}`}
     style={{
-      accentColor: riskProfiles[value]?.color ?? '#4ADE80',
+      accentColor: riskProfiles[value]?.color ?? '#4ADE80'
     }}
   />
 );
@@ -180,7 +179,7 @@ const PortfolioJourney = () => {
     '#FF6666',
     '#AAEEBB',
     '#BBBBBB',
-    '#7744DD',
+    '#7744DD'
   ];
 
   // Trading 212 links
@@ -194,10 +193,11 @@ const PortfolioJourney = () => {
     7: 'https://www.trading212.com/aggressive',
     8: 'https://www.trading212.com/very-aggressive',
     9: 'https://www.trading212.com/ultra-aggressive',
-    10: 'https://www.trading212.com/maximum-growth',
+    10: 'https://www.trading212.com/maximum-growth'
   };
 
   // StepIndicator
+  // Removed motion-based animations here for a simpler step UI
   const StepIndicator = ({ currentStep, totalSteps }) => (
     <div className="w-full mb-12">
       <div className="relative">
@@ -235,7 +235,7 @@ const PortfolioJourney = () => {
     </div>
   );
 
-  // Fetch once
+  // Fetch only when user clicks "Analyze"
   const fetchPortfolioData = async () => {
     setIsLoading(true);
     setFetchError(null);
@@ -247,8 +247,8 @@ const PortfolioJourney = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             initial_investment: Number(amount),
-            risk_tolerance: riskLevel,
-          }),
+            risk_tolerance: riskLevel
+          })
         }
       );
       if (!resp.ok) {
@@ -314,7 +314,7 @@ const PortfolioJourney = () => {
               className="p-4 border-l-4 rounded-lg relative"
               style={{
                 borderLeftColor: currentProfile.color,
-                backgroundColor: '#f9fafb',
+                backgroundColor: '#f9fafb'
               }}
             >
               <div className="flex items-start space-x-4">
@@ -346,6 +346,7 @@ const PortfolioJourney = () => {
             <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
               £
             </span>
+            {/* Allow free-form typing without numeric-only restrictions */}
             <Input
               type="text"
               className="pl-8"
@@ -392,6 +393,7 @@ const PortfolioJourney = () => {
     const maxDraw = idxMD >= 0 ? values[idxMD] * 100 : 0;
     const sharpe = idxSR >= 0 ? values[idxSR] : 0;
 
+    // Icons in front of each label
     const metrics = [
       {
         id: 'expectedReturn',
@@ -399,7 +401,7 @@ const PortfolioJourney = () => {
         label: 'Expected Return',
         value: `${expReturn.toFixed(2)}%`,
         description:
-          'The anticipated percentage gain of your portfolio over a specified period.',
+          'The anticipated percentage gain of your portfolio over a specified period.'
       },
       {
         id: 'volatility',
@@ -407,7 +409,7 @@ const PortfolioJourney = () => {
         label: 'Volatility',
         value: `${vol.toFixed(2)}%`,
         description:
-          'Measures the fluctuation in your portfolio’s value, indicating risk level.',
+          'Measures the fluctuation in your portfolio’s value, indicating risk level.'
       },
       {
         id: 'maxDrawdown',
@@ -415,7 +417,7 @@ const PortfolioJourney = () => {
         label: 'Max Drawdown',
         value: `${maxDraw.toFixed(2)}%`,
         description:
-          'The maximum observed loss from a peak to a trough of your portfolio.',
+          'The maximum observed loss from a peak to a trough of your portfolio.'
       },
       {
         id: 'sharpeRatio',
@@ -423,8 +425,8 @@ const PortfolioJourney = () => {
         label: 'Sharpe Ratio',
         value: sharpe.toFixed(2),
         description:
-          'Indicates the risk-adjusted return of your portfolio.',
-      },
+          'Indicates the risk-adjusted return of your portfolio.'
+      }
     ];
 
     return (
@@ -436,9 +438,10 @@ const PortfolioJourney = () => {
           {metrics.map(({ id, icon: Icon, label, value, description }) => (
             <div
               key={id}
-              className="p-4 border rounded-lg flex flex-col justify-center"
+              className="p-4 border rounded-lg flex flex-col justify-center relative"
             >
               <div className="text-sm text-gray-500 flex items-center mb-1">
+                <Icon className="w-4 h-4 text-gray-400 mr-2" />
                 {label}
                 <Info
                   className="w-4 h-4 text-gray-400 cursor-pointer ml-1"
@@ -468,7 +471,7 @@ const PortfolioJourney = () => {
     const w = portfolioData.portfolio_metrics.Weights;
     const pieData = Object.entries(w).map(([assetName, fraction]) => ({
       assetName,
-      value: fraction * 100,
+      value: fraction * 100
     }));
 
     return (
@@ -507,7 +510,7 @@ const PortfolioJourney = () => {
   };
 
   // C) AssetAllocationsList
-  // We put a small grey box for the allocation on the same row, in the middle
+  // Now: YTD Return is shown first, then Allocation
   const AssetAllocationsList = () => {
     if (!portfolioData) return null;
     const { asset_info, performance } = portfolioData.dashboard_data;
@@ -531,7 +534,7 @@ const PortfolioJourney = () => {
             const dates = performance.dates || [];
             const perfData = dates.map((d, idx) => ({
               date: d,
-              value: assetSeries ? assetSeries.values[idx] : 0,
+              value: assetSeries ? assetSeries.values[idx] : 0
             }));
 
             // YTD Return
@@ -551,19 +554,13 @@ const PortfolioJourney = () => {
             const isExpanded = expandedTicker === asset.ticker;
 
             return (
-              <motion.div
+              <div
                 key={asset.ticker}
                 ref={(el) => (assetRefs.current[asset.ticker] = el)}
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className={`bg-gray-50 rounded-xl shadow-md border-2 transition-all duration-300 ${
-                  isExpanded ? 'p-6' : 'p-4'
-                } hover:shadow-lg`}
+                className={`bg-gray-50 rounded-xl shadow-md border-2 p-4 hover:shadow-lg`}
                 style={{ borderColor: color }}
               >
-                {/* Row: name+ticker, allocation box, YTD, expand arrow */}
+                {/* Row: name+ticker, YTD return, allocation, expand arrow */}
                 <div className="flex items-center justify-between space-x-4">
                   {/* Name + Ticker */}
                   <div className="flex flex-col w-1/3">
@@ -578,7 +575,25 @@ const PortfolioJourney = () => {
                     </span>
                   </div>
 
-                  {/* Allocation Box (in the middle) */}
+                  {/* YTD Return (now in the middle) */}
+                  <div className="flex flex-col w-1/4 text-right">
+                    <span className="text-xs text-gray-400 uppercase">
+                      YTD
+                    </span>
+                    <span
+                      className={`text-sm font-semibold ${
+                        ytdReturn && ytdReturn >= 0
+                          ? 'text-green-600'
+                          : 'text-red-600'
+                      }`}
+                    >
+                      {ytdReturn !== null
+                        ? `${ytdReturn.toFixed(2)}%`
+                        : '0%'}
+                    </span>
+                  </div>
+
+                  {/* Allocation Box (now on the right) */}
                   <div
                     className="flex flex-col px-3 py-2 rounded-md w-1/4"
                     style={{ backgroundColor: '#f3f4f6' }}
@@ -600,24 +615,6 @@ const PortfolioJourney = () => {
                     </span>
                   </div>
 
-                  {/* YTD Return on the right */}
-                  <div className="flex flex-col w-1/4 text-right">
-                    <span className="text-xs text-gray-400 uppercase">
-                      YTD
-                    </span>
-                    <span
-                      className={`text-sm font-semibold ${
-                        ytdReturn && ytdReturn >= 0
-                          ? 'text-green-600'
-                          : 'text-red-600'
-                      }`}
-                    >
-                      {ytdReturn !== null
-                        ? `${ytdReturn.toFixed(2)}%`
-                        : '0%'}
-                    </span>
-                  </div>
-
                   {/* Expand Arrow */}
                   <button
                     type="button"
@@ -634,83 +631,71 @@ const PortfolioJourney = () => {
                   </button>
                 </div>
 
-                {/* Expandable Section */}
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.4, ease: 'easeInOut' }}
-                      className="overflow-hidden"
-                    >
-                      <p className="text-sm mt-4 mb-4 text-gray-700">
-                        {asset.info}
-                      </p>
-                      {/* Sub-chart */}
-                      <div className="w-full h-48 sm:h-64">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <LineChart data={perfData}>
-                            <defs>
-                              {/* modern gradient fill */}
-                              <linearGradient
-                                id={`lineGrad-${asset.ticker}`}
-                                x1="0"
-                                y1="0"
-                                x2="0"
-                                y2="1"
-                              >
-                                <stop
-                                  offset="0%"
-                                  stopColor={color}
-                                  stopOpacity={0.6}
-                                />
-                                <stop
-                                  offset="100%"
-                                  stopColor={color}
-                                  stopOpacity={0.05}
-                                />
-                              </linearGradient>
-                            </defs>
-                            <XAxis
-                              dataKey="date"
-                              tick={{ fill: '#6B7280', fontSize: 12 }}
-                              tickFormatter={(val) => {
-                                const d = parseISO(val);
-                                return format(d, 'MMM yy');
-                              }}
-                            />
-                            <YAxis
-                              tick={{ fill: '#6B7280', fontSize: 12 }}
-                              tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
-                            />
-                            <RechartsTooltip
-                              formatter={(v) =>
-                                `${(v * 100).toFixed(2)}%`
-                              }
-                            />
-                            <Line
-                              type="monotone"
-                              dataKey="value"
-                              stroke={color}
-                              strokeWidth={3}
-                              dot={false}
-                              fill={`url(#lineGrad-${asset.ticker})`}
-                              fillOpacity={0.1}
-                              activeDot={{
-                                r: 5,
-                                fill: color,
-                                strokeWidth: 2,
-                                stroke: '#ffffff',
-                              }}
-                            />
-                          </LineChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+                {/* Expandable Section - no motion/AnimatePresence */}
+                {isExpanded && (
+                  <div className="overflow-hidden mt-4">
+                    <p className="text-sm mb-4 text-gray-700">{asset.info}</p>
+                    {/* Sub-chart */}
+                    <div className="w-full h-48 sm:h-64">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={perfData}>
+                          <defs>
+                            {/* modern gradient fill */}
+                            <linearGradient
+                              id={`lineGrad-${asset.ticker}`}
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="0%"
+                                stopColor={color}
+                                stopOpacity={0.6}
+                              />
+                              <stop
+                                offset="100%"
+                                stopColor={color}
+                                stopOpacity={0.05}
+                              />
+                            </linearGradient>
+                          </defs>
+                          <XAxis
+                            dataKey="date"
+                            tick={{ fill: '#6B7280', fontSize: 12 }}
+                            tickFormatter={(val) => {
+                              const d = parseISO(val);
+                              return format(d, 'MMM yy');
+                            }}
+                          />
+                          <YAxis
+                            tick={{ fill: '#6B7280', fontSize: 12 }}
+                            tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
+                          />
+                          <RechartsTooltip
+                            formatter={(v) => `${(v * 100).toFixed(2)}%`}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="value"
+                            stroke={color}
+                            strokeWidth={3}
+                            dot={false}
+                            fill={`url(#lineGrad-${asset.ticker})`}
+                            fillOpacity={0.1}
+                            activeDot={{
+                              r: 5,
+                              fill: color,
+                              strokeWidth: 2,
+                              stroke: '#ffffff'
+                            }}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>
@@ -728,7 +713,7 @@ const PortfolioJourney = () => {
     const chartData = dates.map((date, idx) => ({
       date,
       Portfolio: series.find((s) => s.name === 'Portfolio')?.values[idx] || 0,
-      'S&P 500': series.find((s) => s.name === 'S&P 500')?.values[idx] || 0,
+      'S&P 500': series.find((s) => s.name === 'S&P 500')?.values[idx] || 0
     }));
 
     let totalReturn = null;
@@ -739,12 +724,7 @@ const PortfolioJourney = () => {
     }
 
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-        className="bg-white rounded-xl shadow-lg p-6 mt-8"
-      >
+      <div className="bg-white rounded-xl shadow-lg p-6 mt-8">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl sm:text-2xl font-extrabold text-gray-800">
             See what your portfolio would have returned over the past 10 years
@@ -793,11 +773,11 @@ const PortfolioJourney = () => {
                   backgroundColor: 'white',
                   borderRadius: '8px',
                   border: '1px solid #E5E7EB',
-                  padding: '10px',
+                  padding: '10px'
                 }}
                 labelStyle={{
                   fontWeight: '600',
-                  marginBottom: '5px',
+                  marginBottom: '5px'
                 }}
                 formatter={(val) => `${(val * 100).toFixed(2)}%`}
                 labelFormatter={(label) => {
@@ -812,7 +792,7 @@ const PortfolioJourney = () => {
                   top: -10,
                   right: 0,
                   fontSize: '14px',
-                  color: '#4B5563',
+                  color: '#4B5563'
                 }}
               />
               <Line
@@ -825,7 +805,7 @@ const PortfolioJourney = () => {
                   r: 5,
                   fill: '#10B981',
                   strokeWidth: 2,
-                  stroke: '#ffffff',
+                  stroke: '#ffffff'
                 }}
                 fill="url(#colorPortfolio)"
                 fillOpacity={0.1}
@@ -840,7 +820,7 @@ const PortfolioJourney = () => {
                   r: 5,
                   fill: '#EF4444',
                   strokeWidth: 2,
-                  stroke: '#ffffff',
+                  stroke: '#ffffff'
                 }}
                 fill="url(#colorSP500)"
                 fillOpacity={0.1}
@@ -848,31 +828,30 @@ const PortfolioJourney = () => {
             </LineChart>
           </ResponsiveContainer>
         </div>
-      </motion.div>
+      </div>
     );
   };
 
-  // Step 2 Container
+  // Step 2 container
   // Left: Stats + Asset List
   // Right: Pie + S&P
   const OptimizedPortfolio = () => {
     return (
       <div>
         <div className="flex flex-col lg:flex-row lg:space-x-8 space-y-8 lg:space-y-0">
-          {/* Left column */}
+          {/* Left side */}
           <div className="lg:w-1/2 space-y-6">
             <PortfolioStats />
             <AssetAllocationsList />
           </div>
-
-          {/* Right column */}
+          {/* Right side */}
           <div className="lg:w-1/2 space-y-6">
             <AllocationPie />
             <PortfolioVsSP />
           </div>
         </div>
 
-        {/* Step nav */}
+        {/* Step nav (no animation) */}
         <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-12">
           <Button
             variant="outline"
@@ -881,10 +860,7 @@ const PortfolioJourney = () => {
           >
             Back
           </Button>
-          <Button
-            onClick={() => setStep(3)}
-            className="w-full md:w-1/2"
-          >
+          <Button onClick={() => setStep(3)} className="w-full md:w-1/2">
             Continue
           </Button>
         </div>
@@ -895,14 +871,11 @@ const PortfolioJourney = () => {
   // Step 3: CTA
   const FinalCTA = () => (
     <section className="relative py-16 bg-gradient-to-br from-green-50 to-green-100 overflow-hidden">
+      {/* Decorative BG circles */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-green-200 rounded-full opacity-20 transform -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 right-0 w-64 h-64 bg-green-200 rounded-full opacity-20 transform translate-x-1/2 translate-y-1/2" />
-      <motion.div
-        className="relative z-10 max-w-4xl mx-auto text-center px-4"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
+
+      <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
         <h2 className="text-4xl sm:text-5xl font-extrabold text-green-900 mb-6">
           Ready to Begin Your Investment Journey?
         </h2>
@@ -918,17 +891,11 @@ const PortfolioJourney = () => {
           Learn More About Brokerage Options
           <FiExternalLink className="ml-2 text-white" />
         </a>
-      </motion.div>
+      </div>
 
       <div className="relative z-10 max-w-6xl mx-auto mt-16 px-4 grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Trading 212 Card */}
-        <motion.div
-          className="relative bg-white border border-blue-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div className="relative bg-white border border-blue-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white opacity-90 pointer-events-none rounded-xl" />
           <div className="relative p-8">
             <h3 className="text-2xl font-bold text-blue-800 mb-6 flex items-center">
@@ -966,9 +933,9 @@ const PortfolioJourney = () => {
                   Invest in Your Portfolio with Just One Click
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  Simply click the button below to go to Trading 212, add funds
-                  to your portfolio, and you’re all set to grow your investments
-                  effortlessly.
+                  Simply click the button below to go to Trading 212, add
+                  funds to your portfolio, and you’re all set to grow your
+                  investments effortlessly.
                 </p>
               </div>
               <div className="text-center">
@@ -983,16 +950,10 @@ const PortfolioJourney = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Other Brokerages Card */}
-        <motion.div
-          className="relative bg-white border border-yellow-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div className="relative bg-white border border-yellow-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
           <div className="absolute inset-0 bg-gradient-to-br from-yellow-50 to-white opacity-90 pointer-events-none rounded-xl" />
           <div className="relative p-8">
             <h3 className="text-2xl font-bold text-yellow-800 mb-6 flex items-center">
@@ -1004,8 +965,8 @@ const PortfolioJourney = () => {
               Invest via Other Brokerages
             </h3>
             <p className="text-gray-700 mb-6">
-              If you prefer using another platform, these simple steps will guide
-              you through the process:
+              If you prefer using another platform, these simple steps will
+              guide you through the process:
             </p>
             <ul className="space-y-4 text-gray-700">
               <li className="flex items-start">
@@ -1049,8 +1010,9 @@ const PortfolioJourney = () => {
                     Invest
                   </span>
                   <p className="text-sm text-gray-600">
-                    Purchase shares. If share sizes limit your full investment,
-                    allocate the remainder elsewhere or keep it for future buys.
+                    Purchase shares. If share sizes limit your full
+                    investment, allocate the remainder elsewhere or keep it
+                    for future buys.
                   </p>
                 </div>
               </li>
@@ -1060,7 +1022,7 @@ const PortfolioJourney = () => {
               experience. Choose what best supports your financial goals.
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       <div className="mt-8 flex justify-center">
@@ -1074,7 +1036,6 @@ const PortfolioJourney = () => {
       </div>
     </section>
   );
-
 
   return (
     <div className="max-w-7xl mx-auto p-8 space-y-12 bg-gray-100 min-h-screen">

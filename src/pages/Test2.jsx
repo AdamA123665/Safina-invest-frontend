@@ -135,8 +135,8 @@ const ModernAssetsPage = () => {
     }
   ];
 
-  // Asset classes data — reuse a similar card structure for each
-  // You can adjust these returns, risks, and volatility to fit your needs
+  // Asset classes data
+  // Removed the graph, replaced volatility with a "Learn More" button, and added a short description.
   const assetClasses = [
     {
       id: 'equities',
@@ -144,9 +144,8 @@ const ModernAssetsPage = () => {
       icon: <BarChart className="w-8 h-8" />,
       riskLevel: 'High',
       riskColor: 'from-blue-500 to-purple-500',
-      annualReturns: [60, 75, 45, 80, 65, 90],
       expectedReturn: '8-12%',
-      volatility: 'High',
+      description: 'Equities represent ownership in companies. Historically high returns, but also higher risk.'
     },
     {
       id: 'sukuk',
@@ -154,9 +153,8 @@ const ModernAssetsPage = () => {
       icon: <BarChart className="w-8 h-8" />,
       riskLevel: 'Low',
       riskColor: 'from-green-500 to-teal-500',
-      annualReturns: [20, 25, 18, 22, 27, 24],
       expectedReturn: '3-5%',
-      volatility: 'Low',
+      description: 'Sukuk are Sharia-compliant bonds that provide steady, low-risk income.'
     },
     {
       id: 'private-markets',
@@ -164,9 +162,8 @@ const ModernAssetsPage = () => {
       icon: <BarChart className="w-8 h-8" />,
       riskLevel: 'High',
       riskColor: 'from-pink-500 to-red-500',
-      annualReturns: [50, 70, 40, 65, 80, 90],
       expectedReturn: '12-20%',
-      volatility: 'High',
+      description: 'Invest in non-public companies. Potential for high returns but less liquidity.'
     },
     {
       id: 'commodities',
@@ -174,9 +171,8 @@ const ModernAssetsPage = () => {
       icon: <BarChart className="w-8 h-8" />,
       riskLevel: 'Moderate',
       riskColor: 'from-yellow-500 to-amber-500',
-      annualReturns: [35, 45, 25, 55, 40, 60],
       expectedReturn: '5-10%',
-      volatility: 'Moderate',
+      description: 'Physical goods like metals, oil, and agricultural products. Provide diversification.'
     },
     {
       id: 'real-estate',
@@ -184,9 +180,8 @@ const ModernAssetsPage = () => {
       icon: <BarChart className="w-8 h-8" />,
       riskLevel: 'Moderate',
       riskColor: 'from-indigo-500 to-purple-500',
-      annualReturns: [40, 55, 30, 50, 45, 60],
       expectedReturn: '6-10%',
-      volatility: 'Moderate',
+      description: 'Property investments can offer rental income and capital appreciation.'
     },
     {
       id: 'etfs',
@@ -194,9 +189,8 @@ const ModernAssetsPage = () => {
       icon: <BarChart className="w-8 h-8" />,
       riskLevel: 'Varied',
       riskColor: 'from-gray-500 to-blue-500',
-      annualReturns: [30, 45, 25, 35, 50, 55],
       expectedReturn: '5-10%',
-      volatility: 'Low-High',
+      description: 'Exchange-Traded Funds track indices or sectors. Risk and returns vary by ETF.'
     },
   ];
 
@@ -213,7 +207,7 @@ const ModernAssetsPage = () => {
 
         {/* Financial Cards Section */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-          {financialCards.map((card, index) => (
+          {financialCards.map((card) => (
             <div
               key={card.id}
               className="group relative"
@@ -246,14 +240,13 @@ const ModernAssetsPage = () => {
         </h2>
 
         {/* Tools Container */}
-        <div className="relative">
+        <div className="relative space-y-8">
           {/* Horizontal Tools Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {tools.map((tool) => (
               <div key={tool.id}>
                 <div
                   className={`relative bg-gray-800/30 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-500
-                    ${expandedTool === tool.id ? 'border-b-0 rounded-b-none' : ''} 
                     ${expandedTool && expandedTool !== tool.id ? 'opacity-50' : 'hover:scale-105'}`}
                 >
                   <div 
@@ -274,26 +267,22 @@ const ModernAssetsPage = () => {
             ))}
           </div>
 
-          {/* Expanded Content */}
+          {/* Expanded Content (no absolute positioning — placed in normal flow) */}
           {expandedTool && (
-            <div className="absolute left-0 right-0 mt-[-1rem] pt-8">
-              <div 
-                className="bg-gray-800/30 backdrop-blur-xl border border-gray-700/50 rounded-b-xl overflow-hidden transition-all duration-500 animate-expandDown"
-                style={{ minHeight: '400px' }}
-              >
-                <div className="p-8">
-                  <div className="relative">
-                    {/* Background Effects */}
-                    <div className="absolute inset-0 overflow-hidden">
-                      <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
-                      <div className="absolute bottom-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2" />
-                    </div>
+            <div 
+              className="bg-gray-800/30 backdrop-blur-xl border border-gray-700/50 rounded-xl overflow-hidden transition-all duration-500 px-8 py-8"
+              style={{ minHeight: '400px' }}
+            >
+              <div className="relative">
+                {/* Background Effects */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
+                  <div className="absolute bottom-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2" />
+                </div>
 
-                    {/* Tool Expanded Content */}
-                    <div className="relative">
-                      {tools.find(t => t.id === expandedTool)?.expandedContent}
-                    </div>
-                  </div>
+                {/* Tool Expanded Content */}
+                <div className="relative">
+                  {tools.find(t => t.id === expandedTool)?.expandedContent}
                 </div>
               </div>
             </div>
@@ -302,7 +291,7 @@ const ModernAssetsPage = () => {
       </div>
 
       {/* Title: Asset Classes */}
-      <div className="py-20 bg-gradient-to-b from-gray-800 to-gray-900">
+      <div className="pb-20 bg-gradient-to-b from-gray-800 to-gray-900">
         <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
           Asset Classes
         </h2>
@@ -321,28 +310,18 @@ const ModernAssetsPage = () => {
                   </div>
                 </div>
                 <h3 className="text-2xl font-bold mb-4">{asset.title}</h3>
-                <div className="space-y-4">
-                  <div className="bg-gray-900/50 rounded-lg p-4">
-                    <div className="text-sm text-gray-400 mb-2">Annual Returns</div>
-                    <div className="flex items-end h-24 space-x-2">
-                      {asset.annualReturns.map((height, i) => (
-                        <div
-                          key={i}
-                          className="flex-1 bg-gradient-to-t from-blue-500 to-purple-500 rounded-t transition-all duration-500 group-hover:from-blue-400 group-hover:to-purple-400"
-                          style={{ height: `${height}%` }}
-                        />
-                      ))}
-                    </div>
+                <p className="text-gray-300 mb-6">
+                  {asset.description}
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-gray-900/50 rounded-lg p-3">
+                    <div className="text-sm text-gray-400">Expected Return</div>
+                    <div className="font-semibold">{asset.expectedReturn}</div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-gray-900/50 rounded-lg p-3">
-                      <div className="text-sm text-gray-400">Expected Return</div>
-                      <div className="font-semibold">{asset.expectedReturn}</div>
-                    </div>
-                    <div className="bg-gray-900/50 rounded-lg p-3">
-                      <div className="text-sm text-gray-400">Volatility</div>
-                      <div className="font-semibold">{asset.volatility}</div>
-                    </div>
+                  <div className="flex items-center bg-gray-900/50 rounded-lg p-3 justify-center">
+                    <button className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">
+                      Learn More
+                    </button>
                   </div>
                 </div>
               </div>
