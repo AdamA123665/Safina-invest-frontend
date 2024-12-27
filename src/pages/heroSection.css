@@ -1,86 +1,339 @@
-/* Basic reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /*
-    pinned-hero: 400vh so the user
-    scrolls in 4 segments for 4 words.
-  */
-  .pinned-hero {
-    position: relative;
-    width: 100%;
-    height: 400vh;
-    background: linear-gradient(135deg, #E7F0FF, #FFFFFF);
-  }
-  
-  /* 
-    hero-inner is sticky for the entire 400vh scroll
-  */
-  .hero-inner {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Main heading ("We Help You") */
-  .hero-heading {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #222;
-    margin-bottom: 30px;
-  }
-  
-  /* Container that stacks the 4 words vertically */
-  .words-container {
-    position: relative;
-    width: 100%;
-    max-width: 600px; /* if you want a narrower column */
-    margin: 0 auto 30px; /* space below the stack */
-    height: 300px; /* enough vertical space for word transitions */
-    overflow: hidden; /* hide anything that goes outside */
-  }
-  
-  /* Each word in the vertical stack */
-  .word-item {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 2rem;
-    color: #0072ff; /* different color from "We Help You" */
-    text-align: center;
-  
-    /* Smooth transitions for movement & fade */
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-  }
-  
-  /* Subheading & CTA */
-  .hero-subheading {
-    font-size: 1rem;
-    max-width: 600px;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-    padding: 0 10px;
-  }
-  
-  .cta-button {
-    background: #0072ff;
-    color: #fff;
-    padding: 12px 24px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .cta-button:hover {
-    background: #005ecc;
-  }
-  
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  motion,
+  // Removed unnecessary imports for scroll-based transformations
+  useTransform,
+  useSpring,
+  useMotionValue,
+  animate,
+} from 'framer-motion';
+import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  YAxis,
+  XAxis,
+  Tooltip,
+} from 'recharts';
+import {
+  TrendingUp,
+  Shield,
+  BookOpen,
+  Target,
+  Database,
+  ArrowRight,
+} from 'lucide-react';
+
+const InnovativeHero = () => {
+  const [activeSection, setActiveSection] = useState(0);
+  const containerRef = useRef(null);
+
+  // Generate smooth quartic growth curve
+  const generateInvestmentData = () => {
+    return Array.from({ length: 50 }, (_, i) => {
+      const x = i / 49; // Normalize to 0-1
+      // Quartic function with some randomness for natural feel
+      const y = Math.pow(x, 4) * 0.7 + x * 0.3 + Math.sin(x * 10) * 0.02;
+      return {
+        x: i,
+        value: y,
+      };
+    });
+  };
+
+  const investmentData = generateInvestmentData();
+
+  // Dynamic number counter
+  const Counter = ({ from, to, duration = 2 }) => {
+    const count = useMotionValue(from);
+    const rounded = useTransform(count, (value) => Math.round(value));
+
+    useEffect(() => {
+      const controls = animate(count, to, {
+        duration: duration,
+        ease: 'easeOut',
+      });
+      return controls.stop;
+    }, []);
+
+    return <motion.span>{rounded}</motion.span>;
+  };
+
+  // Sections data
+  const sections = [
+    {
+      id: 'save',
+      title: 'Smart Savings',
+      icon: <Shield className="w-16 h-16 mb-6 text-emerald-400" />,
+      content: (
+        <div className="flex flex-col items-center space-y-6">
+          <motion.div
+            className="relative w-32 h-32 bg-emerald-900/30 rounded-full flex items-center justify-center"
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <div className="text-3xl font-bold text-emerald-400">
+              <Counter from={0} to={98} />%
+            </div>
+          </motion.div>
+          <div className="text-center space-y-4">
+            <p className="text-xl text-white/80">Shariah-Compliant Savings</p>
+            <p className="text-base text-white/60 max-w-lg">
+              Start your wealth journey with our ethical savings solutions. Earn
+              competitive returns while staying true to Islamic principles.
+            </p>
+            <motion.a
+              href="#explore-savings"
+              className="inline-flex items-center space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors"
+              whileHover={{ x: 5 }}
+            >
+              <span>Explore Savings Plans</span>
+              <ArrowRight className="w-4 h-4" />
+            </motion.a>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'invest',
+      title: 'Strategic Investments',
+      icon: <TrendingUp className="w-16 h-16 mb-6 text-emerald-400" />,
+      content: (
+        <div className="space-y-6">
+          <div className="w-full h-64 relative">
+            <div className="absolute -top-6 left-0 bg-emerald-500/10 text-emerald-400 text-sm px-3 py-1 rounded-full">
+              Algorithmic Multi-Asset Allocation
+            </div>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={investmentData}>
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="url(#lineGradient)"
+                  strokeWidth={4}
+                  dot={false}
+                  isAnimationActive={true}
+                />
+                <defs>
+                  <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#34D399" />
+                    <stop offset="100%" stopColor="#0EA5E9" />
+                  </linearGradient>
+                </defs>
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="text-center space-y-4">
+            <p className="text-base text-white/60 max-w-lg mx-auto">
+              Our data-driven approach combines ethical investing with modern
+              portfolio theory, delivering consistent returns while maintaining
+              Shariah compliance.
+            </p>
+            <motion.a
+              href="#investment-options"
+              className="inline-flex items-center space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors"
+              whileHover={{ x: 5 }}
+            >
+              <span>View Investment Options</span>
+              <ArrowRight className="w-4 h-4" />
+            </motion.a>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'tools',
+      title: 'Powerful Tools',
+      icon: <Database className="w-16 h-16 mb-6 text-emerald-400" />,
+      content: (
+        <div className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              {
+                name: 'Portfolio Analysis',
+                description: 'Advanced analytics and performance tracking',
+              },
+              {
+                name: 'Risk Assessment',
+                description: 'Smart risk profiling and management',
+              },
+              {
+                name: 'Market Insights',
+                description: 'Real-time Shariah-compliant market data',
+              },
+              {
+                name: 'Wealth Tracking',
+                description: 'Comprehensive wealth monitoring tools',
+              },
+            ].map((tool, i) => (
+              <motion.div
+                key={tool.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-white/5 p-4 rounded-lg backdrop-blur-sm hover:bg-white/10 transition-colors"
+              >
+                <div className="text-emerald-400 font-semibold mb-2">
+                  {tool.name}
+                </div>
+                <div className="text-white/60 text-sm">{tool.description}</div>
+              </motion.div>
+            ))}
+          </div>
+          <div className="text-center">
+            <motion.a
+              href="#explore-tools"
+              className="inline-flex items-center space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors"
+              whileHover={{ x: 5 }}
+            >
+              <span>Explore All Tools</span>
+              <ArrowRight className="w-4 h-4" />
+            </motion.a>
+          </div>
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div
+      ref={containerRef}
+      className="
+        relative 
+        w-full 
+        min-h-screen 
+        bg-cover 
+        bg-center 
+        bg-no-repeat
+      "
+      // Change 'my-bg.jpg' to your actual image in /public
+      style={{ backgroundImage: "url('/my-bg.jpg')" }}
+    >
+      {/* Main hero container */}
+      <div className="sticky top-0 min-h-screen flex flex-col items-center justify-center z-10 px-4">
+        {/* Box wrapper (fixed size, no more scaling) */}
+        <div
+          className="
+            relative
+            max-w-4xl 
+            w-full 
+            bg-black/20 
+            backdrop-blur-xl 
+            rounded-2xl 
+            p-8 
+            border 
+            border-white/10
+          "
+        >
+          {/* Shariah Compliance Indicator pinned top-right of this box */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+            className="
+              absolute 
+              top-4 
+              right-4 
+              flex 
+              items-center 
+              space-x-2 
+              px-4 
+              py-2 
+              bg-gradient-to-r 
+              from-emerald-500/10 
+              to-teal-500/10 
+              rounded-full 
+              backdrop-blur-md 
+              border 
+              border-emerald-500/20
+            "
+          >
+            <BookOpen className="w-4 h-4 text-emerald-400" />
+            <span className="text-sm font-medium bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+              Shariah Compliant
+            </span>
+          </motion.div>
+
+          {/* Heading */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-5xl md:text-7xl font-bold text-white mb-8 text-center"
+          >
+            Grow Your
+            <span className="block mt-2 bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+              Wealth
+            </span>
+          </motion.h1>
+
+          {/* Section Navigation */}
+          <motion.div
+            className="flex justify-center mb-12 space-x-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            {sections.map((section, index) => (
+              <motion.button
+                key={section.id}
+                onClick={() => setActiveSection(index)}
+                className={`
+                  relative px-6 py-3 rounded-lg transition-colors 
+                  ${
+                    activeSection === index
+                      ? 'text-emerald-400'
+                      : 'text-white/60'
+                  }
+                `}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {section.title}
+                {activeSection === index && (
+                  <motion.div
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-400"
+                    layoutId="activeSection"
+                  />
+                )}
+              </motion.button>
+            ))}
+          </motion.div>
+
+          {/* Active Section Content */}
+          <motion.div
+            key={activeSection}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="min-h-[300px]"
+          >
+            <div className="flex flex-col items-center">
+              {sections[activeSection].icon}
+              <div className="w-full">{sections[activeSection].content}</div>
+            </div>
+          </motion.div>
+
+          {/* Islamic Finance Principles (optional) */}
+          <motion.div
+            className="mt-12 flex justify-center space-x-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <div className="flex items-center space-x-2 text-white/60">
+              <BookOpen className="w-5 h-5" />
+              <span>Shariah-Compliant</span>
+            </div>
+            <div className="flex items-center space-x-2 text-white/60">
+              <Target className="w-5 h-5" />
+              <span>Data-Driven</span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default InnovativeHero;

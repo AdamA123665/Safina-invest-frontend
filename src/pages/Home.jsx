@@ -5,7 +5,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is installed
-import RefinedHero from './newhero2';
+import InnovativeHero from './newhero2';
 import Tools from './tools';
 import Savings from './savings';
 import Aboutsection from './Aboutsection';
@@ -570,7 +570,7 @@ const PortfolioOptimizer = () => {
         position: 'relative', // Retain if needed
       }}
     >
-      <RefinedHero parentRef={heroContainerRef} />
+      <InnovativeHero parentRef={heroContainerRef} />
       
     
 
