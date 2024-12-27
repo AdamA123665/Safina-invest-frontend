@@ -14,8 +14,6 @@ import {
 import { format, parseISO } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiExternalLink } from 'react-icons/fi';
-// Remove FaInfoCircle, ChevronDown, ChevronUp from imports
-// because they're not actually used
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 import {
   TrendingUp,
@@ -133,7 +131,7 @@ const Button = ({
 
   return (
     <button
-      type="button" // Prevent any form submission refresh
+      type="button"
       onClick={onClick}
       className={`${baseStyles} ${variantStyles} ${className}`}
       disabled={disabled}
@@ -153,7 +151,7 @@ const MetricTooltip = ({ text }) => (
 // ===========================
 // 3) Main Component
 // ===========================
-const Trial = () => {
+const PortfolioJourney = () => {
   // Steps
   const [step, setStep] = useState(1);
 
@@ -162,7 +160,7 @@ const Trial = () => {
   const [amount, setAmount] = useState('');
   const [amountError, setAmountError] = useState('');
 
-  // API data (fetch once)
+  // API data
   const [portfolioData, setPortfolioData] = useState(null);
   const [fetchError, setFetchError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -173,7 +171,7 @@ const Trial = () => {
   const [activeMetric, setActiveMetric] = useState(null);
   const tooltipRef = useRef(null);
 
-  // Chart colors
+  // Colors for charts
   const COLORS = [
     '#0088FE',
     '#00C49F',
@@ -206,17 +204,12 @@ const Trial = () => {
         <div className="h-4 bg-gradient-to-r from-blue-100 to-blue-50 rounded-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500 ease-out"
-            style={{
-              width: `${(currentStep / totalSteps) * 100}%`,
-            }}
+            style={{ width: `${(currentStep / totalSteps) * 100}%` }}
           />
         </div>
         <div className="flex justify-between mt-4">
           {Array.from({ length: totalSteps }, (_, i) => i + 1).map((num) => (
-            <div
-              key={num}
-              className="relative flex flex-col items-center"
-            >
+            <div key={num} className="relative flex flex-col items-center">
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center text-sm
                   shadow-lg transition-all duration-300
@@ -230,9 +223,7 @@ const Trial = () => {
               </div>
               <div
                 className={`mt-2 text-sm font-medium ${
-                  num <= currentStep
-                    ? 'text-blue-600'
-                    : 'text-gray-400'
+                  num <= currentStep ? 'text-blue-600' : 'text-gray-400'
                 }`}
               >
                 {['Profile', 'Portfolio', 'Review'][num - 1]}
@@ -244,7 +235,7 @@ const Trial = () => {
     </div>
   );
 
-  // Fetch from Real API once
+  // Fetch once
   const fetchPortfolioData = async () => {
     setIsLoading(true);
     setFetchError(null);
@@ -271,11 +262,11 @@ const Trial = () => {
     setIsLoading(false);
   };
 
-  // Step 1: Risk Input
+  // Step 1
   const RiskInput = () => {
     const currentProfile = riskProfiles[riskLevel];
 
-    const validate = () => {
+    const validateAmount = () => {
       if (!amount) {
         setAmountError('Investment amount is required.');
         return false;
@@ -294,7 +285,7 @@ const Trial = () => {
     };
 
     const handleAnalyze = async () => {
-      if (!validate()) return;
+      if (!validateAmount()) return;
       await fetchPortfolioData();
       if (!fetchError) {
         setStep(2);
@@ -383,7 +374,9 @@ const Trial = () => {
     );
   };
 
-  // 2A) PortfolioStats
+  // Step 2: Subcomponents
+
+  // A) PortfolioStats
   const PortfolioStats = () => {
     if (!portfolioData) return null;
     const { risk_metrics } = portfolioData.dashboard_data;
@@ -469,7 +462,7 @@ const Trial = () => {
     );
   };
 
-  // 2B) Doughnut Pie Chart
+  // B) Doughnut Pie
   const AllocationPie = () => {
     if (!portfolioData) return null;
     const w = portfolioData.portfolio_metrics.Weights;
@@ -513,8 +506,8 @@ const Trial = () => {
     );
   };
 
-  // 2C) Expandable Asset Allocations
-  // With columns: [Name+Ticker] [Allocation] [YTD] [Expand arrow]
+  // C) AssetAllocationsList
+  // We put a small grey box for the allocation on the same row, in the middle
   const AssetAllocationsList = () => {
     if (!portfolioData) return null;
     const { asset_info, performance } = portfolioData.dashboard_data;
@@ -523,15 +516,15 @@ const Trial = () => {
     return (
       <div className="bg-white shadow-lg rounded-xl p-6 mt-8">
         <h3 className="text-xl font-bold text-gray-800 mb-4">
-          Asset Allocation Details
+          Your Assets
         </h3>
         <div className="space-y-6">
           {asset_info.map((asset, index) => {
             const color = COLORS[index % COLORS.length];
-            const fraction = weights[asset.name] ?? 0;
-            const allocationPct = (fraction * 100).toFixed(2);
+            const frac = weights[asset.name] ?? 0;
+            const allocationPct = (frac * 100).toFixed(2);
 
-            // Performance data
+            // Build performance data
             const assetSeries = performance.series.find(
               (s) => s.name === asset.name
             );
@@ -541,7 +534,7 @@ const Trial = () => {
               value: assetSeries ? assetSeries.values[idx] : 0,
             }));
 
-            // YTD
+            // YTD Return
             let ytdReturn = null;
             const currentYear = new Date().getFullYear();
             const ytdData = perfData.filter(
@@ -549,8 +542,7 @@ const Trial = () => {
             );
             if (ytdData.length > 1) {
               const firstVal = ytdData[0].value;
-              const lastVal =
-                ytdData[ytdData.length - 1].value;
+              const lastVal = ytdData[ytdData.length - 1].value;
               if (firstVal !== 0) {
                 ytdReturn = ((lastVal / firstVal) - 1) * 100;
               }
@@ -571,36 +563,49 @@ const Trial = () => {
                 } hover:shadow-lg`}
                 style={{ borderColor: color }}
               >
-                {/* Single Row: Name/Allocation/YTD/Expand */}
-                <div className="flex items-center justify-between">
-                  {/* Left: Name + Ticker */}
-                  <div className="flex items-center space-x-3">
-                    <div
-                      className="w-4 h-4 rounded-full"
-                      style={{ backgroundColor: color }}
-                    />
-                    <div className="flex flex-col">
-                      <span className="text-md font-bold" style={{ color }}>
-                        {asset.name}
-                      </span>
-                      <span className="text-xs text-gray-600 mt-0.5">
-                        Ticker: {asset.ticker}
-                      </span>
-                    </div>
+                {/* Row: name+ticker, allocation box, YTD, expand arrow */}
+                <div className="flex items-center justify-between space-x-4">
+                  {/* Name + Ticker */}
+                  <div className="flex flex-col w-1/3">
+                    <h4
+                      className="text-sm md:text-base font-bold"
+                      style={{ color }}
+                    >
+                      {asset.name}
+                    </h4>
+                    <span className="text-xs text-gray-600 mt-1">
+                      Ticker: {asset.ticker}
+                    </span>
                   </div>
 
-                  {/* Middle: Allocation */}
-                  <div className="w-20 text-right">
-                    <p className="text-xs text-gray-500">Allocation</p>
-                    <p className="text-sm font-semibold text-gray-800">
+                  {/* Allocation Box (in the middle) */}
+                  <div
+                    className="flex flex-col px-3 py-2 rounded-md w-1/4"
+                    style={{ backgroundColor: '#f3f4f6' }}
+                  >
+                    <span className="text-xs text-gray-500 uppercase">
+                      Allocation
+                    </span>
+                    <span className="text-sm font-semibold text-gray-800">
                       {allocationPct}%
-                    </p>
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      £
+                      {amount
+                        ? (
+                            Number(amount) *
+                            (Number(allocationPct) / 100)
+                          ).toLocaleString()
+                        : '0'}
+                    </span>
                   </div>
 
-                  {/* Next: YTD */}
-                  <div className="w-20 text-right">
-                    <p className="text-xs text-gray-500">YTD</p>
-                    <p
+                  {/* YTD Return on the right */}
+                  <div className="flex flex-col w-1/4 text-right">
+                    <span className="text-xs text-gray-400 uppercase">
+                      YTD
+                    </span>
+                    <span
                       className={`text-sm font-semibold ${
                         ytdReturn && ytdReturn >= 0
                           ? 'text-green-600'
@@ -610,10 +615,10 @@ const Trial = () => {
                       {ytdReturn !== null
                         ? `${ytdReturn.toFixed(2)}%`
                         : '0%'}
-                    </p>
+                    </span>
                   </div>
 
-                  {/* Expand arrow */}
+                  {/* Expand Arrow */}
                   <button
                     type="button"
                     onClick={() =>
@@ -636,10 +641,7 @@ const Trial = () => {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{
-                        duration: 0.4,
-                        ease: 'easeInOut',
-                      }}
+                      transition={{ duration: 0.4, ease: 'easeInOut' }}
                       className="overflow-hidden"
                     >
                       <p className="text-sm mt-4 mb-4 text-gray-700">
@@ -649,18 +651,38 @@ const Trial = () => {
                       <div className="w-full h-48 sm:h-64">
                         <ResponsiveContainer width="100%" height="100%">
                           <LineChart data={perfData}>
+                            <defs>
+                              {/* modern gradient fill */}
+                              <linearGradient
+                                id={`lineGrad-${asset.ticker}`}
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                              >
+                                <stop
+                                  offset="0%"
+                                  stopColor={color}
+                                  stopOpacity={0.6}
+                                />
+                                <stop
+                                  offset="100%"
+                                  stopColor={color}
+                                  stopOpacity={0.05}
+                                />
+                              </linearGradient>
+                            </defs>
                             <XAxis
                               dataKey="date"
                               tick={{ fill: '#6B7280', fontSize: 12 }}
-                              tickFormatter={(val) =>
-                                format(parseISO(val), 'MMM yy')
-                              }
+                              tickFormatter={(val) => {
+                                const d = parseISO(val);
+                                return format(d, 'MMM yy');
+                              }}
                             />
                             <YAxis
                               tick={{ fill: '#6B7280', fontSize: 12 }}
-                              tickFormatter={(v) =>
-                                `${(v * 100).toFixed(0)}%`
-                              }
+                              tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
                             />
                             <RechartsTooltip
                               formatter={(v) =>
@@ -671,8 +693,16 @@ const Trial = () => {
                               type="monotone"
                               dataKey="value"
                               stroke={color}
-                              dot={false}
                               strokeWidth={3}
+                              dot={false}
+                              fill={`url(#lineGrad-${asset.ticker})`}
+                              fillOpacity={0.1}
+                              activeDot={{
+                                r: 5,
+                                fill: color,
+                                strokeWidth: 2,
+                                stroke: '#ffffff',
+                              }}
                             />
                           </LineChart>
                         </ResponsiveContainer>
@@ -688,7 +718,7 @@ const Trial = () => {
     );
   };
 
-  // 2D) Portfolio vs. S&P 500
+  // D) Portfolio vs. S&P 500
   const PortfolioVsSP = () => {
     if (!portfolioData) return null;
     const { performance } = portfolioData.dashboard_data;
@@ -701,7 +731,6 @@ const Trial = () => {
       'S&P 500': series.find((s) => s.name === 'S&P 500')?.values[idx] || 0,
     }));
 
-    // last data point for total return
     let totalReturn = null;
     const portfolioArr = series.find((s) => s.name === 'Portfolio')?.values;
     if (portfolioArr && portfolioArr.length > 1) {
@@ -734,35 +763,13 @@ const Trial = () => {
               margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
             >
               <defs>
-                <linearGradient
-                  id="colorPortfolio"
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
-                  <stop
-                    offset="0%"
-                    stopColor="#10B981"
-                    stopOpacity={0.7}
-                  />
-                  <stop
-                    offset="100%"
-                    stopColor="#10B981"
-                    stopOpacity={0.1}
-                  />
+                <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#10B981" stopOpacity={0.7} />
+                  <stop offset="100%" stopColor="#10B981" stopOpacity={0.1} />
                 </linearGradient>
                 <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="0%"
-                    stopColor="#EF4444"
-                    stopOpacity={0.7}
-                  />
-                  <stop
-                    offset="100%"
-                    stopColor="#EF4444"
-                    stopOpacity={0.1}
-                  />
+                  <stop offset="0%" stopColor="#EF4444" stopOpacity={0.7} />
+                  <stop offset="100%" stopColor="#EF4444" stopOpacity={0.1} />
                 </linearGradient>
               </defs>
               <XAxis
@@ -770,14 +777,14 @@ const Trial = () => {
                 tick={{ fill: '#4B5563', fontSize: 12 }}
                 axisLine={{ stroke: '#E5E7EB' }}
                 tickLine={{ stroke: '#E5E7EB' }}
-                tickFormatter={(dateStr) => {
-                  const parsed = parseISO(dateStr);
+                tickFormatter={(str) => {
+                  const parsed = parseISO(str);
                   return format(parsed, 'MMM yyyy');
                 }}
               />
               <YAxis
                 tick={{ fill: '#4B5563', fontSize: 12 }}
-                tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+                tickFormatter={(val) => `${(val * 100).toFixed(0)}%`}
                 axisLine={{ stroke: '#E5E7EB' }}
                 tickLine={{ stroke: '#E5E7EB' }}
               />
@@ -845,22 +852,27 @@ const Trial = () => {
     );
   };
 
-  // Step 2: Layout
+  // Step 2 Container
+  // Left: Stats + Asset List
+  // Right: Pie + S&P
   const OptimizedPortfolio = () => {
     return (
       <div>
-        <div className="flex flex-col md:flex-row gap-8">
-          <div className="md:w-1/2">
+        <div className="flex flex-col lg:flex-row lg:space-x-8 space-y-8 lg:space-y-0">
+          {/* Left column */}
+          <div className="lg:w-1/2 space-y-6">
             <PortfolioStats />
+            <AssetAllocationsList />
           </div>
-          <div className="md:w-1/2">
+
+          {/* Right column */}
+          <div className="lg:w-1/2 space-y-6">
             <AllocationPie />
+            <PortfolioVsSP />
           </div>
         </div>
 
-        <AssetAllocationsList />
-        <PortfolioVsSP />
-
+        {/* Step nav */}
         <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-12">
           <Button
             variant="outline"
@@ -880,7 +892,7 @@ const Trial = () => {
     );
   };
 
-  // Step 3: Final CTA
+  // Step 3: CTA
   const FinalCTA = () => (
     <section className="relative py-16 bg-gradient-to-br from-green-50 to-green-100 overflow-hidden">
       <div className="absolute top-0 left-0 w-64 h-64 bg-green-200 rounded-full opacity-20 transform -translate-x-1/2 -translate-y-1/2" />
@@ -1063,7 +1075,7 @@ const Trial = () => {
     </section>
   );
 
-  // Final rendering
+
   return (
     <div className="max-w-7xl mx-auto p-8 space-y-12 bg-gray-100 min-h-screen">
       <StepIndicator currentStep={step} totalSteps={3} />
@@ -1075,4 +1087,4 @@ const Trial = () => {
   );
 };
 
-export default Trial;
+export default PortfolioJourney;

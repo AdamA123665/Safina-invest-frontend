@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is in
 import RefinedHero from './newhero2';
 import Tools from './tools';
 import Savings from './savings';
-import CompleteInvestmentJourney from './Test2';
+import CompleteInvestmentJourney from './investjourney';
 const Step1 = () => {
   const [riskLevel, setRiskLevel] = useState(5);
 
