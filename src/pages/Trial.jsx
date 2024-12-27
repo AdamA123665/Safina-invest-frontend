@@ -14,11 +14,10 @@ import {
 import { format, parseISO } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiExternalLink } from 'react-icons/fi';
-import { FaInfoCircle } from 'react-icons/fa';
+// Remove FaInfoCircle, ChevronDown, ChevronUp from imports
+// because they're not actually used
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 import {
-  ChevronDown,
-  ChevronUp,
   TrendingUp,
   Percent,
   AlertTriangle,
@@ -134,7 +133,7 @@ const Button = ({
 
   return (
     <button
-      type="button" // Ensure no page refresh
+      type="button" // Prevent any form submission refresh
       onClick={onClick}
       className={`${baseStyles} ${variantStyles} ${className}`}
       disabled={disabled}
@@ -154,7 +153,7 @@ const MetricTooltip = ({ text }) => (
 // ===========================
 // 3) Main Component
 // ===========================
-const PortfolioJourney = () => {
+const Trial = () => {
   // Steps
   const [step, setStep] = useState(1);
 
@@ -163,7 +162,7 @@ const PortfolioJourney = () => {
   const [amount, setAmount] = useState('');
   const [amountError, setAmountError] = useState('');
 
-  // API data (fetch once on Analyze)
+  // API data (fetch once)
   const [portfolioData, setPortfolioData] = useState(null);
   const [fetchError, setFetchError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -174,7 +173,7 @@ const PortfolioJourney = () => {
   const [activeMetric, setActiveMetric] = useState(null);
   const tooltipRef = useRef(null);
 
-  // For chart colors
+  // Chart colors
   const COLORS = [
     '#0088FE',
     '#00C49F',
@@ -200,21 +199,24 @@ const PortfolioJourney = () => {
     10: 'https://www.trading212.com/maximum-growth',
   };
 
-  // --------------------------
-  // Step Indicator
-  // --------------------------
+  // StepIndicator
   const StepIndicator = ({ currentStep, totalSteps }) => (
     <div className="w-full mb-12">
       <div className="relative">
         <div className="h-4 bg-gradient-to-r from-blue-100 to-blue-50 rounded-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500 ease-out"
-            style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+            style={{
+              width: `${(currentStep / totalSteps) * 100}%`,
+            }}
           />
         </div>
         <div className="flex justify-between mt-4">
           {Array.from({ length: totalSteps }, (_, i) => i + 1).map((num) => (
-            <div key={num} className="relative flex flex-col items-center">
+            <div
+              key={num}
+              className="relative flex flex-col items-center"
+            >
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center text-sm
                   shadow-lg transition-all duration-300
@@ -228,7 +230,9 @@ const PortfolioJourney = () => {
               </div>
               <div
                 className={`mt-2 text-sm font-medium ${
-                  num <= currentStep ? 'text-blue-600' : 'text-gray-400'
+                  num <= currentStep
+                    ? 'text-blue-600'
+                    : 'text-gray-400'
                 }`}
               >
                 {['Profile', 'Portfolio', 'Review'][num - 1]}
@@ -240,9 +244,7 @@ const PortfolioJourney = () => {
     </div>
   );
 
-  // --------------------------
   // Fetch from Real API once
-  // --------------------------
   const fetchPortfolioData = async () => {
     setIsLoading(true);
     setFetchError(null);
@@ -269,13 +271,11 @@ const PortfolioJourney = () => {
     setIsLoading(false);
   };
 
-  // --------------------------
-  // Step 1: RiskInput
-  // --------------------------
+  // Step 1: Risk Input
   const RiskInput = () => {
     const currentProfile = riskProfiles[riskLevel];
 
-    const validateAmount = () => {
+    const validate = () => {
       if (!amount) {
         setAmountError('Investment amount is required.');
         return false;
@@ -294,10 +294,9 @@ const PortfolioJourney = () => {
     };
 
     const handleAnalyze = async () => {
-      if (!validateAmount()) return;
+      if (!validate()) return;
       await fetchPortfolioData();
       if (!fetchError) {
-        // Proceed to Step 2 if no error
         setStep(2);
       }
     };
@@ -353,7 +352,6 @@ const PortfolioJourney = () => {
             Investment Amount (£)
           </label>
           <div className="relative">
-            {/* No 'onBlur' or anything that would cause a re-focus */}
             <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
               £
             </span>
@@ -384,10 +382,6 @@ const PortfolioJourney = () => {
       </div>
     );
   };
-
-  // --------------------------
-  // Step 2 Subcomponents
-  // --------------------------
 
   // 2A) PortfolioStats
   const PortfolioStats = () => {
@@ -520,25 +514,24 @@ const PortfolioJourney = () => {
   };
 
   // 2C) Expandable Asset Allocations
-  //     - New row for Allocation & Amount
-  //     - YTD separate
+  // With columns: [Name+Ticker] [Allocation] [YTD] [Expand arrow]
   const AssetAllocationsList = () => {
     if (!portfolioData) return null;
     const { asset_info, performance } = portfolioData.dashboard_data;
     const weights = portfolioData.portfolio_metrics.Weights;
 
     return (
-      <div className="bg-white shadow-lg rounded-xl p-6">
+      <div className="bg-white shadow-lg rounded-xl p-6 mt-8">
         <h3 className="text-xl font-bold text-gray-800 mb-4">
           Asset Allocation Details
         </h3>
         <div className="space-y-6">
           {asset_info.map((asset, index) => {
             const color = COLORS[index % COLORS.length];
-            const frac = weights[asset.name] ?? 0;
-            const allocationPct = (frac * 100).toFixed(2);
+            const fraction = weights[asset.name] ?? 0;
+            const allocationPct = (fraction * 100).toFixed(2);
 
-            // Performance series
+            // Performance data
             const assetSeries = performance.series.find(
               (s) => s.name === asset.name
             );
@@ -556,7 +549,8 @@ const PortfolioJourney = () => {
             );
             if (ytdData.length > 1) {
               const firstVal = ytdData[0].value;
-              const lastVal = ytdData[ytdData.length - 1].value;
+              const lastVal =
+                ytdData[ytdData.length - 1].value;
               if (firstVal !== 0) {
                 ytdReturn = ((lastVal / firstVal) - 1) * 100;
               }
@@ -577,61 +571,37 @@ const PortfolioJourney = () => {
                 } hover:shadow-lg`}
                 style={{ borderColor: color }}
               >
+                {/* Single Row: Name/Allocation/YTD/Expand */}
                 <div className="flex items-center justify-between">
-                  {/* Left: Name & Ticker */}
-                  <div className="flex flex-col">
-                    <h4
-                      className="text-lg md:text-xl font-bold"
-                      style={{ color }}
-                    >
-                      {asset.name}
-                    </h4>
-                    <div className="text-sm text-gray-600 mt-1">
-                      Ticker:{' '}
-                      <span className="font-medium">{asset.ticker}</span>
+                  {/* Left: Name + Ticker */}
+                  <div className="flex items-center space-x-3">
+                    <div
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: color }}
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-md font-bold" style={{ color }}>
+                        {asset.name}
+                      </span>
+                      <span className="text-xs text-gray-600 mt-0.5">
+                        Ticker: {asset.ticker}
+                      </span>
                     </div>
                   </div>
 
-                  {/* Expand */}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setExpandedTicker(isExpanded ? null : asset.ticker)
-                    }
-                    className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
-                  >
-                    {isExpanded ? (
-                      <ChevronUpIcon className="h-6 w-6" />
-                    ) : (
-                      <ChevronDownIcon className="h-6 w-6" />
-                    )}
-                  </button>
-                </div>
-
-                {/* 2nd row: Allocation & YTD */}
-                <div className="mt-3 flex items-center justify-between">
-                  {/* Allocation */}
-                  <div className="flex flex-col">
-                    <span className="text-sm text-gray-500">Allocation</span>
-                    <span className="text-md font-semibold text-gray-800">
+                  {/* Middle: Allocation */}
+                  <div className="w-20 text-right">
+                    <p className="text-xs text-gray-500">Allocation</p>
+                    <p className="text-sm font-semibold text-gray-800">
                       {allocationPct}%
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      £
-                      {amount
-                        ? (
-                            Number(amount) *
-                            (Number(allocationPct) / 100)
-                          ).toLocaleString()
-                        : '0'}
-                    </span>
+                    </p>
                   </div>
 
-                  {/* YTD */}
-                  <div className="flex flex-col text-right">
-                    <span className="text-sm text-gray-500">YTD Return</span>
-                    <span
-                      className={`text-md font-semibold ${
+                  {/* Next: YTD */}
+                  <div className="w-20 text-right">
+                    <p className="text-xs text-gray-500">YTD</p>
+                    <p
+                      className={`text-sm font-semibold ${
                         ytdReturn && ytdReturn >= 0
                           ? 'text-green-600'
                           : 'text-red-600'
@@ -640,8 +610,23 @@ const PortfolioJourney = () => {
                       {ytdReturn !== null
                         ? `${ytdReturn.toFixed(2)}%`
                         : '0%'}
-                    </span>
+                    </p>
                   </div>
+
+                  {/* Expand arrow */}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setExpandedTicker(isExpanded ? null : asset.ticker)
+                    }
+                    className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                  >
+                    {isExpanded ? (
+                      <ChevronUpIcon className="h-5 w-5" />
+                    ) : (
+                      <ChevronDownIcon className="h-5 w-5" />
+                    )}
+                  </button>
                 </div>
 
                 {/* Expandable Section */}
@@ -651,7 +636,10 @@ const PortfolioJourney = () => {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.4, ease: 'easeInOut' }}
+                      transition={{
+                        duration: 0.4,
+                        ease: 'easeInOut',
+                      }}
                       className="overflow-hidden"
                     >
                       <p className="text-sm mt-4 mb-4 text-gray-700">
@@ -664,14 +652,15 @@ const PortfolioJourney = () => {
                             <XAxis
                               dataKey="date"
                               tick={{ fill: '#6B7280', fontSize: 12 }}
-                              tickFormatter={(val) => {
-                                const d = parseISO(val);
-                                return format(d, 'MMM yy');
-                              }}
+                              tickFormatter={(val) =>
+                                format(parseISO(val), 'MMM yy')
+                              }
                             />
                             <YAxis
                               tick={{ fill: '#6B7280', fontSize: 12 }}
-                              tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
+                              tickFormatter={(v) =>
+                                `${(v * 100).toFixed(0)}%`
+                              }
                             />
                             <RechartsTooltip
                               formatter={(v) =>
@@ -700,27 +689,24 @@ const PortfolioJourney = () => {
   };
 
   // 2D) Portfolio vs. S&P 500
-  //     - Use last data point for total return
-  //     - New heading: "See what your portfolio would have returned..."
   const PortfolioVsSP = () => {
     if (!portfolioData) return null;
     const { performance } = portfolioData.dashboard_data;
     const { dates, series } = performance;
     if (!dates || !series?.length) return null;
 
-    // Build chart data
     const chartData = dates.map((date, idx) => ({
       date,
       Portfolio: series.find((s) => s.name === 'Portfolio')?.values[idx] || 0,
       'S&P 500': series.find((s) => s.name === 'S&P 500')?.values[idx] || 0,
     }));
 
-    // Suppose the last point is total growth factor. (factor - 1)*100 => total return
+    // last data point for total return
     let totalReturn = null;
     const portfolioArr = series.find((s) => s.name === 'Portfolio')?.values;
     if (portfolioArr && portfolioArr.length > 1) {
       const lastFactor = portfolioArr[portfolioArr.length - 1];
-      totalReturn = (lastFactor - 1) * 100; // e.g. if lastFactor=3.29 => 229%
+      totalReturn = (lastFactor - 1) * 100;
     }
 
     return (
@@ -748,13 +734,35 @@ const PortfolioJourney = () => {
               margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
             >
               <defs>
-                <linearGradient id="colorPortfolio" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#10B981" stopOpacity={0.7} />
-                  <stop offset="100%" stopColor="#10B981" stopOpacity={0.1} />
+                <linearGradient
+                  id="colorPortfolio"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="#10B981"
+                    stopOpacity={0.7}
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="#10B981"
+                    stopOpacity={0.1}
+                  />
                 </linearGradient>
                 <linearGradient id="colorSP500" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#EF4444" stopOpacity={0.7} />
-                  <stop offset="100%" stopColor="#EF4444" stopOpacity={0.1} />
+                  <stop
+                    offset="0%"
+                    stopColor="#EF4444"
+                    stopOpacity={0.7}
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="#EF4444"
+                    stopOpacity={0.1}
+                  />
                 </linearGradient>
               </defs>
               <XAxis
@@ -793,7 +801,12 @@ const PortfolioJourney = () => {
               <Legend
                 verticalAlign="top"
                 align="right"
-                wrapperStyle={{ top: -10, right: 0, fontSize: '14px', color: '#4B5563' }}
+                wrapperStyle={{
+                  top: -10,
+                  right: 0,
+                  fontSize: '14px',
+                  color: '#4B5563',
+                }}
               />
               <Line
                 type="monotone"
@@ -801,7 +814,12 @@ const PortfolioJourney = () => {
                 stroke="#10B981"
                 strokeWidth={3}
                 dot={false}
-                activeDot={{ r: 5, fill: '#10B981', strokeWidth: 2, stroke: '#ffffff' }}
+                activeDot={{
+                  r: 5,
+                  fill: '#10B981',
+                  strokeWidth: 2,
+                  stroke: '#ffffff',
+                }}
                 fill="url(#colorPortfolio)"
                 fillOpacity={0.1}
               />
@@ -811,7 +829,12 @@ const PortfolioJourney = () => {
                 stroke="#EF4444"
                 strokeWidth={3}
                 dot={false}
-                activeDot={{ r: 5, fill: '#EF4444', strokeWidth: 2, stroke: '#ffffff' }}
+                activeDot={{
+                  r: 5,
+                  fill: '#EF4444',
+                  strokeWidth: 2,
+                  stroke: '#ffffff',
+                }}
                 fill="url(#colorSP500)"
                 fillOpacity={0.1}
               />
@@ -822,28 +845,22 @@ const PortfolioJourney = () => {
     );
   };
 
-  // Step 2 Container
+  // Step 2: Layout
   const OptimizedPortfolio = () => {
     return (
       <div>
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Left: Portfolio Stats */}
           <div className="md:w-1/2">
             <PortfolioStats />
           </div>
-          {/* Right: Pie Chart */}
           <div className="md:w-1/2">
             <AllocationPie />
           </div>
         </div>
 
-        {/* Then the asset allocations below */}
         <AssetAllocationsList />
-
-        {/* Then the portfolio vs S&P chart */}
         <PortfolioVsSP />
 
-        {/* Step nav */}
         <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-12">
           <Button
             variant="outline"
@@ -863,9 +880,7 @@ const PortfolioJourney = () => {
     );
   };
 
-  // --------------------------
   // Step 3: Final CTA
-  // --------------------------
   const FinalCTA = () => (
     <section className="relative py-16 bg-gradient-to-br from-green-50 to-green-100 overflow-hidden">
       <div className="absolute top-0 left-0 w-64 h-64 bg-green-200 rounded-full opacity-20 transform -translate-x-1/2 -translate-y-1/2" />
@@ -1048,9 +1063,7 @@ const PortfolioJourney = () => {
     </section>
   );
 
-  // --------------------------
-  // Final Render
-  // --------------------------
+  // Final rendering
   return (
     <div className="max-w-7xl mx-auto p-8 space-y-12 bg-gray-100 min-h-screen">
       <StepIndicator currentStep={step} totalSteps={3} />
@@ -1062,4 +1075,4 @@ const PortfolioJourney = () => {
   );
 };
 
-export default PortfolioJourney;
+export default Trial;
