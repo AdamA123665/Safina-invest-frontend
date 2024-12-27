@@ -12,13 +12,20 @@ import {
   Legend
 } from 'recharts';
 import { format, parseISO } from 'date-fns';
-import { FiExternalLink } from 'react-icons/fi';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 import {
   TrendingUp,
   Percent,
   AlertTriangle,
-  Info
+  Info,
+  ChevronRight,
+  BarChart2,
+  DollarSign,
+  ArrowLeft,
+  ExternalLink as LucideExternalLink,
+  Check,
+  AlertCircle,
+  HelpCircle
 } from 'lucide-react';
 
 // ===========================
@@ -148,7 +155,7 @@ const MetricTooltip = ({ text }) => (
 );
 
 // ===========================
-// 3) Main Component
+// 3) Main Portfolio Component
 // ===========================
 const PortfolioJourney = () => {
   // Steps
@@ -234,7 +241,9 @@ const PortfolioJourney = () => {
     </div>
   );
 
-  // Fetch only when user clicks "Analyze"
+  // ===========================
+  // Fetch the portfolio data
+  // ===========================
   const fetchPortfolioData = async () => {
     setIsLoading(true);
     setFetchError(null);
@@ -261,7 +270,9 @@ const PortfolioJourney = () => {
     setIsLoading(false);
   };
 
-  // Step 1
+  // ===========================
+  // Step 1: Risk Input
+  // ===========================
   const RiskInput = () => {
     const currentProfile = riskProfiles[riskLevel];
 
@@ -345,7 +356,6 @@ const PortfolioJourney = () => {
             <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
               £
             </span>
-            {/* Added autoFocus here to keep the cursor in the input */}
             <Input
               type="text"
               className="pl-8"
@@ -375,7 +385,9 @@ const PortfolioJourney = () => {
     );
   };
 
-  // Step 2: Subcomponents
+  // ===========================
+  // Step 2: Portfolio Overview
+  // ===========================
 
   // A) PortfolioStats
   const PortfolioStats = () => {
@@ -490,8 +502,7 @@ const PortfolioJourney = () => {
                 innerRadius={70}
                 outerRadius={110}
                 labelLine={false}
-                // Disable Recharts animation
-                isAnimationActive={false}
+                isAnimationActive={false} // disable Recharts animation
               >
                 {pieData.map((entry, i) => (
                   <Cell
@@ -518,9 +529,7 @@ const PortfolioJourney = () => {
 
     return (
       <div className="bg-white shadow-lg rounded-xl p-6 mt-8">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">
-          Your Assets
-        </h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-4">Your Assets</h3>
         <div className="space-y-6">
           {asset_info.map((asset, index) => {
             const color = COLORS[index % COLORS.length];
@@ -685,8 +694,7 @@ const PortfolioJourney = () => {
                               strokeWidth: 2,
                               stroke: '#ffffff'
                             }}
-                            // Could also disable animation if you want no re-draw on expand
-                            isAnimationActive={false}
+                            isAnimationActive={false} // disable animation on expand
                           />
                         </LineChart>
                       </ResponsiveContainer>
@@ -807,8 +815,7 @@ const PortfolioJourney = () => {
                 }}
                 fill="url(#colorPortfolio)"
                 fillOpacity={0.1}
-                // Disable re-animation for the 10-year chart
-                isAnimationActive={false}
+                isAnimationActive={false} // disable re-animation
               />
               <Line
                 type="monotone"
@@ -824,8 +831,7 @@ const PortfolioJourney = () => {
                 }}
                 fill="url(#colorSP500)"
                 fillOpacity={0.1}
-                // Disable re-animation for the 10-year chart
-                isAnimationActive={false}
+                isAnimationActive={false} // disable re-animation
               />
             </LineChart>
           </ResponsiveContainer>
@@ -835,208 +841,395 @@ const PortfolioJourney = () => {
   };
 
   // Step 2 container
-  const OptimizedPortfolio = () => {
-    return (
-      <div>
-        <div className="flex flex-col lg:flex-row lg:space-x-8 space-y-8 lg:space-y-0">
-          {/* Left side */}
-          <div className="lg:w-1/2 space-y-6">
-            <PortfolioStats />
-            <AssetAllocationsList />
-          </div>
-          {/* Right side */}
-          <div className="lg:w-1/2 space-y-6">
-            <AllocationPie />
-            <PortfolioVsSP />
-          </div>
+  const OptimizedPortfolio = () => (
+    <div>
+      <div className="flex flex-col lg:flex-row lg:space-x-8 space-y-8 lg:space-y-0">
+        {/* Left side */}
+        <div className="lg:w-1/2 space-y-6">
+          <PortfolioStats />
+          <AssetAllocationsList />
         </div>
+        {/* Right side */}
+        <div className="lg:w-1/2 space-y-6">
+          <AllocationPie />
+          <PortfolioVsSP />
+        </div>
+      </div>
 
-        {/* Step nav */}
-        <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-12">
-          <Button
-            variant="outline"
-            onClick={() => setStep(1)}
-            className="w-full md:w-1/2"
-          >
-            Back
-          </Button>
-          <Button onClick={() => setStep(3)} className="w-full md:w-1/2">
-            Continue
-          </Button>
+      {/* Step nav */}
+      <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-12">
+        <Button
+          variant="outline"
+          onClick={() => setStep(1)}
+          className="w-full md:w-1/2"
+        >
+          Back
+        </Button>
+        <Button onClick={() => setStep(3)} className="w-full md:w-1/2">
+          Continue
+        </Button>
+      </div>
+    </div>
+  );
+
+  // ===========================
+  // Step 3: Enhanced CTA
+  // ===========================
+  const EnhancedCTA = ({ riskLevel, setStep, trading212Links }) => {
+    const [showBrokerageInfo, setShowBrokerageInfo] = useState(false);
+
+    // Brokerage comparison data
+    const brokerageTypes = [
+      {
+        type: 'Investment Apps',
+        description: 'Easy-to-use mobile apps like Trading 212',
+        pros: ['Simple to use', 'Low minimum investment', 'Pre-built portfolios'],
+        cons: ['Limited investment options', 'Basic research tools']
+      },
+      {
+        type: 'Full-Service Brokers',
+        description: 'Traditional brokers with comprehensive services',
+        pros: [
+          'Wide investment selection',
+          'Advanced research tools',
+          'Personal support'
+        ],
+        cons: ['Higher fees', 'Larger minimum investments']
+      },
+      {
+        type: 'Online Brokers',
+        description: 'Web-based trading platforms',
+        pros: [
+          'Moderate fees',
+          'Good research tools',
+          'Many investment options'
+        ],
+        cons: ['More complex interface', 'Less personal support']
+      }
+    ];
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+        <div className="max-w-7xl mx-auto px-4 py-16 relative">
+          {/* Educational Brokerage Overview Section */}
+          <div className="mb-16">
+            <div className="text-center mb-8">
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                Choose Your Investment Path
+              </h2>
+              <p className="text-xl text-gray-700 mb-4">
+                We've made investing simple with two clear options to get
+                started
+              </p>
+              <button
+                onClick={() => setShowBrokerageInfo(!showBrokerageInfo)}
+                className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700"
+              >
+                <Info className="w-5 h-5" />
+                <span>Learn about different brokerage options</span>
+              </button>
+            </div>
+
+            {showBrokerageInfo && (
+              <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
+                <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                  Understanding Your Brokerage Options
+                </h3>
+                <div className="grid md:grid-cols-3 gap-6">
+                  {brokerageTypes.map((broker, index) => (
+                    <div
+                      key={index}
+                      className="p-6 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+                    >
+                      <h4 className="text-xl font-semibold text-gray-800 mb-3">
+                        {broker.type}
+                      </h4>
+                      <p className="text-gray-600 mb-4">{broker.description}</p>
+                      <div className="space-y-2">
+                        <div className="flex items-start">
+                          <Check className="w-5 h-5 text-green-500 mt-1 mr-2" />
+                          <div>
+                            <span className="font-medium">Pros:</span>
+                            <ul className="list-disc list-inside ml-4">
+                              {broker.pros.map((pro, i) => (
+                                <li key={i} className="text-gray-600">
+                                  {pro}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="flex items-start">
+                          <AlertCircle className="w-5 h-5 text-orange-500 mt-1 mr-2" />
+                          <div>
+                            <span className="font-medium">Cons:</span>
+                            <ul className="list-disc list-inside ml-4">
+                              {broker.cons.map((con, i) => (
+                                <li key={i} className="text-gray-600">
+                                  {con}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-6 text-center">
+                  <a
+                    href="/articles/brokerage-platforms"
+                    className="inline-flex items-center text-blue-600 hover:text-blue-700"
+                  >
+                    Read our detailed brokerage comparison guide
+                    <LucideExternalLink className="w-4 h-4 ml-2" />
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Investment Options */}
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            {/* Trading 212 Card */}
+            <div className="relative rounded-2xl overflow-hidden bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300">
+              <div className="p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                      <DollarSign className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-800">
+                        Trading 212
+                      </h3>
+                      <span className="text-green-600 font-medium">
+                        Quickest Option
+                      </span>
+                    </div>
+                  </div>
+                  <div className="px-4 py-2 rounded-full bg-blue-100 text-blue-600 font-semibold">
+                    Pre-built Portfolio
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    <h4 className="text-lg font-semibold text-gray-800 mb-4">
+                      Three Simple Steps:
+                    </h4>
+                    <div className="space-y-4">
+                      {[
+                        {
+                          title: 'Click the portfolio link below',
+                          description:
+                            'Opens Trading 212 with your selected portfolio'
+                        },
+                        {
+                          title: 'Add funds to your account',
+                          description: 'Secure deposit via bank transfer or card'
+                        },
+                        {
+                          title: "Click 'Invest' - Done!",
+                          description: 'Your portfolio is automatically created'
+                        }
+                      ].map((step, index) => (
+                        <div key={index} className="flex items-center">
+                          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                            <span className="text-blue-600 font-bold">
+                              {index + 1}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="font-medium">{step.title}</p>
+                            <p className="text-sm text-gray-600">
+                              {step.description}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-gray-50">
+                    <div className="text-sm text-gray-600 mb-2">
+                      Your Selected Risk Level
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="font-bold text-gray-800">
+                        Level {riskLevel}
+                      </div>
+                      <div className="text-sm">
+                        {riskLevel <= 3
+                          ? 'Conservative'
+                          : riskLevel <= 7
+                          ? 'Balanced'
+                          : 'Aggressive'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <a
+                    href={trading212Links[riskLevel]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full py-4 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200"
+                  >
+                    Open Your Portfolio
+                    <LucideExternalLink className="inline-block ml-2 w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Alternative Brokers Card */}
+            <div className="rounded-2xl overflow-hidden bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300">
+              <div className="p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
+                      <BarChart2 className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-800">
+                        Alternative Brokers
+                      </h3>
+                      <span className="text-purple-600 font-medium">
+                        More Flexibility
+                      </span>
+                    </div>
+                  </div>
+                  <div className="px-4 py-2 rounded-full bg-purple-100 text-purple-600 font-semibold">
+                    Manual Setup
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    <h4 className="text-lg font-semibold text-gray-800 mb-4">
+                      Follow These Steps:
+                    </h4>
+                    <div className="space-y-4">
+                      {[
+                        {
+                          title: 'Choose Your Broker',
+                          description:
+                            'Compare fees, features, and minimum deposits',
+                          link: {
+                            text: 'View broker comparison',
+                            url: '/articles/brokerage-platforms'
+                          }
+                        },
+                        {
+                          title: 'Open & Fund Account',
+                          description:
+                            'Complete verification and add funds',
+                          tip: 'Most brokers require ID verification – have your documents ready'
+                        },
+                        {
+                          title: 'Find & Buy Assets',
+                          description:
+                            'Search for each asset using the ticker symbols',
+                          action: {
+                            text: 'View your asset list',
+                            onClick: () => setStep(2)
+                          }
+                        },
+                        {
+                          title: 'Set Up Regular Investing',
+                          description:
+                            'Optional: Configure automatic monthly investments',
+                          tip: 'TIP: Investing smaller amounts regularly (e.g., via direct debit) can help smooth out market fluctuations and may yield better returns over time.'
+                        }
+                      ].map((step, index) => (
+                        <div key={index} className="flex items-start">
+                          <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-4 mt-1">
+                            <span className="text-purple-600 font-bold">
+                              {index + 1}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="font-medium">{step.title}</p>
+                            <p className="text-sm text-gray-600">
+                              {step.description}
+                            </p>
+                            {step.link && (
+                              <a
+                                href={step.link.url}
+                                className="text-sm text-purple-600 hover:text-purple-700 inline-flex items-center mt-1"
+                              >
+                                {step.link.text}
+                                <ChevronRight className="w-4 h-4 ml-1" />
+                              </a>
+                            )}
+                            {step.tip && (
+                              <div className="mt-2 p-3 bg-yellow-50 rounded-lg">
+                                <p className="text-sm text-yellow-800">
+                                  <strong>Note:</strong> {step.tip}
+                                </p>
+                              </div>
+                            )}
+                            {step.action && (
+                              <button
+                                onClick={step.action.onClick}
+                                className="text-sm text-purple-600 hover:text-purple-700 inline-flex items-center mt-1"
+                              >
+                                {step.action.text}
+                                <ChevronRight className="w-4 h-4 ml-1" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-purple-50 rounded-xl p-4">
+                    <div className="flex items-start">
+                      <HelpCircle className="w-5 h-5 text-purple-600 mt-1 mr-3" />
+                      <div className="text-sm text-purple-800">
+                        Need help choosing a broker? Read our detailed{' '}
+                        <a
+                          href="/articles/brokerage-comparison"
+                          className="underline hover:text-purple-900"
+                        >
+                          broker comparison guide
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex justify-center">
+            <button
+              onClick={() => setStep(2)}
+              className="flex items-center space-x-2 px-6 py-3 rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-200"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Portfolio</span>
+            </button>
+          </div>
         </div>
       </div>
     );
   };
 
-  // Step 3: CTA
+  // Step 3 wrapper
   const FinalCTA = () => (
-    <section className="relative py-16 bg-gradient-to-br from-green-50 to-green-100 overflow-hidden">
-      {/* Decorative BG circles */}
-      <div className="absolute top-0 left-0 w-64 h-64 bg-green-200 rounded-full opacity-20 transform -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-64 h-64 bg-green-200 rounded-full opacity-20 transform translate-x-1/2 translate-y-1/2" />
-
-      <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
-        <h2 className="text-4xl sm:text-5xl font-extrabold text-green-900 mb-6">
-          Ready to Begin Your Investment Journey?
-        </h2>
-        <p className="text-lg text-gray-700 mb-8">
-          Whether you prefer a ready-made portfolio or want to pick your own
-          assets, we make it simple to get started. Choose your path and start
-          growing your wealth.
-        </p>
-        <a
-          href="/articles/brokerage-platforms"
-          className="inline-flex items-center justify-center bg-blue-700 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-800 hover:shadow-lg font-semibold transition-all duration-300"
-        >
-          Learn More About Brokerage Options
-          <FiExternalLink className="ml-2 text-white" />
-        </a>
-      </div>
-
-      <div className="relative z-10 max-w-6xl mx-auto mt-16 px-4 grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Trading 212 Card */}
-        <div className="relative bg-white border border-blue-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white opacity-90 pointer-events-none rounded-xl" />
-          <div className="relative p-8">
-            <h3 className="text-2xl font-bold text-blue-800 mb-6 flex items-center">
-              <img
-                src="/trading212-removebg-preview.png"
-                alt="Trading 212 icon"
-                className="w-8 h-8 mr-3"
-              />
-              Invest with 1 Click at Trading 212
-            </h3>
-            <p className="text-gray-700 mb-6">
-              Based on your chosen risk tolerance, we’ve curated a recommended
-              pre-built portfolio. Get started quickly and confidently.
-            </p>
-            <div className="mb-6">
-              <span className="block text-gray-700 font-semibold mb-2">
-                Your Chosen Risk Level:
-              </span>
-              <div className="p-4 border border-blue-200 rounded-lg bg-blue-50 flex items-center justify-between">
-                <span className="font-bold text-blue-800">
-                  Level {riskLevel}
-                </span>
-                <span className="text-sm text-blue-600">
-                  {riskLevel <= 3
-                    ? 'Lower Risk'
-                    : riskLevel <= 7
-                    ? 'Moderate Risk'
-                    : 'Higher Risk'}
-                </span>
-              </div>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg space-y-6">
-              <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-800">
-                  Invest in Your Portfolio with Just One Click
-                </h2>
-                <p className="text-gray-600 mt-2">
-                  Simply click the button below to go to Trading 212, add
-                  funds to your portfolio, and you’re all set to grow your
-                  investments effortlessly.
-                </p>
-              </div>
-              <div className="text-center">
-                <a
-                  href={trading212Links[riskLevel]}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-700 text-white text-lg font-semibold px-8 py-4 rounded-lg shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300"
-                >
-                  View Trading 212 Portfolio
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Other Brokerages Card */}
-        <div className="relative bg-white border border-yellow-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-50 to-white opacity-90 pointer-events-none rounded-xl" />
-          <div className="relative p-8">
-            <h3 className="text-2xl font-bold text-yellow-800 mb-6 flex items-center">
-              <img
-                src="/icons/scale-invest.svg"
-                alt="Brokerage icon"
-                className="w-8 h-8 mr-3"
-              />
-              Invest via Other Brokerages
-            </h3>
-            <p className="text-gray-700 mb-6">
-              If you prefer using another platform, these simple steps will
-              guide you through the process:
-            </p>
-            <ul className="space-y-4 text-gray-700">
-              <li className="flex items-start">
-                <div className="flex-shrink-0 mr-4">
-                  <div className="w-8 h-8 rounded-full bg-yellow-200 flex items-center justify-center font-bold text-yellow-800">
-                    1
-                  </div>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-800">
-                    Add Funds
-                  </span>
-                  <p className="text-sm text-gray-600">
-                    Deposit money into your chosen brokerage account.
-                  </p>
-                </div>
-              </li>
-              <li className="flex items-start">
-                <div className="flex-shrink-0 mr-4">
-                  <div className="w-8 h-8 rounded-full bg-yellow-200 flex items-center justify-center font-bold text-yellow-800">
-                    2
-                  </div>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-800">
-                    Find Your Assets
-                  </span>
-                  <p className="text-sm text-gray-600">
-                    Search for the ticker symbols of the assets you identified.
-                  </p>
-                </div>
-              </li>
-              <li className="flex items-start">
-                <div className="flex-shrink-0 mr-4">
-                  <div className="w-8 h-8 rounded-full bg-yellow-200 flex items-center justify-center font-bold text-yellow-800">
-                    3
-                  </div>
-                </div>
-                <div>
-                  <span className="font-semibold text-gray-800">
-                    Invest
-                  </span>
-                  <p className="text-sm text-gray-600">
-                    Purchase shares. If share sizes limit your full
-                    investment, allocate the remainder elsewhere or keep it
-                    for future buys.
-                  </p>
-                </div>
-              </li>
-            </ul>
-            <p className="mt-8 text-gray-700 text-sm">
-              Before committing, review fees, asset availability, and user
-              experience. Choose what best supports your financial goals.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-8 flex justify-center">
-        <Button
-          variant="outline"
-          onClick={() => setStep(2)}
-          className="w-1/2 sm:w-1/3"
-        >
-          Back to Portfolio
-        </Button>
-      </div>
-    </section>
+    <EnhancedCTA
+      riskLevel={riskLevel}
+      setStep={setStep}
+      trading212Links={trading212Links}
+    />
   );
 
+  // ===========================
+  // Return the actual JSX
+  // ===========================
   return (
     <div className="max-w-7xl mx-auto p-8 space-y-12 bg-gray-100 min-h-screen">
       <StepIndicator currentStep={step} totalSteps={3} />
