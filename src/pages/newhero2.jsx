@@ -46,11 +46,11 @@ const InnovativeHero = () => {
 
     useEffect(() => {
       const controls = animate(count, to, {
-        duration: duration,
+        duration,
         ease: 'easeOut',
       });
-      return controls.stop;
-    }, []);
+      return () => controls.stop();
+    }, [count, to, duration]);
 
     return <motion.span>{rounded}</motion.span>;
   };
