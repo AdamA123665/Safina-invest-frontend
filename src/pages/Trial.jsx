@@ -197,7 +197,6 @@ const PortfolioJourney = () => {
   };
 
   // StepIndicator
-  // Removed motion-based animations here for a simpler step UI
   const StepIndicator = ({ currentStep, totalSteps }) => (
     <div className="w-full mb-12">
       <div className="relative">
@@ -346,13 +345,14 @@ const PortfolioJourney = () => {
             <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
               £
             </span>
-            {/* Allow free-form typing without numeric-only restrictions */}
+            {/* Added autoFocus here to keep the cursor in the input */}
             <Input
               type="text"
               className="pl-8"
               placeholder="Enter amount between £100 and £1,000,000"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
+              autoFocus
             />
           </div>
           {amountError && (
@@ -393,7 +393,6 @@ const PortfolioJourney = () => {
     const maxDraw = idxMD >= 0 ? values[idxMD] * 100 : 0;
     const sharpe = idxSR >= 0 ? values[idxSR] : 0;
 
-    // Icons in front of each label
     const metrics = [
       {
         id: 'expectedReturn',
@@ -491,6 +490,8 @@ const PortfolioJourney = () => {
                 innerRadius={70}
                 outerRadius={110}
                 labelLine={false}
+                // Disable Recharts animation
+                isAnimationActive={false}
               >
                 {pieData.map((entry, i) => (
                   <Cell
@@ -510,7 +511,6 @@ const PortfolioJourney = () => {
   };
 
   // C) AssetAllocationsList
-  // Now: YTD Return is shown first, then Allocation
   const AssetAllocationsList = () => {
     if (!portfolioData) return null;
     const { asset_info, performance } = portfolioData.dashboard_data;
@@ -560,7 +560,6 @@ const PortfolioJourney = () => {
                 className={`bg-gray-50 rounded-xl shadow-md border-2 p-4 hover:shadow-lg`}
                 style={{ borderColor: color }}
               >
-                {/* Row: name+ticker, YTD return, allocation, expand arrow */}
                 <div className="flex items-center justify-between space-x-4">
                   {/* Name + Ticker */}
                   <div className="flex flex-col w-1/3">
@@ -575,7 +574,7 @@ const PortfolioJourney = () => {
                     </span>
                   </div>
 
-                  {/* YTD Return (now in the middle) */}
+                  {/* YTD Return */}
                   <div className="flex flex-col w-1/4 text-right">
                     <span className="text-xs text-gray-400 uppercase">
                       YTD
@@ -593,7 +592,7 @@ const PortfolioJourney = () => {
                     </span>
                   </div>
 
-                  {/* Allocation Box (now on the right) */}
+                  {/* Allocation Box */}
                   <div
                     className="flex flex-col px-3 py-2 rounded-md w-1/4"
                     style={{ backgroundColor: '#f3f4f6' }}
@@ -631,16 +630,13 @@ const PortfolioJourney = () => {
                   </button>
                 </div>
 
-                {/* Expandable Section - no motion/AnimatePresence */}
                 {isExpanded && (
                   <div className="overflow-hidden mt-4">
                     <p className="text-sm mb-4 text-gray-700">{asset.info}</p>
-                    {/* Sub-chart */}
                     <div className="w-full h-48 sm:h-64">
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={perfData}>
                           <defs>
-                            {/* modern gradient fill */}
                             <linearGradient
                               id={`lineGrad-${asset.ticker}`}
                               x1="0"
@@ -689,6 +685,8 @@ const PortfolioJourney = () => {
                               strokeWidth: 2,
                               stroke: '#ffffff'
                             }}
+                            // Could also disable animation if you want no re-draw on expand
+                            isAnimationActive={false}
                           />
                         </LineChart>
                       </ResponsiveContainer>
@@ -809,6 +807,8 @@ const PortfolioJourney = () => {
                 }}
                 fill="url(#colorPortfolio)"
                 fillOpacity={0.1}
+                // Disable re-animation for the 10-year chart
+                isAnimationActive={false}
               />
               <Line
                 type="monotone"
@@ -824,6 +824,8 @@ const PortfolioJourney = () => {
                 }}
                 fill="url(#colorSP500)"
                 fillOpacity={0.1}
+                // Disable re-animation for the 10-year chart
+                isAnimationActive={false}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -833,8 +835,6 @@ const PortfolioJourney = () => {
   };
 
   // Step 2 container
-  // Left: Stats + Asset List
-  // Right: Pie + S&P
   const OptimizedPortfolio = () => {
     return (
       <div>
@@ -851,7 +851,7 @@ const PortfolioJourney = () => {
           </div>
         </div>
 
-        {/* Step nav (no animation) */}
+        {/* Step nav */}
         <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-12">
           <Button
             variant="outline"
