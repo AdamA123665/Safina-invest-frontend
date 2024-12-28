@@ -1,7 +1,7 @@
 // AboutSection.jsx
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, TrendingUp, Target } from 'lucide-react';
+import { BookOpen, TrendingUp, Target, ArrowRight } from 'lucide-react'; // Imported ArrowRight
 
 const AboutSection = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -129,65 +129,78 @@ const AboutSection = () => {
           </p>
         </motion.div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Cards with Arrows */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8">
           <AnimatePresence>
             {cards.map((card, index) => (
-              <motion.div
-                key={card.title}
-                custom={index}
-                initial="hidden"
-                animate={isVisible ? 'visible' : 'hidden'}
-                whileHover="hover"
-                variants={cardVariants}
-                onHoverStart={() => setHoveredCard(index)}
-                onHoverEnd={() => setHoveredCard(null)}
-                className="relative group"
-              >
-                <div className="relative bg-white rounded-2xl p-8 shadow-lg transition-shadow duration-300 group-hover:shadow-2xl h-full">
-                  {/* Outer Gradient Border (Visible on hover) */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300 -m-0.5 p-0.5">
-                    <div className="absolute inset-0 bg-white rounded-2xl" />
-                  </div>
+              <React.Fragment key={card.title}>
+                <motion.div
+                  custom={index}
+                  initial="hidden"
+                  animate={isVisible ? 'visible' : 'hidden'}
+                  whileHover="hover"
+                  variants={cardVariants}
+                  onHoverStart={() => setHoveredCard(index)}
+                  onHoverEnd={() => setHoveredCard(null)}
+                  className="relative group flex-1"
+                >
+                  <div className="relative bg-white rounded-2xl p-8 shadow-lg transition-shadow duration-300 group-hover:shadow-2xl h-full">
+                    {/* Outer Gradient Border (Visible on hover) */}
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300 -m-0.5 p-0.5">
+                      <div className="absolute inset-0 bg-white rounded-2xl" />
+                    </div>
 
-                  {/* Card Content */}
-                  <div className="relative flex flex-col items-center text-center h-full">
-                    {/* Icon */}
-                    <motion.div
-                      className={`h-16 w-16 rounded-2xl flex items-center justify-center mb-6 bg-gradient-to-r ${card.gradient}`}
-                      variants={iconVariants}
-                      initial="initial"
-                      whileHover="hover"
-                    >
-                      <card.icon className="h-8 w-8 text-white" />
-                    </motion.div>
-
-                    {/* Title & Description */}
-                    <h3 className="text-2xl font-bold mb-4 text-emerald-800">
-                      {card.title}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed mb-8">
-                      {card.description}
-                    </p>
-
-                    {/* CTA Button */}
-                    <motion.a
-                      href={card.link}
-                      className="inline-flex items-center px-6 py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 transform hover:scale-105 mt-auto"
-                    >
-                      {card.linkLabel}
-                      <motion.span
-                        initial={{ x: 0 }}
-                        animate={{ x: hoveredCard === index ? 5 : 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="ml-2"
+                    {/* Card Content */}
+                    <div className="relative flex flex-col items-center text-center h-full">
+                      {/* Icon */}
+                      <motion.div
+                        className={`h-16 w-16 rounded-2xl flex items-center justify-center mb-6 bg-gradient-to-r ${card.gradient}`}
+                        variants={iconVariants}
+                        initial="initial"
+                        whileHover="hover"
                       >
-                        →
-                      </motion.span>
-                    </motion.a>
+                        <card.icon className="h-8 w-8 text-white" />
+                      </motion.div>
+
+                      {/* Title & Description */}
+                      <h3 className="text-2xl font-bold mb-4 text-emerald-800">
+                        {card.title}
+                      </h3>
+                      <p className="text-gray-600 leading-relaxed mb-8">
+                        {card.description}
+                      </p>
+
+                      {/* CTA Button */}
+                      <motion.a
+                        href={card.link}
+                        className="inline-flex items-center px-6 py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 transform hover:scale-105 mt-auto"
+                      >
+                        {card.linkLabel}
+                        <motion.span
+                          initial={{ x: 0 }}
+                          animate={{ x: hoveredCard === index ? 5 : 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="ml-2"
+                        >
+                          →
+                        </motion.span>
+                      </motion.a>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+
+                {/* Arrow between cards, except after the last card */}
+                {index < cards.length - 1 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                    transition={{ delay: 0.8 + index * 0.2, duration: 0.5 }}
+                    className="hidden md:flex items-center justify-center"
+                  >
+                    <ArrowRight className="h-8 w-8 text-emerald-600" />
+                  </motion.div>
+                )}
+              </React.Fragment>
             ))}
           </AnimatePresence>
         </div>

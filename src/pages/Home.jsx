@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is in
 import InnovativeHero from './newhero2';
 import Tools from './tools';
 import Savings from './savings';
+import Maritime from './Maritime';
 import Aboutsection from './Aboutsection';
 import CompleteInvestmentJourney from './Test2';
 
@@ -97,14 +98,13 @@ const PortfolioOptimizer = () => {
     style={{ backgroundColor: '#f7f7f7' }} // Light grey background
   >
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-7 relative z-10">
           <div className="space-y-8">
             {/* Title Section */}
             <div className="text-center">
               <h2
                 className="text-5xl font-bold mb-4"
                 style={{
-                  fontFamily: 'Lora, serif',
                   color: '#006C5B',
                   textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
                 }}
@@ -173,7 +173,9 @@ const PortfolioOptimizer = () => {
       </div>
     </section>
 
-  
+    <div className="Maritime-container">
+    <Maritime />
+    </div>
     <section
   id="contact"
   className="relative py-20"

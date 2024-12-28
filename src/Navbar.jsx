@@ -6,9 +6,22 @@ const Navbar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === '/';
 
+  // Handle scroll events
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Handle mouse move for background effect
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
@@ -36,9 +49,27 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center py-6 fixed top-0 left-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 w-full">
-        <div className="relative bg-gradient-to-r from-green-500 via-green-400 to-green-500 rounded-full shadow-lg backdrop-blur-sm overflow-hidden">
+    <div
+      className={`
+        w-full fixed top-0 left-0 z-50
+        transition-all duration-300 ease-in-out
+        ${isScrolled ? 'py-2' : 'py-6'}
+      `}
+    >
+      <div className={`
+        w-full
+        ${isScrolled ? 'pr-4' : 'max-w-6xl mx-auto px-4'}
+      `}>
+        <div
+          className={`
+            relative bg-gradient-to-r from-green-500 via-green-400 to-green-500 rounded-full shadow-lg backdrop-blur-sm overflow-hidden
+            transition-all duration-300 ease-in-out
+            ${isScrolled 
+              ? 'px-3 py-1 ml-auto w-fit mr-0' 
+              : 'px-6 py-2 mx-auto w-full'
+            }
+          `}
+        >
           {/* Animated background gradient */}
           <div 
             className="absolute inset-0 bg-gradient-to-r from-green-400/30 via-emerald-400/30 to-green-300/30 opacity-50"
@@ -48,9 +79,12 @@ const Navbar = () => {
             }}
           />
 
-          <div className="flex justify-between items-center h-16 px-8 relative z-10">
+          <div className={`
+            flex items-center h-16 relative z-10
+            ${isScrolled ? 'justify-end space-x-1' : 'justify-between px-2'}
+          `}>
             {/* Logo/Home Section with enhanced animation */}
-            <div className="flex items-center">
+            <div className={`flex items-center ${isScrolled ? 'mr-0' : 'mr-8'}`}>
               {!isHome ? (
                 <Link
                   to="/"
@@ -60,14 +94,19 @@ const Navbar = () => {
                     <HomeIcon className="w-6 h-6 text-white transform transition-all duration-300 group-hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-r from-green-300 to-emerald-400 opacity-0 group-hover:opacity-100 transform scale-x-0 group-hover:scale-x-100 transition-all duration-300 origin-left" />
                   </div>
-                  <span className="font-semibold text-white">Home</span>
+                  <span className="font-semibold text-white">
+                    Home
+                  </span>
                 </Link>
               ) : (
                 <Link to="/" className="flex items-center space-x-2 relative group">
                   <img
                     src={`${process.env.PUBLIC_URL}/safina_invest_logo.png`}
                     alt="Safina Invest Logo"
-                    className="w-16 h-auto transform transition-transform duration-300 group-hover:scale-105"
+                    className={`
+                      h-auto transform transition-transform duration-300 group-hover:scale-105
+                      ${isScrolled ? 'w-10' : 'w-16'}
+                    `}
                   />
                   <div className="absolute -inset-2 bg-white/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur" />
                 </Link>
@@ -75,12 +114,16 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Navigation with enhanced effects */}
-            <nav className="hidden lg:flex items-center space-x-2">
+            <nav className={`
+              hidden lg:flex items-center 
+              transition-all duration-300 ease-in-out
+              ${isScrolled ? 'space-x-2' : 'space-x-4'}
+            `}>
               {navItems.map((item, index) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="relative group px-4 py-2 overflow-hidden"
+                  className="relative group px-2 py-1 overflow-hidden"
                   onMouseEnter={() => handleItemHover(index)}
                   onMouseLeave={() => handleItemHover(null)}
                 >
@@ -124,7 +167,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Enhanced Mobile Menu Overlay */}
+      {/* Mobile Menu (unchanged) */}
       {isMobileMenuOpen && (
         <div
           className="fixed inset-0 bg-black/60 backdrop-blur-md z-50"

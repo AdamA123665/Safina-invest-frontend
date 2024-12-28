@@ -287,15 +287,14 @@ const CompleteInvestmentJourney = () => {
     >
       {/* Section Title */}
       <motion.h2
-        className="text-5xl font-extrabold text-center mb-20"
+        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-center mb-12 sm:mb-20 text-customGreen font-lora"
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1 }}
-        style={{ fontFamily: 'Lora, serif', color: '#065F46' }}
-      >
+        >
         Invest now
-      </motion.h2>
+        </motion.h2>
       
         {/* Risk Assessment Section */}
         <section className="min-h-screen py-16 md:py-24">
@@ -618,28 +617,26 @@ const CompleteInvestmentJourney = () => {
                 </button>
               </motion.div>
 
-              i have this tip  'Set Up Regular Investing',
-                          description:
-                            'Optional: Configure automatic monthly investments',
-                          tip: 'TIP: Investing smaller amounts regularly (e.g., via direct debit) can help smooth out market fluctuations and may yield better returns over time.'
-
-could you add it to tis part of my code
-<motion.div
-                className="bg-white/5 p-6 md:p-8 rounded-xl backdrop-blur"
-                whileHover={{ scale: 1.02 }}
-              >
-                <DollarSign className="w-8 h-8 text-purple-400 mb-4" />
-                <h3 className="text-lg md:text-xl font-semibold mb-4">Low Minimum</h3>
-                <p className="text-gray-400 text-sm md:text-base">
-                  Start with just $20 and build your portfolio gradually.
-                </p>
-                <a 
-                  href="/learn-more"
-                  className="mt-6 text-blue-400 hover:text-blue-300 inline-flex items-center text-sm md:text-base"
-                >
-                  Learn More <ExternalLink className="ml-2 w-4 h-4" />
-                </a>
-              </motion.div>
+              
+              <motion.div 
+  className="bg-white/5 p-6 md:p-8 rounded-xl backdrop-blur" 
+  whileHover={{ scale: 1.02 }} 
+> 
+  <DollarSign className="w-8 h-8 text-purple-400 mb-4" /> 
+  <h3 className="text-lg md:text-xl font-semibold mb-4">Low Minimum</h3> 
+  <p className="text-gray-400 text-sm md:text-base"> 
+    Start with just $20 and build your portfolio gradually. 
+    <span className="block mt-2 text-sm italic">
+      TIP: Investing smaller amounts regularly (e.g., via direct debit) can help smooth out market fluctuations and may yield better returns over time.
+    </span>
+  </p> 
+  <a  
+    href="/learn-more" 
+    className="mt-6 text-blue-400 hover:text-blue-300 inline-flex items-center text-sm md:text-base" 
+  > 
+    Learn More <ExternalLink className="ml-2 w-4 h-4" /> 
+  </a> 
+</motion.div>
 
               <motion.div
                 className="bg-white/5 p-6 md:p-8 rounded-xl backdrop-blur"

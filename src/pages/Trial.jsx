@@ -325,15 +325,20 @@ const InnovativeHero = () => {
         <div
           className="
             relative
-            max-w-4xl
-            w-full
-            bg-black/50
-            backdrop-blur-xl
-            rounded-2xl
-            p-4 sm:p-8
-            border
-            border-white/20
-            overflow-hidden
+    max-w-4xl
+    w-full
+    bg-black/50
+    backdrop-blur-xl
+    rounded-2xl
+    p-4 sm:p-8
+    border
+    border-white/20
+    /* Remove overflow-hidden */
+    /* overflow-hidden */
+    /* Add negative margin-bottom to overlap */
+    mb-[-100px] sm:mb-[-150px]
+    /* Ensure it's above the Data Analytics Section */
+    z-20
           "
         >
           {/* Shariah Compliance Indicator (pinned top-right) */}
@@ -431,7 +436,7 @@ const InnovativeHero = () => {
         DATA ANALYTICS SECTION
         ==========================================
       */}
-      <section className="py-12 sm:py-20 bg-white">
+      <section className="py-12 sm:py-20 bg-white relative z-10 pt-36 sm:pt-44">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Text / CTA */}
