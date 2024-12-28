@@ -606,7 +606,13 @@ const CompleteInvestmentJourney = () => {
                 </button>
               </motion.div>
 
-              <motion.div
+              i have this tip  'Set Up Regular Investing',
+                          description:
+                            'Optional: Configure automatic monthly investments',
+                          tip: 'TIP: Investing smaller amounts regularly (e.g., via direct debit) can help smooth out market fluctuations and may yield better returns over time.'
+
+could you add it to tis part of my code
+<motion.div
                 className="bg-white/5 p-6 md:p-8 rounded-xl backdrop-blur"
                 whileHover={{ scale: 1.02 }}
               >

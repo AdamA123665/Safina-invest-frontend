@@ -1365,100 +1365,95 @@ const PortfolioJourney = () => {
               </div>
             </div>
 
-            {/* Alternative Brokers Card */}
-            <div className="rounded-2xl overflow-hidden bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300">
-              <div className="p-8">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-                      <BarChart2 className="w-6 h-6 text-purple-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-800">
-                        Alternative Brokers
-                      </h3>
-                      <span className="text-purple-600 font-medium">
-                        More Flexibility
-                      </span>
-                    </div>
-                  </div>
-                  <div className="px-4 py-2 rounded-full bg-purple-100 text-purple-600 font-semibold">
-                    Manual Setup
-                  </div>
-                </div>
+             {/* Alternative Brokers Card */}
+<div className="rounded-2xl overflow-hidden bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300">
+  <div className="p-8">
+    <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center space-x-4">
+        <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
+          <BarChart2 className="w-6 h-6 text-purple-600" />
+        </div>
+        <div>
+          <h3 className="text-2xl font-bold text-gray-800">
+            Alternative Brokers
+          </h3>
+          <span className="text-purple-600 font-medium">
+            More Flexibility
+          </span>
+        </div>
+      </div>
+      <div className="px-4 py-2 rounded-full bg-purple-100 text-purple-600 font-semibold">
+        Manual Setup
+      </div>
+    </div>
 
-                <div className="space-y-6">
-                  <div className="bg-gray-50 rounded-xl p-6">
-                    <h4 className="text-lg font-semibold text-gray-800 mb-4">
-                      Follow These Steps:
-                    </h4>
-                    <div className="space-y-4">
-                      {[
-                        {
-                          title: 'Choose Your Broker',
-                          description:
-                            'Compare fees, features, and minimum deposits',
-                          link: {
-                            text: 'View broker comparison',
-                            url: '/articles/brokerage-platforms'
-                          }
-                        },
-                        {
-                          title: 'Open & Fund Account',
-                          description: 'Complete verification and add funds',
-                          tip: 'Most brokers require ID verification – have your documents ready'
-                        },
-                        {
-                          title: 'Find & Buy Assets',
-                          description:
-                            'Search for each asset using the ticker symbols',
-                          action: {
-                            text: 'View your asset list',
-                            onClick: () => setStep(2)
-                          }
-                        },
-                        {
-                          title: 'Set Up Regular Investing',
-                          description:
-                            'Optional: Configure automatic monthly investments',
-                          tip: 'TIP: Investing smaller amounts regularly (e.g., via direct debit) can help smooth out market fluctuations and may yield better returns over time.'
-                        }
-                      ].map((step, index) => (
-                        <div key={index} className="flex items-start">
-                          <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-4 mt-1">
-                            <span className="text-purple-600 font-bold">
-                              {index + 1}
-                            </span>
-                          </div>
-                          <div>
-                            <p className="font-medium">{step.title}</p>
-                            <p className="text-sm text-gray-600">
-                              {step.description}
-                            </p>
-                            {step.link && (
-                              <a
-                                href={step.link.url}
-                                className="text-sm text-purple-600 hover:text-purple-700 inline-flex items-center mt-1"
-                              >
-                                {step.link.text}
-                                <ChevronRight className="w-4 h-4 ml-1" />
-                              </a>
-                            )}
-                            {step.tip && (
-                              <div className="mt-2 p-3 bg-yellow-50 rounded-lg">
-                                <p className="text-sm text-yellow-800">
-                                  <strong>Note:</strong> {step.tip}
-                                </p>
-                              </div>
-                            )}
-                            {step.action && (
-                              <button
-                                onClick={step.action.onClick}
-                                className="text-sm text-purple-600 hover:text-purple-700 inline-flex items-center mt-1"
-                              >
-                                {step.action.text}
-                                <ChevronRight className="w-4 h-4 ml-1" />
-                              </button>
+    <div className="space-y-6">
+      <div className="bg-gray-50 rounded-xl p-6">
+        <h4 className="text-lg font-semibold text-gray-800 mb-4">
+          Follow These Steps:
+        </h4>
+        <div className="space-y-4">
+          {[
+            {
+              title: 'Choose Your Broker',
+              description:
+                'Compare fees, features, and minimum deposits',
+              link: {
+                text: 'View broker comparison',
+                url: '/articles/brokerage-platforms'
+              }
+            },
+            {
+              title: 'Open & Fund Account',
+              description: 'Complete verification and add funds',
+              tip: 'Most brokers require ID verification – have your documents ready'
+            },
+            {
+              title: 'Find & Buy Assets',
+              description:
+                'Search for each asset using the ticker symbols',
+              action: {
+                text: 'View your asset list',
+                onClick: () => setStep(2)
+              }
+            }
+            // Removed the fourth step here
+          ].map((step, index) => (
+            <div key={index} className="flex items-start">
+              <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-4 mt-1">
+                <span className="text-purple-600 font-bold">
+                  {index + 1}
+                </span>
+              </div>
+              <div>
+                <p className="font-medium">{step.title}</p>
+                <p className="text-sm text-gray-600">
+                  {step.description}
+                </p>
+                {step.link && (
+                  <a
+                    href={step.link.url}
+                    className="text-sm text-purple-600 hover:text-purple-700 inline-flex items-center mt-1"
+                  >
+                    {step.link.text}
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </a>
+                )}
+                {step.tip && (
+                  <div className="mt-2 p-3 bg-yellow-50 rounded-lg">
+                    <p className="text-sm text-yellow-800">
+                      <strong>Note:</strong> {step.tip}
+                    </p>
+                  </div>
+                )}
+                {step.action && (
+                  <button
+                    onClick={step.action.onClick}
+                    className="text-sm text-purple-600 hover:text-purple-700 inline-flex items-center mt-1"
+                  >
+                    {step.action.text}
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </button>
                             )}
                           </div>
                         </div>
