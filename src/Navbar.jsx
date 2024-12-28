@@ -1,4 +1,3 @@
-// src/components/Navbar.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { HomeIcon, Menu, X, ChevronRight } from 'lucide-react';
@@ -22,10 +21,10 @@ const Navbar = () => {
     { path: '/assets', label: 'Learn' },
     { path: '/allocation', label: 'Invest' },
     { path: '/research', label: 'Research' },
-    { path: '/about', label: 'About'},
-    { path: '/funds', label: 'Funds'},
-    { path: '/Trial', label: 'Trial'},
-    { path: '/Test2', label: 'Test2'},
+    { path: '/about', label: 'About' },
+    { path: '/funds', label: 'Funds' },
+    { path: '/Trial', label: 'Trial' },
+    { path: '/Test2', label: 'Test2' },
   ];
 
   const handleItemHover = (index) => {
@@ -109,9 +108,20 @@ const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm">
-          <div className="fixed right-0 top-0 bottom-0 w-64 bg-white shadow-2xl transform transition-transform duration-300">
-            <div className="p-5">
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+          onClick={() => setMobileMenuOpen(false)} 
+          /* This closes menu on overlay click. Remove if unwanted. */
+        >
+          {/* Slide-out menu container */}
+          <div
+            className={`absolute right-0 top-0 bottom-0 w-64 bg-white shadow-2xl transform transition-transform duration-300 z-50 ${
+              isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
+            onClick={(e) => e.stopPropagation()} 
+            /* This stops the overlay from closing if user clicks inside menu */
+          >
+            <div className="p-5 relative">
               <button
                 className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}

@@ -18,6 +18,7 @@ import {
   Percent,
   AlertTriangle,
   Info,
+  Shield,
   ChevronRight,
   BarChart2,
   DollarSign,
@@ -27,6 +28,10 @@ import {
   AlertCircle,
   HelpCircle
 } from 'lucide-react';
+
+// ====== NEW IMPORTS FOR ENHANCED INVESTMENT SECTION ======
+import { motion, useScroll, AnimatePresence } from 'framer-motion';
+import { Wallet, Building, ArrowRight, Plus } from 'lucide-react';
 
 // ===========================
 // 1) Hard-coded Risk Profiles
@@ -85,7 +90,327 @@ const riskProfiles = {
 };
 
 // ===========================
-// 2) Reusable UI Components
+// 2) Enhanced Investment Section (NEW)
+// ===========================
+const EnhancedInvestment = () => {
+  const [expandedSection, setExpandedSection] = useState(null);
+  const [isMethodologyOpen, setIsMethodologyOpen] = useState(false);
+  const containerRef = useRef(null);
+
+  const funds = [
+    {
+      id: 'tactical',
+      title: 'Tactical Asset Allocation',
+      icon: TrendingUp,
+      description: 'Adapt your portfolio with precision using data-driven strategies',
+      details: [
+        'Real-time market adaptation',
+        'Risk-optimized allocation',
+        'Dynamic rebalancing'
+      ],
+      color: 'emerald',
+      stats: {
+        performance: 87,
+        risk: 42,
+        liquidity: 95
+      }
+    },
+    {
+      id: 'savings',
+      title: 'Savings Fund',
+      icon: Wallet,
+      description: 'Secure your future with tailored savings solutions',
+      details: [
+        'Capital preservation focus',
+        'Steady growth strategy',
+        'Low volatility approach'
+      ],
+      color: 'blue',
+      stats: {
+        performance: 72,
+        risk: 28,
+        liquidity: 98
+      }
+    },
+    {
+      id: 'private',
+      title: 'Private Markets',
+      icon: Building,
+      description: 'Access exclusive investment opportunities in private markets',
+      details: [
+        'Premium deal access',
+        'Diversified portfolio',
+        'Long-term growth'
+      ],
+      color: 'violet',
+      stats: {
+        performance: 92,
+        risk: 65,
+        liquidity: 45
+      }
+    }
+  ];
+
+  const StatBar = ({ value, color }) => (
+    <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
+      <motion.div
+        className={`absolute inset-y-0 left-0 bg-${color}-500`}
+        initial={{ width: 0 }}
+        animate={{ width: `${value}%` }}
+        transition={{ duration: 1, ease: 'easeOut' }}
+      />
+    </div>
+  );
+
+  const ExpandedCard = ({ fund }) => (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: 'auto' }}
+      exit={{ opacity: 0, height: 0 }}
+      className="overflow-hidden"
+    >
+      <div className="p-6 bg-white/5 rounded-b-2xl backdrop-blur-sm">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Key Features</h4>
+            <ul className="space-y-3">
+              {fund.details.map((detail, idx) => (
+                <motion.li
+                  key={idx}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="flex items-center text-gray-300"
+                >
+                  <ChevronRight className={`w-4 h-4 text-${fund.color}-500 mr-2`} />
+                  {detail}
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Performance Metrics</h4>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-gray-300">Performance</span>
+                  <span className={`text-${fund.color}-500`}>{fund.stats.performance}%</span>
+                </div>
+                <StatBar value={fund.stats.performance} color={fund.color} />
+              </div>
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-gray-300">Risk Level</span>
+                  <span className={`text-${fund.color}-500`}>{fund.stats.risk}%</span>
+                </div>
+                <StatBar value={fund.stats.risk} color={fund.color} />
+              </div>
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-gray-300">Liquidity</span>
+                  <span className={`text-${fund.color}-500`}>{fund.stats.liquidity}%</span>
+                </div>
+                <StatBar value={fund.stats.liquidity} color={fund.color} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  const FloatingParticles = () => (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {Array.from({ length: 30 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 rounded-full bg-white/10"
+          animate={{
+            x: [0, Math.random() * 400 - 200],
+            y: [0, Math.random() * 400 - 200],
+            scale: [0, 1, 0],
+            opacity: [0, 0.5, 0]
+          }}
+          transition={{
+            duration: Math.random() * 3 + 2,
+            repeat: Infinity,
+            repeatType: 'loop',
+            ease: 'easeInOut',
+            delay: Math.random() * 2
+          }}
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`
+          }}
+        />
+      ))}
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-black text-white" ref={containerRef}>
+      {/* Hero Section */}
+      <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <FloatingParticles />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="relative z-10 text-center px-4 max-w-5xl mx-auto"
+        >
+          <motion.div
+            animate={{
+              background: [
+                'linear-gradient(to right, #34D399, #3B82F6, #8B5CF6)',
+                'linear-gradient(to right, #3B82F6, #8B5CF6, #34D399)',
+                'linear-gradient(to right, #8B5CF6, #34D399, #3B82F6)'
+              ]
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              repeatType: 'reverse'
+            }}
+            className="inline-block px-6 py-2 rounded-full text-sm font-medium mb-8"
+          >
+            The Future of Investing
+          </motion.div>
+
+          <h1 className="text-6xl md:text-8xl font-black mb-8">
+            <span className="block bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-blue-400 to-violet-400">
+              Innovative
+            </span>
+            <span className="block text-white">Investment Solutions</span>
+          </h1>
+        </motion.div>
+      </div>
+
+      {/* Investment Options */}
+      <div className="relative z-10 px-4 py-20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          {funds.map((fund, index) => (
+            <motion.div
+              key={fund.id}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <motion.div
+                className={`relative rounded-2xl transition-all duration-500 ${
+                  expandedSection === fund.id ? 'bg-white/10' : 'bg-white/5'
+                }`}
+                whileHover={{ scale: expandedSection !== fund.id ? 1.02 : 1 }}
+              >
+                <button
+                  onClick={() =>
+                    setExpandedSection(expandedSection === fund.id ? null : fund.id)
+                  }
+                  className="w-full text-left p-6"
+                >
+                  <div className="flex justify-between items-start mb-4">
+                    <fund.icon className={`w-10 h-10 text-${fund.color}-500`} />
+                    <motion.div
+                      animate={{ rotate: expandedSection === fund.id ? 45 : 0 }}
+                      className={`p-1 rounded-full bg-${fund.color}-500/20`}
+                    >
+                      <Plus className="w-4 h-4" />
+                    </motion.div>
+                  </div>
+
+                  <h3 className="text-2xl font-bold mb-2">{fund.title}</h3>
+                  <p className="text-gray-400">{fund.description}</p>
+                </button>
+
+                <AnimatePresence>
+                  {expandedSection === fund.id && <ExpandedCard fund={fund} />}
+                </AnimatePresence>
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Methodology Section */}
+      <motion.div
+        className="relative z-10 px-4 py-20"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        <div className="max-w-7xl mx-auto">
+          <motion.div className="bg-white/5 rounded-3xl overflow-hidden backdrop-blur-sm" whileHover={{ scale: 1.02 }}>
+            <button
+              onClick={() => setIsMethodologyOpen(!isMethodologyOpen)}
+              className="w-full text-left p-8 flex justify-between items-center"
+            >
+              <h2 className="text-3xl font-bold">Our Methodology</h2>
+              <motion.div
+                animate={{ rotate: isMethodologyOpen ? 180 : 0 }}
+                className="p-2 rounded-full bg-white/10"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </motion.div>
+            </button>
+
+            <AnimatePresence>
+              {isMethodologyOpen && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="p-8 pt-0">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div>
+                        <p className="text-gray-300 text-lg mb-6">
+                          Our asset allocator is powered by over 10 years of market data
+                          and trained using advanced statistical models to find the optimal
+                          investment allocation for your risk preferences.
+                        </p>
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-500 px-6 py-3 rounded-xl font-medium inline-flex items-center group"
+                        >
+                          Learn More
+                          <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                        </motion.button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        {[
+                          { label: 'Years of Data', value: '10+' },
+                          { label: 'Markets Analyzed', value: '100+' },
+                          { label: 'Success Rate', value: '94%' },
+                          { label: 'Client Satisfaction', value: '98%' }
+                        ].map((stat, idx) => (
+                          <motion.div
+                            key={stat.label}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: idx * 0.1 }}
+                            className="bg-white/5 rounded-xl p-4"
+                          >
+                            <div className="text-2xl font-bold mb-1">{stat.value}</div>
+                            <div className="text-sm text-gray-400">{stat.label}</div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+// ===========================
+// 3) Reusable UI Components
 // ===========================
 const Slider = ({ value, onChange, min, max, step = 1, className }) => (
   <input
@@ -155,7 +480,7 @@ const MetricTooltip = ({ text }) => (
 );
 
 // ===========================
-// 3) Main Portfolio Component
+// 4) Main Portfolio Component
 // ===========================
 const PortfolioJourney = () => {
   // Steps
@@ -918,8 +1243,7 @@ const PortfolioJourney = () => {
                 Choose Your Investment Path
               </h2>
               <p className="text-xl text-gray-700 mb-4">
-                We've made investing simple with two clear options to get
-                started
+                We've made investing simple with two clear options to get started
               </p>
               <button
                 onClick={() => setShowBrokerageInfo(!showBrokerageInfo)}
@@ -1027,7 +1351,8 @@ const PortfolioJourney = () => {
                         },
                         {
                           title: 'Add funds to your account',
-                          description: 'Secure deposit via bank transfer or card'
+                          description:
+                            'Secure deposit via bank transfer or card'
                         },
                         {
                           title: "Click 'Invest' - Done!",
@@ -1122,8 +1447,7 @@ const PortfolioJourney = () => {
                         },
                         {
                           title: 'Open & Fund Account',
-                          description:
-                            'Complete verification and add funds',
+                          description: 'Complete verification and add funds',
                           tip: 'Most brokers require ID verification – have your documents ready'
                         },
                         {
@@ -1227,16 +1551,49 @@ const PortfolioJourney = () => {
     />
   );
 
-  // ===========================
-  // Return the actual JSX
-  // ===========================
   return (
-    <div className="max-w-7xl mx-auto p-8 space-y-12 bg-gray-100 min-h-screen">
-      <StepIndicator currentStep={step} totalSteps={3} />
+      <div className="bg-gray-100 min-h-screen">
+        <div className="max-w-7xl mx-auto py-8 px-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4">
+            Invest in Public Markets
+          </h1>
+          <p className="text-center text-lg sm:text-xl max-w-2xl mx-auto text-gray-700 mb-8">
+            Leverage our cutting-edge asset allocator and comprehensive strategies
+            to take advantage of global public markets—tailored to your risk profile.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-3xl mx-auto mb-12">
+            <a href="/risk-quiz" className="group flex items-center gap-3 bg-white px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto">
+              <Shield className="w-6 h-6 text-blue-600" />
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-900">Take the Risk Quiz</h3>
+                <p className="text-sm text-gray-600">Discover your investor profile</p>
+              </div>
+              <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
+            </a>
+            
+            <a href="/assets" className="group flex items-center gap-3 bg-white px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto">
+              <LineChart className="w-6 h-6 text-blue-600" />
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-900">Explore Assets</h3>
+                <p className="text-sm text-gray-600">Learn about investment options</p>
+              </div>
+              <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
+            </a>
+          </div>
 
-      {step === 1 && <RiskInput />}
-      {step === 2 && portfolioData && <OptimizedPortfolio />}
-      {step === 3 && portfolioData && <FinalCTA />}
+      
+
+      <div className="max-w-7xl mx-auto p-8 space-y-12">
+        <StepIndicator currentStep={step} totalSteps={3} />
+
+        {step === 1 && <RiskInput />}
+        {step === 2 && portfolioData && <OptimizedPortfolio />}
+        {step === 3 && portfolioData && <FinalCTA />}
+      </div>
+      {/* Enhanced Investment Section (always visible) */}
+      <EnhancedInvestment />
+    </div>
     </div>
   );
 };
