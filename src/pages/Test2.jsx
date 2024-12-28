@@ -282,9 +282,21 @@ const CompleteInvestmentJourney = () => {
 
       {/* Main Content - Apply padding for small and bigger screens */}
       <div 
-        className="px-4 sm:px-6 md:px-8 md:pl-24 lg:pl-48"
-        ref={sectionRef}
+      className="px-4 sm:px-6 md:px-8 md:pl-24 lg:pl-48"
+      ref={sectionRef}
+    >
+      {/* Section Title */}
+      <motion.h2
+        className="text-5xl font-extrabold text-center mb-20"
+        initial={{ opacity: 0, y: -50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1 }}
+        style={{ fontFamily: 'Lora, serif', color: '#065F46' }}
       >
+        Invest now
+      </motion.h2>
+      
         {/* Risk Assessment Section */}
         <section className="min-h-screen py-16 md:py-24">
           <motion.div

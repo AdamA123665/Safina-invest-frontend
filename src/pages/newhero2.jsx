@@ -78,31 +78,31 @@ const InnovativeHero = () => {
     {
       id: 'save',
       title: 'Smart Savings',
-      icon: <Shield className="w-16 h-16 mb-6 text-emerald-400" />,
+      icon: <Shield className="w-12 sm:w-16 h-12 sm:h-16 mb-4 sm:mb-6 text-emerald-400" />,
       content: (
-        <div className="flex flex-col items-center space-y-6">
+        <div className="flex flex-col items-center space-y-4 sm:space-y-6">
           <motion.div
-            className="relative w-32 h-32 bg-emerald-900/30 rounded-full flex items-center justify-center"
+            className="relative w-24 sm:w-32 h-24 sm:h-32 bg-emerald-900/30 rounded-full flex items-center justify-center"
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <div className="text-3xl font-bold text-emerald-400">
-              <Counter from={0} to={98} />%
+            <div className="text-xl sm:text-3xl font-bold text-emerald-400">
+              <Counter from={0} to={100} />%
             </div>
           </motion.div>
-          <div className="text-center space-y-4">
-            <p className="text-xl text-white/80">Shariah-Compliant Savings</p>
-            <p className="text-base text-white/60 max-w-lg">
+          <div className="text-center space-y-2 sm:space-y-4">
+            <p className="text-lg sm:text-xl text-white/80">Shariah-Compliant Savings</p>
+            <p className="text-sm sm:text-base text-white/60 max-w-md sm:max-w-lg mx-auto">
               Start your wealth journey with our ethical savings solutions. Earn
               competitive returns while staying true to Islamic principles.
             </p>
             <motion.a
               href="#explore-savings"
-              className="inline-flex items-center space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors"
+              className="inline-flex items-center space-x-1 sm:space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors"
               whileHover={{ x: 5 }}
             >
-              <span>Explore Savings Plans</span>
-              <ArrowRight className="w-4 h-4" />
+              <span className="text-sm sm:text-base">Explore Savings Plans</span>
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </motion.a>
           </div>
         </div>
@@ -111,11 +111,11 @@ const InnovativeHero = () => {
     {
       id: 'invest',
       title: 'Strategic Investments',
-      icon: <TrendingUp className="w-16 h-16 mb-6 text-emerald-400" />,
+      icon: <TrendingUp className="w-12 sm:w-16 h-12 sm:h-16 mb-4 sm:mb-6 text-emerald-400" />,
       content: (
-        <div className="space-y-6">
-          <div className="w-full h-64 relative">
-            <div className="absolute -top-6 left-0 bg-emerald-500/10 text-emerald-400 text-sm px-3 py-1 rounded-full">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="w-full h-48 sm:h-64 relative">
+            <div className="absolute -top-4 sm:-top-6 left-0 bg-emerald-500/10 text-emerald-400 text-xs sm:text-sm px-2 sm:px-3 py-1 rounded-full">
               Algorithmic Multi-Asset Allocation
             </div>
             <ResponsiveContainer width="100%" height="100%">
@@ -124,7 +124,7 @@ const InnovativeHero = () => {
                   type="monotone"
                   dataKey="value"
                   stroke="url(#lineGradient)"
-                  strokeWidth={4}
+                  strokeWidth={2}
                   dot={false}
                   isAnimationActive={true}
                 />
@@ -137,19 +137,19 @@ const InnovativeHero = () => {
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <div className="text-center space-y-4">
-            <p className="text-base text-white/60 max-w-lg mx-auto">
+          <div className="text-center space-y-2 sm:space-y-4">
+            <p className="text-sm sm:text-base text-white/60 max-w-md sm:max-w-lg mx-auto">
               Our data-driven approach combines ethical investing with modern
               portfolio theory, delivering consistent returns while maintaining
               Shariah compliance.
             </p>
             <motion.a
               href="#investment-options"
-              className="inline-flex items-center space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors"
+              className="inline-flex items-center space-x-1 sm:space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors"
               whileHover={{ x: 5 }}
             >
-              <span>View Investment Options</span>
-              <ArrowRight className="w-4 h-4" />
+              <span className="text-sm sm:text-base">View Investment Options</span>
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </motion.a>
           </div>
         </div>
@@ -158,10 +158,10 @@ const InnovativeHero = () => {
     {
       id: 'tools',
       title: 'Powerful Tools',
-      icon: <Database className="w-16 h-16 mb-6 text-emerald-400" />,
+      icon: <Database className="w-12 sm:w-16 h-12 sm:h-16 mb-4 sm:mb-6 text-emerald-400" />,
       content: (
-        <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               {
                 name: 'Portfolio Analysis',
@@ -185,23 +185,23 @@ const InnovativeHero = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white/5 p-4 rounded-lg backdrop-blur-sm hover:bg-white/10 transition-colors"
+                className="bg-white/5 p-3 sm:p-4 rounded-lg backdrop-blur-sm hover:bg-white/10 transition-colors"
               >
-                <div className="text-emerald-400 font-semibold mb-2">
+                <div className="text-emerald-400 font-semibold mb-1 sm:mb-2">
                   {tool.name}
                 </div>
-                <div className="text-white/60 text-sm">{tool.description}</div>
+                <div className="text-white/60 text-xs sm:text-sm">{tool.description}</div>
               </motion.div>
             ))}
           </div>
           <div className="text-center">
             <motion.a
               href="#explore-tools"
-              className="inline-flex items-center space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors"
+              className="inline-flex items-center space-x-1 sm:space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors"
               whileHover={{ x: 5 }}
             >
-              <span>Explore All Tools</span>
-              <ArrowRight className="w-4 h-4" />
+              <span className="text-sm sm:text-base">Explore All Tools</span>
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </motion.a>
           </div>
         </div>
@@ -313,10 +313,10 @@ const InnovativeHero = () => {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-6xl md:text-8xl font-extrabold text-gray-100 mb-8 text-center pt-32 drop-shadow-lg"
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-gray-100 mb-6 text-center pt-16 sm:pt-32 drop-shadow-lg"
         >
           Grow Your
-          <span className="block mt-2 bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+          <span className="block mt-1 sm:mt-2 bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
             Wealth
           </span>
         </motion.h1>
@@ -330,9 +330,10 @@ const InnovativeHero = () => {
             bg-black/50
             backdrop-blur-xl
             rounded-2xl
-            p-8
+            p-4 sm:p-8
             border
             border-white/20
+            overflow-hidden
           "
         >
           {/* Shariah Compliance Indicator (pinned top-right) */}
@@ -342,13 +343,13 @@ const InnovativeHero = () => {
             transition={{ delay: 0.5 }}
             className="
               absolute
-              bottom-4
-              right-4
+              bottom-2 sm:bottom-4
+              right-2 sm:right-4
               flex
               items-center
-              space-x-2
-              px-4
-              py-2
+              space-x-1 sm:space-x-2
+              px-2 sm:px-4
+              py-1 sm:py-2
               bg-gradient-to-r
               from-emerald-500/20
               to-teal-500/20
@@ -358,15 +359,15 @@ const InnovativeHero = () => {
               border-emerald-500/30
             "
           >
-            <BookOpen className="w-4 h-4 text-emerald-400" />
-            <span className="text-sm font-medium bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+            <BookOpen className="w-3 sm:w-4 h-3 sm:h-4 text-emerald-400" />
+            <span className="text-xs sm:text-sm font-medium bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
               Shariah Compliant
             </span>
           </motion.div>
 
           {/* Navigation for sections (Savings / Investments / Tools) */}
           <motion.div
-            className="flex justify-center mb-12 space-x-8"
+            className="flex justify-center mb-6 sm:mb-12 flex-wrap gap-4 sm:gap-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -376,12 +377,13 @@ const InnovativeHero = () => {
                 key={section.id}
                 onClick={() => setActiveSection(index)}
                 className={`
-                  relative px-6 py-3 rounded-lg transition-colors 
+                  relative px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-colors 
                   ${
                     activeSection === index
                       ? 'text-emerald-400 font-bold'
                       : 'text-gray-200'
                   }
+                  text-sm sm:text-base
                 `}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -404,7 +406,7 @@ const InnovativeHero = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="min-h-[300px]"
+            className="min-h-[200px] sm:min-h-[300px] h-auto"
           >
             <div className="flex flex-col items-center">
               {sections[activeSection].icon}
@@ -414,12 +416,12 @@ const InnovativeHero = () => {
 
           {/* Islamic Finance Principles (optional) */}
           <motion.div
-            className="mt-12 flex justify-center space-x-8"
+            className="mt-6 sm:mt-12 flex justify-center space-x-4 sm:space-x-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            
+            {/* Add any additional elements here if needed */}
           </motion.div>
         </div>
       </section>
@@ -429,54 +431,54 @@ const InnovativeHero = () => {
         DATA ANALYTICS SECTION
         ==========================================
       */}
-      <section className="py-20 bg-white">
+      <section className="py-12 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Text / CTA */}
             <div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-green-800">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-green-800">
                 Driven by Data
               </h2>
-              <p className="text-lg md:text-xl text-gray-600 mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-8">
                 Make informed decisions with our advanced analytics and
                 real-time market insights. Our data-driven approach ensures
                 optimal performance while maintaining strict Shariah
                 compliance.
               </p>
               <button
-                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 transition-colors rounded-lg text-white font-semibold shadow-md"
+                className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-blue-500 hover:bg-blue-600 transition-colors rounded-lg text-white font-semibold shadow-md"
                 onClick={() => (window.location.href = '/analytics')}
               >
-                Explore Analytics <ArrowRight className="w-5 h-5" />
+                Explore Analytics <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
 
             {/* Chart + Stat Boxes */}
-            <div className="bg-gray-100 rounded-2xl p-8 shadow-lg">
+            <div className="bg-gray-100 rounded-2xl p-4 sm:p-8 shadow-lg">
               {/* Volatility & YTD Return */}
-              <div className="flex flex-col md:flex-row md:items-center gap-6 mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
                 {/* Volatility */}
-                <div className="flex-1 bg-green-100 border border-gray-200 rounded-lg p-4 flex flex-col items-center">
-                  <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">
+                <div className="flex-1 bg-green-100 border border-gray-200 rounded-lg p-3 sm:p-4 flex flex-col items-center">
+                  <span className="text-xs sm:text-sm text-gray-400 uppercase tracking-wider mb-1 sm:mb-2">
                     Volatility
                   </span>
-                  <span className="text-2xl font-bold text-green-700">
+                  <span className="text-xl sm:text-2xl font-bold text-green-700">
                     12.5%
                   </span>
                 </div>
                 {/* YTD Return */}
-                <div className="flex-1 bg-green-100 border border-gray-200 rounded-lg p-4 flex flex-col items-center">
-                  <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">
+                <div className="flex-1 bg-green-100 border border-gray-200 rounded-lg p-3 sm:p-4 flex flex-col items-center">
+                  <span className="text-xs sm:text-sm text-gray-400 uppercase tracking-wider mb-1 sm:mb-2">
                     YTD Return
                   </span>
-                  <span className="text-2xl font-bold text-green-700">
+                  <span className="text-xl sm:text-2xl font-bold text-green-700">
                     {ytdReturn !== null ? `+${ytdReturn}%` : 'N/A'}
                   </span>
                 </div>
               </div>
 
               {/* Performance Chart */}
-              <div className="w-full h-80">
+              <div className="w-full h-60 sm:h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={performanceData}>
                     <defs>
@@ -503,11 +505,12 @@ const InnovativeHero = () => {
                       dataKey="name"
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: '#6B7280' }}
+                      tick={{ fill: '#6B7280', fontSize: '0.75rem' }}
                       interval={Math.max(
                         1,
                         Math.floor(performanceData.length / 4) - 1
                       )}
+                      padding={{ left: 10, right: 10 }}
                     />
                     <YAxis hide={true} domain={yAxisDomain} />
                     <Tooltip
@@ -516,6 +519,7 @@ const InnovativeHero = () => {
                         border: 'none',
                         borderRadius: '0.5rem',
                         color: '#374151',
+                        fontSize: '0.875rem',
                       }}
                     />
                     <Line
@@ -533,7 +537,7 @@ const InnovativeHero = () => {
                         left: 0,
                         width: '100%',
                         textAlign: 'center',
-                        fontSize: '0.8rem',
+                        fontSize: '0.7rem',
                         color: '#6B7280',
                       }}
                       payload={[
