@@ -3,18 +3,22 @@ import { Link, useLocation } from 'react-router-dom';
 import { HomeIcon, Menu, X, ChevronRight } from 'lucide-react';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const location = useLocation();
   const isHome = location.pathname === '/';
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    window.addEventListener('mousemove', handleMouseMove);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   const navItems = [
@@ -32,116 +36,128 @@ const Navbar = () => {
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-        isScrolled
-          ? 'bg-white/90 backdrop-blur-md shadow-lg'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo/Home Section */}
-          <div className="flex items-center">
-            {!isHome ? (
-              <Link
-                to="/"
-                className="flex items-center space-x-2 group"
-              >
-                <div className="relative overflow-hidden">
-                  <HomeIcon className="w-6 h-6 text-gray-800 transform transition-transform group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-green-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-                </div>
-                <span className="font-semibold text-gray-800">Home</span>
-              </Link>
-            ) : (
-              <Link to="/" className="flex items-center space-x-2">
-                <img
-                  src={`${process.env.PUBLIC_URL}/safina_invest_logo.png`}
-                  alt="Safina Invest Logo"
-                  className="w-20 h-auto"
-                />
-              </Link>
-            )}
+    <div className="w-full flex justify-center items-center py-6 fixed top-0 left-0 z-50">
+      <div className="max-w-6xl mx-auto px-4 w-full">
+        <div className="relative bg-gradient-to-r from-green-500 via-green-400 to-green-500 rounded-full shadow-lg backdrop-blur-sm overflow-hidden">
+          {/* Animated background gradient */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-r from-green-400/30 via-emerald-400/30 to-green-300/30 opacity-50"
+            style={{
+              transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`,
+              transition: 'transform 0.3s ease-out'
+            }}
+          />
+
+          <div className="flex justify-between items-center h-16 px-8 relative z-10">
+            {/* Logo/Home Section with enhanced animation */}
+            <div className="flex items-center">
+              {!isHome ? (
+                <Link
+                  to="/"
+                  className="flex items-center space-x-2 group"
+                >
+                  <div className="relative overflow-hidden p-2 rounded-lg">
+                    <HomeIcon className="w-6 h-6 text-white transform transition-all duration-300 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-green-300 to-emerald-400 opacity-0 group-hover:opacity-100 transform scale-x-0 group-hover:scale-x-100 transition-all duration-300 origin-left" />
+                  </div>
+                  <span className="font-semibold text-white">Home</span>
+                </Link>
+              ) : (
+                <Link to="/" className="flex items-center space-x-2 relative group">
+                  <img
+                    src={`${process.env.PUBLIC_URL}/safina_invest_logo.png`}
+                    alt="Safina Invest Logo"
+                    className="w-16 h-auto transform transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute -inset-2 bg-white/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur" />
+                </Link>
+              )}
+            </div>
+
+            {/* Desktop Navigation with enhanced effects */}
+            <nav className="hidden lg:flex items-center space-x-2">
+              {navItems.map((item, index) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="relative group px-4 py-2 overflow-hidden"
+                  onMouseEnter={() => handleItemHover(index)}
+                  onMouseLeave={() => handleItemHover(null)}
+                >
+                  <div className="relative z-10 flex items-center space-x-2">
+                    <span className="font-medium text-white transition-all duration-300 group-hover:text-green-100">
+                      {item.label}
+                    </span>
+                  </div>
+                  {/* Animated highlight effect */}
+                  <div
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-green-200 to-emerald-200 transform origin-left transition-all duration-300 ${
+                      activeItem === index ? 'scale-x-100' : 'scale-x-0'
+                    }`}
+                  />
+                  {/* Hover background effect */}
+                  <div
+                    className={`absolute inset-0 bg-white/10 rounded-lg transform 
+                      ${activeItem === index 
+                        ? 'scale-100 opacity-100' 
+                        : 'scale-95 opacity-0'
+                      } transition-all duration-300`}
+                    style={{ zIndex: -1 }}
+                  />
+                  {/* Shimmer effect */}
+                  <div
+                    className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                    style={{ zIndex: -1 }}
+                  />
+                </Link>
+              ))}
+            </nav>
+
+            {/* Mobile Menu Button with animation */}
+            <button
+              className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors relative z-10 group"
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <Menu className="w-6 h-6 text-white transform transition-transform duration-300 group-hover:rotate-180" />
+            </button>
           </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
-            {navItems.map((item, index) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className="relative group px-4 py-2"
-                onMouseEnter={() => handleItemHover(index)}
-                onMouseLeave={() => handleItemHover(null)}
-              >
-                <div className="relative z-10 flex items-center space-x-2">
-                  <span className="text-lg transform transition-transform group-hover:scale-110">
-                    {item.icon}
-                  </span>
-                  <span className="font-medium text-gray-800">{item.label}</span>
-                </div>
-                <div
-                  className={`absolute bottom-0 left-0 w-full h-0.5 bg-green-500 transform origin-left transition-transform duration-300 ${
-                    activeItem === index ? 'scale-x-100' : 'scale-x-0'
-                  }`}
-                />
-                <div
-                  className={`absolute inset-0 bg-gray-100 rounded-lg transform scale-95 opacity-0 transition-all duration-300 ${
-                    activeItem === index ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  style={{ zIndex: -1 }}
-                />
-              </Link>
-            ))}
-          </nav>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <Menu className="w-6 h-6 text-gray-800" />
-          </button>
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Enhanced Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
-          onClick={() => setMobileMenuOpen(false)} 
-          /* This closes menu on overlay click. Remove if unwanted. */
+          className="fixed inset-0 bg-black/60 backdrop-blur-md z-50"
+          onClick={() => setMobileMenuOpen(false)}
         >
-          {/* Slide-out menu container */}
           <div
-            className={`absolute right-0 top-0 bottom-0 w-64 bg-white shadow-2xl transform transition-transform duration-300 z-50 ${
-              isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-            }`}
-            onClick={(e) => e.stopPropagation()} 
-            /* This stops the overlay from closing if user clicks inside menu */
+            className="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-b from-green-500 to-green-600 shadow-2xl transform transition-transform duration-500 ease-out"
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="p-5 relative">
               <button
-                className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/10 transition-all duration-300 group"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <X className="w-6 h-6 text-gray-800" />
+                <X className="w-6 h-6 text-white transform transition-transform duration-300 group-hover:rotate-90" />
               </button>
               
-              <nav className="mt-8 space-y-4">
+              <nav className="mt-8 space-y-2">
                 {navItems.map((item) => (
                   <Link
                     key={item.path}
                     to={item.path}
-                    className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors group"
+                    className="flex items-center space-x-3 p-3 rounded-lg hover:bg-white/10 transition-all duration-300 group relative overflow-hidden"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    <span className="text-xl transform transition-transform group-hover:scale-110">
-                      {item.icon}
+                    <span className="font-medium text-white group-hover:text-green-100">
+                      {item.label}
                     </span>
-                    <span className="font-medium text-gray-800">{item.label}</span>
-                    <ChevronRight className="w-5 h-5 text-gray-400 ml-auto transform transition-transform group-hover:translate-x-1" />
+                    <ChevronRight className="w-5 h-5 text-white/60 ml-auto transform transition-transform duration-300 group-hover:translate-x-1 group-hover:text-green-100" />
+                    {/* Shimmer effect for mobile menu items */}
+                    <div
+                      className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                    />
                   </Link>
                 ))}
               </nav>
@@ -149,7 +165,7 @@ const Navbar = () => {
           </div>
         </div>
       )}
-    </header>
+    </div>
   );
 };
 

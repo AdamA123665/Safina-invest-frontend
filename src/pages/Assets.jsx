@@ -847,7 +847,7 @@ const ModernAssetsPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-gray-900 text-white pt-10">
       {/* Title: Financial Solutions */}
       <div ref={containerRef} className="max-w-7xl mx-auto px-4 py-20">
         <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">

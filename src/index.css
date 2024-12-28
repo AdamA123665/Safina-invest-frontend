@@ -23,4 +23,7 @@
   .flip-card-back {
     transform: rotateY(180deg);
   }
-  
+  body {
+    margin: 0;
+    padding: 0;
+  }

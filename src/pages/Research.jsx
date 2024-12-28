@@ -66,7 +66,7 @@ function ResearchNews() {
   }, [currentSlide, totalSlides, nextSlide]);
 
   return (
-    <section id="research" className="py-20 bg-gradient-to-b from-gray-50 to-gray-200">
+    <section id="research" className="py-20 bg-gradient-to-b from-gray-50 to-gray-200 pt-28">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">

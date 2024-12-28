@@ -26,7 +26,7 @@ function PortfolioOptimizer() {
       <Navbar />
 
       {/* Page Content */}
-      <div className="pt-20">
+      <div className="pt-0">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/allocation" element={<Allocation />} />
