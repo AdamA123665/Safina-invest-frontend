@@ -107,7 +107,7 @@ const EnhancedInvestment = () => {
         'Risk-optimized allocation',
         'Dynamic rebalancing'
       ],
-      color: 'emerald',
+      color: 'primaryGreen',
       stats: {
         performance: 87,
         risk: 42,
@@ -124,7 +124,7 @@ const EnhancedInvestment = () => {
         'Steady growth strategy',
         'Low volatility approach'
       ],
-      color: 'blue',
+      color: 'deepTeal',
       stats: {
         performance: 72,
         risk: 28,
@@ -141,7 +141,7 @@ const EnhancedInvestment = () => {
         'Diversified portfolio',
         'Long-term growth'
       ],
-      color: 'violet',
+      color: 'gold',
       stats: {
         performance: 92,
         risk: 65,
@@ -149,17 +149,17 @@ const EnhancedInvestment = () => {
       }
     }
   ];
-
   const StatBar = ({ value, color }) => (
     <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
       <motion.div
-        className={`absolute inset-y-0 left-0 bg-${color}-500`}
+        className={`absolute inset-y-0 left-0 bg-deep-teal`}
         initial={{ width: 0 }}
         animate={{ width: `${value}%` }}
         transition={{ duration: 1, ease: 'easeOut' }}
       />
     </div>
   );
+  
 
   const ExpandedCard = ({ fund }) => (
     <motion.div
@@ -171,7 +171,7 @@ const EnhancedInvestment = () => {
       <div className="p-6 bg-white/5 rounded-b-2xl backdrop-blur-sm">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <h4 className="text-lg font-semibold mb-4">Key Features</h4>
+            <h4 className="text-lg font-semibold mb-4 text-dark-green">Key Features</h4>
             <ul className="space-y-3">
               {fund.details.map((detail, idx) => (
                 <motion.li
@@ -179,7 +179,7 @@ const EnhancedInvestment = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.1 }}
-                  className="flex items-center text-gray-300"
+                  className="flex items-center text-deep-teal"
                 >
                   <ChevronRight className={`w-4 h-4 text-${fund.color}-500 mr-2`} />
                   {detail}
@@ -188,26 +188,26 @@ const EnhancedInvestment = () => {
             </ul>
           </div>
           <div>
-            <h4 className="text-lg font-semibold mb-4">Performance Metrics</h4>
+            <h4 className="text-lg font-semibold mb-4 text-dark-green">Performance Metrics</h4>
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between mb-2">
-                  <span className="text-gray-300">Performance</span>
-                  <span className={`text-${fund.color}-500`}>{fund.stats.performance}%</span>
+                  <span className="text-olive-green">Performance</span>
+                  <span className={`text-${fund.color}`}>{fund.stats.performance}%</span>
                 </div>
                 <StatBar value={fund.stats.performance} color={fund.color} />
               </div>
               <div>
                 <div className="flex justify-between mb-2">
-                  <span className="text-gray-300">Risk Level</span>
-                  <span className={`text-${fund.color}-500`}>{fund.stats.risk}%</span>
+                  <span className="text-olive-green">Risk Level</span>
+                  <span className={`text-${fund.color}`}>{fund.stats.risk}%</span>
                 </div>
                 <StatBar value={fund.stats.risk} color={fund.color} />
               </div>
               <div>
                 <div className="flex justify-between mb-2">
-                  <span className="text-gray-300">Liquidity</span>
-                  <span className={`text-${fund.color}-500`}>{fund.stats.liquidity}%</span>
+                  <span className="text-olive-green">Liquidity</span>
+                  <span className={`text-${fund.color}`}>{fund.stats.liquidity}%</span>
                 </div>
                 <StatBar value={fund.stats.liquidity} color={fund.color} />
               </div>
@@ -219,29 +219,35 @@ const EnhancedInvestment = () => {
   );
 
   const colorStyles = {
-    emerald: {
-      background: 'rgba(16, 185, 129, 0.1)',
-      text: '#10B981',
-      plusBg: 'rgba(16, 185, 129, 0.2)',
-      plusText: '#10B981',
+    primaryGreen: {
+      background: 'rgba(6, 107, 6, 0.1)',    // primary-green with opacity
+      text: '#066b06',                        // primary-green
+      plusBg: 'rgba(6, 107, 6, 0.2)',        // primary-green with higher opacity
+      plusText: '#066b06',                    // primary-green
     },
-    blue: {
-      background: 'rgba(59, 130, 246, 0.1)',
-      text: '#3B82F6',
-      plusBg: 'rgba(59, 130, 246, 0.2)',
-      plusText: '#3B82F6',
+    deepTeal: {
+      background: 'rgba(10, 76, 76, 0.1)',    // deep-teal with opacity
+      text: '#0a4c4c',                        // deep-teal
+      plusBg: 'rgba(10, 76, 76, 0.2)',       // deep-teal with higher opacity
+      plusText: '#0a4c4c',                    // deep-teal
     },
-    violet: {
-      background: 'rgba(139, 92, 246, 0.1)',
-      text: '#8B5CF6',
-      plusBg: 'rgba(139, 92, 246, 0.2)',
-      plusText: '#8B5CF6',
+    gold: {
+      background: 'rgba(196, 155, 60, 0.1)',  // gold with opacity
+      text: '#c49b3c',                        // gold
+      plusBg: 'rgba(196, 155, 60, 0.2)',     // gold with higher opacity
+      plusText: '#c49b3c',                    // gold
+    },
+    oliveGreen: {
+      background: 'rgba(136, 163, 89, 0.1)',  // olive-green with opacity
+      text: '#88a359',                        // olive-green
+      plusBg: 'rgba(136, 163, 89, 0.2)',     // olive-green with higher opacity
+      plusText: '#88a359',                    // olive-green
     },
     // Add more colors as needed
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900" ref={containerRef}>
+    <div className="min-h-screen bg-light-background text-primary-green pt-5" ref={containerRef}>
       {/* Title Section */}
       <div className="relative py-5 flex items-center justify-center">
         <motion.div
@@ -249,7 +255,7 @@ const EnhancedInvestment = () => {
           animate={{ opacity: 1, y: 0 }}
           className="relative z-10 text-center px-4 max-w-5xl mx-auto"
         >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4 text-primary-green">
             Other investment options
           </h1>
         </motion.div>
@@ -294,8 +300,18 @@ const EnhancedInvestment = () => {
                       </motion.div>
                     </div>
 
-                    <h3 className="text-2xl font-bold mb-2">{fund.title}</h3>
-                    <p className="text-gray-700">{fund.description}</p>
+                    <h3
+        className="text-2xl font-bold mb-2"
+        style={{ color: styles.text }}
+      >
+        {fund.title}
+      </h3>
+      <p
+        className="mb-4"
+        style={{ color: styles.plusText }}
+      >
+        {fund.description}
+      </p>
                   </button>
 
                   <AnimatePresence>
@@ -317,14 +333,14 @@ const EnhancedInvestment = () => {
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
-            className="bg-blue-500 rounded-3xl overflow-hidden backdrop-blur-sm shadow-lg"
+            className="bg-sage rounded-3xl overflow-hidden backdrop-blur-sm shadow-lg"
             whileHover={{ scale: 1.02 }}
           >
             <div className="p-8">
-              <h2 className="text-3xl font-bold text-white mb-6">Our Methodology</h2>
+              <h2 className="text-3xl font-bold text-deep-green mb-6">Our Methodology</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <p className="text-white text-lg mb-6">
+                  <p className="text-olive-green text-lg mb-6">
                     Our asset allocator is powered by over 10 years of market data
                     and trained using advanced statistical models to find the optimal
                     investment allocation for your risk preferences.
@@ -332,7 +348,7 @@ const EnhancedInvestment = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-500 px-6 py-3 rounded-xl font-medium inline-flex items-center group"
+                    className="bg-primary-green px-6 py-3 rounded-xl font-medium inline-flex items-center group text-light-background"
                   >
                     Learn More
                     <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
@@ -350,10 +366,10 @@ const EnhancedInvestment = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.1 }}
-                      className="bg-white/20 rounded-xl p-4"
+                      className="bg-light-background rounded-xl p-4"
                     >
-                      <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
-                      <div className="text-sm text-gray-200">{stat.label}</div>
+                      <div className="text-2xl font-bold text-olive-green mb-1">{stat.value}</div>
+                      <div className="text-sm text-deep-teal">{stat.label}</div>
                     </motion.div>
                   ))}
                 </div>
@@ -407,10 +423,10 @@ const Button = ({
   switch (variant) {
     case 'outline':
       variantStyles =
-        'border border-blue-500 text-blue-500 bg-transparent hover:bg-blue-50';
+        'border border-olive-green text-olive-green bg-transparent hover:bg-olive-green-50';
       break;
     default:
-      variantStyles = 'bg-blue-600 text-white hover:bg-blue-700';
+      variantStyles = 'bg-olive-green text-white hover:bg-olive-green-700';
       break;
   }
 
@@ -432,7 +448,7 @@ const Button = ({
 };
 
 const MetricTooltip = ({ text }) => (
-  <div className="absolute z-20 p-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg">
+  <div className="absolute z-20 p-2 bg-sage text-primary-green text-xs rounded-lg shadow-lg">
     {text}
   </div>
 );
@@ -490,9 +506,9 @@ const PortfolioJourney = () => {
   const StepIndicator = ({ currentStep, totalSteps }) => (
     <div className="w-full mb-12">
       <div className="relative">
-        <div className="h-4 bg-gradient-to-r from-blue-100 to-blue-50 rounded-full overflow-hidden">
+        <div className="h-4 bg-olive-green/50 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500 ease-out"
+            className="h-full bg-gradient-to-r from-dark-green/50 to-dark-green rounded-full transition-all duration-500 ease-out"
             style={{ width: `${(currentStep / totalSteps) * 100}%` }}
           />
         </div>
@@ -504,18 +520,18 @@ const PortfolioJourney = () => {
                   shadow-lg transition-all duration-300
                   ${
                     num <= currentStep
-                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white transform scale-110'
-                      : 'bg-white text-gray-400'
+                      ? 'bg-gradient-to-r from-dark-green/50 to-dark-green text-light-background transform scale-110'
+                      : 'bg-white text-gray'
                   }`}
               >
                 {num}
               </div>
               <div
                 className={`mt-2 text-sm font-medium ${
-                  num <= currentStep ? 'text-blue-600' : 'text-gray-400'
+                  num <= currentStep ? 'text-primary-green' : 'text-gray-400'
                 }`}
               >
-                {['Profile', 'Portfolio', 'Review'][num - 1]}
+                {['Input', 'Portfolio', 'Review'][num - 1]}
               </div>
             </div>
           ))}
@@ -588,11 +604,11 @@ const PortfolioJourney = () => {
     return (
       <div className="space-y-8">
         <div className="space-y-6">
-          <label className="text-2xl font-semibold">
+          <label className="text-2xl font-semibold text-deep-teal">
             What's your risk tolerance? (1-10)
           </label>
           <div className="flex items-center space-x-6">
-            <span className="text-2xl font-bold">{riskLevel}</span>
+            <span className="text-2xl font-bold text-deep-teal">{riskLevel}</span>
             <Slider
               value={riskLevel}
               onChange={(val) => setRiskLevel(val)}
@@ -632,11 +648,11 @@ const PortfolioJourney = () => {
         </div>
 
         <div className="space-y-6">
-          <label className="text-2xl font-semibold">
+          <label className="text-2xl font-semibold text-deep-teal">
             Investment Amount (£)
           </label>
           <div className="relative">
-            <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-light-background">
               £
             </span>
             <Input
@@ -724,8 +740,8 @@ const PortfolioJourney = () => {
     ];
 
     return (
-      <div className="bg-white shadow-lg rounded-xl p-6">
-        <h3 className="text-xl font-bold mb-4 text-gray-800">
+      <div className="bg-sage shadow-lg rounded-xl p-6">
+        <h3 className="text-xl font-bold mb-4 text-gold">
           Portfolio Risk Metrics
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -734,17 +750,17 @@ const PortfolioJourney = () => {
               key={id}
               className="p-4 border rounded-lg flex flex-col justify-center relative"
             >
-              <div className="text-sm text-gray-500 flex items-center mb-1">
-                <Icon className="w-4 h-4 text-gray-400 mr-2" />
+              <div className="text-sm text-primary-green flex items-center mb-1">
+                <Icon className="w-4 h-4 text-black mr-2" />
                 {label}
                 <Info
-                  className="w-4 h-4 text-gray-400 cursor-pointer ml-1"
+                  className="w-4 h-4 text-primary-green cursor-pointer ml-1"
                   onClick={() =>
                     setActiveMetric(activeMetric === id ? null : id)
                   }
                 />
               </div>
-              <div className="text-lg font-semibold text-gray-800">
+              <div className="text-lg font-semibold text-primary-green">
                 {value}
               </div>
               {activeMetric === id && (
@@ -770,7 +786,7 @@ const PortfolioJourney = () => {
 
     return (
       <div className="bg-white shadow-lg rounded-xl p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">
+        <h3 className="text-xl font-bold text-primary-green mb-4">
           Asset Allocation
         </h3>
         <div className="w-full h-80">
@@ -812,7 +828,7 @@ const PortfolioJourney = () => {
 
     return (
       <div className="bg-white shadow-lg rounded-xl p-6 mt-8">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">Your Assets</h3>
+        <h3 className="text-xl font-bold text-primary-green mb-4">Your Assets</h3>
         <div className="space-y-6">
           {asset_info.map((asset, index) => {
             const color = COLORS[index % COLORS.length];
@@ -849,7 +865,7 @@ const PortfolioJourney = () => {
               <div
                 key={asset.ticker}
                 ref={(el) => (assetRefs.current[asset.ticker] = el)}
-                className={`bg-gray-50 rounded-xl shadow-md border-2 p-4 hover:shadow-lg`}
+                className={`bg-light-background rounded-xl shadow-md border-2 p-4 hover:shadow-lg`}
                 style={{ borderColor: color }}
               >
                 <div className="flex items-center justify-between space-x-4">
@@ -861,14 +877,14 @@ const PortfolioJourney = () => {
                     >
                       {asset.name}
                     </h4>
-                    <span className="text-xs text-gray-600 mt-1">
+                    <span className="text-xs text-deep-teal mt-1">
                       Ticker: {asset.ticker}
                     </span>
                   </div>
 
                   {/* YTD Return */}
                   <div className="flex flex-col w-1/4 text-right">
-                    <span className="text-xs text-gray-400 uppercase">
+                    <span className="text-xs text-olive-green uppercase">
                       YTD
                     </span>
                     <span
@@ -887,15 +903,15 @@ const PortfolioJourney = () => {
                   {/* Allocation Box */}
                   <div
                     className="flex flex-col px-3 py-2 rounded-md w-1/4"
-                    style={{ backgroundColor: '#f3f4f6' }}
+                    style={{ backgroundColor: '#e2eac2' }}
                   >
-                    <span className="text-xs text-gray-500 uppercase">
+                    <span className="text-xs text-deep-teal uppercase">
                       Allocation
                     </span>
-                    <span className="text-sm font-semibold text-gray-800">
+                    <span className="text-sm font-semibold text-primary-green">
                       {allocationPct}%
                     </span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-primary-green">
                       £
                       {amount
                         ? (
@@ -912,7 +928,7 @@ const PortfolioJourney = () => {
                     onClick={() =>
                       setExpandedTicker(isExpanded ? null : asset.ticker)
                     }
-                    className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                    className="text-olive-green/80 hover:text-olive-green transition-colors duration-200"
                   >
                     {isExpanded ? (
                       <ChevronUpIcon className="h-5 w-5" />
@@ -924,7 +940,7 @@ const PortfolioJourney = () => {
 
                 {isExpanded && (
                   <div className="overflow-hidden mt-4">
-                    <p className="text-sm mb-4 text-gray-700">{asset.info}</p>
+                    <p className="text-sm mb-4 text-deep-teal">{asset.info}</p>
                     <div className="w-full h-48 sm:h-64">
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={perfData}>
@@ -1015,13 +1031,13 @@ const PortfolioJourney = () => {
     return (
       <div className="bg-white rounded-xl shadow-lg p-6 mt-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl sm:text-2xl font-extrabold text-gray-800">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-olive-green">
             See what your portfolio would have returned over the past 10 years
           </h2>
         </div>
         {totalReturn !== null && (
-          <p className="text-gray-700 font-medium mb-2">
-            Return Over the Past 10 Years: {totalReturn.toFixed(2)}%
+          <p className="text-dark-green font-medium mb-2">
+            Over {totalReturn.toFixed(2)}%
           </p>
         )}
 
@@ -1192,49 +1208,49 @@ const PortfolioJourney = () => {
     ];
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="min-h-screen bg-gradient-to-br from-sage to-light-background">
         <div className="max-w-7xl mx-auto px-4 py-16 relative">
           {/* Educational Brokerage Overview Section */}
           <div className="mb-16">
             <div className="text-center mb-8">
-              <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent mb-4">
                 Choose Your Investment Path
               </h2>
-              <p className="text-xl text-gray-700 mb-4">
+              <p className="text-xl text-deep-brown mb-4">
                 We've made investing simple with two clear options to get started
               </p>
               <button
                 onClick={() => setShowBrokerageInfo(!showBrokerageInfo)}
-                className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700"
+                className="inline-flex items-center space-x-2 text-primary-green hover:text-dark-green"
               >
                 <Info className="w-5 h-5" />
                 <span>Learn about different brokerage options</span>
               </button>
             </div>
-
+    
             {showBrokerageInfo && (
-              <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-6">
+              <div className="bg-light-background rounded-2xl shadow-lg p-8 mb-8">
+                <h3 className="text-2xl font-bold text-deep-brown mb-6">
                   Understanding Your Brokerage Options
                 </h3>
                 <div className="grid md:grid-cols-3 gap-6">
                   {brokerageTypes.map((broker, index) => (
                     <div
                       key={index}
-                      className="p-6 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+                      className="p-6 rounded-xl bg-sage hover:bg-light-background transition-colors"
                     >
-                      <h4 className="text-xl font-semibold text-gray-800 mb-3">
+                      <h4 className="text-xl font-semibold text-deep-brown mb-3">
                         {broker.type}
                       </h4>
-                      <p className="text-gray-600 mb-4">{broker.description}</p>
+                      <p className="text-olive-green mb-4">{broker.description}</p>
                       <div className="space-y-2">
                         <div className="flex items-start">
-                          <Check className="w-5 h-5 text-green-500 mt-1 mr-2" />
+                          <Check className="w-5 h-5 text-olive-green mt-1 mr-2" />
                           <div>
                             <span className="font-medium">Pros:</span>
                             <ul className="list-disc list-inside ml-4">
                               {broker.pros.map((pro, i) => (
-                                <li key={i} className="text-gray-600">
+                                <li key={i} className="text-olive-green">
                                   {pro}
                                 </li>
                               ))}
@@ -1242,12 +1258,12 @@ const PortfolioJourney = () => {
                           </div>
                         </div>
                         <div className="flex items-start">
-                          <AlertCircle className="w-5 h-5 text-orange-500 mt-1 mr-2" />
+                          <AlertCircle className="w-5 h-5 text-gold mt-1 mr-2" />
                           <div>
                             <span className="font-medium">Cons:</span>
                             <ul className="list-disc list-inside ml-4">
                               {broker.cons.map((con, i) => (
-                                <li key={i} className="text-gray-600">
+                                <li key={i} className="text-olive-green">
                                   {con}
                                 </li>
                               ))}
@@ -1261,7 +1277,7 @@ const PortfolioJourney = () => {
                 <div className="mt-6 text-center">
                   <a
                     href="/articles/brokerage-platforms"
-                    className="inline-flex items-center text-blue-600 hover:text-blue-700"
+                    className="inline-flex items-center text-primary-green hover:text-dark-green"
                   >
                     Read our detailed brokerage comparison guide
                     <LucideExternalLink className="w-4 h-4 ml-2" />
@@ -1270,34 +1286,34 @@ const PortfolioJourney = () => {
               </div>
             )}
           </div>
-
+    
           {/* Investment Options */}
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {/* Trading 212 Card */}
-            <div className="relative rounded-2xl overflow-hidden bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300">
+            <div className="relative rounded-2xl overflow-hidden bg-light-background shadow-xl hover:shadow-2xl transition-shadow duration-300">
               <div className="p-8">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                      <DollarSign className="w-6 h-6 text-blue-600" />
+                    <div className="w-12 h-12 rounded-full bg-sage flex items-center justify-center">
+                      <DollarSign className="w-6 h-6 text-primary-green" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-gray-800">
+                      <h3 className="text-2xl font-bold text-deep-brown">
                         Trading 212
                       </h3>
-                      <span className="text-green-600 font-medium">
+                      <span className="text-olive-green font-medium">
                         Quickest Option
                       </span>
                     </div>
                   </div>
-                  <div className="px-4 py-2 rounded-full bg-blue-100 text-blue-600 font-semibold">
+                  <div className="px-4 py-2 rounded-full bg-sage text-primary-green font-semibold">
                     Pre-built Portfolio
                   </div>
                 </div>
-
+    
                 <div className="space-y-6">
-                  <div className="bg-gray-50 rounded-xl p-6">
-                    <h4 className="text-lg font-semibold text-gray-800 mb-4">
+                  <div className="bg-sage rounded-xl p-6">
+                    <h4 className="text-lg font-semibold text-deep-brown mb-4">
                       Three Simple Steps:
                     </h4>
                     <div className="space-y-4">
@@ -1318,14 +1334,14 @@ const PortfolioJourney = () => {
                         }
                       ].map((step, index) => (
                         <div key={index} className="flex items-center">
-                          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-4">
-                            <span className="text-blue-600 font-bold">
+                          <div className="w-8 h-8 rounded-full bg-sage flex items-center justify-center mr-4">
+                            <span className="text-primary-green font-bold">
                               {index + 1}
                             </span>
                           </div>
                           <div>
-                            <p className="font-medium">{step.title}</p>
-                            <p className="text-sm text-gray-600">
+                            <p className="font-medium text-deep-brown">{step.title}</p>
+                            <p className="text-sm text-deep-brown">
                               {step.description}
                             </p>
                           </div>
@@ -1333,16 +1349,16 @@ const PortfolioJourney = () => {
                       ))}
                     </div>
                   </div>
-
-                  <div className="p-4 rounded-xl bg-gray-50">
-                    <div className="text-sm text-gray-600 mb-2">
+    
+                  <div className="p-4 rounded-xl bg-sage">
+                    <div className="text-sm text-deep-brown mb-2">
                       Your Selected Risk Level
                     </div>
                     <div className="flex items-center justify-between">
-                      <div className="font-bold text-gray-800">
+                      <div className="font-bold text-deep-brown">
                         Level {riskLevel}
                       </div>
-                      <div className="text-sm">
+                      <div className="text-sm text-deep-brown">
                         {riskLevel <= 3
                           ? 'Conservative'
                           : riskLevel <= 7
@@ -1351,12 +1367,12 @@ const PortfolioJourney = () => {
                       </div>
                     </div>
                   </div>
-
+    
                   <a
                     href={trading212Links[riskLevel]}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full py-4 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200"
+                    className="block w-full py-4 px-6 rounded-xl bg-primary-green text-white text-center font-semibold hover:bg-dark-green transition-all duration-200"
                   >
                     Open Your Portfolio
                     <LucideExternalLink className="inline-block ml-2 w-4 h-4" />
@@ -1364,111 +1380,111 @@ const PortfolioJourney = () => {
                 </div>
               </div>
             </div>
-
+    
              {/* Alternative Brokers Card */}
-<div className="rounded-2xl overflow-hidden bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300">
-  <div className="p-8">
-    <div className="flex items-center justify-between mb-6">
-      <div className="flex items-center space-x-4">
-        <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-          <BarChart2 className="w-6 h-6 text-purple-600" />
-        </div>
-        <div>
-          <h3 className="text-2xl font-bold text-gray-800">
-            Alternative Brokers
-          </h3>
-          <span className="text-purple-600 font-medium">
-            More Flexibility
-          </span>
-        </div>
-      </div>
-      <div className="px-4 py-2 rounded-full bg-purple-100 text-purple-600 font-semibold">
-        Manual Setup
-      </div>
-    </div>
-
-    <div className="space-y-6">
-      <div className="bg-gray-50 rounded-xl p-6">
-        <h4 className="text-lg font-semibold text-gray-800 mb-4">
-          Follow These Steps:
-        </h4>
-        <div className="space-y-4">
-          {[
-            {
-              title: 'Choose Your Broker',
-              description:
-                'Compare fees, features, and minimum deposits',
-              link: {
-                text: 'View broker comparison',
-                url: '/articles/brokerage-platforms'
-              }
-            },
-            {
-              title: 'Open & Fund Account',
-              description: 'Complete verification and add funds',
-              tip: 'Most brokers require ID verification – have your documents ready'
-            },
-            {
-              title: 'Find & Buy Assets',
-              description:
-                'Search for each asset using the ticker symbols',
-              action: {
-                text: 'View your asset list',
-                onClick: () => setStep(2)
-              }
-            }
-            // Removed the fourth step here
-          ].map((step, index) => (
-            <div key={index} className="flex items-start">
-              <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-4 mt-1">
-                <span className="text-purple-600 font-bold">
-                  {index + 1}
-                </span>
-              </div>
-              <div>
-                <p className="font-medium">{step.title}</p>
-                <p className="text-sm text-gray-600">
-                  {step.description}
-                </p>
-                {step.link && (
-                  <a
-                    href={step.link.url}
-                    className="text-sm text-purple-600 hover:text-purple-700 inline-flex items-center mt-1"
-                  >
-                    {step.link.text}
-                    <ChevronRight className="w-4 h-4 ml-1" />
-                  </a>
-                )}
-                {step.tip && (
-                  <div className="mt-2 p-3 bg-yellow-50 rounded-lg">
-                    <p className="text-sm text-yellow-800">
-                      <strong>Note:</strong> {step.tip}
-                    </p>
+            <div className="rounded-2xl overflow-hidden bg-light-background shadow-xl hover:shadow-2xl transition-shadow duration-300">
+              <div className="p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 rounded-full bg-sage flex items-center justify-center">
+                      <BarChart2 className="w-6 h-6 text-gold" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-deep-brown">
+                        Alternative Brokers
+                      </h3>
+                      <span className="text-gold font-medium">
+                        More Flexibility
+                      </span>
+                    </div>
                   </div>
-                )}
-                {step.action && (
-                  <button
-                    onClick={step.action.onClick}
-                    className="text-sm text-purple-600 hover:text-purple-700 inline-flex items-center mt-1"
-                  >
-                    {step.action.text}
-                    <ChevronRight className="w-4 h-4 ml-1" />
-                  </button>
+                  <div className="px-4 py-2 rounded-full bg-sage text-primary-green font-semibold">
+                    Manual Setup
+                  </div>
+                </div>
+    
+                <div className="space-y-6">
+                  <div className="bg-sage rounded-xl p-6">
+                    <h4 className="text-lg font-semibold text-deep-brown mb-4">
+                      Follow These Steps:
+                    </h4>
+                    <div className="space-y-4">
+                      {[
+                        {
+                          title: 'Choose Your Broker',
+                          description:
+                            'Compare fees, features, and minimum deposits',
+                          link: {
+                            text: 'View broker comparison',
+                            url: '/articles/brokerage-platforms'
+                          }
+                        },
+                        {
+                          title: 'Open & Fund Account',
+                          description: 'Complete verification and add funds',
+                          tip: 'Most brokers require ID verification – have your documents ready'
+                        },
+                        {
+                          title: 'Find & Buy Assets',
+                          description:
+                            'Search for each asset using the ticker symbols',
+                          action: {
+                            text: 'View your asset list',
+                            onClick: () => setStep(2)
+                          }
+                        }
+                        // Removed the fourth step here
+                      ].map((step, index) => (
+                        <div key={index} className="flex items-start">
+                          <div className="w-8 h-8 rounded-full bg-sage flex items-center justify-center mr-4 mt-1">
+                            <span className="text-primary-green font-bold">
+                              {index + 1}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="font-medium text-deep-brown">{step.title}</p>
+                            <p className="text-sm text-deep-brown">
+                              {step.description}
+                            </p>
+                            {step.link && (
+                              <a
+                                href={step.link.url}
+                                className="text-sm text-primary-green hover:text-dark-green inline-flex items-center mt-1"
+                              >
+                                {step.link.text}
+                                <ChevronRight className="w-4 h-4 ml-1" />
+                              </a>
+                            )}
+                            {step.tip && (
+                              <div className="mt-2 p-3 bg-light-gold rounded-lg">
+                                <p className="text-sm text-gold">
+                                  <strong>Note:</strong> {step.tip}
+                                </p>
+                              </div>
+                            )}
+                            {step.action && (
+                              <button
+                                onClick={step.action.onClick}
+                                className="text-sm text-primary-green hover:text-dark-green inline-flex items-center mt-1"
+                              >
+                                {step.action.text}
+                                <ChevronRight className="w-4 h-4 ml-1" />
+                              </button>
                             )}
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
-
-                  <div className="bg-purple-50 rounded-xl p-4">
+    
+                  <div className="bg-sage rounded-xl p-4">
                     <div className="flex items-start">
-                      <HelpCircle className="w-5 h-5 text-purple-600 mt-1 mr-3" />
-                      <div className="text-sm text-purple-800">
+                      <HelpCircle className="w-5 h-5 text-primary-green mt-1 mr-3" />
+                      <div className="text-sm text-primary-green">
                         Need help choosing a broker? Read our detailed{' '}
                         <a
                           href="/articles/brokerage-comparison"
-                          className="underline hover:text-purple-900"
+                          className="underline hover:text-dark-green"
                         >
                           broker comparison guide
                         </a>
@@ -1479,12 +1495,12 @@ const PortfolioJourney = () => {
               </div>
             </div>
           </div>
-
+    
           {/* Navigation */}
           <div className="flex justify-center">
             <button
               onClick={() => setStep(2)}
-              className="flex items-center space-x-2 px-6 py-3 rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-200"
+              className="flex items-center space-x-2 px-6 py-3 rounded-lg bg-light-background shadow-md hover:shadow-lg transition-all duration-200"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Portfolio</span>
@@ -1493,7 +1509,7 @@ const PortfolioJourney = () => {
         </div>
       </div>
     );
-  };
+  }
 
   // Step 3 wrapper
   const FinalCTA = () => (
@@ -1505,12 +1521,12 @@ const PortfolioJourney = () => {
   );
 
   return (
-      <div className="bg-gray-100 min-h-screen pt-20">
+      <div className="bg-light-background min-h-screen pt-20">
         <div className="max-w-7xl mx-auto py-8 px-4">
-          <h1 className="text-3xl sm:text-3xl md:text-7xl font-bold text-center mb-4">
+          <h1 className="text-3xl sm:text-3xl md:text-7xl font-bold text-center mb-4 text-sage">
             Invest in Public Markets
           </h1>
-          <p className="text-center text-lg sm:text-xl max-w-2xl mx-auto text-gray-700 mb-8">
+          <p className="text-center text-lg sm:text-xl max-w-2xl mx-auto text-deep-teal mb-8">
             Leverage our cutting-edge asset allocator and comprehensive strategies
             to take advantage of global public markets—tailored to your risk profile.
           </p>
@@ -1519,8 +1535,8 @@ const PortfolioJourney = () => {
             <a href="/risk-quiz" className="group flex items-center gap-3 bg-white px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto">
               <Shield className="w-6 h-6 text-blue-600" />
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900">Take the Risk Quiz</h3>
-                <p className="text-sm text-gray-600">Discover your investor profile</p>
+                <h3 className="font-semibold text-primary-green">Take the Risk Quiz</h3>
+                <p className="text-sm text-olive-green">Discover your investor profile</p>
               </div>
               <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
             </a>
@@ -1528,8 +1544,8 @@ const PortfolioJourney = () => {
             <a href="/assets" className="group flex items-center gap-3 bg-white px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto">
               <LineChart className="w-6 h-6 text-blue-600" />
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900">Explore Assets</h3>
-                <p className="text-sm text-gray-600">Learn about investment options</p>
+                <h3 className="font-semibold text-primary-green">Explore Assets</h3>
+                <p className="text-sm text-olive-green">Learn about investment options</p>
               </div>
               <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
             </a>
