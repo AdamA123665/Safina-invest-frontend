@@ -56,10 +56,8 @@ const ModernAssetsPage = () => {
   }, []);
 
   // -----------------------------------------------
-  // Old code states and logic (Risk Quiz, etc.)
+  // Risk Tolerance Quiz
   // -----------------------------------------------
-
-  // ------------------ Risk Tolerance Quiz ------------------
   const [step, setStep] = useState(0);
   const [name, setName] = useState('');
   const [, setScore] = useState(0);
@@ -173,7 +171,7 @@ const ModernAssetsPage = () => {
     []
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (answers.length === 0) {
       setAnswers(Array(questions.length).fill(null));
     }
@@ -229,7 +227,7 @@ const ModernAssetsPage = () => {
     // Step 0: Name input
     if (step === 0) {
       return (
-        <div className="max-w-md mx-auto p-8 bg-gray-800 rounded-lg shadow-md mt-10 text-white">
+        <div className="max-w-md mx-auto p-8 bg-deep-teal rounded-lg shadow-md mt-10 text-light-background">
           <h1 className="text-2xl font-bold mb-4">Welcome to the Portfolio Horizons Risk Profiler!</h1>
           <p className="mb-4">
             I’m your personal elite wealth manager, ready to dive deep into your investing psyche. We’ll
@@ -245,7 +243,7 @@ const ModernAssetsPage = () => {
             onChange={(e) => setName(e.target.value)}
           />
           <button
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            className="bg-olive-green text-light-background px-4 py-2 rounded hover:bg-dark-green"
             onClick={goNext}
           >
             Start Quiz
@@ -261,7 +259,7 @@ const ModernAssetsPage = () => {
       const selectedOption = answers[qIndex];
 
       return (
-        <div className="max-w-md mx-auto p-8 bg-gray-800 rounded-lg shadow-md mt-10 text-white">
+        <div className="max-w-md mx-auto p-8 bg-deep-teal rounded-lg shadow-md mt-10 text-light-background">
           <h2 className="text-xl font-bold mb-4">{`Question ${step}/${questions.length}`}</h2>
           {step === 1 && (
             <p className="mb-4">
@@ -276,14 +274,14 @@ const ModernAssetsPage = () => {
                 key={idx}
                 className={`block p-4 border rounded cursor-pointer ${
                   selectedOption === opt.value
-                    ? 'border-green-600 bg-green-600/20'
-                    : 'hover:bg-gray-700'
+                    ? 'border-primary-green bg-primary-green/20'
+                    : 'hover:bg-dark-green'
                 }`}
               >
                 <input
                   type="radio"
                   name={`question-${qIndex}`}
-                  className="mr-2 accent-green-600"
+                  className="mr-2 accent-primary-green"
                   checked={selectedOption === opt.value}
                   onChange={() => handleAnswerSelect(opt.value)}
                 />
@@ -294,14 +292,14 @@ const ModernAssetsPage = () => {
           <div className="flex justify-between mt-6">
             {step > 1 && (
               <button
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                className="bg-olive-green text-light-background px-4 py-2 rounded hover:bg-dark-green"
                 onClick={goBack}
               >
                 Back
               </button>
             )}
             <button
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 ml-auto"
+              className="bg-olive-green text-light-background px-4 py-2 rounded hover:bg-dark-green ml-auto"
               onClick={goNext}
             >
               Next
@@ -315,24 +313,20 @@ const ModernAssetsPage = () => {
     const { riskLevel, annualReturn } = calculateResult();
 
     return (
-      <div className="max-w-md mx-auto p-8 bg-gray-800 rounded-lg shadow-md mt-10 text-white">
+      <div className="max-w-md mx-auto p-8 bg-deep-teal rounded-lg shadow-md mt-10 text-light-background">
         <h2 className="text-2xl font-bold mb-4">Your Results Are In!</h2>
         <p className="mb-4">
           All right, {name.trim() || 'Investor'}. Based on our conversation and your answers, I’d approximate
           your risk tolerance level at:
         </p>
-        <p className="text-xl font-bold text-green-400 mb-4">Risk Level: {riskLevel}/10</p>
-        <p className="mb-4">
+        <p className="text-xl font-bold text-primary-green mb-4">Risk Level: {riskLevel}/10</p>
+        <p className="mb-6">
           This suggests a target annual return around: <strong>{annualReturn}%</strong> per year. Remember,
           higher returns come with higher risk. Make sure you’re comfortable with the journey as well as the
           destination.
         </p>
-        <p className="mb-6">
-          Thank you for taking the Portfolio Horizons Risk Profiler! Stay thoughtful, stay curious, and invest
-          with confidence.
-        </p>
         <button
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-olive-green text-light-background px-4 py-2 rounded hover:bg-dark-green"
           onClick={() => {
             // Reset quiz if user wants to retake
             setStep(0);
@@ -364,7 +358,7 @@ const ModernAssetsPage = () => {
     Cash: 'Low',
   };
 
-  const assetColors = ['#4A90E2', '#50E3C2', '#F5A623', '#B8E986'];
+  const assetColors = ['#066b06', '#0a4c4c', '#88a359', '#c49b3c']; // Primary Green, Deep Teal, Olive Green, Gold
 
   const calculateRisk = (allocObj) => {
     const riskWeights = { Stocks: 1, Bonds: 0.5, RealEstate: 0.7, Cash: 0 };
@@ -449,60 +443,60 @@ const ModernAssetsPage = () => {
   const selectedStrategy = goalStrategies[investmentGoal];
 
   // -----------------------------------------------
-  // Cards & Tools Setup (the "new" code)
+  // Financial Cards Setup
   // -----------------------------------------------
   const financialCards = [
     {
       id: 'savings',
       title: 'Savings',
-      icon: <DollarSign className="w-8 h-8" />,
-      color: 'from-blue-500 to-cyan-400',
+      icon: <DollarSign className="w-8 h-8 text-light-background" />,
+      color: 'bg-primary-green',
       description: 'Strategic wealth building through smart saving',
       details: 'Explore various savings accounts and strategies',
     },
     {
       id: 'pensions',
       title: 'Pensions',
-      icon: <Building className="w-8 h-8" />,
-      color: 'from-purple-500 to-pink-400',
+      icon: <Building className="w-8 h-8 text-light-background" />,
+      color: 'bg-deep-teal',
       description: 'Secure your retirement future',
       details: 'Workplace and personal pension planning',
     },
     {
       id: 'isas',
       title: 'ISAs',
-      icon: <Landmark className="w-8 h-8" />,
-      color: 'from-green-500 to-emerald-400',
+      icon: <Landmark className="w-8 h-8 text-light-background" />,
+      color: 'bg-deep-brown',
       description: 'Tax-efficient investment accounts',
       details: 'Stocks & Shares, Cash, and Lifetime ISAs',
     },
     {
       id: 'brokerage',
       title: 'Investment Brokerage',
-      icon: <BarChart className="w-8 h-8" />,
-      color: 'from-orange-500 to-amber-400',
+      icon: <BarChart className="w-8 h-8 text-light-background" />,
+      color: 'bg-olive-green',
       description: 'Access global markets',
       details: 'Trade stocks, ETFs, and more',
     },
     {
       id: 'tax',
       title: 'Tax Planning',
-      icon: <Calculator className="w-8 h-8" />,
-      color: 'from-red-500 to-rose-400',
+      icon: <Calculator className="w-8 h-8 text-light-background" />,
+      color: 'bg-gold',
       description: 'Optimize your tax efficiency',
       details: 'Strategic tax planning and advice',
     },
   ];
 
   // -----------------------------------------------
-  // Integrate the 3 old tools under Tools & Calcs
+  // Tools & Calculators Setup
   // -----------------------------------------------
   const tools = [
     {
       id: 'quiz',
       title: 'Risk Tolerance Quiz',
-      icon: <FaBalanceScale className="w-12 h-12" />,
-      color: 'from-yellow-600 to-orange-400',
+      icon: <FaBalanceScale className="w-12 h-12 text-light-background" />,
+      color: 'bg-dark-green',
       description: 'Discover your investment risk level',
       expandedContent: (
         <div className="mt-6">
@@ -513,25 +507,25 @@ const ModernAssetsPage = () => {
     {
       id: 'allocation',
       title: 'Asset Allocation Tool',
-      icon: <FaChartLine className="w-12 h-12" />,
-      color: 'from-purple-600 to-pink-400',
+      icon: <FaChartLine className="w-12 h-12 text-light-background" />,
+      color: 'bg-olive-green',
       description: 'Experiment with portfolio diversification',
       expandedContent: (
-        <div className="mt-6 bg-gray-800 p-6 rounded-lg shadow-inner text-white">
-          <div className="p-8 bg-gray-900 rounded-lg shadow-md">
-            <h1 className="text-2xl font-bold text-center text-white">Asset Allocation & Diversification</h1>
-            <p className="text-gray-300 text-center mb-6">
+        <div className="mt-6 bg-light-background p-6 rounded-lg shadow-inner text-black">
+          <div className="p-8 bg-white rounded-lg shadow-md">
+            <h1 className="text-2xl font-bold text-center text-deep-brown">Asset Allocation & Diversification</h1>
+            <p className="text-gray-700 text-center mb-6">
               Learn how diversification reduces risk and improves portfolio stability.
             </p>
 
             <div className="space-y-4 mb-6">
               <div>
-                <label className="block text-gray-300 font-medium">Investment Amount ($)</label>
+                <label className="block text-deep-brown font-medium">Investment Amount ($)</label>
                 <input
                   type="number"
                   value={investment}
                   onChange={(e) => setInvestment(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500 text-black"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-primary-green focus:border-primary-green text-black"
                   placeholder="Enter your investment amount"
                 />
               </div>
@@ -539,15 +533,15 @@ const ModernAssetsPage = () => {
               {/* Asset Allocation Sliders */}
               {Object.keys(allocation).map((asset) => (
                 <div key={asset} className="flex items-center justify-between space-x-4">
-                  <label className="w-1/4 text-gray-300 flex items-center">
+                  <label className="w-1/4 text-deep-brown flex items-center">
                     {asset}
                     <span
                       className={`ml-2 text-sm px-2 py-1 rounded ${
                         assetRiskLevels[asset] === 'High'
-                          ? 'bg-red-500/10 text-red-300'
+                          ? 'bg-red-500/10 text-red-500'
                           : assetRiskLevels[asset] === 'Medium'
-                          ? 'bg-yellow-500/10 text-yellow-300'
-                          : 'bg-green-500/10 text-green-300'
+                          ? 'bg-yellow-500/10 text-yellow-500'
+                          : 'bg-green-500/10 text-green-500'
                       }`}
                     >
                       {assetRiskLevels[asset]} Risk
@@ -561,7 +555,7 @@ const ModernAssetsPage = () => {
                     onChange={(e) => handleAllocationChange(asset, e.target.value)}
                     className="w-3/4"
                   />
-                  <span className="w-1/12 text-gray-200">{allocation[asset].toFixed(0)}%</span>
+                  <span className="w-1/12 text-deep-brown">{allocation[asset].toFixed(0)}%</span>
                 </div>
               ))}
 
@@ -570,7 +564,7 @@ const ModernAssetsPage = () => {
 
             {/* Pie Chart Visualization */}
             <div className="flex flex-col items-center">
-              <h2 className="text-lg font-semibold text-white">Your Portfolio</h2>
+              <h2 className="text-lg font-semibold text-deep-brown">Your Portfolio</h2>
               <div className="w-full h-64 mt-4">
                 <ResponsiveContainer>
                   <RePieChart>
@@ -596,7 +590,7 @@ const ModernAssetsPage = () => {
                       layout="horizontal"
                       align="center"
                       verticalAlign="bottom"
-                      wrapperStyle={{ color: '#fff' }}
+                      wrapperStyle={{ color: '#2c1810' }}
                     />
                   </RePieChart>
                 </ResponsiveContainer>
@@ -604,26 +598,26 @@ const ModernAssetsPage = () => {
             </div>
 
             {/* Risk and Diversification */}
-            <div className="mt-6 p-4 bg-gray-800 rounded-lg shadow-inner">
-              <h3 className="text-lg font-semibold text-white flex items-center">
+            <div className="mt-6 p-4 bg-olive-green rounded-lg shadow-inner">
+              <h3 className="text-lg font-semibold text-deep-brown flex items-center">
                 Simulated Risk:{' '}
-                <span className="font-bold text-red-400 ml-2">
+                <span className="font-bold text-primary-green ml-2">
                   {calculateRisk(allocation).toFixed(0)}%
                 </span>
                 <button
-                  className="ml-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full hover:bg-green-600"
+                  className="ml-2 bg-primary-green text-light-background text-xs px-2 py-1 rounded-full hover:bg-dark-green"
                   onClick={() => setShowModal({ ...showModal, risk: true })}
                 >
                   i
                 </button>
               </h3>
-              <h3 className="text-lg font-semibold text-white flex items-center mt-2">
+              <h3 className="text-lg font-semibold text-deep-brown flex items-center mt-2">
                 Diversification Score:{' '}
-                <span className="font-bold text-green-400 ml-2">
+                <span className="font-bold text-primary-green ml-2">
                   {(diversificationScore * 100).toFixed(0)}%
                 </span>
                 <button
-                  className="ml-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full hover:bg-green-600"
+                  className="ml-2 bg-primary-green text-light-background text-xs px-2 py-1 rounded-full hover:bg-dark-green"
                   onClick={() => setShowModal({ ...showModal, diversification: true })}
                 >
                   i
@@ -638,14 +632,14 @@ const ModernAssetsPage = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <div className="bg-gray-800 text-white rounded-lg p-6 shadow-xl">
+                <div className="bg-deep-teal text-light-background rounded-lg p-6 shadow-xl">
                   <h2 className="text-lg font-bold mb-4">Simulated Risk</h2>
-                  <p className="text-gray-300">
+                  <p className="text-gray-200">
                     Simulated risk indicates how risky your portfolio is based on the proportion of
                     high-risk assets like stocks compared to low-risk assets like cash.
                   </p>
                   <button
-                    className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                    className="mt-4 bg-primary-green text-light-background px-4 py-2 rounded-lg hover:bg-dark-green"
                     onClick={() => setShowModal({ ...showModal, risk: false })}
                   >
                     Close
@@ -661,14 +655,14 @@ const ModernAssetsPage = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <div className="bg-gray-800 text-white rounded-lg p-6 shadow-xl">
+                <div className="bg-deep-teal text-light-background rounded-lg p-6 shadow-xl">
                   <h2 className="text-lg font-bold mb-4">Diversification Score</h2>
-                  <p className="text-gray-300">
+                  <p className="text-gray-200">
                     Diversification measures how evenly your assets are distributed across different asset
                     classes, reducing overall risk and improving stability.
                   </p>
                   <button
-                    className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                    className="mt-4 bg-primary-green text-light-background px-4 py-2 rounded-lg hover:bg-dark-green"
                     onClick={() => setShowModal({ ...showModal, diversification: false })}
                   >
                     Close
@@ -679,13 +673,13 @@ const ModernAssetsPage = () => {
 
             {/* Educational Tip */}
             <motion.div
-              className="mt-6 p-4 bg-green-900/40 rounded-lg shadow-inner"
+              className="mt-6 p-4 bg-primary-green/20 rounded-lg shadow-inner"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h3 className="text-lg font-semibold text-green-300">Why Diversify?</h3>
-              <p className="text-gray-300">
+              <h3 className="text-lg font-semibold text-deep-brown">Why Diversify?</h3>
+              <p className="text-gray-700">
                 Diversification helps you reduce risk by spreading investments across different asset
                 classes. If one asset class underperforms, others may compensate for the loss, ensuring
                 stability and long-term growth.
@@ -698,18 +692,18 @@ const ModernAssetsPage = () => {
     {
       id: 'timeHorizon',
       title: 'Time Horizon & Goals',
-      icon: <FaRegCalendarAlt className="w-12 h-12" />,
-      color: 'from-green-600 to-teal-400',
+      icon: <FaRegCalendarAlt className="w-12 h-12 text-light-background" />,
+      color: 'bg-deep-brown',
       description: 'Plan investments around your life goals',
       expandedContent: (
-        <div className="mt-6 bg-gray-800 p-6 rounded-lg shadow-inner text-white">
-          <h3 className="text-lg font-semibold text-center">
+        <div className="mt-6 bg-light-background p-6 rounded-lg shadow-inner text-black">
+          <h3 className="text-lg font-semibold text-center text-deep-brown">
             Plan Your Investments Around Your Life Goals
           </h3>
 
           {/* Time Horizon Slider */}
           <div className="mt-4">
-            <label className="block text-gray-300 font-medium mb-2">
+            <label className="block text-deep-brown font-medium mb-2">
               Select Your Time Horizon (Years)
             </label>
             <input
@@ -720,7 +714,7 @@ const ModernAssetsPage = () => {
               onChange={(e) => handleTimeHorizonChange(e.target.value)}
               className="w-full"
             />
-            <div className="flex justify-between text-gray-400 text-sm mt-2">
+            <div className="flex justify-between text-deep-brown text-sm mt-2">
               <span>1 Year</span>
               <span>{timeHorizon} Years</span>
               <span>30+ Years</span>
@@ -728,20 +722,20 @@ const ModernAssetsPage = () => {
           </div>
 
           {feedback && (
-            <p className="mt-4 text-sm text-gray-200 bg-gray-700 p-3 rounded-md">
+            <p className="mt-4 text-sm text-red-500 bg-red-500/10 p-3 rounded-md">
               {feedback}
             </p>
           )}
 
           {/* Investment Goals Selector */}
           <div className="mt-6">
-            <label className="block text-gray-300 font-medium mb-2">
+            <label className="block text-deep-brown font-medium mb-2">
               Select Your Investment Goal
             </label>
             <select
               value={investmentGoal}
               onChange={(e) => setInvestmentGoal(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500 text-black"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-primary-green focus:border-primary-green text-black"
             >
               <option value="Retirement">Retirement</option>
               <option value="House">Save for a House</option>
@@ -751,10 +745,10 @@ const ModernAssetsPage = () => {
           </div>
 
           {/* Investment Strategy */}
-          <div className="mt-6 p-4 bg-gray-900 rounded-lg shadow-md">
-            <h4 className="text-lg font-semibold">Strategy for {investmentGoal}</h4>
-            <p className="mt-2 text-gray-300">{goalDescriptions[investmentGoal]}</p>
-            <ul className="mt-4 space-y-2 text-gray-200">
+          <div className="mt-6 p-4 bg-deep-teal rounded-lg shadow-md">
+            <h4 className="text-lg font-semibold text-sage">Strategy for {investmentGoal}</h4>
+            <p className="mt-2 text-light-background">{goalDescriptions[investmentGoal]}</p>
+            <ul className="mt-4 space-y-2 text-light-background">
               {Object.entries(selectedStrategy).map(([key, value]) => (
                 <li key={key} className="flex justify-between">
                   <span>{key}:</span>
@@ -766,13 +760,13 @@ const ModernAssetsPage = () => {
 
           {/* Educational Tip */}
           <motion.div
-            className="mt-6 p-4 bg-green-900/40 rounded-lg shadow-inner"
+            className="mt-6 p-4 bg-primary-green/20 rounded-lg shadow-inner"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-lg font-semibold text-green-300">Why Time Horizon and Goals Matter?</h3>
-            <p className="text-gray-300">
+            <h3 className="text-lg font-semibold text-deep-brown">Why Time Horizon and Goals Matter?</h3>
+            <p className="text-gray-700">
               Your time horizon determines how much risk you can take, while your goals shape your
               investment strategy. Aligning your investments with life goals ensures you’re on track to
               achieve them without unnecessary risk.
@@ -784,15 +778,15 @@ const ModernAssetsPage = () => {
   ];
 
   // -----------------------------------------------
-  // Asset Classes (updated icons)
+  // Asset Classes (updated icons and colors)
   // -----------------------------------------------
   const assetClasses = [
     {
       id: 'equities',
       title: 'Equities',
-      icon: <FaChartLine className="w-8 h-8" />,
+      icon: <FaChartLine className="w-8 h-8 text-light-background" />,
       riskLevel: 'High',
-      riskColor: 'from-blue-500 to-purple-500',
+      riskColor: 'bg-primary-green',
       expectedReturn: '8-12%',
       description:
         'Equities represent ownership in companies. Historically high returns, but also higher risk.',
@@ -800,27 +794,27 @@ const ModernAssetsPage = () => {
     {
       id: 'sukuk',
       title: 'Sukuk',
-      icon: <FaBalanceScale className="w-8 h-8" />,
+      icon: <FaBalanceScale className="w-8 h-8 text-light-background" />,
       riskLevel: 'Low',
-      riskColor: 'from-green-500 to-teal-500',
+      riskColor: 'bg-deep-brown',
       expectedReturn: '3-5%',
       description: 'Sukuk are Sharia-compliant bonds that provide steady, low-risk income.',
     },
     {
       id: 'private-markets',
       title: 'Private Markets',
-      icon: <FaMoneyBillWave className="w-8 h-8" />,
+      icon: <FaMoneyBillWave className="w-8 h-8 text-light-background" />,
       riskLevel: 'High',
-      riskColor: 'from-pink-500 to-red-500',
+      riskColor: 'bg-olive-green',
       expectedReturn: '12-20%',
       description: 'Invest in non-public companies. Potential for high returns but less liquidity.',
     },
     {
       id: 'commodities',
       title: 'Commodities',
-      icon: <FaLeaf className="w-8 h-8" />,
+      icon: <FaLeaf className="w-8 h-8 text-light-background" />,
       riskLevel: 'Moderate',
-      riskColor: 'from-yellow-500 to-amber-500',
+      riskColor: 'bg-gold',
       expectedReturn: '5-10%',
       description:
         'Physical goods like metals, oil, and agricultural products. Provide diversification.',
@@ -828,9 +822,9 @@ const ModernAssetsPage = () => {
     {
       id: 'real-estate',
       title: 'Real Estate',
-      icon: <FaHome className="w-8 h-8" />,
+      icon: <FaHome className="w-8 h-8 text-light-background" />,
       riskLevel: 'Moderate',
-      riskColor: 'from-indigo-500 to-purple-500',
+      riskColor: 'bg-olive-green',
       expectedReturn: '6-10%',
       description:
         'Property investments can offer rental income and capital appreciation.',
@@ -838,19 +832,19 @@ const ModernAssetsPage = () => {
     {
       id: 'etfs',
       title: 'ETFs',
-      icon: <FaExchangeAlt className="w-8 h-8" />,
+      icon: <FaExchangeAlt className="w-8 h-8 text-light-background" />,
       riskLevel: 'Varied',
-      riskColor: 'from-gray-500 to-blue-500',
+      riskColor: 'bg-primary-green',
       expectedReturn: '5-10%',
       description: 'Exchange-Traded Funds track indices or sectors. Risk and returns vary by ETF.',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white pt-10">
+    <div className="min-h-screen bg-sage text-light-background pt-10">
       {/* Title: Financial Solutions */}
       <div ref={containerRef} className="max-w-7xl mx-auto px-4 py-20">
-        <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+        <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
           Financial Solutions
         </h2>
 
@@ -858,18 +852,15 @@ const ModernAssetsPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
           {financialCards.map((card) => (
             <div key={card.id} className="group relative">
-              {/* Animated glow effect */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl opacity-0 group-hover:opacity-100 blur transition duration-500" />
+              {/* Solid background without gradient */}
+              <div className="absolute inset-0 bg-primary-green opacity-0 group-hover:opacity-10 rounded-xl transition-opacity duration-500" />
               <div
-                className="relative h-full bg-gray-800/30 backdrop-blur-xl p-6 rounded-xl overflow-hidden border border-gray-700/50 transition-all duration-500 hover:translate-y-[-4px] hover:shadow-xl cursor-pointer"
+                className={`relative h-full ${card.color} p-6 rounded-xl overflow-hidden border border-gray-700/50 transition-all duration-500 hover:translate-y-[-4px] hover:shadow-xl cursor-pointer`}
                 onClick={() => setActiveSection(card.id)}
               >
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${card.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-                />
                 <div className="relative z-10">
                   <div
-                    className={`p-3 rounded-lg bg-gradient-to-br ${card.color} inline-block mb-4`}
+                    className={`p-3 rounded-lg ${card.color} inline-block mb-4`}
                   >
                     {card.icon}
                   </div>
@@ -885,7 +876,7 @@ const ModernAssetsPage = () => {
 
       {/* Title: Tools & Calculators */}
       <div className="max-w-7xl mx-auto px-4 pb-20">
-        <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+        <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
           Tools &amp; Calculators
         </h2>
 
@@ -896,11 +887,10 @@ const ModernAssetsPage = () => {
             {tools.map((tool) => (
               <div key={tool.id}>
                 <div
-                  className={`relative bg-gray-800/30 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-500
-                  ${
+                  className={`relative ${tool.color} rounded-xl overflow-hidden transition-all duration-500 ${
                     expandedTool && expandedTool !== tool.id
                       ? 'opacity-50'
-                      : 'hover:scale-105'
+                      : 'hover:shadow-xl'
                   }`}
                 >
                   <div
@@ -910,7 +900,8 @@ const ModernAssetsPage = () => {
                     }
                   >
                     <div
-                      className={`w-16 h-16 rounded-full bg-gradient-to-br ${tool.color} flex items-center justify-center mb-4`}
+                      className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-${tool.color}`}
+                       // Light Background for icon container
                     >
                       {tool.icon}
                     </div>
@@ -927,19 +918,13 @@ const ModernAssetsPage = () => {
             ))}
           </div>
 
-          {/* Expanded Content (in normal flow) */}
+          {/* Expanded Content */}
           {expandedTool && (
             <div
-              className="bg-gray-800/30 backdrop-blur-xl border border-gray-700/50 rounded-xl overflow-hidden transition-all duration-500 px-8 py-8"
+              className="bg-deep-teal p-8 rounded-lg shadow-inner transition-all duration-500"
               style={{ minHeight: '400px' }}
             >
               <div className="relative">
-                {/* Background Effects */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                  <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
-                  <div className="absolute bottom-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2" />
-                </div>
-
                 {/* Tool Expanded Content */}
                 <div className="relative">
                   {tools.find((t) => t.id === expandedTool)?.expandedContent}
@@ -951,38 +936,38 @@ const ModernAssetsPage = () => {
       </div>
 
       {/* Title: Asset Classes */}
-      <div className="pb-20 bg-gradient-to-b from-gray-800 to-gray-900">
-        <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+      <div className="pb-20 bg-light-background pt-20">
+        <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
           Asset Classes
         </h2>
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {assetClasses.map((asset) => (
             <div key={asset.id} className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl opacity-0 group-hover:opacity-100 blur transition duration-500" />
-              <div className="relative bg-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-gray-700/50">
+              <div className="absolute inset-0 bg-primary-green opacity-0 group-hover:opacity-10 rounded-xl transition-opacity duration-500" />
+              <div className="relative bg-deep-teal p-6 rounded-xl border border-gray-700/50">
                 <div className="flex items-center justify-between mb-6">
                   <div
-                    className={`p-3 rounded-lg bg-gradient-to-br ${asset.riskColor}`}
+                    className={`p-3 rounded-lg ${asset.riskColor}`}
                   >
                     {asset.icon}
                   </div>
                   <div className="text-right">
-                    <span className="text-sm text-gray-400">Risk Level</span>
-                    <div className="text-xl font-bold">{asset.riskLevel}</div>
+                    <span className="text-sm text-olive-green">Risk Level</span>
+                    <div className="text-xl font-bold text-sage">{asset.riskLevel}</div>
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold mb-4">{asset.title}</h3>
-                <p className="text-gray-300 mb-6">{asset.description}</p>
+                <h3 className="text-2xl font-bold mb-4 text-sage">{asset.title}</h3>
+                <p className="text-light-background mb-6">{asset.description}</p>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-900/50 rounded-lg p-3">
-                    <div className="text-sm text-gray-400">Expected Return</div>
-                    <div className="font-semibold">{asset.expectedReturn}</div>
+                  <div className="bg-light-gold rounded-lg p-3">
+                    <div className="text-sm text-olive-green">Expected Return</div>
+                    <div className="font-semibold text-primary-green">{asset.expectedReturn}</div>
                   </div>
-                  <div className="flex items-center bg-gray-900/50 rounded-lg p-3 justify-center">
-                    <button className="text-sm font-semibold bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">
+                  
+                    <button className="text-sm font-semibold bg-olive-green hover:bg-dark-green px-4 py-2 rounded text-light-background">
                       Learn More
                     </button>
-                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -991,11 +976,11 @@ const ModernAssetsPage = () => {
       </div>
 
       {/* ------------------- RESOURCES & NEXT STEPS + CTA ------------------- */}
-      <section className="bg-gray-800 py-16 px-4 text-white">
+      <section className="bg-light-background py-16 px-4 text-light-background">
         <div className="max-w-7xl mx-auto">
           {/* Resources and Next Steps */}
           <div className="mb-16">
-            <h2 className="text-4xl font-bold mb-8 flex items-center text-green-400">
+            <h2 className="text-4xl font-bold mb-8 flex items-center text-primary-green">
               <FaRegLightbulb className="mr-3" /> Resources and Next Steps
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -1023,16 +1008,16 @@ const ModernAssetsPage = () => {
               ].map((resource, idx) => (
                 <motion.div
                   key={idx}
-                  className="bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
+                  className="bg-sage p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300"
                   whileHover={{ scale: 1.02 }}
                 >
-                  <h3 className="text-2xl font-semibold text-green-300 mb-3">
+                  <h3 className="text-2xl font-semibold text-primary-green mb-3">
                     {resource.title}
                   </h3>
-                  <p className="text-gray-300 mb-4">{resource.description}</p>
+                  <p className="text-deep-teal mb-4">{resource.description}</p>
                   <a
                     href={resource.link}
-                    className="text-green-400 hover:text-green-200 font-semibold"
+                    className="text-primary-green hover:text-olive-green font-semibold"
                   >
                     Read More &rarr;
                   </a>
@@ -1044,14 +1029,14 @@ const ModernAssetsPage = () => {
           {/* Call to Action */}
           <div className="text-center">
             <motion.h2
-              className="text-4xl font-bold text-green-400 mb-6"
+              className="text-4xl font-bold text-primary-green mb-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
               Ready to Start Your Investment Journey?
             </motion.h2>
             <motion.button
-              className="bg-green-600 text-white px-8 py-4 rounded-full text-xl font-semibold hover:bg-green-700 transition duration-300 shadow-lg hover:shadow-xl"
+              className="bg-primary-green text-light-background px-8 py-4 rounded-full text-xl font-semibold hover:bg-dark-green transition duration-300 shadow-lg hover:shadow-xl"
               whileHover={{ scale: 1.05 }}
               onClick={() => navigate('/allocation')} // Adjust route as needed
             >

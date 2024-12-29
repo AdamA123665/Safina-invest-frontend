@@ -54,6 +54,7 @@ const Navbar = () => {
         w-full fixed top-0 left-0 z-50
         transition-all duration-300 ease-in-out
         ${isScrolled ? 'py-2' : 'py-6'}
+        bg-transparent // Ensure the outer navbar is transparent
       `}
     >
       <div className={`
@@ -62,18 +63,20 @@ const Navbar = () => {
       `}>
         <div
           className={`
-            relative bg-gradient-to-r from-green-500 via-green-400 to-green-500 rounded-full shadow-lg backdrop-blur-sm overflow-hidden
+            relative rounded-full shadow-lg backdrop-blur-sm overflow-hidden
             transition-all duration-300 ease-in-out
             ${isScrolled 
               ? 'px-3 py-1 ml-auto w-fit mr-0' 
               : 'px-6 py-2 mx-auto w-full'
             }
+            bg-[#066b06] // Set the inner pill's background to #066b06
           `}
         >
-          {/* Animated background gradient */}
+          {/* Animated background effect */}
           <div 
-            className="absolute inset-0 bg-gradient-to-r from-green-400/30 via-emerald-400/30 to-green-300/30 opacity-50"
+            className="absolute inset-0 opacity-30" // Reduced opacity for subtle effect
             style={{
+              backgroundColor: '#066b06', // Use the same green color
               transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`,
               transition: 'transform 0.3s ease-out'
             }}
@@ -92,7 +95,7 @@ const Navbar = () => {
                 >
                   <div className="relative overflow-hidden p-2 rounded-lg">
                     <HomeIcon className="w-6 h-6 text-white transform transition-all duration-300 group-hover:scale-110" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-green-300 to-emerald-400 opacity-0 group-hover:opacity-100 transform scale-x-0 group-hover:scale-x-100 transition-all duration-300 origin-left" />
+                    <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transform scale-x-0 group-hover:scale-x-100 transition-all duration-300 origin-left" />
                   </div>
                   <span className="font-semibold text-white">
                     Home
@@ -134,7 +137,7 @@ const Navbar = () => {
                   </div>
                   {/* Animated highlight effect */}
                   <div
-                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-green-200 to-emerald-200 transform origin-left transition-all duration-300 ${
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-white transform origin-left transition-all duration-300 ${
                       activeItem === index ? 'scale-x-100' : 'scale-x-0'
                     }`}
                   />
@@ -167,14 +170,18 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu (unchanged) */}
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div
           className="fixed inset-0 bg-black/60 backdrop-blur-md z-50"
           onClick={() => setMobileMenuOpen(false)}
         >
           <div
-            className="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-b from-green-500 to-green-600 shadow-2xl transform transition-transform duration-500 ease-out"
+            className="absolute right-0 top-0 bottom-0 w-64 shadow-2xl transform transition-transform duration-500 ease-out"
+            style={{
+              backgroundColor: '#066b06', // Set mobile menu background to #066b06
+              // Remove gradient if present
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-5 relative">

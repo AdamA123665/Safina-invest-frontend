@@ -20,7 +20,7 @@ const AboutSection = () => {
       link: '/assets',
       linkLabel: 'Explore Assets',
       icon: BookOpen,
-      gradient: 'from-emerald-400 to-teal-500',
+      gradient: 'from-primary-green to-deep-teal', // Updated gradient colors
     },
     {
       title: 'Manage',
@@ -29,7 +29,7 @@ const AboutSection = () => {
       link: '/allocation',
       linkLabel: 'Allocation Tools',
       icon: TrendingUp,
-      gradient: 'from-teal-400 to-cyan-500',
+      gradient: 'from-deep-teal to-dark-green', // Updated gradient colors
     },
     {
       title: 'Prosper',
@@ -38,7 +38,7 @@ const AboutSection = () => {
       link: '/research',
       linkLabel: 'Research Insights',
       icon: Target,
-      gradient: 'from-cyan-400 to-emerald-500',
+      gradient: 'from-olive-green to-primary-green', // Updated gradient colors
     },
   ];
 
@@ -90,7 +90,7 @@ const AboutSection = () => {
   };
 
   return (
-    <section className="relative w-full py-20 bg-gray-50 overflow-hidden">
+    <section className="relative w-full py-20 bg-gradient-to-br from-sage to-light-background overflow-hidden">
       {/* Animated Background */}
       <motion.div
         initial="hidden"
@@ -98,7 +98,7 @@ const AboutSection = () => {
         variants={backgroundVariants}
         className="absolute inset-0"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-100 to-cyan-100 opacity-20" />
+        <div className="absolute inset-0 bg-gradient-to-br from-sage to-light-background opacity-20" /> {/* Updated gradient colors */}
         <div
           className="absolute inset-0"
           style={{
@@ -119,14 +119,14 @@ const AboutSection = () => {
           variants={titleVariants}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-extrabold mb-6 bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+          <h2 className="text-5xl font-extrabold mb-6 bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent">
             Covering the A to Z of ethical investing
-          </h2>
-          <p className="text-lg max-w-2xl mx-auto text-gray-600 leading-relaxed">
+          </h2> {/* Updated gradient colors */}
+          <p className="text-lg max-w-2xl mx-auto text-deep-brown leading-relaxed">
             From gaining foundational knowledge to optimizing your portfolio and
             staying ahead with insightful research, we're here to guide you at
             every stage of your investing journey.
-          </p>
+          </p> {/* Updated text color */}
         </motion.div>
 
         {/* Cards with Arrows */}
@@ -144,10 +144,10 @@ const AboutSection = () => {
                   onHoverEnd={() => setHoveredCard(null)}
                   className="relative group flex-1"
                 >
-                  <div className="relative bg-white rounded-2xl p-8 shadow-lg transition-shadow duration-300 group-hover:shadow-2xl h-full">
+                  <div className="relative bg-light-background rounded-2xl p-8 shadow-lg transition-shadow duration-300 group-hover:shadow-2xl h-full"> {/* Updated background color */}
                     {/* Outer Gradient Border (Visible on hover) */}
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300 -m-0.5 p-0.5">
-                      <div className="absolute inset-0 bg-white rounded-2xl" />
+                      <div className="absolute inset-0 bg-light-background rounded-2xl" /> {/* Updated inner background color */}
                     </div>
 
                     {/* Card Content */}
@@ -163,17 +163,17 @@ const AboutSection = () => {
                       </motion.div>
 
                       {/* Title & Description */}
-                      <h3 className="text-2xl font-bold mb-4 text-emerald-800">
+                      <h3 className="text-2xl font-bold mb-4 text-deep-brown">
                         {card.title}
-                      </h3>
-                      <p className="text-gray-600 leading-relaxed mb-8">
+                      </h3> {/* Updated text color */}
+                      <p className="text-deep-brown leading-relaxed mb-8">
                         {card.description}
-                      </p>
+                      </p> {/* Updated text color */}
 
                       {/* CTA Button */}
                       <motion.a
                         href={card.link}
-                        className="inline-flex items-center px-6 py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 transform hover:scale-105 mt-auto"
+                        className="inline-flex items-center px-6 py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-primary-green to-deep-teal hover:from-dark-green hover:to-deep-teal transition-all duration-300 transform hover:scale-105 mt-auto"
                       >
                         {card.linkLabel}
                         <motion.span
@@ -184,7 +184,7 @@ const AboutSection = () => {
                         >
                           →
                         </motion.span>
-                      </motion.a>
+                      </motion.a> {/* Updated button colors */}
                     </div>
                   </div>
                 </motion.div>
@@ -197,7 +197,7 @@ const AboutSection = () => {
                     transition={{ delay: 0.8 + index * 0.2, duration: 0.5 }}
                     className="hidden md:flex items-center justify-center"
                   >
-                    <ArrowRight className="h-8 w-8 text-emerald-600" />
+                    <ArrowRight className="h-8 w-8 text-primary-green" /> {/* Updated arrow color */}
                   </motion.div>
                 )}
               </React.Fragment>

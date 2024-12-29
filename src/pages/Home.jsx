@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is in
 import InnovativeHero from './newhero2';
 import Tools from './tools';
 import Savings from './savings';
-import Maritime from './Maritime';
 import Aboutsection from './Aboutsection';
 import CompleteInvestmentJourney from './Test2';
 
@@ -91,141 +90,106 @@ const PortfolioOptimizer = () => {
     <Savings />
     </div>
 
-<section id="research">
-      {/* Research Section Background */}
-      <div
-    className="relative py-20 overflow-hidden"
-    style={{ backgroundColor: '#f7f7f7' }} // Light grey background
-  >
+    <section id="research">
+  {/* Research Section Background */}
+  <div className="relative py-20 overflow-hidden bg-sage"> {/* Updated background color */}
+    <div className="container mx-auto px-7 relative z-10">
+      <div className="space-y-8">
+        {/* Title Section */}
+        <div className="text-center">
+          <h2
+            className="text-5xl font-bold mb-4 text-primary-green shadow-lg" // Replaced inline styles with Tailwind classes
+          >
+            Explore Our Latest Research
+          </h2>
+        </div>
 
-        <div className="container mx-auto px-7 relative z-10">
-          <div className="space-y-8">
-            {/* Title Section */}
-            <div className="text-center">
-              <h2
-                className="text-5xl font-bold mb-4"
-                style={{
-                  color: '#006C5B',
-                  textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
-                }}
+        {/* Articles Grid */}
+        <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {articles.map((article) => (
+              <div
+                key={article.id}
+                className="bg-light-background rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105"
               >
-                Explore Our Latest Research
-              </h2>
-            </div>
-
-            {/* Articles Grid */}
-            <div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {articles.map((article) => (
-                  <div
-                    key={article.id}
-                    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-transform transform hover:scale-105"
-                  >
-                    {/* Image Section */}
-                    <div className="relative">
-                      {/* Handle image_url as an object */}
-                      <img
-                        src={
-                          article.image_url
-                            ? article.image_url
-                            : 'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A6f22b49f-c9e1-4ddf-9cc6-eead253330d0?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1'
-                        }
-                        alt={article.title || 'No Title'}
-                        className="w-full h-40 sm:h-48 object-cover"
-                        loading="lazy"
-                      />
-                      <div className="absolute top-4 right-4 bg-green-800 text-white text-sm px-2 py-1 rounded-lg shadow-md">
-                        {article.date
-                          ? new Date(article.date).toLocaleDateString()
-                          : 'No Date'}
-                      </div>
-                    </div>
-
-                    {/* Content Section */}
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold mb-3" style={{ color: '#065F46' }}>
-                        {article.title || 'No Title'}
-                      </h3>
-                      <p className="text-gray-600 mb-4">
-                        {Array.isArray(article.content) && typeof article.content[0] === 'string'
-                          ? article.content[0].length > 120
-                            ? `${article.content[0].substring(0, 120)}...`
-                            : article.content[0]
-                          : typeof article.content === 'string'
-                          ? article.content.length > 120
-                            ? `${article.content.substring(0, 120)}...`
-                            : article.content
-                          : 'No preview available'}
-                      </p>
-                      <button
-                        onClick={() => openArticle(article.id)}
-                        className="text-green-800 font-semibold hover:underline"
-                      >
-                        Read More
-                      </button>
-                    </div>
+                {/* Image Section */}
+                <div className="relative">
+                  {/* Handle image_url as an object */}
+                  <img
+                    src={
+                      article.image_url
+                        ? article.image_url
+                        : 'https://www.ft.com/__origami/service/image/v2/images/raw/ftcms%3A6f22b49f-c9e1-4ddf-9cc6-eead253330d0?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1'
+                    }
+                    alt={article.title || 'No Title'}
+                    className="w-full h-40 sm:h-48 object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute top-4 right-4 bg-primary-green text-white text-sm px-2 py-1 rounded-lg shadow-md">
+                    {article.date
+                      ? new Date(article.date).toLocaleDateString()
+                      : 'No Date'}
                   </div>
-                ))}
+                </div>
+
+                {/* Content Section */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-3 text-deep-teal"> {/* Updated text color */}
+                    {article.title || 'No Title'}
+                  </h3>
+                  <p className="text-deep-brown mb-4"> {/* Updated text color */}
+                    {Array.isArray(article.content) && typeof article.content[0] === 'string'
+                      ? article.content[0].length > 120
+                        ? `${article.content[0].substring(0, 120)}...`
+                        : article.content[0]
+                      : typeof article.content === 'string'
+                      ? article.content.length > 120
+                        ? `${article.content.substring(0, 120)}...`
+                        : article.content
+                      : 'No preview available'}
+                  </p>
+                  <button
+                    onClick={() => openArticle(article.id)}
+                    className="text-primary-green font-semibold hover:underline"
+                  >
+                    Read More
+                  </button>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
-    </section>
-
-    <div className="Maritime-container">
-    <Maritime />
     </div>
+  </div>
+</section>
+
     <section
   id="contact"
-  className="relative py-20"
-  style={{ background: '#f7f7f7' }} // Soft pastel blue background for a clean and professional look
+  className="relative py-20 bg-[#f7f9f3]" // Updated to use your light background color
 >
   <div className="container mx-auto px-4 text-center">
     <h2
-      className="text-5xl font-extrabold mb-6"
-      style={{
-        fontFamily: 'Lora, serif',
-        color: '#333', // Dark grey for better readability
-      }}
+      className="text-5xl font-extrabold mb-6 text-[#2c1810] font-work-sans"
     >
       Get in Touch
     </h2>
     <p
-      className="text-lg mb-8"
-      style={{
-        fontFamily: 'Open Sans, sans-serif',
-        color: '#555', // Neutral grey for a soft tone
-      }}
+      className="text-lg mb-8 text-[#2c1810]/80 font-work-sans"
     >
       Have questions or need support? We're here to help. Reach out to us for assistance or to learn more about our services.
     </p>
     <a
       href="mailto:support@safinabank.com"
-      className="bg-green-800 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-emerald-600 transition"
-      style={{
-        fontFamily: 'Open Sans, sans-serif',
-      }}
+      className="inline-block bg-gradient-to-r from-[#066b06] to-[#044d04] text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:from-[#0a4c4c] hover:to-[#044d04] transition-all duration-300 font-work-sans"
     >
       Email Us
     </a>
     <div
-      className="mt-12 text-sm text-gray-500"
-      style={{
-        fontFamily: 'Open Sans, sans-serif',
-      }}
+      className="mt-12 text-sm text-[#2c1810]/60 font-work-sans"
     >
-      <p>© 2024 Safina Bank. All rights reserved.</p>
     </div>
   </div>
-
-  {/* Subtle Decorative Divider */}
-  <div
-    className="absolute bottom-0 w-full h-2"
-    style={{
-      background: 'linear-gradient(to right, #065F46, #E8F5E9)',
-    }}
-  ></div>
 </section>
       </div>
       

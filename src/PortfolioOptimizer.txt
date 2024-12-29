@@ -1224,3 +1224,5 @@ const ModernAssetsPage = () => {
 };
 
 export default ModernAssetsPage;
+
+
