@@ -673,7 +673,7 @@ const PortfolioJourney = () => {
           Analyze Portfolio
         </Button>
         {isLoading && (
-          <p className="text-blue-600 text-center font-medium">
+          <p className="text-primary-green text-center font-medium">
             Generating your portfolio...
           </p>
         )}
@@ -1031,7 +1031,7 @@ const PortfolioJourney = () => {
     return (
       <div className="bg-white rounded-xl shadow-lg p-6 mt-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl sm:text-2xl font-extrabold text-olive-green">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-primary-green">
             See what your portfolio would have returned over the past 10 years
           </h2>
         </div>
@@ -1157,16 +1157,16 @@ const PortfolioJourney = () => {
 
       {/* Step nav */}
       <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-12">
-        <Button
-          variant="outline"
-          onClick={() => setStep(1)}
-          className="w-full md:w-1/2"
-        >
-          Back
-        </Button>
-        <Button onClick={() => setStep(3)} className="w-full md:w-1/2">
-          Continue
-        </Button>
+      <button
+    onClick={() => {
+      setStep(2);
+      window.scrollTo({ top: 5, behavior: 'smooth' }); // Scroll to top smoothly
+    }}
+    className="flex items-center space-x-2 px-6 py-3 rounded-lg bg-light-background shadow-md hover:shadow-lg transition-all duration-200"
+  >
+    <ArrowLeft className="w-4 h-4" />
+    <span>Back to Portfolio</span>
+  </button>
       </div>
     </div>
   );
@@ -1208,7 +1208,7 @@ const PortfolioJourney = () => {
     ];
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-sage to-light-background">
+      <div className="min-h-screen bg-light-background">
         <div className="max-w-7xl mx-auto px-4 py-16 relative">
           {/* Educational Brokerage Overview Section */}
           <div className="mb-16">
@@ -1229,7 +1229,7 @@ const PortfolioJourney = () => {
             </div>
     
             {showBrokerageInfo && (
-              <div className="bg-light-background rounded-2xl shadow-lg p-8 mb-8">
+              <div className="bg-deep-teal/50 rounded-2xl shadow-lg p-8 mb-8">
                 <h3 className="text-2xl font-bold text-deep-brown mb-6">
                   Understanding Your Brokerage Options
                 </h3>
@@ -1498,13 +1498,16 @@ const PortfolioJourney = () => {
     
           {/* Navigation */}
           <div className="flex justify-center">
-            <button
-              onClick={() => setStep(2)}
-              className="flex items-center space-x-2 px-6 py-3 rounded-lg bg-light-background shadow-md hover:shadow-lg transition-all duration-200"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Back to Portfolio</span>
-            </button>
+          <button
+    onClick={() => {
+      setStep(2);
+      window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top smoothly
+    }}
+    className="flex items-center space-x-2 px-6 py-3 rounded-lg bg-light-background shadow-md hover:shadow-lg transition-all duration-200"
+  >
+    <ArrowLeft className="w-4 h-4" />
+    <span>Back to Portfolio</span>
+  </button>
           </div>
         </div>
       </div>
@@ -1523,7 +1526,7 @@ const PortfolioJourney = () => {
   return (
       <div className="bg-light-background min-h-screen pt-20">
         <div className="max-w-7xl mx-auto py-8 px-4">
-          <h1 className="text-3xl sm:text-3xl md:text-7xl font-bold text-center mb-4 text-sage">
+          <h1 className="text-3xl sm:text-3xl md:text-7xl font-bold text-center mb-4 text-deep-brown">
             Invest in Public Markets
           </h1>
           <p className="text-center text-lg sm:text-xl max-w-2xl mx-auto text-deep-teal mb-8">

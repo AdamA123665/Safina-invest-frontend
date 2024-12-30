@@ -205,10 +205,10 @@ function ResearchNews() {
                   <h3 className="text-2xl font-semibold text-deep-brown mb-2">{article.title}</h3>
 
                   {/* Article Date */}
-                  <p className="text-sm text-sage mb-4">{article.date}</p>
+                  <p className="text-sm text-olive-green mb-4">{article.date}</p>
 
                   {/* Article Summary */}
-                  <p className="text-sage mb-6 line-clamp-3">{article.summary}</p>
+                  <p className="text-olive-green mb-6 line-clamp-3">{article.summary}</p>
 
                   {/* Read More Button */}
                   <button

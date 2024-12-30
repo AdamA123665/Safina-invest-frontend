@@ -90,7 +90,7 @@ const AboutSection = () => {
   };
 
   return (
-    <section className="relative w-full py-20 bg-gradient-to-br from-sage to-light-background overflow-hidden">
+    <section className="relative w-full py-20 bg-light-background overflow-hidden">
       {/* Animated Background */}
       <motion.div
         initial="hidden"
@@ -98,7 +98,7 @@ const AboutSection = () => {
         variants={backgroundVariants}
         className="absolute inset-0"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-sage to-light-background opacity-20" /> {/* Updated gradient colors */}
+        <div className="absolute inset-0 bg-sage opacity-20" /> {/* Updated gradient colors */}
         <div
           className="absolute inset-0"
           style={{
@@ -144,10 +144,10 @@ const AboutSection = () => {
                   onHoverEnd={() => setHoveredCard(null)}
                   className="relative group flex-1"
                 >
-                  <div className="relative bg-light-background rounded-2xl p-8 shadow-lg transition-shadow duration-300 group-hover:shadow-2xl h-full"> {/* Updated background color */}
+                  <div className="relative bg-light-gold rounded-2xl p-8 shadow-lg transition-shadow duration-300 group-hover:shadow-2xl h-full"> {/* Updated background color */}
                     {/* Outer Gradient Border (Visible on hover) */}
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300 -m-0.5 p-0.5">
-                      <div className="absolute inset-0 bg-light-background rounded-2xl" /> {/* Updated inner background color */}
+                      <div className="absolute inset-0 bg-light-gold rounded-2xl" /> {/* Updated inner background color */}
                     </div>
 
                     {/* Card Content */}

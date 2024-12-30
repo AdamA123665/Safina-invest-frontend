@@ -161,7 +161,7 @@ const ToolsShowcase = () => {
                   className="
                     snap-start 
                     md:min-w-[240px] 
-                    bg-light-background rounded-xl shadow 
+                    bg-sage/60 rounded-xl shadow 
                     hover:shadow-xl transition-shadow duration-300 
                     flex flex-col
                   "

@@ -92,7 +92,7 @@ const PortfolioOptimizer = () => {
 
     <section id="research">
   {/* Research Section Background */}
-  <div className="relative py-20 overflow-hidden bg-sage"> {/* Updated background color */}
+  <div className="relative py-20 overflow-hidden bg-light-background"> {/* Updated background color */}
     <div className="container mx-auto px-7 relative z-10">
       <div className="space-y-8">
         {/* Title Section */}

@@ -789,7 +789,7 @@ const ModernAssetsPage = () => {
       riskColor: 'bg-primary-green',
       expectedReturn: '8-12%',
       description:
-        'Equities represent ownership in companies. Historically high returns, but also higher risk.',
+        'Equities represent ownership in companies in the form of shares. ',
     },
     {
       id: 'sukuk',
@@ -817,7 +817,7 @@ const ModernAssetsPage = () => {
       riskColor: 'bg-gold',
       expectedReturn: '5-10%',
       description:
-        'Physical goods like metals, oil, and agricultural products. Provide diversification.',
+        'Physical goods like metals and oil. Provide diversification.',
     },
     {
       id: 'real-estate',
@@ -865,8 +865,8 @@ const ModernAssetsPage = () => {
                     {card.icon}
                   </div>
                   <h3 className="text-xl font-bold mb-2">{card.title}</h3>
-                  <p className="text-gray-300 text-sm mb-4">{card.description}</p>
-                  <p className="text-xs text-gray-400">{card.details}</p>
+                  <p className="text-light-background text-sm mb-4">{card.description}</p>
+                  <p className="text-xs text-light-background">{card.details}</p>
                 </div>
               </div>
             </div>
@@ -906,7 +906,7 @@ const ModernAssetsPage = () => {
                       {tool.icon}
                     </div>
                     <h3 className="text-xl font-bold mb-2">{tool.title}</h3>
-                    <p className="text-gray-300">{tool.description}</p>
+                    <p className="text-light-background">{tool.description}</p>
                     <ChevronDown
                       className={`mt-4 w-6 h-6 transition-transform duration-300 ${
                         expandedTool === tool.id ? 'rotate-180' : ''
@@ -940,6 +940,9 @@ const ModernAssetsPage = () => {
         <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
           Asset Classes
         </h2>
+        <p className="text-base text-center text-deep-brown mb-16">
+  Explore various asset classes designed to align with your investment goals and risk tolerance, each offering unique opportunities and returns.
+</p>
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {assetClasses.map((asset) => (
             <div key={asset.id} className="relative group">

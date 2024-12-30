@@ -68,18 +68,18 @@ const InnovativeHero = () => {
     {
       id: 'save',
       title: 'Smart Savings',
-      bgColor: 'bg-primary-green/50', // Primary Green with 50% opacity
+      bgColor: 'bg-gold/50', // Primary Green with 50% opacity
       icon: (
-        <Shield className="w-12 sm:w-16 h-12 sm:h-16 mb-4 sm:mb-6 text-primary-green" />
+        <Shield className="w-12 sm:w-16 h-12 sm:h-16 mb-4 sm:mb-6 text-gold" />
       ),
       content: (
         <div className="flex flex-col items-center space-y-4 sm:space-y-6">
           <motion.div
-            className="relative w-24 sm:w-32 h-24 sm:h-32 bg-primary-green/30 rounded-full flex items-center justify-center"
+            className="relative w-24 sm:w-32 h-24 sm:h-32 bg-gold/30 rounded-full flex items-center justify-center"
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <div className="text-xl sm:text-3xl font-medium text-primary-green">
+            <div className="text-xl sm:text-3xl font-medium text-gold">
               <Counter from={0} to={100} />%
             </div>
           </motion.div>
@@ -93,7 +93,7 @@ const InnovativeHero = () => {
             </p>
             <motion.a
               href="#explore-savings"
-              className="inline-flex items-center space-x-1 sm:space-x-2 text-primary-green hover:text-primary-green/80 transition-colors"
+              className="inline-flex items-center space-x-1 sm:space-x-2 text-gold hover:text-gold/80 transition-colors"
               whileHover={{ x: 5 }}
             >
               <span className="text-sm sm:text-base">
@@ -158,9 +158,9 @@ const InnovativeHero = () => {
     {
       id: 'tools',
       title: 'Powerful Tools',
-      bgColor: 'bg-gold/50', // Gold with 50% opacity
+      bgColor: 'bg-primary-green/50', // Gold with 50% opacity
       icon: (
-        <Database className="w-12 sm:w-16 h-12 sm:h-16 mb-4 sm:mb-6 text-gold" />
+        <Database className="w-12 sm:w-16 h-12 sm:h-16 mb-4 sm:mb-6 text-primary-green" />
       ),
       content: (
         <div className="space-y-4 sm:space-y-6">
@@ -188,9 +188,9 @@ const InnovativeHero = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-sage p-3 sm:p-4 rounded-lg backdrop-blur-sm hover:bg-sage/80 transition-colors"
+                className="bg-olive-green p-3 sm:p-4 rounded-lg backdrop-blur-sm hover:bg-olive-green/80 transition-colors"
               >
-                <div className="text-gold font-medium mb-1 sm:mb-2">
+                <div className="text-primary-green font-medium mb-1 sm:mb-2">
                   {tool.name}
                 </div>
                 <div className="text-deep-brown text-xs sm:text-sm">
@@ -202,7 +202,7 @@ const InnovativeHero = () => {
           <div className="text-center">
             <motion.a
               href="#explore-tools"
-              className="inline-flex items-center space-x-1 sm:space-x-2 text-gold hover:text-gold/80 transition-colors"
+              className="inline-flex items-center space-x-1 sm:space-x-2 text-primary-green hover:text-primary-green/80 transition-colors"
               whileHover={{ x: 5 }}
             >
               <span className="text-sm sm:text-base">Explore All Tools</span>
@@ -317,7 +317,7 @@ const InnovativeHero = () => {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-medium text-deep-brown mb-6 text-center pt-16 sm:pt-32 drop-shadow-lg"
+          className="text-4xl sm:text-8xl md:text-8xl lg:text-8xl font-medium text-deep-brown mb-6 text-center pt-16 sm:pt-32 drop-shadow-lg"
         >
           Grow Your
           <span
@@ -376,7 +376,7 @@ const InnovativeHero = () => {
                 key={section.id}
                 onClick={() => setActiveSection(index)}
                 className={clsx(
-                  'relative px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-colors text-sm sm:text-base',
+                  'relative px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-colors text-sm sm:text-base bg-light-background/30',
                   activeSection === index
                     ? 'text-primary-green font-medium'
                     : 'text-deep-brown'
@@ -456,8 +456,8 @@ const InnovativeHero = () => {
               {/* Volatility & YTD Return */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
                 {/* Volatility */}
-                <div className="flex-1 bg-olive-green/10 border border-deep-brown rounded-lg p-3 sm:p-4 flex flex-col items-center">
-                  <span className="text-xs sm:text-sm text-deep-brown uppercase tracking-wider mb-1 sm:mb-2">
+                <div className="flex-1 bg-olive-green border border-deep-brown rounded-lg p-3 sm:p-4 flex flex-col items-center">
+                  <span className="text-xs sm:text-sm text-deep-teal uppercase tracking-wider mb-1 sm:mb-2">
                     Volatility
                   </span>
                   <span className="text-xl sm:text-2xl font-medium text-olive-green">
@@ -465,8 +465,8 @@ const InnovativeHero = () => {
                   </span>
                 </div>
                 {/* YTD Return */}
-                <div className="flex-1 bg-olive-green/10 border border-deep-brown rounded-lg p-3 sm:p-4 flex flex-col items-center">
-                  <span className="text-xs sm:text-sm text-deep-brown uppercase tracking-wider mb-1 sm:mb-2">
+                <div className="flex-1 bg-olive-green border border-deep-brown rounded-lg p-3 sm:p-4 flex flex-col items-center">
+                  <span className="text-xs sm:text-sm text-deep-teal uppercase tracking-wider mb-1 sm:mb-2">
                     YTD Return
                   </span>
                   <span className="text-xl sm:text-2xl font-medium text-olive-green">

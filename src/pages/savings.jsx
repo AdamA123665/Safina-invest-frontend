@@ -70,7 +70,7 @@ const SavingsSection = () => {
   };
 
   return (
-    <div className="relative bg-light-background py-10 px-4 md:px-8 lg:px-16">
+    <div className="relative bg-light-background py-10 px-4 md:px-8 lg:px-16 pb-10">
       {/* Animated background elements */}
       <div 
         className="absolute top-0 right-0 w-72 h-72 md:w-96 md:h-96 bg-primary-green/20 rounded-full opacity-20 blur-3xl transition-transform duration-700 z-0"
@@ -82,7 +82,7 @@ const SavingsSection = () => {
       />
 
       {/* Container to limit width on larger screens */}
-      <div className="relative z-10 max-w-screen-xl mx-auto">
+      <div className="relative max-w-screen-xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
           {/* Left Column - Information */}
           <div 
@@ -211,19 +211,19 @@ const SavingsSection = () => {
                     
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-0.5">
-                        <p className="text-xs md:text-sm text-primary-green">Rate</p>
+                        <p className="text-xs md:text-sm text-deep-brown">Rate</p>
                         <p className="font-semibold text-sm md:text-olive-green lg:text-lg text-primary-green">{pick.rate}</p>
                       </div>
                       <div className="space-y-0.5">
-                        <p className="text-xs md:text-sm text-primary-green">Term</p>
+                        <p className="text-xs md:text-sm text-deep-brown">Term</p>
                         <p className="font-medium text-xs md:text-sm lg:text-olive-green text-deep-brown">{pick.term}</p>
                       </div>
                       <div className="space-y-0.5">
-                        <p className="text-xs md:text-sm text-primary-green">Minimum Deposit</p>
+                        <p className="text-xs md:text-sm text-deep-brown">Minimum Deposit</p>
                         <p className="font-medium text-xs md:text-sm lg:text-olive-green text-deep-brown">{pick.minDeposit}</p>
                       </div>
                       <div className="space-y-0.5">
-                        <p className="text-xs md:text-sm text-primary-green">Access</p>
+                        <p className="text-xs md:text-sm text-deep-brown">Access</p>
                         <p className="font-medium text-xs md:text-sm lg:text-olive-green text-deep-brown">{pick.access}</p>
                       </div>
                     </div>

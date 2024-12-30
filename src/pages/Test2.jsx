@@ -261,11 +261,11 @@ const CompleteInvestmentJourney = () => {
                         <Icon className="w-5 h-5 text-white" />
                       </motion.div>
 
-                      <motion.div className="flex items-center space-x-3">
+                      <motion.div className="flex flex-col items-center">
                         <span className="text-sm font-medium text-primary-green">
                           Step {section.step}
                         </span>
-                        <span className="text-sm font-medium">{section.title}</span>
+                        <span className="text-sm font-medium ">{section.title}</span>
                       </motion.div>
                     </div>
 
@@ -290,12 +290,12 @@ const CompleteInvestmentJourney = () => {
 
       {/* Main Content */}
       <div
-        className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 md:px-8 lg:px-12"
+        className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 lg:pl-24"
         ref={sectionRef}
       >
         {/* Section Title */}
         <motion.h2
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-center mb-8 sm:mb-12 text-primary-green"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-center mb-8 sm:mb-12 text-primary-green pt-10"
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -633,12 +633,12 @@ const CompleteInvestmentJourney = () => {
                 <h3 className="text-lg md:text-xl font-medium mb-4">Low Minimum</h3> 
                 <p className="text-sage text-sm md:text-dark-green"> 
                   Start with just $20 and build your portfolio gradually. 
-                  <span className="block mt-2 text-sm italic text-dark-teal">
+                  <span className="block mt-2 text-sm italic text-gold">
                     TIP: Investing smaller amounts regularly (e.g., via direct debit) can help smooth out market fluctuations and may yield better returns over time.
                   </span>
                 </p> 
                 <a  
-                  href="/learn-more" 
+                  href="/understanding-brokerages" 
                   className="mt-6 text-primary-green hover:text-dark-green inline-flex items-center text-sm md:text-dark-green" 
                 > 
                   Learn More <ExternalLink className="ml-2 w-4 h-4" /> 
@@ -671,7 +671,7 @@ const CompleteInvestmentJourney = () => {
                 </p>
                 <a
                   href="/supported-brokers"
-                  className="text-primary-green hover:text-dark-green inline-flex items-center text-sm md:text-dark-green"
+                  className="text-olive-green hover:text-primary-green inline-flex items-center text-sm md:text-dark-green"
                 >
                   View Supported Brokers <ArrowRight className="ml-2 w-4 h-4" />
                 </a>
@@ -698,7 +698,7 @@ const CompleteInvestmentJourney = () => {
                     />
                     <button
                       type="submit"
-                      className="px-6 py-2 bg-primary-green rounded-lg hover:bg-primary-green transition-colors text-sm md:text-light-background disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-6 py-2 bg-olive-green rounded-lg hover:bg-primary-green transition-colors text-sm md:text-light-background disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={status === 'loading'}
                     >
                       {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
