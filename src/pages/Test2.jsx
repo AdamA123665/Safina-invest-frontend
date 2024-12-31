@@ -6,7 +6,6 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
-  Tooltip
 } from 'recharts';
 import {
   Shield,
@@ -87,27 +86,7 @@ const CompleteInvestmentJourney = () => {
   const stockData = useMemo(() => generateStockData(), []);
 
   // Custom tooltip content
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-deep-teal p-4 rounded-lg shadow-lg border border-olive-green">
-          <p className="text-sage mb-2">Year {label}</p>
-          {payload.map((entry, index) => (
-            <div 
-              key={index}
-              className={`flex items-center justify-between space-x-4 ${
-                entry.name === `risk${riskLevel}` ? 'text-primary-green font-medium' : 'text-sage'
-              }`}
-            >
-              <span>Risk {entry.name.replace('risk', '')}</span>
-              <span>{entry.value.toFixed(2)}</span>
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
+  
 
   const portfolioData = [
     { asset: 'Stocks', percentage: 60 },
@@ -302,7 +281,7 @@ const CompleteInvestmentJourney = () => {
       >
         {/* Section Title */}
         <motion.h2
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-center mb-8 sm:mb-12 text-primary-green pt-10"
+          className=" sm:text-6xl md:text-6xl lg:text-7xl font-medium text-center mb-8 sm:mb-12 text-primary-green pt-10"
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -365,7 +344,7 @@ const CompleteInvestmentJourney = () => {
 
                 {/* Risk Quiz Link */}
                 <motion.a
-                  href="/risk-quiz"
+                  href="/assets"
                   className="block bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors"
                   whileHover={{ scale: 1.02 }}
                 >
@@ -375,10 +354,10 @@ const CompleteInvestmentJourney = () => {
                       <h3 className="text-lg md:text-xl font-medium mb-2">
                         Take Our Full Risk Assessment
                       </h3>
-                      <p className="text-sage mb-4 text-sm md:text-dark-green">
+                      <p className="text-primary-green mb-4 text-sm">
                         Get a comprehensive analysis of your risk tolerance through our expert-designed questionnaire.
                       </p>
-                      <span className="text-primary-green hover:text-dark-green flex items-center text-sm md:text-dark-green">
+                      <span className="text-dark-green hover:text-dark-green flex items-center text-sm md:text-dark-green">
                         Start Assessment <ArrowRight className="ml-2 w-4 h-4" />
                       </span>
                     </div>
@@ -387,7 +366,7 @@ const CompleteInvestmentJourney = () => {
 
                 {/* Educational Resource */}
                 <motion.a
-                  href="/learn/risk"
+                  href="/articles/understanding-investing-risk"
                   className="block bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors"
                   whileHover={{ scale: 1.02 }}
                 >
@@ -397,7 +376,7 @@ const CompleteInvestmentJourney = () => {
                       <h3 className="text-lg md:text-xl font-medium mb-2">
                         Understanding Investment Risk
                       </h3>
-                      <p className="text-sage mb-4 text-sm md:text-dark-green">
+                      <p className="text-primary-green mb-4 text-sm">
                         Learn about the factors that influence investment risk and return.
                       </p>
                       <span className="text-gold hover:text-dark-green flex items-center text-sm md:text-dark-green">
@@ -453,7 +432,6 @@ const CompleteInvestmentJourney = () => {
                             fill: '#044d04' // sage
                           }}
                         />
-                        <Tooltip content={<CustomTooltip />} />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
@@ -480,10 +458,10 @@ const CompleteInvestmentJourney = () => {
           >
             <div className="mb-16 space-y-2">
               <h2 className="text-3xl md:text-4xl font-medium">
-                Strategic Asset Allocation
+                Access Our Multi Asset Portfolios
               </h2>
               <p className="text-dark-green md:text-xl text-deep-teal max-w-2xl">
-                Experience dynamic portfolio management that adapts to market conditions while maintaining your risk preferences.
+              Build customised Shariah-compliant portfolios using our asset allocation tool, powered by over 10 years of ETF market data.
               </p>
             </div>
 
@@ -611,7 +589,7 @@ const CompleteInvestmentJourney = () => {
           >
             <div className="mb-16 space-y-2">
               <h2 className="text-3xl md:text-4xl font-medium mb-2">Invest & Relax</h2>
-              <p className="text-dark-green md:text-xl text-deep-teal max-w-2xl">
+              <p className="text-dark-green md:text-xl text-dark-green max-w-2xl">
                 Start your investment journey with just a few clicks and stay informed.
               </p>
             </div>
@@ -624,7 +602,7 @@ const CompleteInvestmentJourney = () => {
               >
                 <Lock className="w-8 h-8 text-primary-green mb-4" />
                 <h3 className="text-lg md:text-xl font-medium mb-4">1-Click Investing</h3>
-                <p className="text-sage text-sm md:text-dark-green">
+                <p className="text-primary-green text-sm ">
                   Seamless integration with Trading 212 for instant portfolio implementation.
                 </p>
                 <button className="mt-6 px-6 py-3 bg-olive-green rounded-lg hover:bg-primary-green transition-colors text-sm md:text-light-background">
@@ -638,7 +616,7 @@ const CompleteInvestmentJourney = () => {
               > 
                 <DollarSign className="w-8 h-8 text-gold mb-4" /> 
                 <h3 className="text-lg md:text-xl font-medium mb-4">Low Minimum</h3> 
-                <p className="text-sage text-sm md:text-dark-green"> 
+                <p className="text-primary-green text-sm"> 
                   Start with just $20 and build your portfolio gradually. 
                   <span className="block mt-2 text-sm italic text-gold">
                     TIP: Investing smaller amounts regularly (e.g., via direct debit) can help smooth out market fluctuations and may yield better returns over time.
@@ -660,7 +638,7 @@ const CompleteInvestmentJourney = () => {
                 <h3 className="text-lg md:text-xl font-medium mb-4">
                   Real-Time Monitoring
                 </h3>
-                <p className="text-sage text-sm md:text-dark-green">
+                <p className="text-primary-green text-sm">
                   Track your portfolio performance with live updates.
                 </p>
               </motion.div>
@@ -673,7 +651,7 @@ const CompleteInvestmentJourney = () => {
                 whileHover={{ scale: 1.02 }}
               >
                 <h3 className="text-lg md:text-xl font-medium mb-4">Alternative Brokers</h3>
-                <p className="text-sage mb-6 text-sm md:text-dark-green">
+                <p className="text-primary-green mb-6 text-sm">
                   Prefer a different broker? We support multiple platforms for your convenience.
                 </p>
                 <a
@@ -690,7 +668,7 @@ const CompleteInvestmentJourney = () => {
                   whileHover={{ scale: 1.02 }}
                 >
                   <h3 className="text-lg md:text-xl font-medium mb-4">Stay Updated</h3>
-                  <p className="text-sage mb-6 text-sm md:text-dark-green">
+                  <p className="text-primary-green mb-6 text-sm ">
                     Get personalized insights and market updates delivered to your inbox.
                   </p>
                   <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">

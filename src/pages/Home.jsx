@@ -78,15 +78,15 @@ const PortfolioOptimizer = () => {
       </div>
       
     
-    <div className="how-container">
+    <div id="investment-options" className="how-container">
       <CompleteInvestmentJourney />
       </div>
       
-    <div className="tools-container">
+    <div id="tools" className="tools-container">
       <Tools />
       </div>
      
-   <div className="savings-container">
+   <div id="explore-savings" className="savings-container">
     <Savings />
     </div>
 
@@ -98,7 +98,7 @@ const PortfolioOptimizer = () => {
         {/* Title Section */}
         <div className="text-center">
           <h2
-            className="text-5xl font-bold mb-4 text-primary-green " // Replaced inline styles with Tailwind classes
+            className="text-5xl font-medium mb-4 text-primary-green " // Replaced inline styles with Tailwind classes
           >
             Explore Our Latest Research
           </h2>
@@ -170,7 +170,7 @@ const PortfolioOptimizer = () => {
 >
   <div className="container mx-auto px-4 text-center">
     <h2
-      className="text-5xl font-extrabold mb-6 text-[#2c1810] font-work-sans"
+      className="text-5xl font-medium mb-6 text-[#2c1810] font-work-sans"
     >
       Get in Touch
     </h2>

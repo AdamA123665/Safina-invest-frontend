@@ -18,6 +18,7 @@ import {
   FaLeaf,
   FaHome,
   FaExchangeAlt,
+  FaArrowRight
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import {
@@ -453,6 +454,7 @@ const ModernAssetsPage = () => {
       color: 'bg-primary-green',
       description: 'Strategic wealth building through smart saving',
       details: 'Explore various savings accounts and strategies',
+      link: '/articles/understanding-savings',
     },
     {
       id: 'pensions',
@@ -461,6 +463,7 @@ const ModernAssetsPage = () => {
       color: 'bg-deep-teal',
       description: 'Secure your retirement future',
       details: 'Workplace and personal pension planning',
+      link: '/articles/understanding-uk-pensions',
     },
     {
       id: 'isas',
@@ -469,14 +472,16 @@ const ModernAssetsPage = () => {
       color: 'bg-deep-brown',
       description: 'Tax-efficient investment accounts',
       details: 'Stocks & Shares, Cash, and Lifetime ISAs',
+      link: '/articles/understanding-isas',
     },
     {
       id: 'brokerage',
-      title: 'Investment Brokerage',
+      title: 'Investment Platforms',
       icon: <BarChart className="w-8 h-8 text-light-background" />,
       color: 'bg-olive-green',
       description: 'Access global markets',
       details: 'Trade stocks, ETFs, and more',
+      link: '/articles/uk-brokerage-platforms',
     },
     {
       id: 'tax',
@@ -485,6 +490,7 @@ const ModernAssetsPage = () => {
       color: 'bg-gold',
       description: 'Optimize your tax efficiency',
       details: 'Strategic tax planning and advice',
+      link: '/articles/tax',
     },
   ];
 
@@ -788,8 +794,8 @@ const ModernAssetsPage = () => {
       riskLevel: 'High',
       riskColor: 'bg-primary-green',
       expectedReturn: '8-12%',
-      description:
-        'Equities represent ownership in companies in the form of shares. ',
+      description: 'Equities represent ownership in companies in the form of shares.',
+      link: '/articles/understanding-equities',
     },
     {
       id: 'sukuk',
@@ -799,6 +805,7 @@ const ModernAssetsPage = () => {
       riskColor: 'bg-deep-brown',
       expectedReturn: '3-5%',
       description: 'Sukuk are Sharia-compliant bonds that provide steady, low-risk income.',
+      link: '/articles/understanding-sukuks',
     },
     {
       id: 'private-markets',
@@ -808,6 +815,7 @@ const ModernAssetsPage = () => {
       riskColor: 'bg-olive-green',
       expectedReturn: '12-20%',
       description: 'Invest in non-public companies. Potential for high returns but less liquidity.',
+      link: '/articles/private-markets',
     },
     {
       id: 'commodities',
@@ -816,8 +824,8 @@ const ModernAssetsPage = () => {
       riskLevel: 'Moderate',
       riskColor: 'bg-gold',
       expectedReturn: '5-10%',
-      description:
-        'Physical goods like metals and oil. Provide diversification.',
+      description: 'Physical goods like metals and oil. Provide diversification.',
+      link: '/articles/understanding-commodities',
     },
     {
       id: 'real-estate',
@@ -826,8 +834,8 @@ const ModernAssetsPage = () => {
       riskLevel: 'Moderate',
       riskColor: 'bg-olive-green',
       expectedReturn: '6-10%',
-      description:
-        'Property investments can offer rental income and capital appreciation.',
+      description: 'Property investments can offer rental income and capital appreciation.',
+      link: '/articles/real-estate',
     },
     {
       id: 'etfs',
@@ -837,8 +845,10 @@ const ModernAssetsPage = () => {
       riskColor: 'bg-primary-green',
       expectedReturn: '5-10%',
       description: 'Exchange-Traded Funds track indices or sectors. Risk and returns vary by ETF.',
+      link: '/articles/understanding-etfs',
     },
   ];
+  
 
   return (
     <div className="min-h-screen bg-sage text-light-background pt-10">
@@ -867,6 +877,16 @@ const ModernAssetsPage = () => {
                   <h3 className="text-xl font-bold mb-2">{card.title}</h3>
                   <p className="text-light-background text-sm mb-4">{card.description}</p>
                   <p className="text-xs text-light-background">{card.details}</p>
+
+                  <a
+                      href={card.link}
+                      className="flex items-center mt-4 text-white group"
+                    >
+                      <span className="mr-1">Learn More</span>
+                      <FaArrowRight
+                        className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                      />
+                    </a>
                 </div>
               </div>
             </div>
@@ -967,9 +987,14 @@ const ModernAssetsPage = () => {
                     <div className="font-semibold text-primary-green">{asset.expectedReturn}</div>
                   </div>
                   
-                    <button className="text-sm font-semibold bg-olive-green hover:bg-dark-green px-4 py-2 rounded text-light-background">
-                      Learn More
-                    </button>
+                  <button
+                    className="text-sm font-semibold bg-olive-green hover:bg-dark-green px-4 py-2 rounded text-light-background"
+                    onClick={() => {
+                      window.location.href = asset.link; // Navigates to the link
+                    }}
+                  >
+                    Learn More
+                  </button>
                   
                 </div>
               </div>

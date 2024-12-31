@@ -201,7 +201,7 @@ const InnovativeHero = () => {
           </div>
           <div className="text-center">
             <motion.a
-              href="#explore-tools"
+              href="#tools"
               className="inline-flex items-center space-x-1 sm:space-x-2 text-primary-green hover:text-primary-green/80 transition-colors"
               whileHover={{ x: 5 }}
             >
@@ -317,7 +317,7 @@ const InnovativeHero = () => {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-8xl sm:text-8xl md:text-8xl lg:text-8xl font-bold text-deep-brown mb-6 text-center pt-16 sm:pt-32 drop-shadow-lg"
+          className="text-8xl sm:text-6xl md:text-8xl lg:text-8xl font-bold text-deep-brown mb-6 text-center pt-16 sm:pt-32 drop-shadow-lg"
         >
           Grow Your
           <span

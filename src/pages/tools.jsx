@@ -1,3 +1,4 @@
+// ToolsShowcase.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import {
   Calculator,
@@ -9,6 +10,8 @@ import {
   ArrowRight,
   ChevronRight
 } from 'lucide-react';
+import { FaChartPie, FaClock } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const ToolsShowcase = () => {
   const [isDragging, setIsDragging] = useState(false);
@@ -21,38 +24,63 @@ const ToolsShowcase = () => {
       icon: Calculator,
       title: 'Asset Allocation',
       description: 'Optimize your portfolio with AI-powered insights and personalized strategies.',
-      gradient: 'from-primary-green to-gold'
+      gradient: 'from-primary-green to-gold',
+      link: '/allocation',
+      isComingSoon: false,
     },
     {
       icon: PieChart,
       title: 'Risk Assessment',
       description: "Comprehensive risk analysis tools that evaluate your portfolio's exposure and potential.",
-      gradient: 'from-deep-teal to-sage'
+      gradient: 'from-deep-teal to-sage',
+      link: '/assets',
+      isComingSoon: false,
+    },
+    {
+      icon: FaChartPie, // Icon representing portfolio allocation
+      title: 'Learn About Portfolio Allocation',
+      description: 'Discover strategies to diversify your investments and optimize your portfolio for maximum returns.',
+      gradient: 'from-deep-teal to-olive-green', // Example gradient using Tailwind CSS
+      link: '/assets', // Destination link
+      isComingSoon: false,
+    },
+    {
+      icon: FaClock, // Icon representing time horizon and goals
+      title: 'Investment Time Horizon and Goals',
+      description: 'Understand how your investment timeline and financial objectives shape your investment strategy.',
+      gradient: 'from-olive-green to-gold', // Example gradient using Tailwind CSS
+      link: '/assets', // Destination link
+      isComingSoon: false,
     },
     {
       icon: TrendingUp,
-      title: 'Performance Analytics',
+      title: 'Investment Analytics ',
       description: 'Track your investment performance with sophisticated metrics and real-time data.',
-      gradient: 'from-olive-green to-primary-green'
+      gradient: 'from-olive-green to-primary-green',
+      link: '/articles/investment-analytics',
+      isComingSoon: true,
     },
     {
       icon: Clock,
       title: 'Rebalancing Timer',
       description: 'Smart portfolio rebalancing alerts to maintain your target allocation seamlessly.',
-      gradient: 'from-gold to-olive-green'
+      gradient: 'from-gold to-olive-green',
+      isComingSoon: true,
     },
     {
       icon: Target,
-      title: 'Goal Planning',
+      title: 'Goal Planning ',
       description: 'Set and monitor your investment milestones with intelligent tracking and feedback.',
-      gradient: 'from-dark-green to-primary-green'
+      gradient: 'from-dark-green to-primary-green',
+      isComingSoon: true,
     },
     {
       icon: BarChart3,
       title: 'Market Analysis',
       description: 'Access real-time market insights and predictive analytics to inform your decisions.',
-      gradient: 'from-sage to-gold'
-    }
+      gradient: 'from-sage to-gold',
+      isComingSoon: true,
+    },
   ];
 
   // Only apply “drag to scroll” on desktop:
@@ -97,10 +125,15 @@ const ToolsShowcase = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Filter tools based on isMobile and isComingSoon
+  const visibleTools = isMobile
+    ? tools.filter(tool => !tool.isComingSoon)
+    : tools;
+
   return (
     <section className="relative py-10 px-4 md:py-20 bg-light-background">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row relative items-center md:items-center">
+        <div className={`flex flex-col md:flex-row relative ${isMobile ? 'justify-center' : 'items-center'} md:items-center`}>
           
           {/* Hero Card */}
           <div
@@ -118,7 +151,7 @@ const ToolsShowcase = () => {
           >
             <div className="p-6 md:p-10 space-y-4 h-full flex flex-col justify-between">
               <div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-deep-brown">
+                <h2 className="text-5xl md:text-3xl font-bold mb-4 md:mb-6 text-deep-brown">
                   Investment Tools
                 </h2>
                 <p className="text-sm md:text-base text-base leading-relaxed">
@@ -162,20 +195,19 @@ const ToolsShowcase = () => {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseUp}
           >
-            {tools.map((tool, index) => {
+            {visibleTools.map((tool, index) => {
               const Icon = tool.icon;
               return (
                 <div
                   key={index}
                   className={`
                     snap-start 
-                    ${isMobile ? 'w-full sm:w-80' : 'w-60'} /* Set consistent width */
+                    ${isMobile ? 'w-11/12 sm:w-80' : 'w-60'} /* Slightly smaller than hero card on mobile */
                     flex-shrink-0 /* Prevent shrinking */
-                    bg-sage/10 rounded-xl shadow 
+                    bg-sage/40 rounded-xl shadow 
                     hover:shadow-xl transition-shadow duration-300 
                     flex flex-col relative
-                    h-[23rem] 
-                    /* Removed m-4 and used space-x-6 on parent */
+                    h-60 md:h-[23rem] /* Responsive height */
                   `}
                 >
                   <div className="flex flex-col justify-between p-6 md:p-8 space-y-4 md:space-y-6 h-full">
@@ -190,7 +222,7 @@ const ToolsShowcase = () => {
                       >
                         <Icon className="w-5 h-5 md:w-6 md:h-6 text-light-background" />
                       </div>
-                      <h3 className="text-lg md:text-xl font-semibold text-deep-brown truncate">
+                      <h3 className="text-lg md:text-xl font-semibold text-deep-brown">
                         {tool.title}
                       </h3>
                       <p className="text-primary-green text-sm md:text-primary-green leading-relaxed mt-2 md:mt-3">
@@ -198,8 +230,16 @@ const ToolsShowcase = () => {
                       </p>
                     </div>
 
-                    <div className="flex items-center text-primary-green mt-2 md:mt-4">
-                      <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
+                    {/* Conditional "Learn More" or "Coming Soon" */}
+                    <div className="flex items-center mt-2 md:mt-4">
+                      {!tool.isComingSoon && tool.link ? (
+                        <Link to={tool.link} className="flex items-center text-primary-green group">
+                          <span className="mr-1">Learn More</span>
+                          <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                      ) : tool.isComingSoon ? (
+                        <span className="text-gray-500">Coming Soon</span>
+                      ) : null}
                     </div>
                   </div>
                 </div>

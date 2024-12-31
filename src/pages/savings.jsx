@@ -70,7 +70,7 @@ const SavingsSection = () => {
   };
 
   return (
-    <div className="relative bg-light-background py-10 px-4 md:px-8 lg:px-16 pb-20">
+    <div className="relative bg-light-background py-10 px-4 md:px-8 lg:px-16 pb-24">
       {/* Animated background elements */}
       <div 
         className="absolute top-0 right-0 w-72 h-72 md:w-96 md:h-96 bg-primary-green/20 rounded-full opacity-20 blur-3xl transition-transform duration-700 z-0"
@@ -146,13 +146,13 @@ const SavingsSection = () => {
 
             {/* Call to Action */}
             <a 
-              href="https://www.calculator.net/savings-calculator.html"
+              href="/articles/understanding-savings"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-primary-green hover:text-dark-green font-medium group relative overflow-hidden px-4 py-2 rounded-lg"
             >
               <span className="relative z-10 flex items-center gap-2 text-sm md:text-base lg:text-lg">
-                Calculate potential returns
+                Learn more about savings
                 <ChevronRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" />
               </span>
               {/* Updated Background Color */}
