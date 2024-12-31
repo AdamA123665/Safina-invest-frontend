@@ -317,7 +317,7 @@ const InnovativeHero = () => {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl sm:text-8xl md:text-8xl lg:text-8xl font-medium text-deep-brown mb-6 text-center pt-16 sm:pt-32 drop-shadow-lg"
+          className="text-8xl sm:text-8xl md:text-8xl lg:text-8xl font-bold text-deep-brown mb-6 text-center pt-16 sm:pt-32 drop-shadow-lg"
         >
           Grow Your
           <span
@@ -434,7 +434,7 @@ const InnovativeHero = () => {
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Text / CTA */}
             <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium mb-4 sm:mb-6 text-primary-green">
+              <h2 className="text-5xl sm:text-5xl md:text-5xl font-medium mb-4 sm:mb-6 text-primary-green">
                 Driven by Data
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-deep-brown mb-4 sm:mb-8 font-medium">
@@ -445,9 +445,9 @@ const InnovativeHero = () => {
               </p>
               <button
                 className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-deep-teal hover:bg-deep-teal/80 transition-colors rounded-lg text-white font-medium shadow-md"
-                onClick={() => (window.location.href = '/analytics')}
+                onClick={() => (window.location.href = '/articles/methadology')}
               >
-                Explore Analytics <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                Explore our methadology <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
 
@@ -456,20 +456,20 @@ const InnovativeHero = () => {
               {/* Volatility & YTD Return */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
                 {/* Volatility */}
-                <div className="flex-1 bg-olive-green border border-deep-brown rounded-lg p-3 sm:p-4 flex flex-col items-center">
+                <div className="flex-1 bg-olive-green/50 border border-deep-brown rounded-lg p-3 sm:p-4 flex flex-col items-center">
                   <span className="text-xs sm:text-sm text-deep-teal uppercase tracking-wider mb-1 sm:mb-2">
                     Volatility
                   </span>
-                  <span className="text-xl sm:text-2xl font-medium text-olive-green">
+                  <span className="text-xl sm:text-2xl font-medium text-primary-green">
                     12.5%
                   </span>
                 </div>
                 {/* YTD Return */}
-                <div className="flex-1 bg-olive-green border border-deep-brown rounded-lg p-3 sm:p-4 flex flex-col items-center">
+                <div className="flex-1 bg-olive-green/50 border border-deep-brown rounded-lg p-3 sm:p-4 flex flex-col items-center">
                   <span className="text-xs sm:text-sm text-deep-teal uppercase tracking-wider mb-1 sm:mb-2">
                     YTD Return
                   </span>
-                  <span className="text-xl sm:text-2xl font-medium text-olive-green">
+                  <span className="text-xl sm:text-2xl font-medium text-primary-green">
                     {ytdReturn !== null ? `+${ytdReturn}%` : 'N/A'}
                   </span>
                 </div>

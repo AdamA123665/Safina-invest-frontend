@@ -12,13 +12,36 @@ import {
 
 const Footer = () => {
   const [email, setEmail] = useState('');
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  
-  const handleSubscribe = (e) => {
+  const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubscribed(true);
-    setEmail('');
-    setTimeout(() => setIsSubscribed(false), 3000);
+    setStatus('loading');
+
+    try {
+      const response = await fetch('https://safinabackend.azurewebsites.net/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Subscription failed');
+      }
+
+      setStatus('success');
+      setEmail('');
+      // Optionally, reset the status after some time
+      setTimeout(() => setStatus('idle'), 5000);
+    } catch (error) {
+      console.error(error);
+      setStatus('error');
+      setErrorMessage(error.message);
+      // Optionally, reset the error message after some time
+      setTimeout(() => setStatus('idle'), 5000);
+    }
   };
 
   const scrollToTop = () => {
@@ -38,6 +61,7 @@ const Footer = () => {
       <button 
         onClick={scrollToTop}
         className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 group"
+        aria-label="Scroll to top"
       >
         <ChevronUp className="w-6 h-6 transform group-hover:-translate-y-1 transition-transform" />
       </button>
@@ -58,13 +82,13 @@ const Footer = () => {
               Empowering investors with sophisticated tools and insights for optimal portfolio management.
             </p>
             <div className="flex space-x-4">
-              <Link to="/facebook" className="text-gray-400 hover:text-green-500 transition-colors">
+              <Link to="/facebook" className="text-gray-400 hover:text-green-500 transition-colors" aria-label="Facebook">
                 <Facebook className="w-5 h-5" />
               </Link>
-              <Link to="/twitter" className="text-gray-400 hover:text-green-500 transition-colors">
+              <Link to="/twitter" className="text-gray-400 hover:text-green-500 transition-colors" aria-label="Twitter">
                 <Twitter className="w-5 h-5" />
               </Link>
-              <Link to="/instagram" className="text-gray-400 hover:text-green-500 transition-colors">
+              <Link to="/instagram" className="text-gray-400 hover:text-green-500 transition-colors" aria-label="Instagram">
                 <Instagram className="w-5 h-5" />
               </Link>
             </div>
@@ -159,7 +183,7 @@ const Footer = () => {
           {/* Newsletter */}
           <div>
             <h3 className="text-white font-semibold mb-6">Stay Updated</h3>
-            <form onSubmit={handleSubscribe} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
                 <input
                   type="email"
@@ -168,18 +192,55 @@ const Footer = () => {
                   placeholder="Enter your email"
                   className="w-full bg-gray-800/50 border border-gray-700 rounded-lg px-4 py-3 text-gray-300 focus:outline-none focus:border-green-500 transition-colors"
                   required
+                  disabled={status === 'loading'}
+                  aria-label="Email Address"
                 />
                 <button
                   type="submit"
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500 hover:text-green-400 transition-colors"
+                  className={`absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500 hover:text-green-400 transition-colors ${
+                    status === 'loading' ? 'cursor-not-allowed' : 'cursor-pointer'
+                  }`}
+                  disabled={status === 'loading'}
+                  aria-label="Subscribe"
                 >
-                  <ArrowRight className="w-5 h-5" />
+                  {status === 'loading' ? (
+                    <svg
+                      className="animate-spin h-5 w-5 text-green-500"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8H4z"
+                      ></path>
+                    </svg>
+                  ) : (
+                    <ArrowRight className="w-5 h-5" />
+                  )}
                 </button>
               </div>
-              {isSubscribed && (
+              {/* Success Message */}
+              {status === 'success' && (
                 <div className="text-green-500 text-sm flex items-center">
                   <Mail className="w-4 h-4 mr-2" />
                   Thank you for subscribing!
+                </div>
+              )}
+              {/* Error Message */}
+              {status === 'error' && (
+                <div className="text-red-500 text-sm flex items-center">
+                  <Mail className="w-4 h-4 mr-2" />
+                  {errorMessage}
                 </div>
               )}
             </form>

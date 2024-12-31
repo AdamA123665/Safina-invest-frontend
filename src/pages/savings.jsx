@@ -70,7 +70,7 @@ const SavingsSection = () => {
   };
 
   return (
-    <div className="relative bg-light-background py-10 px-4 md:px-8 lg:px-16 pb-10">
+    <div className="relative bg-light-background py-10 px-4 md:px-8 lg:px-16 pb-20">
       {/* Animated background elements */}
       <div 
         className="absolute top-0 right-0 w-72 h-72 md:w-96 md:h-96 bg-primary-green/20 rounded-full opacity-20 blur-3xl transition-transform duration-700 z-0"

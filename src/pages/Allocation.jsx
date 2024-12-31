@@ -28,7 +28,7 @@ import {
   AlertCircle,
   HelpCircle
 } from 'lucide-react';
-
+import { Link } from 'react-router-dom';
 // ====== NEW IMPORTS FOR ENHANCED INVESTMENT SECTION ======
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wallet, Building, ArrowRight, Plus } from 'lucide-react';
@@ -99,7 +99,7 @@ const EnhancedInvestment = () => {
   const funds = [
     {
       id: 'tactical',
-      title: 'Tactical Asset Allocation',
+      title: 'Tactical Asset Allocation (coming soon)',
       icon: TrendingUp,
       description: 'Adapt your portfolio with precision using data-driven strategies',
       details: [
@@ -112,11 +112,12 @@ const EnhancedInvestment = () => {
         performance: 87,
         risk: 42,
         liquidity: 95
-      }
+      },
+      link: '/articles' // Add appropriate link
     },
     {
       id: 'savings',
-      title: 'Savings Fund',
+      title: 'Savings',
       icon: Wallet,
       description: 'Secure your future with tailored savings solutions',
       details: [
@@ -129,11 +130,12 @@ const EnhancedInvestment = () => {
         performance: 72,
         risk: 28,
         liquidity: 98
-      }
+      },
+      link: '/articles/understanding-savings' // Add appropriate link
     },
     {
       id: 'private',
-      title: 'Private Markets',
+      title: 'Private Markets (coming soon)',
       icon: Building,
       description: 'Access exclusive investment opportunities in private markets',
       details: [
@@ -146,7 +148,8 @@ const EnhancedInvestment = () => {
         performance: 92,
         risk: 65,
         liquidity: 45
-      }
+      },
+      link: '/articles' // Add appropriate link
     }
   ];
   const StatBar = ({ value, color }) => (
@@ -317,6 +320,17 @@ const EnhancedInvestment = () => {
                   <AnimatePresence>
                     {expandedSection === fund.id && <ExpandedCard fund={fund} />}
                   </AnimatePresence>
+                  {/* Learn More Button */}
+                <Link to={fund.link} key={`learn-more-${fund.id}`} className="w-full">
+                  <motion.a
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-primary-green px-6 py-3 rounded-xl font-medium inline-flex items-center group text-light-background cursor-pointer m-6"
+                  >
+                    Learn More
+                    <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                  </motion.a>
+                </Link>
                 </motion.div>
               </motion.div>
             );
@@ -345,14 +359,15 @@ const EnhancedInvestment = () => {
                     and trained using advanced statistical models to find the optimal
                     investment allocation for your risk preferences.
                   </p>
-                  <motion.button
+                  <motion.a
+                    href="/articles/asset-allocation-methodology"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="bg-primary-green px-6 py-3 rounded-xl font-medium inline-flex items-center group text-light-background"
+                    className="bg-primary-green px-6 py-3 rounded-xl font-medium inline-flex items-center group text-light-background cursor-pointer"
                   >
                     Learn More
                     <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                  </motion.button>
+                  </motion.a>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   {[
@@ -1021,11 +1036,18 @@ const PortfolioJourney = () => {
       'S&P 500': series.find((s) => s.name === 'S&P 500')?.values[idx] || 0
     }));
 
+    // 10-Year Total Return
     let totalReturn = null;
-    const portfolioArr = series.find((s) => s.name === 'Portfolio')?.values;
-    if (portfolioArr && portfolioArr.length > 1) {
-      const lastFactor = portfolioArr[portfolioArr.length - 1];
-      totalReturn = (lastFactor - 1) * 100;
+    const tenYearData = chartData.filter(
+      (p) => new Date(p.date).getFullYear() >= new Date().getFullYear() - 10
+    );
+
+    if (tenYearData.length > 1) {
+      const firstVal = tenYearData[0].value;
+      const lastVal = tenYearData[tenYearData.length - 1].value;
+      if (firstVal !== 0) {
+        totalReturn = ((lastVal / firstVal) - 1) * 100;
+      }
     }
 
     return (
@@ -1036,7 +1058,7 @@ const PortfolioJourney = () => {
           </h2>
         </div>
         {totalReturn !== null && (
-          <p className="text-dark-green font-medium mb-2">
+          <p className="text-dark-green font-extrabold mb-2">
             Over {totalReturn.toFixed(2)}%
           </p>
         )}
@@ -1157,16 +1179,25 @@ const PortfolioJourney = () => {
 
       {/* Step nav */}
       <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-12">
-      <button
-    onClick={() => {
-      setStep(2);
-      window.scrollTo({ top: 5, behavior: 'smooth' }); // Scroll to top smoothly
-    }}
-    className="flex items-center space-x-2 px-6 py-3 rounded-lg bg-light-background shadow-md hover:shadow-lg transition-all duration-200"
-  >
-    <ArrowLeft className="w-4 h-4" />
-    <span>Back to Portfolio</span>
-  </button>
+      <Button
+        variant="outline"
+        onClick={() => {
+          setStep(1);
+          window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top smoothly
+        }}
+        className="w-full md:w-1/2"
+      >
+        Back
+      </Button>
+      <Button
+        onClick={() => {
+          setStep(3);
+          window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top smoothly
+        }}
+        className="w-full md:w-1/2"
+      >
+        Continue
+      </Button>
       </div>
     </div>
   );
@@ -1321,7 +1352,9 @@ const PortfolioJourney = () => {
                         {
                           title: 'Click the portfolio link below',
                           description:
-                            'Opens Trading 212 with your selected portfolio'
+                            'Opens Trading 212 with your selected portfolio',
+                            tip: 'If certain ETFs are unavailable, we automatically rebalance the allocations to maintain optimal portfolio construction'
+
                         },
                         {
                           title: 'Add funds to your account',
@@ -1344,6 +1377,11 @@ const PortfolioJourney = () => {
                             <p className="text-sm text-deep-brown">
                               {step.description}
                             </p>
+                            {step.tip && (
+                                  <p className="text-sm text-gold italic">
+                                    Tip: {step.tip}
+                                  </p>
+                                )}
                           </div>
                         </div>
                       ))}
@@ -1535,7 +1573,7 @@ const PortfolioJourney = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-3xl mx-auto mb-12">
-            <a href="/risk-quiz" className="group flex items-center gap-3 bg-white px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto">
+            <a href="/assets" className="group flex items-center gap-3 bg-white px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto">
               <Shield className="w-6 h-6 text-blue-600" />
               <div className="flex-1">
                 <h3 className="font-semibold text-primary-green">Take the Risk Quiz</h3>

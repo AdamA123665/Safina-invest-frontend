@@ -937,10 +937,10 @@ const ModernAssetsPage = () => {
 
       {/* Title: Asset Classes */}
       <div className="pb-20 bg-light-background pt-20">
-        <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
+        <h2 className="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
           Asset Classes
         </h2>
-        <p className="text-base text-center text-deep-brown mb-16">
+        <p className="text-base text-center text-deep-brown mb-10">
   Explore various asset classes designed to align with your investment goals and risk tolerance, each offering unique opportunities and returns.
 </p>
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

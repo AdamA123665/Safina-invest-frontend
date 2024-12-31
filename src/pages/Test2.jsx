@@ -206,34 +206,41 @@ const CompleteInvestmentJourney = () => {
       {showProgressBar && (
         <>
           {/* Mobile Progress Bar */}
-          <div
-            className="sticky top-0 z-50 bg-deep-brown/10 backdrop-blur lg:hidden"
-            style={{
-              transform: showProgressBar ? "translateY(0)" : "translateY(-100%)",
-              transition: "transform 0.3s ease-in-out",
-            }}
+<div
+  className="sticky top-0 z-50 bg-deep-brown/10 backdrop-blur lg:hidden"
+  style={{
+    transform: showProgressBar ? "translateY(0)" : "translateY(-100%)",
+    transition: "transform 0.3s ease-in-out",
+  }}
+>
+  <div className="flex justify-between p-4 overflow-x-auto">
+    {sections.map((section, index) => {
+      const Icon = section.icon;
+      const isActive = activeSection >= index;
+      return (
+        <div key={section.id} className="flex-shrink-0 px-2">
+          <motion.div
+            className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
+              isActive ? "bg-primary-green" : "bg-deep-teal"
+            }`}
           >
-            <div className="flex justify-between p-4 overflow-x-auto">
-              {sections.map((section, index) => {
-                const Icon = section.icon;
-                const isActive = activeSection >= index;
-                return (
-                  <div key={section.id} className="flex-shrink-0 px-2">
-                    <motion.div
-                      className={`
-                        w-8 h-8 rounded-full flex items-center justify-center mb-2
-                        transition-all duration-300
-                        ${isActive ? "bg-primary-green" : "bg-deep-teal"}
-                      `}
-                    >
-                      <Icon className="w-4 h-4 text-white" />
-                    </motion.div>
-                    <span className="text-xs whitespace-nowrap">{section.title}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+            <Icon className="w-4 h-4 text-white" />
+          </motion.div>
+          <span className="text-xs whitespace-nowrap">{section.title}</span>
+        </div>
+      );
+    })}
+  </div>
+  {/* Bottom Progress Bar */}
+  <div className="h-1 bg-deep-teal/20">
+    <div
+      className="h-full bg-primary-green transition-all duration-300"
+      style={{
+        width: `${(activeSection / (sections.length - 1)) * 100}%`,
+      }}
+    />
+  </div>
+</div>
 
           {/* Desktop Progress Bar */}
           <div
@@ -290,7 +297,7 @@ const CompleteInvestmentJourney = () => {
 
       {/* Main Content */}
       <div
-        className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 lg:pl-24"
+        className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 lg:pl-30"
         ref={sectionRef}
       >
         {/* Section Title */}

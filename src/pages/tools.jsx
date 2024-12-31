@@ -85,7 +85,7 @@ const ToolsShowcase = () => {
     });
   };
 
-  // Optional: Handle window resize to adjust scrollSnapType
+  // Handle window resize to adjust scrollSnapType
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   
   useEffect(() => {
@@ -100,8 +100,8 @@ const ToolsShowcase = () => {
   return (
     <section className="relative py-10 px-4 md:py-20 bg-light-background">
       <div className="max-w-6xl mx-auto">
-        {/* Responsive wrapper: vertical on mobile, horizontal on md+ */}
-        <div className="flex flex-col md:flex-row relative">
+        <div className="flex flex-col md:flex-row relative items-center md:items-center">
+          
           {/* Hero Card */}
           <div
             className="
@@ -110,18 +110,24 @@ const ToolsShowcase = () => {
               bg-sage
               text-primary-green rounded-xl shadow-lg
               mb-8 md:mb-0
+              flex-shrink-0
+              h-[28.8rem]
+              flex flex-col justify-between
+              z-10 /* Increased z-index to ensure it stays above if overlapping */
             "
           >
-            <div className="flex flex-col justify-between p-6 md:p-10 space-y-4">
+            <div className="p-6 md:p-10 space-y-4 h-full flex flex-col justify-between">
               <div>
                 <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-deep-brown">
                   Investment Tools
                 </h2>
                 <p className="text-sm md:text-base text-base leading-relaxed">
-                  Unlock the power of professional-grade investment tools designed to help you make informed decisions and optimize your portfolio.
+                  Unlock the power of professional-grade investment tools designed
+                  to help you make informed decisions and optimize your portfolio.
                 </p>
                 <p className="text-sm md:text-base text-base leading-relaxed mt-3 md:mt-4">
-                  From asset allocation to risk management, each tool is crafted to provide you with the insights you need for successful investing.
+                  From asset allocation to risk management, each tool is crafted to
+                  provide you with the insights you need for successful investing.
                 </p>
               </div>
 
@@ -141,12 +147,15 @@ const ToolsShowcase = () => {
               hide-scrollbar 
               relative
               flex flex-col space-y-4 md:space-y-0 
-              md:flex-row md:space-x-4 
+              md:flex-row md:space-x-6 
               overflow-y-auto md:overflow-x-auto 
+              justify-start
+              items-center /* Changed from items-start to items-center */
             `}
             style={{
               scrollSnapType: isMobile ? 'y mandatory' : 'x mandatory',
-              WebkitOverflowScrolling: 'touch'
+              WebkitOverflowScrolling: 'touch',
+              paddingTop: isMobile ? '0' : '1rem', // Optional: Adjust padding as needed
             }}
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
@@ -158,15 +167,18 @@ const ToolsShowcase = () => {
               return (
                 <div
                   key={index}
-                  className="
+                  className={`
                     snap-start 
-                    md:min-w-[240px] 
-                    bg-sage/60 rounded-xl shadow 
+                    ${isMobile ? 'w-full sm:w-80' : 'w-60'} /* Set consistent width */
+                    flex-shrink-0 /* Prevent shrinking */
+                    bg-sage/10 rounded-xl shadow 
                     hover:shadow-xl transition-shadow duration-300 
-                    flex flex-col
-                  "
+                    flex flex-col relative
+                    h-[23rem] 
+                    /* Removed m-4 and used space-x-6 on parent */
+                  `}
                 >
-                  <div className="flex flex-col justify-between p-6 md:p-8 space-y-4 md:space-y-6">
+                  <div className="flex flex-col justify-between p-6 md:p-8 space-y-4 md:space-y-6 h-full">
                     <div>
                       <div
                         className={`
@@ -178,10 +190,10 @@ const ToolsShowcase = () => {
                       >
                         <Icon className="w-5 h-5 md:w-6 md:h-6 text-light-background" />
                       </div>
-                      <h3 className="text-lg md:text-xl font-semibold text-deep-brown">
+                      <h3 className="text-lg md:text-xl font-semibold text-deep-brown truncate">
                         {tool.title}
                       </h3>
-                      <p className="text-sage text-sm md:text-primary-green leading-relaxed mt-2 md:mt-3">
+                      <p className="text-primary-green text-sm md:text-primary-green leading-relaxed mt-2 md:mt-3">
                         {tool.description}
                       </p>
                     </div>
@@ -195,25 +207,23 @@ const ToolsShowcase = () => {
             })}
           </div>
 
-          {/* Show arrow button only on md+ (horizontal scenario) */}
+          {/* Show arrow button only on md+ */}
           <button
             onClick={() => handleScroll(1)}
             className="
               hidden md:flex 
               absolute right-4 top-1/2 -translate-y-1/2 
-              w-10 h-10 md:w-12 md:h-12 bg-sage rounded-full shadow-lg 
+              w-12 h-12 
+              bg-sage rounded-full shadow-lg 
               items-center justify-center hover:bg-sage hover:bg-opacity-80 
               transition-colors z-30
             "
             aria-label="Next tools"
           >
-            <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-deep-teal" />
+            <ChevronRight className="w-6 h-6 md:w-6 md:h-6 text-deep-teal" />
           </button>
         </div>
       </div>
-
-      {/* Gradient fade for scroll indication on desktop */}
-      <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-sage to-transparent pointer-events-none md:block hidden"></div>
     </section>
   );
 };

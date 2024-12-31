@@ -144,7 +144,7 @@ const AboutSection = () => {
                   onHoverEnd={() => setHoveredCard(null)}
                   className="relative group flex-1"
                 >
-                  <div className="relative bg-light-gold rounded-2xl p-8 shadow-lg transition-shadow duration-300 group-hover:shadow-2xl h-full"> {/* Updated background color */}
+                  <div className="relative bg-gold/20 rounded-2xl p-8 shadow-lg transition-shadow duration-300 group-hover:shadow-2xl h-full"> {/* Updated background color */}
                     {/* Outer Gradient Border (Visible on hover) */}
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300 -m-0.5 p-0.5">
                       <div className="absolute inset-0 bg-light-gold rounded-2xl" /> {/* Updated inner background color */}
