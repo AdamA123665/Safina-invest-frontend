@@ -1207,11 +1207,28 @@ const PortfolioJourney = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [cardsPerView, setCardsPerView] = useState(1);
   
+    // Carousel card colors
+    const cardColors = [
+      'bg-red-100',
+      'bg-blue-100',
+      'bg-green-100',
+      'bg-yellow-100',
+      'bg-purple-100',
+      'bg-pink-100',
+      'bg-orange-100',
+      'bg-indigo-100',
+      'bg-teal-100',
+      'bg-cyan-100',
+      'bg-lime-100',
+      'bg-fuchsia-100',
+    ];
+  
     // Brokerage comparison data
     const brokerageTypes = [
       {
         type: 'eToro',
-        description: 'A social trading platform that allows users to copy the trades of experienced investors.',
+        description:
+          'A social trading platform that allows users to copy the trades of experienced investors.',
         pros: [
           'Social trading features',
           'User-friendly interface',
@@ -1226,7 +1243,8 @@ const PortfolioJourney = () => {
       },
       {
         type: 'Trading 212',
-        description: 'A commission-free trading app offering stocks, ETFs, and CFDs with a user-friendly interface.',
+        description:
+          'A commission-free trading app offering stocks, ETFs, and CFDs with a user-friendly interface.',
         pros: [
           'Commission-free trading',
           'Intuitive mobile and web platforms',
@@ -1241,7 +1259,8 @@ const PortfolioJourney = () => {
       },
       {
         type: 'Bestinvest',
-        description: 'A UK-based platform offering a variety of investment options with a focus on long-term investing.',
+        description:
+          'A UK-based platform offering a variety of investment options with a focus on long-term investing.',
         pros: [
           'Comprehensive range of investment products',
           'Robust research and analysis tools',
@@ -1256,7 +1275,8 @@ const PortfolioJourney = () => {
       },
       {
         type: 'InvestEngine',
-        description: 'An online platform providing automated investing with customizable portfolios.',
+        description:
+          'An online platform providing automated investing with customizable portfolios.',
         pros: [
           'Automated portfolio management',
           'Low fees',
@@ -1271,7 +1291,8 @@ const PortfolioJourney = () => {
       },
       {
         type: 'Hargreaves Lansdown',
-        description: 'One of the UK’s leading investment platforms offering a wide range of investment options and services.',
+        description:
+          'One of the UK’s leading investment platforms offering a wide range of investment options and services.',
         pros: [
           'Extensive range of investment products',
           'High-quality research and tools',
@@ -1286,7 +1307,8 @@ const PortfolioJourney = () => {
       },
       {
         type: 'Interactive Investor',
-        description: 'A UK-based platform offering flat-fee investing with access to a wide range of global markets.',
+        description:
+          'A UK-based platform offering flat-fee investing with access to a wide range of global markets.',
         pros: [
           'Flat-fee structure beneficial for larger portfolios',
           'Access to global markets',
@@ -1301,7 +1323,8 @@ const PortfolioJourney = () => {
       },
       {
         type: 'Interactive Brokers',
-        description: 'A global brokerage offering advanced trading tools and access to numerous markets worldwide.',
+        description:
+          'A global brokerage offering advanced trading tools and access to numerous markets worldwide.',
         pros: [
           'Advanced trading platforms and tools',
           'Low trading fees',
@@ -1316,7 +1339,8 @@ const PortfolioJourney = () => {
       },
       {
         type: 'AJ Bell',
-        description: 'A UK-based broker providing a wide range of investment options with competitive pricing.',
+        description:
+          'A UK-based broker providing a wide range of investment options with competitive pricing.',
         pros: [
           'Competitive pricing and fees',
           'Wide range of investment products',
@@ -1331,7 +1355,8 @@ const PortfolioJourney = () => {
       },
       {
         type: 'Saxo',
-        description: 'A global brokerage offering a comprehensive trading platform with access to numerous asset classes.',
+        description:
+          'A global brokerage offering a comprehensive trading platform with access to numerous asset classes.',
         pros: [
           'Extensive range of tradable assets',
           'Advanced trading platforms',
@@ -1346,7 +1371,8 @@ const PortfolioJourney = () => {
       },
       {
         type: 'Fidelity',
-        description: 'A well-established brokerage offering a broad range of investment services and retirement accounts.',
+        description:
+          'A well-established brokerage offering a broad range of investment services and retirement accounts.',
         pros: [
           'Wide array of investment options',
           'Strong research and educational tools',
@@ -1361,7 +1387,8 @@ const PortfolioJourney = () => {
       },
       {
         type: 'FreeTrade',
-        description: 'A commission-free trading app focused on simplicity and accessibility for UK investors.',
+        description:
+          'A commission-free trading app focused on simplicity and accessibility for UK investors.',
         pros: [
           'Commission-free trading',
           'Simple and clean user interface',
@@ -1376,7 +1403,8 @@ const PortfolioJourney = () => {
       },
       {
         type: 'XTB',
-        description: 'A global broker offering a wide range of CFDs and forex trading with competitive spreads.',
+        description:
+          'A global broker offering a wide range of CFDs and forex trading with competitive spreads.',
         pros: [
           'Competitive spreads on CFDs and forex',
           'Advanced trading platforms',
@@ -1391,47 +1419,46 @@ const PortfolioJourney = () => {
       },
     ];
   
-    // Handle responsiveness for carousel
-  useEffect(() => {
-    const updateCardsPerView = () => {
-      const width = window.innerWidth;
-      if (width >= 1024) {
-        setCardsPerView(3);
-      } else if (width >= 768) {
-        setCardsPerView(2);
-      } else {
-        setCardsPerView(1);
-      }
+    // Update cards per view on screen resize
+    useEffect(() => {
+      const updateCardsPerView = () => {
+        const width = window.innerWidth;
+        if (width >= 1024) {
+          setCardsPerView(3);
+        } else if (width >= 768) {
+          setCardsPerView(2);
+        } else {
+          setCardsPerView(1);
+        }
+      };
+      updateCardsPerView();
+      window.addEventListener('resize', updateCardsPerView);
+      return () => window.removeEventListener('resize', updateCardsPerView);
+    }, []);
+  
+    // For looping carousel
+    const maxIndex = brokerageTypes.length - cardsPerView;
+  
+    const handlePrev = () => {
+      setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex));
     };
-
-    updateCardsPerView();
-    window.addEventListener('resize', updateCardsPerView);
-    return () => window.removeEventListener('resize', updateCardsPerView);
-  }, []);
-
-  const maxIndex = brokerageTypes.length - cardsPerView;
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => Math.max(prev - 1, 0));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
-  };
-
-  // Calculate the translateX percentage
-  const translateXPercentage = (currentIndex * 100) / cardsPerView;
-
-  return (
-    <div className="min-h-screen bg-light-background">
-      <div className="max-w-7xl mx-auto px-4 py-16 relative">
-        {/* Educational Brokerage Overview Section */}
-        <div className="mb-16">
-          <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent mb-4">
+  
+    const handleNext = () => {
+      setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
+    };
+  
+    // Calculate translateX based on current index
+    const translateXPercentage = (currentIndex * 100) / cardsPerView;
+  
+    return (
+      <div className="min-h-screen bg-light-background">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          {/* Section Heading */}
+          <div className="text-center mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent mb-2">
               Choose Your Investment Path
             </h2>
-            <p className="text-xl text-deep-brown mb-4">
+            <p className="text-base md:text-xl text-deep-brown mb-4">
               We've made investing simple with two clear options to get started
             </p>
             <button
@@ -1442,90 +1469,88 @@ const PortfolioJourney = () => {
               <span>Learn about different brokerage options</span>
             </button>
           </div>
-
+  
+          {/* Brokerage Info Carousel */}
           {showBrokerageInfo && (
-            <div className="bg-deep-teal/50 rounded-2xl shadow-lg p-8 mb-8">
-              <h3 className="text-2xl font-bold text-deep-brown mb-6">
+            <div className="bg-deep-teal/50 rounded-xl p-4 md:p-6 mb-6 shadow-md">
+              <h3 className="text-xl md:text-2xl font-bold text-deep-brown mb-4">
                 Understanding Your Brokerage Options
               </h3>
+  
               {/* Carousel Container */}
               <div className="relative">
-                {/* Carousel Track */}
                 <div className="overflow-hidden">
+                  {/* Carousel Track */}
                   <div
                     className="flex transition-transform duration-500 ease-in-out"
                     style={{
                       transform: `translateX(-${translateXPercentage}%)`,
                       width: `${(brokerageTypes.length * 100) / cardsPerView}%`,
-                      gap: '16px', // Adjust the gap as needed
+                      gap: '12px',
                     }}
                   >
                     {brokerageTypes.map((broker, index) => (
                       <div
-                        key={index}
-                        className="p-4 md:p-6 rounded-xl bg-sage hover:bg-light-background transition-colors flex-shrink-0"
-                        style={{ width: `${100 / brokerageTypes.length}%` }}
+                        key={broker.type + index}
+                        className={`flex-shrink-0 w-full md:w-auto p-4 rounded-lg shadow-sm 
+                        hover:shadow-md transition-colors ${cardColors[index % cardColors.length]}`}
+                        style={{
+                          width: `${100 / brokerageTypes.length}%`,
+                        }}
                       >
-                        <h4 className="text-xl font-semibold text-deep-brown mb-3">
+                        <h4 className="text-base md:text-lg font-semibold text-deep-brown mb-2">
                           {broker.type}
                         </h4>
-                        <p className="text-olive-green mb-4">{broker.description}</p>
-                        <div className="space-y-2">
-                          <div className="flex items-start">
+                        <p className="text-sm md:text-base text-olive-green mb-3">
+                          {broker.description}
+                        </p>
+                        {/* Pros */}
+                        <div className="mb-3">
+                          <div className="flex items-start mb-1">
                             <Check className="w-5 h-5 text-olive-green mt-1 mr-2" />
-                            <div>
-                              <span className="font-medium">Pros:</span>
-                              <ul className="list-disc list-inside ml-4">
-                                {broker.pros.map((pro, i) => (
-                                  <li key={i} className="text-olive-green">
-                                    {pro}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
+                            <span className="font-medium">Pros:</span>
                           </div>
-                          <div className="flex items-start">
+                          <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
+                            {broker.pros.map((pro, i) => (
+                              <li key={i}>{pro}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        {/* Cons */}
+                        <div>
+                          <div className="flex items-start mb-1">
                             <AlertCircle className="w-5 h-5 text-gold mt-1 mr-2" />
-                            <div>
-                              <span className="font-medium">Cons:</span>
-                              <ul className="list-disc list-inside ml-4">
-                                {broker.cons.map((con, i) => (
-                                  <li key={i} className="text-olive-green">
-                                    {con}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
+                            <span className="font-medium">Cons:</span>
                           </div>
+                          <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
+                            {broker.cons.map((con, i) => (
+                              <li key={i}>{con}</li>
+                            ))}
+                          </ul>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
-
-                {/* Navigation Buttons */}
+  
+                {/* Prev / Next Buttons */}
                 <button
                   onClick={handlePrev}
-                  disabled={currentIndex === 0}
-                  className={`absolute top-1/2 left-0 transform -translate-y-1/2 bg-deep-brown text-white p-2 rounded-full shadow-lg hover:bg-dark-brown transition-colors ${
-                    currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
+                  className={`absolute top-1/2 left-2 -translate-y-1/2 bg-deep-brown text-white p-2 rounded-full shadow hover:bg-dark-brown transition-colors`}
                   aria-label="Previous"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button
                   onClick={handleNext}
-                  disabled={currentIndex >= maxIndex}
-                  className={`absolute top-1/2 right-0 transform -translate-y-1/2 bg-deep-brown text-white p-2 rounded-full shadow-lg hover:bg-dark-brown transition-colors ${
-                    currentIndex >= maxIndex ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
+                  className={`absolute top-1/2 right-2 -translate-y-1/2 bg-deep-brown text-white p-2 rounded-full shadow hover:bg-dark-brown transition-colors`}
                   aria-label="Next"
                 >
                   <ChevronRightIcon className="w-4 h-4" />
                 </button>
               </div>
-              <div className="mt-6 text-center">
+  
+              <div className="mt-4 text-center">
                 <a
                   href="/articles/brokerage-platforms"
                   className="inline-flex items-center text-primary-green hover:text-dark-green"
@@ -1533,237 +1558,226 @@ const PortfolioJourney = () => {
                   Read our detailed brokerage comparison guide
                   <LucideExternalLink className="w-4 h-4 ml-2" />
                 </a>
-                </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
   
           {/* Investment Options */}
-<div className="grid md:grid-cols-2 gap-8 mb-12">
-  {/* Trading 212 Card */}
-  <div className="relative rounded-2xl overflow-hidden bg-deep-teal/30 shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col">
-    <div className="p-8 flex flex-col flex-grow">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-full bg-sage flex items-center justify-center">
-            <DollarSign className="w-6 h-6 text-primary-green" />
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold text-deep-brown">Trading 212</h3>
-            <span className="text-olive-green font-medium">Quickest Option</span>
-          </div>
-        </div>
-        <div className="px-4 py-2 rounded-full bg-sage text-primary-green font-semibold">
-          Pre-built Portfolio
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="space-y-6 flex-grow">
-        {/* Steps Section */}
-        <div className="bg-sage rounded-xl p-6">
-          <h4 className="text-lg font-semibold text-deep-brown mb-4">
-            Three Simple Steps:
-          </h4>
-          <div className="space-y-4">
-            {[
-              {
-                title: 'Click the portfolio link below',
-                description:
-                  'Opens Trading 212 with your selected portfolio',
-                tip: 'If certain ETFs are unavailable, we automatically rebalance the allocations to maintain optimal portfolio construction',
-              },
-              {
-                title: 'Add funds to your account',
-                description: 'Secure deposit via bank transfer or card',
-              },
-              {
-                title: "Click 'Invest' - Done!",
-                description: 'Your portfolio is automatically created',
-              },
-            ].map((step, index) => (
-              <div key={index} className="flex items-start">
-                {/* Step Number */}
-                <div className="w-8 h-8 rounded-full bg-sage flex items-center justify-center mr-4 mt-1">
-                  <span className="text-primary-green font-bold">
-                    {index + 1}
-                  </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
+            {/* Trading 212 Card */}
+            <div className="rounded-xl bg-deep-teal/30 shadow-md hover:shadow-lg transition-shadow p-4 md:p-6 flex flex-col">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-full bg-sage flex items-center justify-center">
+                    <DollarSign className="w-5 h-5 text-primary-green" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold text-deep-brown">
+                      Trading 212
+                    </h3>
+                    <span className="text-sm md:text-base text-olive-green font-medium">
+                      Quickest Option
+                    </span>
+                  </div>
                 </div>
-                {/* Step Content */}
-                <div>
-                  <p className="font-medium text-deep-brown">{step.title}</p>
-                  <p className="text-sm text-deep-brown">{step.description}</p>
-                  {step.tip && (
-                    <div className="mt-2 p-3 bg-light-gold rounded-lg">
-                      <p className="text-sm text-gold">
-                        <strong>Note:</strong> {step.tip}
-                      </p>
-                    </div>
-                  )}
+                <div className="px-3 py-1 rounded-full bg-sage text-sm text-primary-green font-semibold">
+                  Pre-built Portfolio
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Risk Level Section */}
-        <div className="p-4 rounded-xl bg-sage">
-          <div className="text-sm text-deep-brown mb-2">
-            Your Selected Risk Level
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="font-bold text-deep-brown">Level {riskLevel}</div>
-            <div className="text-sm text-deep-brown">
-              {riskLevel <= 3
-                ? 'Conservative'
-                : riskLevel <= 7
-                ? 'Balanced'
-                : 'Aggressive'}
-            </div>
-          </div>
-        </div>
-
-        {/* Action Button */}
-        <a
-          href={trading212Links[riskLevel]}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-full py-4 px-6 rounded-xl bg-primary-green text-white text-center font-semibold hover:bg-dark-green transition-all duration-200"
-        >
-          Open Your Portfolio
-          <LucideExternalLink className="inline-block ml-2 w-4 h-4" />
-        </a>
-      </div>
-    </div>
-  </div>
-
-  {/* Alternative Brokers Card */}
-  <div className="rounded-2xl overflow-hidden bg-gold/30 shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col">
-    <div className="p-8 flex flex-col flex-grow">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-full bg-sage flex items-center justify-center">
-            <BarChart2 className="w-6 h-6 text-gold" />
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold text-deep-brown">
-              Alternative Brokers
-            </h3>
-            <span className="text-deep-teal font-medium">More Flexibility</span>
-          </div>
-        </div>
-        <div className="px-4 py-2 rounded-full bg-sage text-primary-green font-semibold">
-          Manual Setup
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="space-y-6 flex-grow">
-        {/* Steps Section */}
-        <div className="bg-sage rounded-xl p-6">
-          <h4 className="text-lg font-semibold text-deep-brown mb-4">
-            Follow These Steps:
-          </h4>
-          <div className="space-y-4">
-            {[
-              {
-                title: 'Choose Your Broker',
-                description:
-                  'Compare fees, features, and minimum deposits',
-                link: {
-                  text: 'View broker comparison',
-                  url: '/articles/brokerage-platforms',
-                },
-              },
-              {
-                title: 'Open & Fund Account',
-                description: 'Complete verification and add funds',
-                tip: 'Most brokers require ID verification – have your documents ready',
-              },
-              {
-                title: 'Find & Buy Assets',
-                description:
-                  'Search for each asset using the ticker symbols',
-                action: {
-                  text: 'View your asset list',
-                  onClick: () => setStep(2),
-                },
-              },
-              // Removed the fourth step here
-            ].map((step, index) => (
-              <div key={index} className="flex items-start">
-                {/* Step Number */}
-                <div className="w-8 h-8 rounded-full bg-sage flex items-center justify-center mr-4 mt-1">
-                  <span className="text-primary-green font-bold">
-                    {index + 1}
-                  </span>
-                </div>
-                {/* Step Content */}
-                <div>
-                  <p className="font-medium text-deep-brown">{step.title}</p>
-                  <p className="text-sm text-deep-brown">{step.description}</p>
-                  {step.link && (
-                    <a
-                      href={step.link.url}
-                      className="text-sm text-primary-green hover:text-dark-green inline-flex items-center mt-1"
-                    >
-                      {step.link.text}
-                      <ChevronRightIcon className="w-4 h-4 ml-1" />
-                    </a>
-                  )}
-                  {step.tip && (
-                    <div className="mt-2 p-3 bg-light-gold rounded-lg">
-                      <p className="text-sm text-gold">
-                        <strong>Note:</strong> {step.tip}
-                      </p>
+  
+              {/* Steps */}
+              <div className="bg-sage rounded-lg p-3 mb-4">
+                <h4 className="text-base md:text-lg font-semibold text-deep-brown mb-2">
+                  Three Simple Steps:
+                </h4>
+                <div className="space-y-3">
+                  {[
+                    {
+                      title: 'Click the portfolio link below',
+                      description:
+                        'Opens Trading 212 with your selected portfolio',
+                      tip: 'If certain ETFs are unavailable, we automatically rebalance the allocations to maintain optimal portfolio construction',
+                    },
+                    {
+                      title: 'Add funds to your account',
+                      description: 'Secure deposit via bank transfer or card',
+                    },
+                    {
+                      title: "Click 'Invest' - Done!",
+                      description: 'Your portfolio is automatically created',
+                    },
+                  ].map((step, index) => (
+                    <div key={index} className="flex items-start">
+                      {/* Step Number */}
+                      <div className="w-6 h-6 rounded-full bg-light-gold flex items-center justify-center mr-3">
+                        <span className="text-primary-green font-bold text-sm">
+                          {index + 1}
+                        </span>
+                      </div>
+                      {/* Step Content */}
+                      <div className="text-sm md:text-base text-deep-brown">
+                        <p className="font-medium">{step.title}</p>
+                        <p>{step.description}</p>
+                        {step.tip && (
+                          <div className="mt-2 p-2 bg-light-gold rounded">
+                            <p className="text-xs md:text-sm text-gold">
+                              <strong>Note:</strong> {step.tip}
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  )}
-                  {step.action && (
-                    <button
-                      onClick={step.action.onClick}
-                      className="text-sm text-primary-green hover:text-dark-green inline-flex items-center mt-1 focus:outline-none"
-                    >
-                      {step.action.text}
-                      <ChevronRightIcon className="w-4 h-4 ml-1" />
-                    </button>
-                  )}
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Help Section */}
-        <div className="bg-sage rounded-xl p-4">
-          <div className="flex items-start">
-            <HelpCircle className="w-5 h-5 text-primary-green mt-1 mr-3" />
-            <div className="text-sm text-primary-green">
-              Need help choosing a broker? Read our detailed{' '}
+  
+              {/* Risk Level */}
+              <div className="p-3 rounded-lg bg-sage mb-4 text-sm md:text-base">
+                <div className="text-deep-brown mb-1">Your Selected Risk Level</div>
+                <div className="flex items-center justify-between">
+                  <div className="font-bold text-deep-brown">Level {riskLevel}</div>
+                  <div className="text-deep-brown">
+                    {riskLevel <= 3
+                      ? 'Conservative'
+                      : riskLevel <= 7
+                      ? 'Balanced'
+                      : 'Aggressive'}
+                  </div>
+                </div>
+              </div>
+  
+              {/* Action Button */}
               <a
-                href="/articles/brokerage-comparison"
-                className="underline hover:text-dark-green"
+                href={trading212Links[riskLevel]}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-auto block w-full py-3 rounded-lg bg-primary-green text-white text-center font-semibold hover:bg-dark-green transition-all duration-200 text-sm md:text-base"
               >
-                broker comparison guide
+                Open Your Portfolio
+                <LucideExternalLink className="inline-block ml-1 w-4 h-4" />
               </a>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
   
-          {/* Navigation */}
+            {/* Alternative Brokers Card */}
+            <div className="rounded-xl bg-gold/30 shadow-md hover:shadow-lg transition-shadow p-4 md:p-6 flex flex-col">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-full bg-sage flex items-center justify-center">
+                    <BarChart2 className="w-5 h-5 text-gold" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold text-deep-brown">
+                      Alternative Brokers
+                    </h3>
+                    <span className="text-sm md:text-base text-deep-teal font-medium">
+                      More Flexibility
+                    </span>
+                  </div>
+                </div>
+                <div className="px-3 py-1 rounded-full bg-sage text-sm text-primary-green font-semibold">
+                  Manual Setup
+                </div>
+              </div>
+  
+              {/* Steps */}
+              <div className="bg-sage rounded-lg p-3 mb-4">
+                <h4 className="text-base md:text-lg font-semibold text-deep-brown mb-2">
+                  Follow These Steps:
+                </h4>
+                <div className="space-y-3">
+                  {[
+                    {
+                      title: 'Choose Your Broker',
+                      description: 'Compare fees, features, and minimum deposits',
+                      link: {
+                        text: 'View broker comparison',
+                        url: '/articles/brokerage-platforms',
+                      },
+                    },
+                    {
+                      title: 'Open & Fund Account',
+                      description: 'Complete verification and add funds',
+                      tip: 'Most brokers require ID verification – have your documents ready',
+                    },
+                    {
+                      title: 'Find & Buy Assets',
+                      description: 'Search for each asset using the ticker symbols',
+                      action: {
+                        text: 'View your asset list',
+                        onClick: () => setStep(2),
+                      },
+                    },
+                  ].map((step, index) => (
+                    <div key={index} className="flex items-start">
+                      {/* Step Number */}
+                      <div className="w-6 h-6 rounded-full bg-light-gold flex items-center justify-center mr-3">
+                        <span className="text-primary-green font-bold text-sm">
+                          {index + 1}
+                        </span>
+                      </div>
+                      {/* Step Content */}
+                      <div className="text-sm md:text-base text-deep-brown">
+                        <p className="font-medium">{step.title}</p>
+                        <p>{step.description}</p>
+                        {step.link && (
+                          <a
+                            href={step.link.url}
+                            className="text-primary-green hover:text-dark-green inline-flex items-center mt-1"
+                          >
+                            {step.link.text}
+                            <ChevronRightIcon className="w-4 h-4 ml-1" />
+                          </a>
+                        )}
+                        {step.tip && (
+                          <div className="mt-2 p-2 bg-light-gold rounded">
+                            <p className="text-xs md:text-sm text-gold">
+                              <strong>Note:</strong> {step.tip}
+                            </p>
+                          </div>
+                        )}
+                        {step.action && (
+                          <button
+                            onClick={step.action.onClick}
+                            className="text-primary-green hover:text-dark-green inline-flex items-center mt-1 focus:outline-none"
+                          >
+                            {step.action.text}
+                            <ChevronRightIcon className="w-4 h-4 ml-1" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+  
+              {/* Help Section */}
+              <div className="bg-sage rounded-lg p-3 text-sm md:text-base">
+                <div className="flex items-start">
+                  <HelpCircle className="w-5 h-5 text-primary-green mt-1 mr-2" />
+                  <div className="text-primary-green">
+                    Need help choosing a broker? Read our detailed{' '}
+                    <a
+                      href="/articles/brokerage-comparison"
+                      className="underline hover:text-dark-green"
+                    >
+                      broker comparison guide
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          {/* Back to Portfolio Button */}
           <div className="flex justify-center">
             <button
               onClick={() => {
                 setStep(2);
-                window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top smoothly
+                window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="flex items-center space-x-2 px-6 py-3 rounded-lg bg-light-background shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none"
+              className="flex items-center space-x-2 px-4 py-2 rounded-md bg-light-background border border-gray-300 shadow hover:shadow-md transition-all duration-200 focus:outline-none"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Portfolio</span>

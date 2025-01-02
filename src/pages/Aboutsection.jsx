@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, TrendingUp, Target, ArrowRight } from 'lucide-react'; // Imported ArrowRight
-
+import { useNavigate } from 'react-router-dom';
 const AboutSection = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
-
+  const navigate = useNavigate();
   // Kick off any fade-in animations right away
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
@@ -171,20 +171,20 @@ const AboutSection = () => {
                       </p> {/* Updated text color */}
 
                       {/* CTA Button */}
-                      <motion.a
-                        href={card.link}
-                        className="inline-flex items-center px-6 py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-primary-green to-deep-teal hover:from-dark-green hover:to-deep-teal transition-all duration-300 transform hover:scale-105 mt-auto"
-                      >
-                        {card.linkLabel}
-                        <motion.span
-                          initial={{ x: 0 }}
-                          animate={{ x: hoveredCard === index ? 5 : 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="ml-2"
-                        >
-                          →
-                        </motion.span>
-                      </motion.a> {/* Updated button colors */}
+                      <motion.div
+      onClick={() => navigate(card.link)}
+      className="inline-flex items-center px-6 py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-primary-green to-deep-teal hover:from-dark-green hover:to-deep-teal transition-all duration-300 transform hover:scale-105 mt-auto cursor-pointer"
+    >
+      {card.linkLabel}
+      <motion.span
+        initial={{ x: 0 }}
+        animate={{ x: hoveredCard === index ? 5 : 0 }}
+        transition={{ duration: 0.2 }}
+        className="ml-2"
+      >
+        →
+      </motion.span>
+    </motion.div>
                     </div>
                   </div>
                 </motion.div>

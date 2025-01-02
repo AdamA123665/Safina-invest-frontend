@@ -366,26 +366,26 @@ const CompleteInvestmentJourney = () => {
     </motion.button>
 
                 {/* Educational Resource */}
-                <motion.a
-                  href="/articles/understanding-investing-risk"
-                  className="block bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="flex items-start space-x-4">
-                    <Info className="w-6 h-6 text-gold flex-shrink-0" />
-                    <div>
-                      <h3 className="text-lg md:text-xl font-medium mb-2">
-                        Understanding Investment Risk
-                      </h3>
-                      <p className="text-primary-green mb-4 text-sm">
-                        Learn about the factors that influence investment risk and return.
-                      </p>
-                      <span className="text-gold hover:text-dark-green flex items-center text-sm md:text-dark-green">
-                        Read Article <ExternalLink className="ml-2 w-4 h-4" />
-                      </span>
-                    </div>
-                  </div>
-                </motion.a>
+                <motion.div
+      onClick={() => navigate('/articles/understanding-investing-risk')}
+      className="block bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors cursor-pointer"
+      whileHover={{ scale: 1.02 }}
+    >
+      <div className="flex items-start space-x-4">
+        <Info className="w-6 h-6 text-gold flex-shrink-0" />
+        <div>
+          <h3 className="text-lg md:text-xl font-medium mb-2">
+            Understanding Investment Risk
+          </h3>
+          <p className="text-primary-green mb-4 text-sm">
+            Learn about the factors that influence investment risk and return.
+          </p>
+          <span className="text-gold hover:text-dark-green flex items-center text-sm md:text-dark-green">
+            Read Article <ExternalLink className="ml-2 w-4 h-4" />
+          </span>
+        </div>
+      </div>
+    </motion.div>
               </div>
 
               {/* Right Column - Risk-Return Visualization */}
@@ -561,16 +561,16 @@ const CompleteInvestmentJourney = () => {
                 </div>
 
                 {/* Call to Action */}
-                <motion.a
-                  href="/allocation-tool"
-                  className="mt-8 w-full bg-olive-green hover:bg-dark-green text-white py-3 px-6 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+                <motion.div
+                  onClick={() => navigate('/allocation')}
+                  className="mt-8 w-full bg-olive-green hover:bg-dark-green text-white py-3 px-6 rounded-lg flex items-center justify-center space-x-2 transition-colors cursor-pointer"
                   whileHover={{ scale: 1.02 }}
                 >
                   <span className="font-medium text-sm md:text-dark-teal">
                     Access Portfolio Allocation Tool
                   </span>
                   <ChartPie className="w-5 h-5" />
-                </motion.a>
+                </motion.div>
 
                 <div className="mt-4 text-xs text-primary-green text-center">
                   Get your personalized asset allocation strategy in minutes
@@ -646,12 +646,12 @@ const CompleteInvestmentJourney = () => {
                 <p className="text-primary-green mb-6 text-sm">
                   Prefer a different broker? We support multiple platforms for your convenience.
                 </p>
-                <a
-                  href="/supported-brokers"
-                  className="text-olive-green hover:text-primary-green inline-flex items-center text-sm md:text-dark-green"
+                <div
+                  onClick={() => navigate('/articles/uk-brokerage-platforms')}
+                  className="text-olive-green hover:text-primary-green inline-flex items-center text-sm md:text-dark-green cursor-pointer"
                 >
                   View Supported Brokers <ArrowRight className="ml-2 w-4 h-4" />
-                </a>
+                </div>
               </motion.div>
             </div>
 
