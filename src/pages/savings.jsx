@@ -131,27 +131,28 @@ const SavingsSection = () => {
               </div>
 
               {/* How to Open an Account Card */}
-              <div
-      className="bg-light-background/80 backdrop-blur-sm rounded-xl p-6 shadow-lg transition-all duration-300 
-                 cursor-pointer"
-      onMouseEnter={() => setActiveSection("access")}
-      onMouseLeave={() => setActiveSection(null)}
-      // This will direct the user to raisin.co.uk on click
-      onClick={() => navigate("https://www.raisin.co.uk")}
-    >
-      <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-3 text-deep-brown">
-        How to Open an Account
-      </h3>
-      <p className="text-deep-brown leading-relaxed text-sm md:text-base lg:text-lg">
-        You can open savings accounts either directly with banks or 
-        through platforms like{" "}
-        <span className="text-blue-500 font-semibold underline">
-          Raisin UK
-        </span>
-        . Raisin offers a marketplace of savings products for easy
-        comparison and management.
-      </p>
-    </div>
+<div
+  className="bg-light-background/80 backdrop-blur-sm rounded-xl p-6 shadow-lg transition-all duration-300 
+             cursor-pointer"
+  onMouseEnter={() => setActiveSection("access")}
+  onMouseLeave={() => setActiveSection(null)}
+  // This will direct the user to raisin.co.uk on click
+  onClick={() => window.location.href = "https://www.raisin.co.uk"}
+>
+  <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-3 text-deep-brown">
+    How to Open an Account
+  </h3>
+  <p className="text-deep-brown leading-relaxed text-sm md:text-base lg:text-lg">
+    You can open savings accounts either directly with banks or 
+    through platforms like{" "}
+    <span className="text-blue-500 font-semibold underline">
+      Raisin UK
+    </span>
+    . Raisin offers a marketplace of savings products for easy
+    comparison and management.
+  </p>
+</div>
+
             </div>
 
             {/* Call to Action */}

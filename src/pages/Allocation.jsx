@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   ResponsiveContainer,
   PieChart,
@@ -27,7 +27,7 @@ import {
   Check,
   AlertCircle,
   HelpCircle,
-  ChevronLeft,
+  ChevronLeftIcon,
   ChevronRightIcon
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -1206,20 +1206,9 @@ const PortfolioJourney = () => {
   // ===========================
   const EnhancedCTA = ({ riskLevel, setStep, trading212Links }) => {
     const [showBrokerageInfo, setShowBrokerageInfo] = useState(false);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [cardsPerView, setCardsPerView] = useState(1);
   
     // Carousel card colors
-    const cardColors = [
-      'bg-deep-teal',
-      'bg-primary-green',
-      'bg-sage',
-      'bg-deep-brown',
-      'bg-olive-green',
-      'bg-dark-green',
-      'bg-light-gold',
-      'bg-gold',
-    ];
+    
   
     // Brokerage comparison data
     const brokerageTypes = [
@@ -1419,39 +1408,33 @@ const PortfolioJourney = () => {
   
     // Update cards per view on screen resize
       // Dynamically update cards-per-view based on screen width
+   // ===== F A D E   C A R O U S E L   L O G I C  (3 cards per slide) =====
+  // 1) Chunk the brokerage array into groups of 3
+  const slides = [];
+  for (let i = 0; i < brokerageTypes.length; i += 3) {
+    slides.push(brokerageTypes.slice(i, i + 3));
+  }
+
+  // 2) Track the active slide
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const totalSlides = slides.length;
+
+  // 3) Prev/Next slide
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+  };
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
+  }, [totalSlides]);
+
+  // 4) Auto-rotate slides every 5 seconds
   useEffect(() => {
-    const updateCardsPerView = () => {
-      const width = window.innerWidth;
-      if (width >= 1024) {
-        setCardsPerView(3);
-      } else if (width >= 768) {
-        setCardsPerView(2);
-      } else {
-        setCardsPerView(1);
-      }
-    };
-    updateCardsPerView();
-    window.addEventListener('resize', updateCardsPerView);
-    return () => window.removeEventListener('resize', updateCardsPerView);
-  }, []);
-
-  // If 3 cards per view, the maximum "starting" index is (totalCards - 3).
-  const maxIndex = brokerageTypes.length - cardsPerView;
-
-  // Move by ONE card each time
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex)); // Loop back
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0)); // Loop around
-  };
-
-  // Each card should be  (100 / cardsPerView)%  wide
-  // The track total width is:  brokerageTypes.length * (100 / cardsPerView)%
-  // The shift for currentIndex is: currentIndex * (100 / cardsPerView)%
-  const trackWidth = (brokerageTypes.length * 100) / cardsPerView;
-  const shiftPercentage = (currentIndex * 100) / cardsPerView;
+    const autoplay = setInterval(() => {
+      nextSlide();
+    }, 5000);
+    return () => clearInterval(autoplay);
+  }, [nextSlide]);
 
   return (
     <div className="min-h-screen bg-light-background">
@@ -1462,7 +1445,7 @@ const PortfolioJourney = () => {
             Choose Your Investment Path
           </h2>
           <p className="text-base md:text-xl text-deep-brown mb-4">
-            We've made investing simple with two clear options to get started
+            We’ve made investing simple with two clear options to get started
           </p>
           <button
             onClick={() => setShowBrokerageInfo(!showBrokerageInfo)}
@@ -1475,106 +1458,110 @@ const PortfolioJourney = () => {
 
         {/* Brokerage Info Carousel */}
         {showBrokerageInfo && (
-          <div className="bg-deep-teal/50 rounded-xl p-4 md:p-6 mb-6 shadow-md">
+          <div className="bg-deep-teal/50 rounded-xl p-4 md:p-6 mb-6 shadow-md relative overflow-hidden">
             <h3 className="text-xl md:text-2xl font-bold text-deep-brown mb-4">
               Understanding Your Brokerage Options
             </h3>
 
-            {/* Carousel Container */}
-            <div className="relative">
-              {/* Overflow hidden wrapper */}
-              <div className="overflow-hidden">
-                {/* Carousel Track */}
-                <div
-                  className="flex transition-transform duration-500 ease-in-out"
-                  style={{
-                    transform: `translateX(-${shiftPercentage}%)`,
-                    width: `${trackWidth}%`,
-                    gap: '12px',
-                  }}
-                >
-                  {brokerageTypes.map((broker, index) => (
-                    <div
-                      key={broker.type + index}
-                      className={`flex-shrink-0 p-4 rounded-lg shadow-sm hover:shadow-md transition-colors 
-                        ${cardColors[index % cardColors.length]}`}
-                      style={{
-                        width: `${100 / cardsPerView}%`,
-                      }}
-                    >
-                      <h4 className="text-base md:text-lg font-semibold text-deep-brown mb-2">
-                        {broker.type}
-                      </h4>
-                      <p className="text-sm md:text-base text-olive-green mb-3">
-                        {broker.description}
-                      </p>
-                      {/* Pros */}
-                      <div className="mb-3">
-                        <div className="flex items-start mb-1">
-                          <Check className="w-5 h-5 text-olive-green mt-1 mr-2" />
-                          <span className="font-medium">Pros:</span>
-                        </div>
-                        <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
-                          {broker.pros.map((pro, i) => (
-                            <li key={i}>{pro}</li>
-                          ))}
-                        </ul>
-                      </div>
-                      {/* Cons */}
-                      <div>
-                        <div className="flex items-start mb-1">
-                          <AlertCircle className="w-5 h-5 text-gold mt-1 mr-2" />
-                          <span className="font-medium">Cons:</span>
-                        </div>
-                        <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
-                          {broker.cons.map((con, i) => (
-                            <li key={i}>{con}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            {/* Each chunk of up to 3 cards is a “slide” */}
+            {slides.map((slideBrokers, idx) => (
+              <div
+                key={idx}
+                className={`absolute inset-0 transition-opacity duration-700
+                  flex flex-col lg:flex-row gap-4
+                  ${idx === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}
+                `}
+              >
+                {slideBrokers.map((broker, i) => (
+                  <div
+                    key={broker.type + i}
+                    className="flex-1 p-4 bg-white rounded-lg shadow hover:shadow-md transition-colors"
+                  >
+                    <h4 className="text-lg md:text-xl font-bold text-deep-brown mb-2">
+                      {broker.type}
+                    </h4>
+                    <p className="text-sm md:text-base text-olive-green mb-4">
+                      {broker.description}
+                    </p>
 
-              {/* Prev / Next Buttons */}
-              <button
-                onClick={handlePrev}
-                className="
-                  absolute top-1/2 left-2
-                  -translate-y-1/2
-                  bg-deep-brown text-white p-2
-                  rounded-full shadow hover:bg-dark-brown
-                  transition-colors
-                "
-                aria-label="Previous"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                onClick={handleNext}
-                className="
-                  absolute top-1/2 right-2
-                  -translate-y-1/2
-                  bg-deep-brown text-white p-2
-                  rounded-full shadow hover:bg-dark-brown
-                  transition-colors
-                "
-                aria-label="Next"
-              >
-                <ChevronRightIcon className="w-4 h-4" />
-              </button>
+                    {/* Pros */}
+                    <div className="mb-3">
+                      <div className="flex items-start mb-1">
+                        <Check className="w-5 h-5 text-olive-green mt-1 mr-2" />
+                        <span className="font-semibold text-deep-brown">
+                          Pros:
+                        </span>
+                      </div>
+                      <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
+                        {broker.pros.map((pro, j) => (
+                          <li key={j}>{pro}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Cons */}
+                    <div>
+                      <div className="flex items-start mb-1">
+                        <AlertCircle className="w-5 h-5 text-gold mt-1 mr-2" />
+                        <span className="font-semibold text-deep-brown">
+                          Cons:
+                        </span>
+                      </div>
+                      <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
+                        {broker.cons.map((con, j) => (
+                          <li key={j}>{con}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+
+            {/* Prev / Next Buttons (same logic as research carousel) */}
+            <button
+              onClick={prevSlide}
+              className="absolute top-1/2 left-2 -translate-y-1/2
+                         bg-deep-brown text-white p-2 rounded-full shadow
+                         hover:bg-dark-brown transition-colors z-20"
+              aria-label="Previous Slide"
+            >
+              <ChevronLeftIcon className="w-5 h-5" />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute top-1/2 right-2 -translate-y-1/2
+                         bg-deep-brown text-white p-2 rounded-full shadow
+                         hover:bg-dark-brown transition-colors z-20"
+              aria-label="Next Slide"
+            >
+              <ChevronRightIcon className="w-5 h-5" />
+            </button>
+
+            {/* Carousel Indicators (dots) */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+              {slides.map((_, index) => (
+                <span
+                  key={index}
+                  className={`h-3 w-3 rounded-full cursor-pointer ${
+                    index === currentSlide ? 'bg-primary-green' : 'bg-sage'
+                  }`}
+                  onClick={() => setCurrentSlide(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
             </div>
 
-            <div className="mt-4 text-center">
-      <div
-        onClick={() => navigate('/articles/brokerage-platforms')}
-        className="inline-flex items-center text-primary-green hover:text-dark-green cursor-pointer"
-      >
-        Read our detailed brokerage comparison guide
-        <LucideExternalLink className="w-4 h-4 ml-2" />
-      </div>
-    </div>
+            {/* Optional link to a detailed guide */}
+            <div className="mt-16 text-center relative z-20">
+              <div
+                onClick={() => navigate('/articles/brokerage-platforms')}
+                className="inline-flex items-center text-primary-green hover:text-dark-green cursor-pointer"
+              >
+                Read our detailed brokerage comparison guide
+                <LucideExternalLink className="w-4 h-4 ml-2" />
+              </div>
+            </div>
           </div>
         )}
   

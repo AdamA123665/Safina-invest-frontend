@@ -167,3 +167,15 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
     `}</style>
   </div>
 </section>
+
+
+const cardColors = [
+      'bg-deep-teal',
+      'bg-primary-green',
+      'bg-sage',
+      'bg-deep-brown',
+      'bg-olive-green',
+      'bg-dark-green',
+      'bg-light-gold',
+      'bg-gold',
+    ];

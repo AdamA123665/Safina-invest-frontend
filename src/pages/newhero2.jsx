@@ -432,6 +432,9 @@ const InnovativeHero = () => {
       */}
       <section className="py-12 sm:py-20 bg-light-background relative z-10 pt-36 sm:pt-44">
         <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-2 sm:mb-4 text-deep-brown font-semibold">
+            Our Aggressive Portfolio
+          </div>
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Text / CTA */}
             <div>
@@ -448,7 +451,7 @@ const InnovativeHero = () => {
                 className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-deep-teal hover:bg-deep-teal/80 transition-colors rounded-lg text-white font-medium shadow-md"
                 onClick={() => navigate('/articles/methodology')}
               >
-                Explore our methadology <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                Explore our methodology <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
 
