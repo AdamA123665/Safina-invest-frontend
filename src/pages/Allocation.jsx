@@ -872,12 +872,12 @@ const PortfolioJourney = () => {
               value: assetSeries ? assetSeries.values[idx] : 0
             }));
 
-            // YTD Return
             let ytdReturn = null;
-            const currentYear = new Date().getFullYear();
-            const ytdData = perfData.filter(
-              (p) => new Date(p.date).getFullYear() === currentYear
-            );
+            const oneYearAgo = new Date();
+            oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+            const ytdData = perfData.filter((p) => new Date(p.date) >= oneYearAgo);
+
             if (ytdData.length > 1) {
               const firstVal = ytdData[0].value;
               const lastVal = ytdData[ytdData.length - 1].value;
@@ -1057,7 +1057,6 @@ const PortfolioJourney = () => {
           </h2>
         </div>
           <p className="text-dark-green font-extrabold text:sm mb-2">
-           hover over the last point
           </p>
       
 
