@@ -11,13 +11,14 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { FaChartPie, FaClock } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Import navigate for routing
 
 const ToolsShowcase = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const carouselRef = useRef(null);
+  const navigate = useNavigate(); // Set up the navigate function
 
   const tools = [
     {
@@ -233,10 +234,13 @@ const ToolsShowcase = () => {
                     {/* Conditional "Learn More" or "Coming Soon" */}
                     <div className="flex items-center mt-2 md:mt-4">
                       {!tool.isComingSoon && tool.link ? (
-                        <Link to={tool.link} className="flex items-center text-primary-green group">
+                        <button
+                          onClick={() => navigate(tool.link)} // Navigate to the specified link
+                          className="flex items-center text-primary-green group"
+                        >
                           <span className="mr-1">Learn More</span>
                           <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
+                        </button>
                       ) : tool.isComingSoon ? (
                         <span className="text-gray-500">Coming Soon</span>
                       ) : null}

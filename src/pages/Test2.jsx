@@ -24,7 +24,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import Alert from '@mui/material/Alert';
-
+import { useNavigate } from 'react-router-dom';
 function AlertDescription({ severity, message, description }) {
   return (
     <Alert severity={severity}>
@@ -49,7 +49,7 @@ const CompleteInvestmentJourney = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [riskLevel, setRiskLevel] = useState(5);
   const [email, setEmail] = useState('');
-
+  const navigate = useNavigate();
   // Reference for the section to observe
   const sectionRef = useRef(null);
 
@@ -281,7 +281,7 @@ const CompleteInvestmentJourney = () => {
       >
         {/* Section Title */}
         <motion.h2
-          className=" sm:text-6xl md:text-6xl lg:text-7xl font-medium text-center mb-8 sm:mb-12 text-primary-green pt-10"
+          className=" text-5xl md:text-6xl lg:text-7xl font-medium text-center mb-8 sm:mb-12 text-primary-green pt-10"
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -343,26 +343,27 @@ const CompleteInvestmentJourney = () => {
                 </motion.div>
 
                 {/* Risk Quiz Link */}
-                <motion.a
-                  href="/assets"
-                  className="block bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="flex items-start space-x-4">
-                    <Shield className="w-6 h-6 text-primary-green flex-shrink-0" />
-                    <div>
-                      <h3 className="text-lg md:text-xl font-medium mb-2">
-                        Take Our Full Risk Assessment
-                      </h3>
-                      <p className="text-primary-green mb-4 text-sm">
-                        Get a comprehensive analysis of your risk tolerance through our expert-designed questionnaire.
-                      </p>
-                      <span className="text-dark-green hover:text-dark-green flex items-center text-sm md:text-dark-green">
-                        Start Assessment <ArrowRight className="ml-2 w-4 h-4" />
-                      </span>
-                    </div>
-                  </div>
-                </motion.a>
+                <motion.button
+      onClick={() => navigate('/assets')}
+      className="w-full text-left bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors focus:outline-none"
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <div className="flex items-start space-x-4">
+        <Shield className="w-6 h-6 text-primary-green flex-shrink-0" />
+        <div>
+          <h3 className="text-lg md:text-xl font-medium mb-2">
+            Take Our Full Risk Assessment
+          </h3>
+          <p className="text-primary-green mb-4 text-sm">
+            Get a comprehensive analysis of your risk tolerance through our expert-designed questionnaire.
+          </p>
+          <span className="text-dark-green flex items-center text-sm">
+            Start Assessment <ArrowRight className="ml-2 w-4 h-4" />
+          </span>
+        </div>
+      </div>
+    </motion.button>
 
                 {/* Educational Resource */}
                 <motion.a
@@ -641,16 +642,7 @@ const CompleteInvestmentJourney = () => {
                 <p className="text-primary-green text-sm">
                   Track your portfolio performance with live updates.
                 </p>
-              </motion.div>
-            </div>
-
-            {/* Additional Options */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <motion.div
-                className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur"
-                whileHover={{ scale: 1.02 }}
-              >
-                <h3 className="text-lg md:text-xl font-medium mb-4">Alternative Brokers</h3>
+                <h3 className="text-lg md:text-xl font-medium mb-4 pt-2">Alternative Brokers</h3>
                 <p className="text-primary-green mb-6 text-sm">
                   Prefer a different broker? We support multiple platforms for your convenience.
                 </p>
@@ -660,6 +652,20 @@ const CompleteInvestmentJourney = () => {
                 >
                   View Supported Brokers <ArrowRight className="ml-2 w-4 h-4" />
                 </a>
+              </motion.div>
+            </div>
+
+            {/* Additional Options */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <motion.div
+                className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur"
+                whileHover={{ scale: 1.02 }}
+              >
+                <h3 className="text-lg md:text-xl font-medium mb-4">Disclaimer</h3>
+                <p className="text-primary-green mb-6 text-sm">
+                Investing involves risks, including the potential loss of all your invested capital. Safine Invest provides tools and information to support your decision-making, but we do not offer financial advice. All investment decisions are solely your responsibility, and Safine Invest is not liable for any losses incurred as a result of your choices. Always consult a financial advisor if you are unsure about the suitability of an investment.
+                </p>
+                
               </motion.div>
 
               <div className="space-y-4">

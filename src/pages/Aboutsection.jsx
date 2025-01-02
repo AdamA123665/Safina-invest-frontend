@@ -119,7 +119,7 @@ const AboutSection = () => {
           variants={titleVariants}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-extrabold mb-6 bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent">
+          <h2 className="text-5xl font-medium mb-6 bg-gradient-to-r from-primary-green to-deep-teal ">
             Covering the A to Z of ethical investing
           </h2> {/* Updated gradient colors */}
           <p className="text-lg max-w-2xl mx-auto text-deep-brown leading-relaxed">

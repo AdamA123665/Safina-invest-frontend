@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { PiggyBank, Info, ChevronRight, Shield, TrendingUp } from 'lucide-react';
-
+import { useNavigate } from 'react-router-dom';
 const SavingsSection = () => {
   const [, setActiveSection] = useState(null);
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hoveredCard, setHoveredCard] = useState(null);
-
+  const navigate = useNavigate(); // Set up the navigate function
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -145,10 +145,8 @@ const SavingsSection = () => {
             </div>
 
             {/* Call to Action */}
-            <a 
-              href="/articles/understanding-savings"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => navigate('/articles/understanding-savings')} // Navigate to the specified route
               className="inline-flex items-center gap-2 text-primary-green hover:text-dark-green font-medium group relative overflow-hidden px-4 py-2 rounded-lg"
             >
               <span className="relative z-10 flex items-center gap-2 text-sm md:text-base lg:text-lg">
@@ -157,7 +155,7 @@ const SavingsSection = () => {
               </span>
               {/* Updated Background Color */}
               <div className="absolute inset-0 bg-sage transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-            </a>
+            </button>
           </div>
 
           {/* Right Column - Top Picks */}

@@ -23,12 +23,12 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import clsx from 'clsx';
-
+import { useNavigate } from 'react-router-dom';
 // MAIN COMPONENT
 const InnovativeHero = () => {
   const [activeSection, setActiveSection] = useState(0);
   const containerRef = useRef(null);
-
+  const navigate = useNavigate(); // Set up the navigate function
   // -------------------------------------
   // PART 1: The original hero (SAVINGS / INVEST / TOOLS)
   // -------------------------------------
@@ -91,16 +91,14 @@ const InnovativeHero = () => {
               Start your wealth journey with our ethical savings solutions. Earn
               competitive returns while staying true to Islamic principles.
             </p>
-            <motion.a
-              href="#explore-savings"
-              className="inline-flex items-center space-x-1 sm:space-x-2 text-gold hover:text-gold/80 transition-colors"
-              whileHover={{ x: 5 }}
-            >
-              <span className="text-sm sm:text-base">
-                Explore Savings Plans
-              </span>
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </motion.a>
+            <motion.button
+      className="bg-primary-green text-light-background px-8 py-4 rounded-full text-xl font-semibold hover:bg-dark-green transition duration-300 shadow-lg hover:shadow-xl flex items-center space-x-2"
+      whileHover={{ scale: 1.05 }}
+      onClick={() => navigate('/articles/asset-allocation-methodology')} // Adjust route as needed
+    >
+      <span>Explore our methadology</span>
+      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+    </motion.button>
           </div>
         </div>
       ),

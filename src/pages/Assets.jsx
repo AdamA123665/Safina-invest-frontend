@@ -878,15 +878,15 @@ const ModernAssetsPage = () => {
                   <p className="text-light-background text-sm mb-4">{card.description}</p>
                   <p className="text-xs text-light-background">{card.details}</p>
 
-                  <a
-                      href={card.link}
-                      className="flex items-center mt-4 text-white group"
-                    >
-                      <span className="mr-1">Learn More</span>
-                      <FaArrowRight
-                        className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                      />
-                    </a>
+                  <button
+                    onClick={() => navigate(card.link)} // Navigate to the specified link
+                    className="flex items-center mt-4 text-white group"
+                  >
+                    <span className="mr-1">Learn More</span>
+                    <FaArrowRight
+                      className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                    />
+                  </button>
                 </div>
               </div>
             </div>
@@ -989,9 +989,7 @@ const ModernAssetsPage = () => {
                   
                   <button
                     className="text-sm font-semibold bg-olive-green hover:bg-dark-green px-4 py-2 rounded text-light-background"
-                    onClick={() => {
-                      window.location.href = asset.link; // Navigates to the link
-                    }}
+                    onClick={() => navigate(asset.link)}
                   >
                     Learn More
                   </button>
@@ -1043,12 +1041,12 @@ const ModernAssetsPage = () => {
                     {resource.title}
                   </h3>
                   <p className="text-deep-teal mb-4">{resource.description}</p>
-                  <a
-                    href={resource.link}
+                  <button
+                    onClick={() => navigate(resource.link)} // Navigate to the specified link
                     className="text-primary-green hover:text-olive-green font-semibold"
                   >
                     Read More &rarr;
-                  </a>
+                  </button>
                 </motion.div>
               ))}
             </div>

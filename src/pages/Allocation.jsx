@@ -771,11 +771,11 @@ const PortfolioJourney = () => {
         <h3 className="text-xl font-bold mb-4 text-gold">
           Portfolio Risk Metrics
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-sage/60">
           {metrics.map(({ id, icon: Icon, label, value, description }) => (
             <div
               key={id}
-              className="p-4 rounded-lg flex flex-col justify-center relative bg-sage/60"
+              className="p-4 rounded-lg flex flex-col justify-center relative "
             >
               <div className="text-sm text-primary-green flex items-center mb-1">
                 <Icon className="w-4 h-4 text-black mr-2" />
@@ -1048,19 +1048,6 @@ const PortfolioJourney = () => {
       'S&P 500': series.find((s) => s.name === 'S&P 500')?.values[idx] || 0
     }));
   
-    // 10-Year Total Return
-    let totalReturn = null;
-    const tenYearData = chartData.filter(
-      (p) => new Date(p.date).getFullYear() >= new Date().getFullYear() - 10
-    );
-  
-    if (tenYearData.length > 1) {
-      const firstVal = tenYearData[0].Portfolio; // Changed from p.value to p.Portfolio
-      const lastVal = tenYearData[tenYearData.length - 1].Portfolio; // Changed from p.value to p.Portfolio
-      if (firstVal !== 0) {
-        totalReturn = ((lastVal / firstVal) - 1) * 100;
-      }
-    }
   
     return (
       <div className="bg-white rounded-xl shadow-lg p-6 mt-8">
@@ -1069,11 +1056,10 @@ const PortfolioJourney = () => {
             See what your portfolio would have returned over the past 10 years
           </h2>
         </div>
-        {totalReturn !== null && (
-          <p className="text-dark-green font-extrabold text-3xl mb-2">
-            Over {totalReturn.toFixed(2)}%
+          <p className="text-dark-green font-extrabold text:sm mb-2">
+           hover over the last point
           </p>
-        )}
+      
 
         <div className="w-full h-96">
           <ResponsiveContainer width="100%" height="100%">
@@ -1407,353 +1393,369 @@ const PortfolioJourney = () => {
     ];
   
     // Handle responsiveness for carousel
-    useEffect(() => {
-      const updateCardsPerView = () => {
-        const width = window.innerWidth;
-        if (width >= 1024) {
-          setCardsPerView(3);
-        } else if (width >= 768) {
-          setCardsPerView(2);
-        } else {
-          setCardsPerView(1);
-        }
-      };
-  
-      updateCardsPerView();
-      window.addEventListener('resize', updateCardsPerView);
-      return () => window.removeEventListener('resize', updateCardsPerView);
-    }, []);
-  
-    const maxIndex = Math.max(brokerageTypes.length - cardsPerView, 0);
-  
-    const handlePrev = () => {
-      setCurrentIndex((prev) => Math.max(prev - cardsPerView, 0));
+  useEffect(() => {
+    const updateCardsPerView = () => {
+      const width = window.innerWidth;
+      if (width >= 1024) {
+        setCardsPerView(3);
+      } else if (width >= 768) {
+        setCardsPerView(2);
+      } else {
+        setCardsPerView(1);
+      }
     };
-  
-    const handleNext = () => {
-      setCurrentIndex((prev) => Math.min(prev + cardsPerView, maxIndex));
-    };
-  
-    // Calculate the translateX percentage
-  
-    return (
-      <div className="min-h-screen bg-light-background">
-        <div className="max-w-7xl mx-auto px-4 py-16 relative">
-          {/* Educational Brokerage Overview Section */}
-          <div className="mb-16">
-            <div className="text-center mb-8">
-              <h2 className="text-4xl font-bold bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent mb-4">
-                Choose Your Investment Path
-              </h2>
-              <p className="text-xl text-deep-brown mb-4">
-                We've made investing simple with two clear options to get started
-              </p>
-              <button
-                onClick={() => setShowBrokerageInfo(!showBrokerageInfo)}
-                className="inline-flex items-center space-x-2 text-primary-green hover:text-dark-green focus:outline-none"
-              >
-                <Info className="w-5 h-5" />
-                <span>Learn about different brokerage options</span>
-              </button>
-            </div>
-  
-            {showBrokerageInfo && (
-              <div className="bg-deep-teal/50 rounded-2xl shadow-lg p-8 mb-8">
-                <h3 className="text-2xl font-bold text-deep-brown mb-6">
-                  Understanding Your Brokerage Options
-                </h3>
-                {/* Carousel Container */}
-                <div className="relative">
-                  {/* Carousel Track */}
-                  <div className="overflow-hidden">
-                    <div
-                      className="flex transition-transform duration-500 ease-in-out"
-                      style={{
-                        transform: `translateX(-${(currentIndex * (100 / cardsPerView))}%)`,
-                        width: `${(brokerageTypes.length * 100) / cardsPerView}%`,
-                      }}
-                    >
-                      {brokerageTypes.map((broker, index) => (
-                        <div
-                          key={index}
-                          className="p-4 md:p-6 rounded-xl bg-sage hover:bg-light-background transition-colors flex-shrink-0 w-full"
-                          style={{ width: `${100 / brokerageTypes.length}%` }}
-                        >
-                          <h4 className="text-xl font-semibold text-deep-brown mb-3">
-                            {broker.type}
-                          </h4>
-                          <p className="text-olive-green mb-4">{broker.description}</p>
-                          <div className="space-y-2">
-                            <div className="flex items-start">
-                              <Check className="w-5 h-5 text-olive-green mt-1 mr-2" />
-                              <div>
-                                <span className="font-medium">Pros:</span>
-                                <ul className="list-disc list-inside ml-4">
-                                  {broker.pros.map((pro, i) => (
-                                    <li key={i} className="text-olive-green">
-                                      {pro}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
+
+    updateCardsPerView();
+    window.addEventListener('resize', updateCardsPerView);
+    return () => window.removeEventListener('resize', updateCardsPerView);
+  }, []);
+
+  const maxIndex = brokerageTypes.length - cardsPerView;
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
+  };
+
+  // Calculate the translateX percentage
+  const translateXPercentage = (currentIndex * 100) / cardsPerView;
+
+  return (
+    <div className="min-h-screen bg-light-background">
+      <div className="max-w-7xl mx-auto px-4 py-16 relative">
+        {/* Educational Brokerage Overview Section */}
+        <div className="mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent mb-4">
+              Choose Your Investment Path
+            </h2>
+            <p className="text-xl text-deep-brown mb-4">
+              We've made investing simple with two clear options to get started
+            </p>
+            <button
+              onClick={() => setShowBrokerageInfo(!showBrokerageInfo)}
+              className="inline-flex items-center space-x-2 text-primary-green hover:text-dark-green focus:outline-none"
+            >
+              <Info className="w-5 h-5" />
+              <span>Learn about different brokerage options</span>
+            </button>
+          </div>
+
+          {showBrokerageInfo && (
+            <div className="bg-deep-teal/50 rounded-2xl shadow-lg p-8 mb-8">
+              <h3 className="text-2xl font-bold text-deep-brown mb-6">
+                Understanding Your Brokerage Options
+              </h3>
+              {/* Carousel Container */}
+              <div className="relative">
+                {/* Carousel Track */}
+                <div className="overflow-hidden">
+                  <div
+                    className="flex transition-transform duration-500 ease-in-out"
+                    style={{
+                      transform: `translateX(-${translateXPercentage}%)`,
+                      width: `${(brokerageTypes.length * 100) / cardsPerView}%`,
+                      gap: '16px', // Adjust the gap as needed
+                    }}
+                  >
+                    {brokerageTypes.map((broker, index) => (
+                      <div
+                        key={index}
+                        className="p-4 md:p-6 rounded-xl bg-sage hover:bg-light-background transition-colors flex-shrink-0"
+                        style={{ width: `${100 / brokerageTypes.length}%` }}
+                      >
+                        <h4 className="text-xl font-semibold text-deep-brown mb-3">
+                          {broker.type}
+                        </h4>
+                        <p className="text-olive-green mb-4">{broker.description}</p>
+                        <div className="space-y-2">
+                          <div className="flex items-start">
+                            <Check className="w-5 h-5 text-olive-green mt-1 mr-2" />
+                            <div>
+                              <span className="font-medium">Pros:</span>
+                              <ul className="list-disc list-inside ml-4">
+                                {broker.pros.map((pro, i) => (
+                                  <li key={i} className="text-olive-green">
+                                    {pro}
+                                  </li>
+                                ))}
+                              </ul>
                             </div>
-                            <div className="flex items-start">
-                              <AlertCircle className="w-5 h-5 text-gold mt-1 mr-2" />
-                              <div>
-                                <span className="font-medium">Cons:</span>
-                                <ul className="list-disc list-inside ml-4">
-                                  {broker.cons.map((con, i) => (
-                                    <li key={i} className="text-olive-green">
-                                      {con}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
+                          </div>
+                          <div className="flex items-start">
+                            <AlertCircle className="w-5 h-5 text-gold mt-1 mr-2" />
+                            <div>
+                              <span className="font-medium">Cons:</span>
+                              <ul className="list-disc list-inside ml-4">
+                                {broker.cons.map((con, i) => (
+                                  <li key={i} className="text-olive-green">
+                                    {con}
+                                  </li>
+                                ))}
+                              </ul>
                             </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
-  
-                  {/* Navigation Buttons */}
-                  <button
-                    onClick={handlePrev}
-                    disabled={currentIndex === 0}
-                    className={`absolute top-1/2 left-0 transform -translate-y-1/2 bg-deep-brown text-white p-2 rounded-full shadow-lg hover:bg-dark-brown transition-colors ${
-                      currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                    aria-label="Previous"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={handleNext}
-                    disabled={currentIndex >= maxIndex}
-                    className={`absolute top-1/2 right-0 transform -translate-y-1/2 bg-deep-brown text-white p-2 rounded-full shadow-lg hover:bg-dark-brown transition-colors ${
-                      currentIndex >= maxIndex ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                    aria-label="Next"
-                  >
-                    <ChevronRightIcon className="w-4 h-4" />
-                  </button>
                 </div>
-                <div className="mt-6 text-center">
-                  <a
-                    href="/articles/brokerage-platforms"
-                    className="inline-flex items-center text-primary-green hover:text-dark-green"
-                  >
-                    Read our detailed brokerage comparison guide
-                    <LucideExternalLink className="w-4 h-4 ml-2" />
-                  </a>
+
+                {/* Navigation Buttons */}
+                <button
+                  onClick={handlePrev}
+                  disabled={currentIndex === 0}
+                  className={`absolute top-1/2 left-0 transform -translate-y-1/2 bg-deep-brown text-white p-2 rounded-full shadow-lg hover:bg-dark-brown transition-colors ${
+                    currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                  aria-label="Previous"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  disabled={currentIndex >= maxIndex}
+                  className={`absolute top-1/2 right-0 transform -translate-y-1/2 bg-deep-brown text-white p-2 rounded-full shadow-lg hover:bg-dark-brown transition-colors ${
+                    currentIndex >= maxIndex ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                  aria-label="Next"
+                >
+                  <ChevronRightIcon className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="mt-6 text-center">
+                <a
+                  href="/articles/brokerage-platforms"
+                  className="inline-flex items-center text-primary-green hover:text-dark-green"
+                >
+                  Read our detailed brokerage comparison guide
+                  <LucideExternalLink className="w-4 h-4 ml-2" />
+                </a>
                 </div>
               </div>
             )}
           </div>
   
           {/* Investment Options */}
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            {/* Trading 212 Card */}
-            <div className="relative rounded-2xl overflow-hidden bg-deep-teal/70 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-              <div className="p-8">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 rounded-full bg-sage flex items-center justify-center">
-                      <DollarSign className="w-6 h-6 text-primary-green" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-deep-brown">Trading 212</h3>
-                      <span className="text-olive-green font-medium">Quickest Option</span>
-                    </div>
-                  </div>
-                  <div className="px-4 py-2 rounded-full bg-sage text-primary-green font-semibold">
-                    Pre-built Portfolio
-                  </div>
+<div className="grid md:grid-cols-2 gap-8 mb-12">
+  {/* Trading 212 Card */}
+  <div className="relative rounded-2xl overflow-hidden bg-deep-teal/30 shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col">
+    <div className="p-8 flex flex-col flex-grow">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-4">
+          <div className="w-12 h-12 rounded-full bg-sage flex items-center justify-center">
+            <DollarSign className="w-6 h-6 text-primary-green" />
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold text-deep-brown">Trading 212</h3>
+            <span className="text-olive-green font-medium">Quickest Option</span>
+          </div>
+        </div>
+        <div className="px-4 py-2 rounded-full bg-sage text-primary-green font-semibold">
+          Pre-built Portfolio
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="space-y-6 flex-grow">
+        {/* Steps Section */}
+        <div className="bg-sage rounded-xl p-6">
+          <h4 className="text-lg font-semibold text-deep-brown mb-4">
+            Three Simple Steps:
+          </h4>
+          <div className="space-y-4">
+            {[
+              {
+                title: 'Click the portfolio link below',
+                description:
+                  'Opens Trading 212 with your selected portfolio',
+                tip: 'If certain ETFs are unavailable, we automatically rebalance the allocations to maintain optimal portfolio construction',
+              },
+              {
+                title: 'Add funds to your account',
+                description: 'Secure deposit via bank transfer or card',
+              },
+              {
+                title: "Click 'Invest' - Done!",
+                description: 'Your portfolio is automatically created',
+              },
+            ].map((step, index) => (
+              <div key={index} className="flex items-start">
+                {/* Step Number */}
+                <div className="w-8 h-8 rounded-full bg-sage flex items-center justify-center mr-4 mt-1">
+                  <span className="text-primary-green font-bold">
+                    {index + 1}
+                  </span>
                 </div>
-  
-                <div className="space-y-6">
-                  <div className="bg-sage rounded-xl p-6">
-                    <h4 className="text-lg font-semibold text-deep-brown mb-4">
-                      Three Simple Steps:
-                    </h4>
-                    <div className="space-y-4">
-                      {[
-                        {
-                          title: 'Click the portfolio link below',
-                          description:
-                            'Opens Trading 212 with your selected portfolio',
-                          tip: 'If certain ETFs are unavailable, we automatically rebalance the allocations to maintain optimal portfolio construction',
-                        },
-                        {
-                          title: 'Add funds to your account',
-                          description: 'Secure deposit via bank transfer or card',
-                        },
-                        {
-                          title: "Click 'Invest' - Done!",
-                          description: 'Your portfolio is automatically created',
-                        },
-                      ].map((step, index) => (
-                        <div key={index} className="flex items-center">
-                          <div className="w-8 h-8 rounded-full bg-sage flex items-center justify-center mr-4">
-                            <span className="text-primary-green font-bold">
-                              {index + 1}
-                            </span>
-                          </div>
-                          <div>
-                            <p className="font-medium text-deep-brown">{step.title}</p>
-                            <p className="text-sm text-deep-brown">{step.description}</p>
-                            {step.tip && (
-                              <div className="mt-2 p-3 bg-light-gold rounded-lg">
-                                <p className="text-sm text-gold">
-                                  <strong>Note:</strong> {step.tip}
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
+                {/* Step Content */}
+                <div>
+                  <p className="font-medium text-deep-brown">{step.title}</p>
+                  <p className="text-sm text-deep-brown">{step.description}</p>
+                  {step.tip && (
+                    <div className="mt-2 p-3 bg-light-gold rounded-lg">
+                      <p className="text-sm text-gold">
+                        <strong>Note:</strong> {step.tip}
+                      </p>
                     </div>
-                  </div>
-  
-                  <div className="p-4 rounded-xl bg-sage">
-                    <div className="text-sm text-deep-brown mb-2">
-                      Your Selected Risk Level
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="font-bold text-deep-brown">Level {riskLevel}</div>
-                      <div className="text-sm text-deep-brown">
-                        {riskLevel <= 3
-                          ? 'Conservative'
-                          : riskLevel <= 7
-                          ? 'Balanced'
-                          : 'Aggressive'}
-                      </div>
-                    </div>
-                  </div>
-  
-                  <a
-                    href={trading212Links[riskLevel]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full py-4 px-6 rounded-xl bg-primary-green text-white text-center font-semibold hover:bg-dark-green transition-all duration-200"
-                  >
-                    Open Your Portfolio
-                    <LucideExternalLink className="inline-block ml-2 w-4 h-4" />
-                  </a>
+                  )}
                 </div>
               </div>
-            </div>
-  
-            {/* Alternative Brokers Card */}
-            <div className="rounded-2xl overflow-hidden bg-gold/70 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-              <div className="p-8">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 rounded-full bg-sage flex items-center justify-center">
-                      <BarChart2 className="w-6 h-6 text-gold" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-deep-brown">
-                        Alternative Brokers
-                      </h3>
-                      <span className="text-gold font-medium">More Flexibility</span>
-                    </div>
-                  </div>
-                  <div className="px-4 py-2 rounded-full bg-sage text-primary-green font-semibold">
-                    Manual Setup
-                  </div>
-                </div>
-  
-                <div className="space-y-6">
-                  <div className="bg-sage rounded-xl p-6">
-                    <h4 className="text-lg font-semibold text-deep-brown mb-4">
-                      Follow These Steps:
-                    </h4>
-                    <div className="space-y-4">
-                      {[
-                        {
-                          title: 'Choose Your Broker',
-                          description:
-                            'Compare fees, features, and minimum deposits',
-                          link: {
-                            text: 'View broker comparison',
-                            url: '/articles/brokerage-platforms',
-                          },
-                        },
-                        {
-                          title: 'Open & Fund Account',
-                          description: 'Complete verification and add funds',
-                          tip: 'Most brokers require ID verification – have your documents ready',
-                        },
-                        {
-                          title: 'Find & Buy Assets',
-                          description:
-                            'Search for each asset using the ticker symbols',
-                          action: {
-                            text: 'View your asset list',
-                            onClick: () => setStep(2),
-                          },
-                        },
-                        // Removed the fourth step here
-                      ].map((step, index) => (
-                        <div key={index} className="flex items-start">
-                          <div className="w-8 h-8 rounded-full bg-sage flex items-center justify-center mr-4 mt-1">
-                            <span className="text-primary-green font-bold">
-                              {index + 1}
-                            </span>
-                          </div>
-                          <div>
-                            <p className="font-medium text-deep-brown">{step.title}</p>
-                            <p className="text-sm text-deep-brown">{step.description}</p>
-                            {step.link && (
-                              <a
-                                href={step.link.url}
-                                className="text-sm text-primary-green hover:text-dark-green inline-flex items-center mt-1"
-                              >
-                                {step.link.text}
-                                <ChevronRightIcon className="w-4 h-4 ml-1" />
-                              </a>
-                            )}
-                            {step.tip && (
-                              <div className="mt-2 p-3 bg-light-gold rounded-lg">
-                                <p className="text-sm text-gold">
-                                  <strong>Note:</strong> {step.tip}
-                                </p>
-                              </div>
-                            )}
-                            {step.action && (
-                              <button
-                                onClick={step.action.onClick}
-                                className="text-sm text-primary-green hover:text-dark-green inline-flex items-center mt-1 focus:outline-none"
-                              >
-                                {step.action.text}
-                                <ChevronRightIcon className="w-4 h-4 ml-1" />
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-  
-                  <div className="bg-sage rounded-xl p-4">
-                    <div className="flex items-start">
-                      <HelpCircle className="w-5 h-5 text-primary-green mt-1 mr-3" />
-                      <div className="text-sm text-primary-green">
-                        Need help choosing a broker? Read our detailed{' '}
-                        <a
-                          href="/articles/brokerage-comparison"
-                          className="underline hover:text-dark-green"
-                        >
-                          broker comparison guide
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Risk Level Section */}
+        <div className="p-4 rounded-xl bg-sage">
+          <div className="text-sm text-deep-brown mb-2">
+            Your Selected Risk Level
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="font-bold text-deep-brown">Level {riskLevel}</div>
+            <div className="text-sm text-deep-brown">
+              {riskLevel <= 3
+                ? 'Conservative'
+                : riskLevel <= 7
+                ? 'Balanced'
+                : 'Aggressive'}
             </div>
           </div>
+        </div>
+
+        {/* Action Button */}
+        <a
+          href={trading212Links[riskLevel]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full py-4 px-6 rounded-xl bg-primary-green text-white text-center font-semibold hover:bg-dark-green transition-all duration-200"
+        >
+          Open Your Portfolio
+          <LucideExternalLink className="inline-block ml-2 w-4 h-4" />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {/* Alternative Brokers Card */}
+  <div className="rounded-2xl overflow-hidden bg-gold/30 shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col">
+    <div className="p-8 flex flex-col flex-grow">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-4">
+          <div className="w-12 h-12 rounded-full bg-sage flex items-center justify-center">
+            <BarChart2 className="w-6 h-6 text-gold" />
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold text-deep-brown">
+              Alternative Brokers
+            </h3>
+            <span className="text-deep-teal font-medium">More Flexibility</span>
+          </div>
+        </div>
+        <div className="px-4 py-2 rounded-full bg-sage text-primary-green font-semibold">
+          Manual Setup
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="space-y-6 flex-grow">
+        {/* Steps Section */}
+        <div className="bg-sage rounded-xl p-6">
+          <h4 className="text-lg font-semibold text-deep-brown mb-4">
+            Follow These Steps:
+          </h4>
+          <div className="space-y-4">
+            {[
+              {
+                title: 'Choose Your Broker',
+                description:
+                  'Compare fees, features, and minimum deposits',
+                link: {
+                  text: 'View broker comparison',
+                  url: '/articles/brokerage-platforms',
+                },
+              },
+              {
+                title: 'Open & Fund Account',
+                description: 'Complete verification and add funds',
+                tip: 'Most brokers require ID verification – have your documents ready',
+              },
+              {
+                title: 'Find & Buy Assets',
+                description:
+                  'Search for each asset using the ticker symbols',
+                action: {
+                  text: 'View your asset list',
+                  onClick: () => setStep(2),
+                },
+              },
+              // Removed the fourth step here
+            ].map((step, index) => (
+              <div key={index} className="flex items-start">
+                {/* Step Number */}
+                <div className="w-8 h-8 rounded-full bg-sage flex items-center justify-center mr-4 mt-1">
+                  <span className="text-primary-green font-bold">
+                    {index + 1}
+                  </span>
+                </div>
+                {/* Step Content */}
+                <div>
+                  <p className="font-medium text-deep-brown">{step.title}</p>
+                  <p className="text-sm text-deep-brown">{step.description}</p>
+                  {step.link && (
+                    <a
+                      href={step.link.url}
+                      className="text-sm text-primary-green hover:text-dark-green inline-flex items-center mt-1"
+                    >
+                      {step.link.text}
+                      <ChevronRightIcon className="w-4 h-4 ml-1" />
+                    </a>
+                  )}
+                  {step.tip && (
+                    <div className="mt-2 p-3 bg-light-gold rounded-lg">
+                      <p className="text-sm text-gold">
+                        <strong>Note:</strong> {step.tip}
+                      </p>
+                    </div>
+                  )}
+                  {step.action && (
+                    <button
+                      onClick={step.action.onClick}
+                      className="text-sm text-primary-green hover:text-dark-green inline-flex items-center mt-1 focus:outline-none"
+                    >
+                      {step.action.text}
+                      <ChevronRightIcon className="w-4 h-4 ml-1" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Help Section */}
+        <div className="bg-sage rounded-xl p-4">
+          <div className="flex items-start">
+            <HelpCircle className="w-5 h-5 text-primary-green mt-1 mr-3" />
+            <div className="text-sm text-primary-green">
+              Need help choosing a broker? Read our detailed{' '}
+              <a
+                href="/articles/brokerage-comparison"
+                className="underline hover:text-dark-green"
+              >
+                broker comparison guide
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
   
           {/* Navigation */}
           <div className="flex justify-center">
