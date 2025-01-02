@@ -27,21 +27,21 @@ const SavingsSection = () => {
 
   const topPicks = [
     {
-      bank: "Gatehouse Bank",
+      bank: "Al Rayan Bank",
       type: "Sharia-compliant",
-      rate: "5.35% EPR",
+      rate: "4.75% EPR",
       term: "12 months",
       minDeposit: "£1,000",
       access: "Fixed Term",
-      highlight: "Top Sharia Rate",
+      highlight: "Top Fixed Rate",
       icon: <Shield className="h-4 w-4" />
     },
     {
-      bank: "Ulster Bank",
+      bank: "QIB UK",
       type: "Traditional",
-      rate: "5.20% AER",
+      rate: "4.5%% AER",
       term: "Easy Access",
-      minDeposit: "£1",
+      minDeposit: "£1000",
       access: "Instant",
       highlight: "Best Easy Access",
       icon: <TrendingUp className="h-4 w-4" />
@@ -49,11 +49,11 @@ const SavingsSection = () => {
     {
       bank: "Barclays",
       type: "Traditional",
-      rate: "5.45% AER",
-      term: "24 months",
+      rate: "4.7% AER",
+      term: "31 day notice",
       minDeposit: "£2,000",
       access: "Fixed Term",
-      highlight: "Top Fixed Rate",
+      highlight: "Top Notice Account",
       icon: <PiggyBank className="h-4 w-4" />
     }
   ];
@@ -131,17 +131,27 @@ const SavingsSection = () => {
               </div>
 
               {/* How to Open an Account Card */}
-              <div 
-                className="bg-light-background/80 backdrop-blur-sm rounded-xl p-6 shadow-lg transition-all duration-300"
-                onMouseEnter={() => setActiveSection('access')}
-                onMouseLeave={() => setActiveSection(null)}
-              >
-                {/* Updated Text Color */}
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-3 text-deep-brown">How to Open an Account</h3>
-                <p className="text-deep-brown leading-relaxed text-sm md:text-base lg:text-lg">
-                  You can open savings accounts either directly with banks or through platforms like Raisin UK. Raisin offers a marketplace of savings products for easy comparison and management.
-                </p>
-              </div>
+              <div
+      className="bg-light-background/80 backdrop-blur-sm rounded-xl p-6 shadow-lg transition-all duration-300 
+                 cursor-pointer"
+      onMouseEnter={() => setActiveSection("access")}
+      onMouseLeave={() => setActiveSection(null)}
+      // This will direct the user to raisin.co.uk on click
+      onClick={() => navigate("https://www.raisin.co.uk")}
+    >
+      <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-3 text-deep-brown">
+        How to Open an Account
+      </h3>
+      <p className="text-deep-brown leading-relaxed text-sm md:text-base lg:text-lg">
+        You can open savings accounts either directly with banks or 
+        through platforms like{" "}
+        <span className="text-blue-500 font-semibold underline">
+          Raisin UK
+        </span>
+        . Raisin offers a marketplace of savings products for easy
+        comparison and management.
+      </p>
+    </div>
             </div>
 
             {/* Call to Action */}
