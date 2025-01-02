@@ -30,6 +30,7 @@ import {
   ChevronLeft,
   ChevronRightIcon
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 // ====== NEW IMPORTS FOR ENHANCED INVESTMENT SECTION ======
 import { motion, AnimatePresence } from 'framer-motion';
@@ -97,7 +98,7 @@ const riskProfiles = {
 const EnhancedInvestment = () => {
   const [expandedSection, setExpandedSection] = useState(null);
   const containerRef = useRef(null);
-
+  const navigate = useNavigate();
   const funds = [
     {
       id: 'savings',
@@ -485,6 +486,7 @@ const MetricTooltip = ({ text }) => (
 // ===========================
 const PortfolioJourney = () => {
   // Steps
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
 
   // Form: risk + amount

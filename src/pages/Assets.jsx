@@ -490,7 +490,7 @@ const ModernAssetsPage = () => {
       color: 'bg-gold',
       description: 'Optimize your tax efficiency',
       details: 'Strategic tax planning and advice',
-      link: '/articles/tax',
+      link: '/articles/uk-tax-rules-guide',
     },
   ];
 
@@ -815,7 +815,7 @@ const ModernAssetsPage = () => {
       riskColor: 'bg-olive-green',
       expectedReturn: '12-20%',
       description: 'Invest in non-public companies. Potential for high returns but less liquidity.',
-      link: '/articles/private-markets',
+      link: '/articles/private-markets-sharia-guide',
     },
     {
       id: 'commodities',
@@ -835,7 +835,7 @@ const ModernAssetsPage = () => {
       riskColor: 'bg-olive-green',
       expectedReturn: '6-10%',
       description: 'Property investments can offer rental income and capital appreciation.',
-      link: '/articles/real-estate',
+      link: '/articles/uk-real-estate-sharia-guide',
     },
     {
       id: 'etfs',
@@ -1014,22 +1014,22 @@ const ModernAssetsPage = () => {
                 {
                   title: 'Investing Basics',
                   description: 'Learn the fundamentals of investing to build a strong foundation.',
-                  link: '/articles/investing-basics',
+                  link: '/articles/simple-investing-basics',
                 },
                 {
-                  title: 'Building Your Portfolio',
+                  title: 'Sharia Compliant Investing',
                   description: 'Step-by-step guide to creating a diversified investment portfolio.',
-                  link: '/articles/building-portfolio',
+                  link: '/articles/sharia-compliant-investing-guide',
                 },
                 {
                   title: 'Understanding Market Cycles',
                   description: 'Gain insights into how markets behave over time.',
-                  link: '/articles/market-cycles',
+                  link: '/articles/market-cycles-explained',
                 },
                 {
-                  title: 'Maximizing Returns',
+                  title: 'What To Do When Markets Drop?',
                   description: 'Advanced strategies to enhance your investment performance.',
-                  link: '/articles/maximizing-returns',
+                  link: '/articles/what-to-do-when-markets-drop',
                 },
               ].map((resource, idx) => (
                 <motion.div
