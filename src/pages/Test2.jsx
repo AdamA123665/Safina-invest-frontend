@@ -606,9 +606,12 @@ const CompleteInvestmentJourney = () => {
                 <p className="text-primary-green text-sm ">
                   Seamless integration with Trading 212 for instant portfolio implementation.
                 </p>
-                <button className="mt-6 px-6 py-3 bg-olive-green rounded-lg hover:bg-primary-green transition-colors text-sm md:text-light-background">
-                  Connect Now
-                </button>
+                <button
+                onClick={() => navigate('/allocation')}
+                className="mt-6 px-6 py-3 bg-olive-green rounded-lg hover:bg-primary-green transition-colors text-sm md:text-light-background"
+              >
+                Invest Now
+              </button>
               </motion.div>
 
               <motion.div 
@@ -623,12 +626,6 @@ const CompleteInvestmentJourney = () => {
                     TIP: Investing smaller amounts regularly (e.g., via direct debit) can help smooth out market fluctuations and may yield better returns over time.
                   </span>
                 </p> 
-                <a  
-                  href="/understanding-brokerages" 
-                  className="mt-6 text-primary-green hover:text-dark-green inline-flex items-center text-sm md:text-dark-green" 
-                > 
-                  Learn More <ExternalLink className="ml-2 w-4 h-4" /> 
-                </a> 
               </motion.div>
         
               <motion.div

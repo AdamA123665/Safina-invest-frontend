@@ -371,15 +371,15 @@ const EnhancedInvestment = () => {
                     and trained using advanced statistical models to find the optimal
                     investment allocation for your risk preferences.
                   </p>
-                  <motion.a
-                    href="/articles/asset-allocation-methodology"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="bg-primary-green px-6 py-3 rounded-xl font-medium inline-flex items-center group text-light-background cursor-pointer"
-                  >
-                    Learn More
-                    <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                  </motion.a>
+                  <motion.div
+                  onClick={() => navigate('/articles/asset-allocation-methodology')}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-primary-green px-6 py-3 rounded-xl font-medium inline-flex items-center group text-light-background cursor-pointer"
+                >
+                  Learn More
+                  <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                </motion.div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   {[
@@ -1209,18 +1209,14 @@ const PortfolioJourney = () => {
   
     // Carousel card colors
     const cardColors = [
-      'bg-red-100',
-      'bg-blue-100',
-      'bg-green-100',
-      'bg-yellow-100',
-      'bg-purple-100',
-      'bg-pink-100',
-      'bg-orange-100',
-      'bg-indigo-100',
-      'bg-teal-100',
-      'bg-cyan-100',
-      'bg-lime-100',
-      'bg-fuchsia-100',
+      'bg-deep-teal',
+      'bg-primary-green',
+      'bg-sage',
+      'bg-deep-brown',
+      'bg-olive-green',
+      'bg-dark-green',
+      'bg-light-gold',
+      'bg-gold',
     ];
   
     // Brokerage comparison data
@@ -1420,147 +1416,165 @@ const PortfolioJourney = () => {
     ];
   
     // Update cards per view on screen resize
-    useEffect(() => {
-      const updateCardsPerView = () => {
-        const width = window.innerWidth;
-        if (width >= 1024) {
-          setCardsPerView(3);
-        } else if (width >= 768) {
-          setCardsPerView(2);
-        } else {
-          setCardsPerView(1);
-        }
-      };
-      updateCardsPerView();
-      window.addEventListener('resize', updateCardsPerView);
-      return () => window.removeEventListener('resize', updateCardsPerView);
-    }, []);
-  
-    // For looping carousel
-    const maxIndex = brokerageTypes.length - cardsPerView;
-  
-    const handlePrev = () => {
-      setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex));
+      // Dynamically update cards-per-view based on screen width
+  useEffect(() => {
+    const updateCardsPerView = () => {
+      const width = window.innerWidth;
+      if (width >= 1024) {
+        setCardsPerView(3);
+      } else if (width >= 768) {
+        setCardsPerView(2);
+      } else {
+        setCardsPerView(1);
+      }
     };
-  
-    const handleNext = () => {
-      setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
-    };
-  
-    // Calculate translateX based on current index
-    const translateXPercentage = (currentIndex * 100) / cardsPerView;
-  
-    return (
-      <div className="min-h-screen bg-light-background">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          {/* Section Heading */}
-          <div className="text-center mb-6">
-            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent mb-2">
-              Choose Your Investment Path
-            </h2>
-            <p className="text-base md:text-xl text-deep-brown mb-4">
-              We've made investing simple with two clear options to get started
-            </p>
-            <button
-              onClick={() => setShowBrokerageInfo(!showBrokerageInfo)}
-              className="inline-flex items-center space-x-2 text-primary-green hover:text-dark-green focus:outline-none"
-            >
-              <Info className="w-5 h-5" />
-              <span>Learn about different brokerage options</span>
-            </button>
-          </div>
-  
-          {/* Brokerage Info Carousel */}
-          {showBrokerageInfo && (
-            <div className="bg-deep-teal/50 rounded-xl p-4 md:p-6 mb-6 shadow-md">
-              <h3 className="text-xl md:text-2xl font-bold text-deep-brown mb-4">
-                Understanding Your Brokerage Options
-              </h3>
-  
-              {/* Carousel Container */}
-              <div className="relative">
-                <div className="overflow-hidden">
-                  {/* Carousel Track */}
-                  <div
-                    className="flex transition-transform duration-500 ease-in-out"
-                    style={{
-                      transform: `translateX(-${translateXPercentage}%)`,
-                      width: `${(brokerageTypes.length * 100) / cardsPerView}%`,
-                      gap: '12px',
-                    }}
-                  >
-                    {brokerageTypes.map((broker, index) => (
-                      <div
-                        key={broker.type + index}
-                        className={`flex-shrink-0 w-full md:w-auto p-4 rounded-lg shadow-sm 
-                        hover:shadow-md transition-colors ${cardColors[index % cardColors.length]}`}
-                        style={{
-                          width: `${100 / brokerageTypes.length}%`,
-                        }}
-                      >
-                        <h4 className="text-base md:text-lg font-semibold text-deep-brown mb-2">
-                          {broker.type}
-                        </h4>
-                        <p className="text-sm md:text-base text-olive-green mb-3">
-                          {broker.description}
-                        </p>
-                        {/* Pros */}
-                        <div className="mb-3">
-                          <div className="flex items-start mb-1">
-                            <Check className="w-5 h-5 text-olive-green mt-1 mr-2" />
-                            <span className="font-medium">Pros:</span>
-                          </div>
-                          <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
-                            {broker.pros.map((pro, i) => (
-                              <li key={i}>{pro}</li>
-                            ))}
-                          </ul>
+    updateCardsPerView();
+    window.addEventListener('resize', updateCardsPerView);
+    return () => window.removeEventListener('resize', updateCardsPerView);
+  }, []);
+
+  // If 3 cards per view, the maximum "starting" index is (totalCards - 3).
+  const maxIndex = brokerageTypes.length - cardsPerView;
+
+  // Move by ONE card each time
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex)); // Loop back
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0)); // Loop around
+  };
+
+  // Each card should be  (100 / cardsPerView)%  wide
+  // The track total width is:  brokerageTypes.length * (100 / cardsPerView)%
+  // The shift for currentIndex is: currentIndex * (100 / cardsPerView)%
+  const trackWidth = (brokerageTypes.length * 100) / cardsPerView;
+  const shiftPercentage = (currentIndex * 100) / cardsPerView;
+
+  return (
+    <div className="min-h-screen bg-light-background">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Section Heading */}
+        <div className="text-center mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent mb-2">
+            Choose Your Investment Path
+          </h2>
+          <p className="text-base md:text-xl text-deep-brown mb-4">
+            We've made investing simple with two clear options to get started
+          </p>
+          <button
+            onClick={() => setShowBrokerageInfo(!showBrokerageInfo)}
+            className="inline-flex items-center space-x-2 text-primary-green hover:text-dark-green focus:outline-none"
+          >
+            <Info className="w-5 h-5" />
+            <span>Learn about different brokerage options</span>
+          </button>
+        </div>
+
+        {/* Brokerage Info Carousel */}
+        {showBrokerageInfo && (
+          <div className="bg-deep-teal/50 rounded-xl p-4 md:p-6 mb-6 shadow-md">
+            <h3 className="text-xl md:text-2xl font-bold text-deep-brown mb-4">
+              Understanding Your Brokerage Options
+            </h3>
+
+            {/* Carousel Container */}
+            <div className="relative">
+              {/* Overflow hidden wrapper */}
+              <div className="overflow-hidden">
+                {/* Carousel Track */}
+                <div
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{
+                    transform: `translateX(-${shiftPercentage}%)`,
+                    width: `${trackWidth}%`,
+                    gap: '12px',
+                  }}
+                >
+                  {brokerageTypes.map((broker, index) => (
+                    <div
+                      key={broker.type + index}
+                      className={`flex-shrink-0 p-4 rounded-lg shadow-sm hover:shadow-md transition-colors 
+                        ${cardColors[index % cardColors.length]}`}
+                      style={{
+                        width: `${100 / cardsPerView}%`,
+                      }}
+                    >
+                      <h4 className="text-base md:text-lg font-semibold text-deep-brown mb-2">
+                        {broker.type}
+                      </h4>
+                      <p className="text-sm md:text-base text-olive-green mb-3">
+                        {broker.description}
+                      </p>
+                      {/* Pros */}
+                      <div className="mb-3">
+                        <div className="flex items-start mb-1">
+                          <Check className="w-5 h-5 text-olive-green mt-1 mr-2" />
+                          <span className="font-medium">Pros:</span>
                         </div>
-                        {/* Cons */}
-                        <div>
-                          <div className="flex items-start mb-1">
-                            <AlertCircle className="w-5 h-5 text-gold mt-1 mr-2" />
-                            <span className="font-medium">Cons:</span>
-                          </div>
-                          <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
-                            {broker.cons.map((con, i) => (
-                              <li key={i}>{con}</li>
-                            ))}
-                          </ul>
-                        </div>
+                        <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
+                          {broker.pros.map((pro, i) => (
+                            <li key={i}>{pro}</li>
+                          ))}
+                        </ul>
                       </div>
-                    ))}
-                  </div>
+                      {/* Cons */}
+                      <div>
+                        <div className="flex items-start mb-1">
+                          <AlertCircle className="w-5 h-5 text-gold mt-1 mr-2" />
+                          <span className="font-medium">Cons:</span>
+                        </div>
+                        <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
+                          {broker.cons.map((con, i) => (
+                            <li key={i}>{con}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-  
-                {/* Prev / Next Buttons */}
-                <button
-                  onClick={handlePrev}
-                  className={`absolute top-1/2 left-2 -translate-y-1/2 bg-deep-brown text-white p-2 rounded-full shadow hover:bg-dark-brown transition-colors`}
-                  aria-label="Previous"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={handleNext}
-                  className={`absolute top-1/2 right-2 -translate-y-1/2 bg-deep-brown text-white p-2 rounded-full shadow hover:bg-dark-brown transition-colors`}
-                  aria-label="Next"
-                >
-                  <ChevronRightIcon className="w-4 h-4" />
-                </button>
               </div>
-  
-              <div className="mt-4 text-center">
-                <a
-                  href="/articles/brokerage-platforms"
-                  className="inline-flex items-center text-primary-green hover:text-dark-green"
-                >
-                  Read our detailed brokerage comparison guide
-                  <LucideExternalLink className="w-4 h-4 ml-2" />
-                </a>
-              </div>
+
+              {/* Prev / Next Buttons */}
+              <button
+                onClick={handlePrev}
+                className="
+                  absolute top-1/2 left-2
+                  -translate-y-1/2
+                  bg-deep-brown text-white p-2
+                  rounded-full shadow hover:bg-dark-brown
+                  transition-colors
+                "
+                aria-label="Previous"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={handleNext}
+                className="
+                  absolute top-1/2 right-2
+                  -translate-y-1/2
+                  bg-deep-brown text-white p-2
+                  rounded-full shadow hover:bg-dark-brown
+                  transition-colors
+                "
+                aria-label="Next"
+              >
+                <ChevronRightIcon className="w-4 h-4" />
+              </button>
             </div>
-          )}
+
+            <div className="mt-4 text-center">
+      <div
+        onClick={() => navigate('/articles/brokerage-platforms')}
+        className="inline-flex items-center text-primary-green hover:text-dark-green cursor-pointer"
+      >
+        Read our detailed brokerage comparison guide
+        <LucideExternalLink className="w-4 h-4 ml-2" />
+      </div>
+    </div>
+          </div>
+        )}
   
           {/* Investment Options */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
@@ -1757,14 +1771,14 @@ const PortfolioJourney = () => {
                 <div className="flex items-start">
                   <HelpCircle className="w-5 h-5 text-primary-green mt-1 mr-2" />
                   <div className="text-primary-green">
-                    Need help choosing a broker? Read our detailed{' '}
-                    <a
-                      href="/articles/brokerage-comparison"
-                      className="underline hover:text-dark-green"
-                    >
-                      broker comparison guide
-                    </a>
-                  </div>
+                  Need help choosing a broker? Read our detailed{' '}
+                  <span
+                    onClick={() => navigate('/articles/brokerage-comparison')}
+                    className="underline hover:text-dark-green cursor-pointer"
+                  >
+                    broker comparison guide
+                  </span>
+                </div>
                 </div>
               </div>
             </div>
@@ -1809,36 +1823,50 @@ const PortfolioJourney = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-3xl mx-auto mb-12">
-            <a href="/assets" className="group flex items-center gap-3 bg-white px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto">
-              <Shield className="w-6 h-6 text-blue-600" />
-              <div className="flex-1">
-                <h3 className="font-semibold text-primary-green">Take the Risk Quiz</h3>
-                <p className="text-sm text-olive-green">Discover your investor profile</p>
-              </div>
-              <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
-            </a>
-            
-            <a href="/assets" className="group flex items-center gap-3 bg-white px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto">
-              <LineChart className="w-6 h-6 text-blue-600" />
-              <div className="flex-1">
-                <h3 className="font-semibold text-primary-green">Explore Assets</h3>
-                <p className="text-sm text-olive-green">Learn about investment options</p>
-              </div>
-              <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
-            </a>
-          </div>
+      <div
+        onClick={() => navigate('/assets')}
+        className="group flex items-center gap-3 bg-white px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto cursor-pointer"
+      >
+        <Shield className="w-6 h-6 text-blue-600" />
+        <div className="flex-1">
+          <h3 className="font-semibold text-primary-green">Take the Risk Quiz</h3>
+          <p className="text-sm text-olive-green">Discover your investor profile</p>
+        </div>
+        <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
+      </div>
+
+      <div
+        onClick={() => navigate('/assets')}
+        className="group flex items-center gap-3 bg-white px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto cursor-pointer"
+      >
+        <LineChart className="w-6 h-6 text-blue-600" />
+        <div className="flex-1">
+          <h3 className="font-semibold text-primary-green">Explore Assets</h3>
+          <p className="text-sm text-olive-green">Learn about investment options</p>
+        </div>
+        <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
+      </div>
+    </div>
 
       
 
-      <div className="max-w-7xl mx-auto p-8 space-y-12">
-        <StepIndicator currentStep={step} totalSteps={3} />
+          <div
+  className="
+    max-w-full         /* Full width on mobile */
+    md:max-w-7xl       /* Revert to 7xl on medium and above */
+    mx-auto
+    p-8
+    space-y-12
+  "
+>
+  <StepIndicator currentStep={step} totalSteps={3} />
 
-        {step === 1 && <RiskInput />}
-        {step === 2 && portfolioData && <OptimizedPortfolio />}
-        {step === 3 && portfolioData && <FinalCTA />}
-      </div>
-      {/* Enhanced Investment Section (always visible) */}
-      <EnhancedInvestment />
+  {step === 1 && <RiskInput />}
+  {step === 2 && portfolioData && <OptimizedPortfolio />}
+  {step === 3 && portfolioData && <FinalCTA />}
+</div>
+{/* Enhanced Investment Section (always visible) */}
+<EnhancedInvestment />
     </div>
     </div>
   );
