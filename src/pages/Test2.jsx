@@ -223,7 +223,7 @@ const CompleteInvestmentJourney = () => {
 
           {/* Desktop Progress Bar */}
           <div
-            className="hidden lg:block fixed left-8 top-1/2 -translate-y-1/2 z-50"
+            className="hidden lg:block fixed left-4 top-1/2 -translate-y-1/2 z-50"
             style={{
               opacity: showProgressBar ? 1 : 0,
               transition: "opacity 0.3s ease-in-out",
