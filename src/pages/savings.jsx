@@ -41,7 +41,7 @@ const SavingsSection = () => {
       type: "Traditional",
       rate: "4.5% AER",
       term: "Easy Access",
-      minDeposit: "£1000",
+      minDeposit: "£1,000",
       access: "Instant",
       highlight: "Best Easy Access",
       icon: <TrendingUp className="h-4 w-4" />

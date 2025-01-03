@@ -385,8 +385,8 @@ const EnhancedInvestment = () => {
                 <div className="grid grid-cols-2 gap-4">
                   {[
                     { label: 'Years of Data', value: '10+' },
-                    { label: 'Markets Analyzed', value: '100+' },
-                    { label: 'Success Rate', value: '94%' },
+                    { label: 'ETFs Analyzed', value: '12' },
+                    { label: 'Countries Accessible', value: '20+' },
                     { label: 'Client Satisfaction', value: '98%' }
                   ].map((stat, idx) => (
                     <motion.div
@@ -777,9 +777,9 @@ const PortfolioJourney = () => {
           {metrics.map(({ id, icon: Icon, label, value, description }) => (
             <div
               key={id}
-              className="p-4 rounded-lg flex flex-col justify-center relative "
+              className="p-4 rounded-lg flex flex-col justify-center relative bg-sage/60 "
             >
-              <div className="text-sm text-primary-green flex items-center mb-1">
+              <div className="text-sm text-primary-green flex items-center mb-1 bg-sage/60">
                 <Icon className="w-4 h-4 text-black mr-2" />
                 {label}
                 <Info
@@ -789,7 +789,7 @@ const PortfolioJourney = () => {
                   }
                 />
               </div>
-              <div className="text-lg font-semibold text-primary-green">
+              <div className="text-lg font-semibold text-primary-green bg-sage/60">
                 {value}
               </div>
               {activeMetric === id && (
@@ -1047,7 +1047,7 @@ const PortfolioJourney = () => {
     const chartData = dates.map((date, idx) => ({
       date,
       Portfolio: series.find((s) => s.name === 'Portfolio')?.values[idx] || 0,
-      'S&P 500': series.find((s) => s.name === 'S&P 500')?.values[idx] || 0
+      //'S&P 500': series.find((s) => s.name === 'S&P 500')?.values[idx] || 0
     }));
   
   
