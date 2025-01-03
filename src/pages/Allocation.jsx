@@ -1139,7 +1139,7 @@ const PortfolioJourney = () => {
               />
               <Line
                 type="monotone"
-                dataKey="S&P 500"
+                dataKey=""
                 stroke="#EF4444"
                 strokeWidth={3}
                 dot={false}
