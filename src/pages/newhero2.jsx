@@ -432,9 +432,7 @@ const InnovativeHero = () => {
       */}
       <section className="py-12 sm:py-20 bg-light-background relative z-10 pt-36 sm:pt-44">
         <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-2 sm:mb-4 text-deep-brown font-semibold">
-            Our Aggressive Portfolio
-          </div>
+        
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Text / CTA */}
             <div>
@@ -457,6 +455,9 @@ const InnovativeHero = () => {
 
             {/* Chart + Stat Boxes */}
             <div className="bg-sage rounded-2xl p-4 sm:p-8 shadow-lg">
+            <div className="text-center mb-2 sm:mb-4 text-1xl text-deep-brown font-semibold">
+            Our Aggressive Portfolio
+          </div>
               {/* Volatility & YTD Return */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
                 {/* Volatility */}

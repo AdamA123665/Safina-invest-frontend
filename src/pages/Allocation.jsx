@@ -1438,132 +1438,141 @@ const PortfolioJourney = () => {
 
   return (
     <div className="min-h-screen bg-light-background">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Section Heading */}
-        <div className="text-center mb-6">
-          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent mb-2">
-            Choose Your Investment Path
-          </h2>
-          <p className="text-base md:text-xl text-deep-brown mb-4">
-            We’ve made investing simple with two clear options to get started
-          </p>
-          <button
-            onClick={() => setShowBrokerageInfo(!showBrokerageInfo)}
-            className="inline-flex items-center space-x-2 text-primary-green hover:text-dark-green focus:outline-none"
+  <div className="max-w-7xl mx-auto px-4 py-8">
+    {/* Section Heading */}
+    <div className="text-center mb-6">
+      <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent mb-2">
+        Choose Your Investment Path
+      </h2>
+      <p className="text-base md:text-xl text-deep-brown mb-4">
+        We’ve made investing simple with two clear options to get started
+      </p>
+      <button
+        onClick={() => setShowBrokerageInfo(!showBrokerageInfo)}
+        className="inline-flex items-center space-x-2 text-primary-green hover:text-dark-green focus:outline-none"
+      >
+        <Info className="w-5 h-5" />
+        <span>Learn about different brokerage options</span>
+      </button>
+    </div>
+
+    {/* Brokerage Info Carousel */}
+    {showBrokerageInfo && (
+      <div
+        className="bg-deep-teal/50 rounded-xl p-4 md:p-6 mb-6 shadow-md relative"
+        /* Removed overflow-hidden */
+      >
+        <h3 className="text-xl md:text-2xl font-bold text-deep-brown mb-4">
+          Understanding Your Brokerage Options
+        </h3>
+
+        {/* Slides Container */}
+        {slides.map((slideBrokers, idx) => (
+          <div
+            key={idx}
+            /*
+             * Use block/hidden (or opacity) toggles rather than absolute positioning.
+             * This way the slide can grow vertically without being clipped.
+             */
+            className={`transition-opacity duration-700 ${
+              idx === currentSlide ? 'block opacity-100' : 'hidden opacity-0'
+            }`}
           >
-            <Info className="w-5 h-5" />
-            <span>Learn about different brokerage options</span>
-          </button>
-        </div>
+            <div className="flex flex-col lg:flex-row flex-wrap gap-4">
+              {slideBrokers.map((broker, i) => (
+                <div
+                  key={broker.type + i}
+                  className="flex-1 p-4 bg-white rounded-lg shadow hover:shadow-md transition-colors
+                             min-h-[300px]" // Helps ensure enough vertical space
+                >
+                  <h4 className="text-lg md:text-xl font-bold text-deep-brown mb-2">
+                    {broker.type}
+                  </h4>
+                  <p className="text-sm md:text-base text-olive-green mb-4">
+                    {broker.description}
+                  </p>
 
-        {/* Brokerage Info Carousel */}
-        {showBrokerageInfo && (
-          <div className="bg-deep-teal/50 rounded-xl p-4 md:p-6 mb-6 shadow-md relative overflow-hidden">
-            <h3 className="text-xl md:text-2xl font-bold text-deep-brown mb-4">
-              Understanding Your Brokerage Options
-            </h3>
-
-            {/* Each chunk of up to 3 cards is a “slide” */}
-            {slides.map((slideBrokers, idx) => (
-              <div
-                key={idx}
-                className={`absolute inset-0 transition-opacity duration-700
-                  flex flex-col lg:flex-row gap-4
-                  ${idx === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}
-                `}
-              >
-                {slideBrokers.map((broker, i) => (
-                  <div
-                    key={broker.type + i}
-                    className="flex-1 p-4 bg-white rounded-lg shadow hover:shadow-md transition-colors"
-                  >
-                    <h4 className="text-lg md:text-xl font-bold text-deep-brown mb-2">
-                      {broker.type}
-                    </h4>
-                    <p className="text-sm md:text-base text-olive-green mb-4">
-                      {broker.description}
-                    </p>
-
-                    {/* Pros */}
-                    <div className="mb-3">
-                      <div className="flex items-start mb-1">
-                        <Check className="w-5 h-5 text-olive-green mt-1 mr-2" />
-                        <span className="font-semibold text-deep-brown">
-                          Pros:
-                        </span>
-                      </div>
-                      <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
-                        {broker.pros.map((pro, j) => (
-                          <li key={j}>{pro}</li>
-                        ))}
-                      </ul>
+                  {/* Pros */}
+                  <div className="mb-3">
+                    <div className="flex items-start mb-1">
+                      <Check className="w-5 h-5 text-olive-green mt-1 mr-2" />
+                      <span className="font-semibold text-deep-brown">
+                        Pros:
+                      </span>
                     </div>
-
-                    {/* Cons */}
-                    <div>
-                      <div className="flex items-start mb-1">
-                        <AlertCircle className="w-5 h-5 text-gold mt-1 mr-2" />
-                        <span className="font-semibold text-deep-brown">
-                          Cons:
-                        </span>
-                      </div>
-                      <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
-                        {broker.cons.map((con, j) => (
-                          <li key={j}>{con}</li>
-                        ))}
-                      </ul>
-                    </div>
+                    <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
+                      {broker.pros.map((pro, j) => (
+                        <li key={j}>{pro}</li>
+                      ))}
+                    </ul>
                   </div>
-                ))}
-              </div>
-            ))}
 
-            {/* Prev / Next Buttons (same logic as research carousel) */}
-            <button
-              onClick={prevSlide}
-              className="absolute top-1/2 left-2 -translate-y-1/2
-                         bg-deep-brown text-white p-2 rounded-full shadow
-                         hover:bg-dark-brown transition-colors z-20"
-              aria-label="Previous Slide"
-            >
-              <ChevronLeftIcon className="w-5 h-5" />
-            </button>
-            <button
-              onClick={nextSlide}
-              className="absolute top-1/2 right-2 -translate-y-1/2
-                         bg-deep-brown text-white p-2 rounded-full shadow
-                         hover:bg-dark-brown transition-colors z-20"
-              aria-label="Next Slide"
-            >
-              <ChevronRightIcon className="w-5 h-5" />
-            </button>
-
-            {/* Carousel Indicators (dots) */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
-              {slides.map((_, index) => (
-                <span
-                  key={index}
-                  className={`h-3 w-3 rounded-full cursor-pointer ${
-                    index === currentSlide ? 'bg-primary-green' : 'bg-sage'
-                  }`}
-                  onClick={() => setCurrentSlide(index)}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
+                  {/* Cons */}
+                  <div>
+                    <div className="flex items-start mb-1">
+                      <AlertCircle className="w-5 h-5 text-gold mt-1 mr-2" />
+                      <span className="font-semibold text-deep-brown">
+                        Cons:
+                      </span>
+                    </div>
+                    <ul className="ml-7 list-disc text-sm md:text-base text-olive-green space-y-1">
+                      {broker.cons.map((con, j) => (
+                        <li key={j}>{con}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               ))}
             </div>
-
-            {/* Optional link to a detailed guide */}
-            <div className="mt-16 text-center relative z-20">
-              <div
-                onClick={() => navigate('/articles/brokerage-platforms')}
-                className="inline-flex items-center text-primary-green hover:text-dark-green cursor-pointer"
-              >
-                Read our detailed brokerage comparison guide
-                <LucideExternalLink className="w-4 h-4 ml-2" />
-              </div>
-            </div>
           </div>
-        )}
+        ))}
+
+        {/* Prev / Next Buttons */}
+        <button
+          onClick={prevSlide}
+          className="absolute top-1/2 left-2 -translate-y-1/2
+                     bg-deep-brown text-white p-2 rounded-full shadow
+                     hover:bg-dark-brown transition-colors"
+          aria-label="Previous Slide"
+        >
+          <ChevronLeftIcon className="w-5 h-5" />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute top-1/2 right-2 -translate-y-1/2
+                     bg-deep-brown text-white p-2 rounded-full shadow
+                     hover:bg-dark-brown transition-colors"
+          aria-label="Next Slide"
+        >
+          <ChevronRightIcon className="w-5 h-5" />
+        </button>
+
+        {/* Carousel Indicators (dots) */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          {slides.map((_, index) => (
+            <span
+              key={index}
+              className={`h-3 w-3 rounded-full cursor-pointer ${
+                index === currentSlide ? 'bg-primary-green' : 'bg-sage'
+              }`}
+              onClick={() => setCurrentSlide(index)}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Optional link to a detailed guide */}
+        <div className="mt-16 text-center">
+          <div
+            onClick={() => navigate('/articles/brokerage-platforms')}
+            className="inline-flex items-center text-primary-green hover:text-dark-green cursor-pointer"
+          >
+            Read our detailed brokerage comparison guide
+            <LucideExternalLink className="w-4 h-4 ml-2" />
+          </div>
+        </div>
+      </div>
+    )}
   
           {/* Investment Options */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
@@ -1841,11 +1850,7 @@ const PortfolioJourney = () => {
 
           <div
   className="
-    max-w-full         /* Full width on mobile */
-    md:max-w-7xl       /* Revert to 7xl on medium and above */
-    mx-auto
-    p-8
-    space-y-12
+    w-full p-2 space-y-12
   "
 >
   <StepIndicator currentStep={step} totalSteps={3} />

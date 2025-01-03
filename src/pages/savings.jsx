@@ -39,7 +39,7 @@ const SavingsSection = () => {
     {
       bank: "QIB UK",
       type: "Traditional",
-      rate: "4.5%% AER",
+      rate: "4.5% AER",
       term: "Easy Access",
       minDeposit: "£1000",
       access: "Instant",
@@ -47,11 +47,11 @@ const SavingsSection = () => {
       icon: <TrendingUp className="h-4 w-4" />
     },
     {
-      bank: "Barclays",
+      bank: "QIB UK",
       type: "Traditional",
       rate: "4.7% AER",
       term: "31 day notice",
-      minDeposit: "£2,000",
+      minDeposit: "£1,000",
       access: "Fixed Term",
       highlight: "Top Notice Account",
       icon: <PiggyBank className="h-4 w-4" />

@@ -102,7 +102,7 @@ const Navbar = () => {
               ) : (
                 <Link to="/" className="flex items-center space-x-2 relative group">
                   <img
-                    src={`${process.env.PUBLIC_URL}/safina_invest_logo.png`}
+                    src={`${process.env.PUBLIC_URL}/Safina_Invest_logo_navbar.png`}
                     alt="Safina Invest Logo"
                     className={`
                       h-auto transform transition-transform duration-300 group-hover:scale-105
@@ -110,6 +110,11 @@ const Navbar = () => {
                     `}
                   />
                   <div className="absolute -inset-2 bg-white/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur" />
+                  {!isScrolled && (
+                        <span className="text-white font-bold">
+                        Safina
+                        </span>
+                    )}
                 </Link>
               )}
             </div>

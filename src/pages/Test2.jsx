@@ -606,11 +606,14 @@ const CompleteInvestmentJourney = () => {
                 <p className="text-primary-green text-sm ">
                   Seamless integration with Trading 212 for instant portfolio implementation.
                 </p>
+                <span className="block mt-2 text-sm italic text-gold">
+                    TIP: Open a stocks and shares ISA for tax free investments
+                  </span>
                 <button
-                onClick={() => navigate('/allocation')}
+                onClick={() => navigate('/articles/understanding-isas')}
                 className="mt-6 px-6 py-3 bg-olive-green rounded-lg hover:bg-primary-green transition-colors text-sm md:text-light-background"
               >
-                Invest Now
+                Learn more about ISA's
               </button>
               </motion.div>
 
