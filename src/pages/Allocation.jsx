@@ -772,14 +772,6 @@ const PortfolioJourney = () => {
   // 6) Your metrics array, including the new 1-year return metric
   const metrics = [
     {
-      id: 'expectedReturn',
-      icon: TrendingUp,
-      label: 'Expected Return',
-      value: `${expReturn.toFixed(2)}%`,
-      description:
-        'The anticipated percentage gain of your portfolio over a specified period.',
-    },
-    {
       // Replace your second "Expected Return" with the new 1-Year Return
       id: 'oneYearReturn',
       icon: TrendingUp,
@@ -787,6 +779,14 @@ const PortfolioJourney = () => {
       value: `${calculatedOneYearReturn}%`,
       description:
         'The portfolio’s performance over the past 12 months, expressed as a percentage.',
+    },
+    {
+      id: 'expectedReturn',
+      icon: TrendingUp,
+      label: 'Expected Return (10y avg)',
+      value: `${expReturn.toFixed(2)}%`,
+      description:
+        'The anticipated percentage gain of your portfolio over a specified period.',
     },
     {
       id: 'volatility',

@@ -318,7 +318,7 @@ const InnovativeHero = () => {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-8xl sm:text-6xl md:text-8xl lg:text-8xl font-bold text-deep-brown mb-6 text-center pt-16 sm:pt-32 drop-shadow-lg"
+          className="text-8xl sm:text-4xl md:text-8xl lg:text-8xl font-bold text-deep-brown mb-6 text-center pt-16 sm:pt-32 drop-shadow-lg"
         >
           Grow Your
           <span
