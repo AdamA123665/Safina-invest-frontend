@@ -720,89 +720,127 @@ const PortfolioJourney = () => {
   // A) PortfolioStats
   const PortfolioStats = () => {
     if (!portfolioData) return null;
-    const { risk_metrics } = portfolioData.dashboard_data;
-    const { labels, values } = risk_metrics;
+   // 1) Extract risk metrics
+  const { risk_metrics } = portfolioData.dashboard_data;
+  const { labels, values } = risk_metrics;
 
-    const idxExp = labels.indexOf('Expected Return');
-    const idxVol = labels.indexOf('Volatility');
-    const idxMD = labels.indexOf('Max Drawdown');
-    const idxSR = labels.indexOf('Sharpe Ratio');
+  // 2) Identify indexes of relevant metrics
+  const idxExp = labels.indexOf('Expected Return');
+  const idxVol = labels.indexOf('Volatility');
+  const idxMD = labels.indexOf('Max Drawdown');
+  // Sharpe Ratio index if you need it
+  // const idxSR = labels.indexOf('Sharpe Ratio');
 
-    const expReturn = idxExp >= 0 ? values[idxExp] * 100 : 0;
-    const vol = idxVol >= 0 ? values[idxVol] * 100 : 0;
-    const maxDraw = idxMD >= 0 ? values[idxMD] * 100 : 0;
-    const sharpe = idxSR >= 0 ? values[idxSR] : 0;
+  // 3) Standard Risk Metrics from the backend
+  const expReturn = idxExp >= 0 ? values[idxExp] * 100 : 0;
+  const vol = idxVol >= 0 ? values[idxVol] * 100 : 0;
+  const maxDraw = idxMD >= 0 ? values[idxMD] * 100 : 0;
 
-    const metrics = [
-      {
-        id: 'expectedReturn',
-        icon: TrendingUp,
-        label: 'Expected Return',
-        value: `${expReturn.toFixed(2)}%`,
-        description:
-          'The anticipated percentage gain of your portfolio over a specified period.'
-      },
-      {
-        id: 'volatility',
-        icon: Percent,
-        label: 'Volatility',
-        value: `${vol.toFixed(2)}%`,
-        description:
-          'Measures the fluctuation in your portfolio’s value, indicating risk level.'
-      },
-      {
-        id: 'maxDrawdown',
-        icon: AlertTriangle,
-        label: 'Max Drawdown',
-        value: `${maxDraw.toFixed(2)}%`,
-        description:
-          'The maximum observed loss from a peak to a trough of your portfolio.'
-      },
-      {
-        id: 'sharpeRatio',
-        icon: TrendingUp,
-        label: 'Sharpe Ratio',
-        value: sharpe.toFixed(2),
-        description:
-          'Indicates the risk-adjusted return of your portfolio.'
-      }
-    ];
+  // 4) Calculate rolling 1-year return
+  const currentDate = new Date();
+  const lastYearDate = new Date();
+  lastYearDate.setFullYear(currentDate.getFullYear() - 1);
 
-    return (
-      <div className="bg-sage shadow-lg rounded-xl p-6">
-        <h3 className="text-xl font-bold mb-4 text-gold">
-          Portfolio Risk Metrics
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-sage/60">
-          {metrics.map(({ id, icon: Icon, label, value, description }) => (
-            <div
-              key={id}
-              className="p-4 rounded-lg flex flex-col justify-center relative bg-sage/60 "
-            >
-              <div className="text-sm text-primary-green flex items-center mb-1 bg-sage/60">
-                <Icon className="w-4 h-4 text-black mr-2" />
-                {label}
-                <Info
-                  className="w-4 h-4 text-primary-green cursor-pointer ml-1"
-                  onClick={() =>
-                    setActiveMetric(activeMetric === id ? null : id)
-                  }
-                />
-              </div>
-              <div className="text-lg font-semibold text-primary-green bg-sage/60">
-                {value}
-              </div>
-              {activeMetric === id && (
-                <div ref={tooltipRef}>
-                  <MetricTooltip text={description} />
-                </div>
-              )}
+  // Safely locate the "Portfolio" series, falling back to an empty array if missing
+  const portfolioSeries =
+    portfolioData.dashboard_data.performance.series.find(
+      (s) => s.name === 'Portfolio'
+    )?.values || [];
+
+  // Retrieve date array, or empty if missing
+  const dates = portfolioData.dashboard_data.performance.dates || [];
+
+  // Filter for the last 12 months
+  const filteredData = dates
+    .map((date, idx) => ({
+      date: new Date(date),
+      value: portfolioSeries[idx],
+    }))
+    .filter((item) => item.date >= lastYearDate);
+
+  // Calculate the 1-year return (rolling)
+  const calculatedOneYearReturn =
+    filteredData.length > 1
+      ? (
+          ((filteredData[filteredData.length - 1].value -
+            filteredData[0].value) /
+            filteredData[0].value) *
+          100
+        ).toFixed(2)
+      : '0.00'; // or however you'd like to handle the fallback
+
+  // 6) Your metrics array, including the new 1-year return metric
+  const metrics = [
+    {
+      id: 'expectedReturn',
+      icon: TrendingUp,
+      label: 'Expected Return',
+      value: `${expReturn.toFixed(2)}%`,
+      description:
+        'The anticipated percentage gain of your portfolio over a specified period.',
+    },
+    {
+      // Replace your second "Expected Return" with the new 1-Year Return
+      id: 'oneYearReturn',
+      icon: TrendingUp,
+      label: '1-Year Return',
+      value: `${calculatedOneYearReturn}%`,
+      description:
+        'The portfolio’s performance over the past 12 months, expressed as a percentage.',
+    },
+    {
+      id: 'volatility',
+      icon: Percent,
+      label: 'Volatility',
+      value: `${vol.toFixed(2)}%`,
+      description:
+        'Measures the fluctuation in your portfolio’s value, indicating risk level.',
+    },
+    {
+      id: 'maxDrawdown',
+      icon: AlertTriangle,
+      label: 'Max Drawdown',
+      value: `${maxDraw.toFixed(2)}%`,
+      description:
+        'The maximum observed loss from a peak to a trough of your portfolio.',
+    },
+  ];
+
+  return (
+    <div className="bg-sage shadow-lg rounded-xl p-6">
+      <h3 className="text-xl font-bold mb-4 text-gold">
+        Portfolio Risk Metrics
+      </h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-sage/60">
+        {metrics.map(({ id, icon: Icon, label, value, description }) => (
+          <div
+            key={id}
+            className="p-4 rounded-lg flex flex-col justify-center relative bg-sage/60"
+          >
+            <div className="text-sm text-primary-green flex items-center mb-1 bg-sage/60">
+              <Icon className="w-4 h-4 text-black mr-2" />
+              {label}
+              <Info
+                className="w-4 h-4 text-primary-green cursor-pointer ml-1"
+                onClick={() =>
+                  setActiveMetric(activeMetric === id ? null : id)
+                }
+              />
             </div>
-          ))}
-        </div>
+            <div className="text-lg font-semibold text-primary-green bg-sage/60">
+              {value}
+            </div>
+            {activeMetric === id && (
+              <div ref={tooltipRef}>
+                <MetricTooltip text={description} />
+              </div>
+            )}
+          </div>
+        ))}
       </div>
-    );
-  };
+    </div>
+  );
+};
 
   // B) Doughnut Pie
   const AllocationPie = () => {

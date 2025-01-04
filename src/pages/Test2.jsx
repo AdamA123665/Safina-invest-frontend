@@ -52,7 +52,7 @@ const CompleteInvestmentJourney = () => {
   const navigate = useNavigate();
   // Reference for the section to observe
   const sectionRef = useRef(null);
-
+  const [showInfo, setShowInfo] = useState(false);
   // Generate stock-like data for the graph
   const generateStockData = () => {
     const data = [];
@@ -458,13 +458,39 @@ const CompleteInvestmentJourney = () => {
             className="max-w-6xl mx-auto"
           >
             <div className="mb-16 space-y-2">
-              <h2 className="text-3xl md:text-4xl font-medium">
-                Access Our Multi Asset Portfolios
-              </h2>
-              <p className="text-dark-green md:text-xl text-deep-teal max-w-2xl">
-              Build customised Shariah-compliant portfolios using our asset allocation tool, powered by over 10 years of ETF market data.
+      <div className="flex items-center gap-2">
+        <h2 className="text-3xl md:text-4xl font-medium">
+          Access Our Multi Asset Portfolios
+        </h2>
+        <div className="relative">
+          <Info 
+            className="w-5 h-5 text-deep-teal cursor-pointer" 
+            onClick={() => setShowInfo(!showInfo)}
+          />
+          {showInfo && (
+            <div 
+              className="absolute z-10 bg-white shadow-lg rounded-md p-3 w-64 -left-32 mt-2"
+              onClick={() => setShowInfo(false)}
+            >
+              <p className="text-sm text-gray-700">
+                Multi-asset portfolios combine different asset classes to optimize returns while reducing risk. The world's largest funds use this strategy to achieve consistent performance.
               </p>
             </div>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row md:items-center gap-4">
+        <p className="text-dark-green md:text-xl text-deep-teal max-w-2xl">
+          Build customised Shariah-compliant portfolios using our asset allocation tool, powered by over 10 years of ETF market data.
+        </p>
+        <button 
+          onClick={() => navigate('/articles/multi-asset-portfolios-explained')}
+          className="bg-deep-teal text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap"
+        >
+          Learn More
+        </button>
+      </div>
+    </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {/* Left Column - Methodology */}
