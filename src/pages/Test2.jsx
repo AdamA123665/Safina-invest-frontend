@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
+
 function AlertDescription({ severity, message, description }) {
   return (
     <Alert severity={severity}>
@@ -50,9 +51,11 @@ const CompleteInvestmentJourney = () => {
   const [riskLevel, setRiskLevel] = useState(5);
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
+
   // Reference for the section to observe
   const sectionRef = useRef(null);
   const [showInfo, setShowInfo] = useState(false);
+
   // Generate stock-like data for the graph
   const generateStockData = () => {
     const data = [];
@@ -84,9 +87,6 @@ const CompleteInvestmentJourney = () => {
   };
 
   const stockData = useMemo(() => generateStockData(), []);
-
-  // Custom tooltip content
-  
 
   const portfolioData = [
     { asset: 'Stocks', percentage: 60 },
@@ -167,7 +167,10 @@ const CompleteInvestmentJourney = () => {
       innerSections.forEach((sec, index) => {
         const rect = sec.getBoundingClientRect();
         // If the middle of the viewport is within this section
-        if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+        if (
+          rect.top <= window.innerHeight / 2 &&
+          rect.bottom >= window.innerHeight / 2
+        ) {
           setActiveSection(index);
         }
       });
@@ -185,41 +188,41 @@ const CompleteInvestmentJourney = () => {
       {showProgressBar && (
         <>
           {/* Mobile Progress Bar */}
-<div
-  className="sticky top-0 z-50 bg-deep-brown/10 backdrop-blur lg:hidden"
-  style={{
-    transform: showProgressBar ? "translateY(0)" : "translateY(-100%)",
-    transition: "transform 0.3s ease-in-out",
-  }}
->
-  <div className="flex justify-between p-4 overflow-x-auto">
-    {sections.map((section, index) => {
-      const Icon = section.icon;
-      const isActive = activeSection >= index;
-      return (
-        <div key={section.id} className="flex-shrink-0 px-2">
-          <motion.div
-            className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
-              isActive ? "bg-primary-green" : "bg-deep-teal"
-            }`}
+          <div
+            className="sticky top-0 z-50 bg-deep-brown/10 backdrop-blur lg:hidden"
+            style={{
+              transform: showProgressBar ? "translateY(0)" : "translateY(-100%)",
+              transition: "transform 0.3s ease-in-out",
+            }}
           >
-            <Icon className="w-4 h-4 text-white" />
-          </motion.div>
-          <span className="text-xs whitespace-nowrap">{section.title}</span>
-        </div>
-      );
-    })}
-  </div>
-  {/* Bottom Progress Bar */}
-  <div className="h-1 bg-deep-teal/20">
-    <div
-      className="h-full bg-primary-green transition-all duration-300"
-      style={{
-        width: `${(activeSection / (sections.length - 1)) * 100}%`,
-      }}
-    />
-  </div>
-</div>
+            <div className="flex justify-between p-4 overflow-x-auto">
+              {sections.map((section, index) => {
+                const Icon = section.icon;
+                const isActive = activeSection >= index;
+                return (
+                  <div key={section.id} className="flex-shrink-0 px-2">
+                    <motion.div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
+                        isActive ? "bg-primary-green" : "bg-deep-teal"
+                      }`}
+                    >
+                      <Icon className="w-4 h-4 text-white" />
+                    </motion.div>
+                    <span className="text-xs whitespace-nowrap">{section.title}</span>
+                  </div>
+                );
+              })}
+            </div>
+            {/* Bottom Progress Bar */}
+            <div className="h-1 bg-deep-teal/20">
+              <div
+                className="h-full bg-primary-green transition-all duration-300"
+                style={{
+                  width: `${(activeSection / (sections.length - 1)) * 100}%`,
+                }}
+              />
+            </div>
+          </div>
 
           {/* Desktop Progress Bar */}
           <div
@@ -308,9 +311,9 @@ const CompleteInvestmentJourney = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Left Column */}
               <div className="space-y-8">
-                {/* Risk Slider Card */}
+                {/* Risk Slider Card - hidden on mobile, shown on md+ */}
                 <motion.div
-                  className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur"
+                  className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block"
                   whileHover={{ scale: 1.02 }}
                 >
                   <h3 className="text-lg md:text-xl font-medium mb-6">Quick Risk Assessment</h3>
@@ -342,54 +345,54 @@ const CompleteInvestmentJourney = () => {
                   </div>
                 </motion.div>
 
-                {/* Risk Quiz Link */}
+                {/* Risk Quiz Link (kept visible on all devices) */}
                 <motion.button
-      onClick={() => navigate('/assets')}
-      className="w-full text-left bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors focus:outline-none"
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-    >
-      <div className="flex items-start space-x-4">
-        <Shield className="w-6 h-6 text-primary-green flex-shrink-0" />
-        <div>
-          <h3 className="text-lg md:text-xl font-medium mb-2">
-            Take Our Full Risk Assessment
-          </h3>
-          <p className="text-primary-green mb-4 text-sm">
-            Get a comprehensive analysis of your risk tolerance through our expert-designed questionnaire.
-          </p>
-          <span className="text-dark-green flex items-center text-sm">
-            Start Assessment <ArrowRight className="ml-2 w-4 h-4" />
-          </span>
-        </div>
-      </div>
-    </motion.button>
+                  onClick={() => navigate('/assets')}
+                  className="w-full text-left bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors focus:outline-none"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex items-start space-x-4">
+                    <Shield className="w-6 h-6 text-primary-green flex-shrink-0" />
+                    <div>
+                      <h3 className="text-lg md:text-xl font-medium mb-2">
+                        Take Our Full Risk Assessment
+                      </h3>
+                      <p className="text-primary-green mb-4 text-sm">
+                        Get a comprehensive analysis of your risk tolerance through our expert-designed questionnaire.
+                      </p>
+                      <span className="text-dark-green flex items-center text-sm">
+                        Start Assessment <ArrowRight className="ml-2 w-4 h-4" />
+                      </span>
+                    </div>
+                  </div>
+                </motion.button>
 
-                {/* Educational Resource */}
+                {/* Educational Resource (kept visible on all devices) */}
                 <motion.div
-      onClick={() => navigate('/articles/understanding-investing-risk')}
-      className="block bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors cursor-pointer"
-      whileHover={{ scale: 1.02 }}
-    >
-      <div className="flex items-start space-x-4">
-        <Info className="w-6 h-6 text-gold flex-shrink-0" />
-        <div>
-          <h3 className="text-lg md:text-xl font-medium mb-2">
-            Understanding Investment Risk
-          </h3>
-          <p className="text-primary-green mb-4 text-sm">
-            Learn about the factors that influence investment risk and return.
-          </p>
-          <span className="text-gold hover:text-dark-green flex items-center text-sm md:text-dark-green">
-            Read Article <ExternalLink className="ml-2 w-4 h-4" />
-          </span>
-        </div>
-      </div>
-    </motion.div>
+                  onClick={() => navigate('/articles/understanding-investing-risk')}
+                  className="block bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors cursor-pointer"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="flex items-start space-x-4">
+                    <Info className="w-6 h-6 text-gold flex-shrink-0" />
+                    <div>
+                      <h3 className="text-lg md:text-xl font-medium mb-2">
+                        Understanding Investment Risk
+                      </h3>
+                      <p className="text-primary-green mb-4 text-sm">
+                        Learn about the factors that influence investment risk and return.
+                      </p>
+                      <span className="text-gold hover:text-dark-green flex items-center text-sm md:text-dark-green">
+                        Read Article <ExternalLink className="ml-2 w-4 h-4" />
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
 
-              {/* Right Column - Risk-Return Visualization */}
-              <div className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur">
+              {/* Right Column - Risk-Return Visualization - hidden on mobile, shown on md+ */}
+              <div className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block">
                 <h3 className="text-lg md:text-xl font-medium mb-6">
                   Risk-Return Profiles
                 </h3>
@@ -405,7 +408,7 @@ const CompleteInvestmentJourney = () => {
                             key={risk}
                             type="monotone"
                             dataKey={`risk${risk}`}
-                            stroke={risk === riskLevel ? '#066b06' : '#0a4c4c'} // primary-green or deep-teal
+                            stroke={risk === riskLevel ? '#066b06' : '#0a4c4c'}
                             strokeWidth={risk === riskLevel ? 3 : 1}
                             dot={false}
                             opacity={risk === riskLevel ? 1 : 0.3}
@@ -413,24 +416,24 @@ const CompleteInvestmentJourney = () => {
                         ))}
                         <XAxis
                           dataKey="year"
-                          stroke="#044d04" // sage
+                          stroke="#044d04"
                           tick={false}
                           label={{
                             value: 'Time',
                             position: 'bottom',
                             offset: 20,
-                            fill: '#044d04' // sage
+                            fill: '#044d04'
                           }}
                         />
                         <YAxis
-                          stroke="#044d04" // sage
+                          stroke="#044d04"
                           tick={false}
                           label={{
                             value: 'Growth',
                             angle: -90,
                             position: 'left',
                             offset: 0,
-                            fill: '#044d04' // sage
+                            fill: '#044d04'
                           }}
                         />
                       </LineChart>
@@ -441,7 +444,7 @@ const CompleteInvestmentJourney = () => {
                 <div className="text-xs text-deep-teal italic">
                   For illustrative purposes only. Past performance is not indicative of future results. 
                   The graph above is a simplified visualization of potential risk-return relationships. 
-                  Actual investment outcomes may vary significantly dark-greend on market conditions, 
+                  Actual investment outcomes may vary significantly based on market conditions, 
                   economic factors, and other variables.
                 </div>
               </div>
@@ -458,44 +461,44 @@ const CompleteInvestmentJourney = () => {
             className="max-w-6xl mx-auto"
           >
             <div className="mb-16 space-y-2">
-      <div className="flex items-center gap-2">
-        <h2 className="text-3xl md:text-4xl font-medium">
-          Access Our Multi Asset Portfolios
-        </h2>
-        <div className="relative">
-          <Info 
-            className="w-5 h-5 text-deep-teal cursor-pointer" 
-            onClick={() => setShowInfo(!showInfo)}
-          />
-          {showInfo && (
-            <div 
-              className="absolute z-10 bg-white shadow-lg rounded-md p-3 w-64 -left-32 mt-2"
-              onClick={() => setShowInfo(false)}
-            >
-              <p className="text-sm text-gray-700">
-                Multi-asset portfolios combine different asset classes to optimize returns while reducing risk. The world's largest funds use this strategy to achieve consistent performance.
-              </p>
+              <div className="flex items-center gap-2">
+                <h2 className="text-3xl md:text-4xl font-medium">
+                  Access Our Multi Asset Portfolios
+                </h2>
+                <div className="relative">
+                  <Info 
+                    className="w-5 h-5 text-deep-teal cursor-pointer" 
+                    onClick={() => setShowInfo(!showInfo)}
+                  />
+                  {showInfo && (
+                    <div 
+                      className="absolute z-10 bg-white shadow-lg rounded-md p-3 w-64 -left-32 mt-2"
+                      onClick={() => setShowInfo(false)}
+                    >
+                      <p className="text-sm text-gray-700">
+                        Multi-asset portfolios combine different asset classes to optimize returns while reducing risk. The world's largest funds use this strategy to achieve consistent performance.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col md:flex-row md:items-center gap-4">
+                <p className="text-dark-green md:text-xl text-deep-teal max-w-2xl">
+                  Build customised Shariah-compliant portfolios using our asset allocation tool, powered by over 10 years of ETF market data.
+                </p>
+                <button 
+                  onClick={() => navigate('/articles/multi-asset-portfolios-explained')}
+                  className="bg-deep-teal text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap"
+                >
+                  Learn More
+                </button>
+              </div>
             </div>
-          )}
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row md:items-center gap-4">
-        <p className="text-dark-green md:text-xl text-deep-teal max-w-2xl">
-          Build customised Shariah-compliant portfolios using our asset allocation tool, powered by over 10 years of ETF market data.
-        </p>
-        <button 
-          onClick={() => navigate('/articles/multi-asset-portfolios-explained')}
-          className="bg-deep-teal text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap"
-        >
-          Learn More
-        </button>
-      </div>
-    </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              {/* Left Column - Methodology */}
+              {/* Our Methodology - hidden on mobile, shown on md+ */}
               <motion.div
-                className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur"
+                className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block"
                 whileHover={{ scale: 1.01 }}
               >
                 <div className="flex items-center space-x-4 mb-6">
@@ -527,7 +530,7 @@ const CompleteInvestmentJourney = () => {
                     </h4>
                     <p className="text-xs md:text-sm text-dark-teal">
                       Strategic exposure to worldwide markets, optimizing geographical allocation
-                      dark-greend on market conditions and opportunities.
+                      based on market conditions and opportunities.
                     </p>
                   </div>
                   
@@ -544,7 +547,7 @@ const CompleteInvestmentJourney = () => {
                 </div>
               </motion.div>
 
-              {/* Right Column - Allocation Tool */}
+              {/* Right Column - Allocation Tool (visible on all devices) */}
               <motion.div
                 className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur flex flex-col"
                 whileHover={{ scale: 1.01 }}
@@ -581,7 +584,7 @@ const CompleteInvestmentJourney = () => {
                     <h4 className="font-medium mb-2">About Our Portfolio Allocation Tool</h4>
                     <p className="text-sm text-deep-teal mb-4">
                       Access our algorithmic portfolio allocation tool to receive a personalized 
-                      investment strategy dark-greend on your risk profile and financial goals.
+                      investment strategy based on your risk profile and financial goals.
                     </p>
                   </div>
                 </div>
@@ -622,7 +625,7 @@ const CompleteInvestmentJourney = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-              {/* Key Features */}
+              {/* 1-Click Investing (visible on all) */}
               <motion.div
                 className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur"
                 whileHover={{ scale: 1.02 }}
@@ -633,18 +636,19 @@ const CompleteInvestmentJourney = () => {
                   Seamless integration with Trading 212 for instant portfolio implementation.
                 </p>
                 <span className="block mt-2 text-sm italic text-gold">
-                    TIP: Open a stocks and shares ISA for tax free investments
-                  </span>
+                  TIP: Open a stocks and shares ISA for tax free investments
+                </span>
                 <button
-                onClick={() => navigate('/articles/understanding-isas')}
-                className="mt-6 px-6 py-3 bg-olive-green rounded-lg hover:bg-primary-green transition-colors text-sm md:text-light-background"
-              >
-                Learn more about ISA's
-              </button>
+                  onClick={() => navigate('/articles/understanding-isas')}
+                  className="mt-6 px-6 py-3 bg-olive-green rounded-lg hover:bg-primary-green transition-colors text-sm md:text-light-background"
+                >
+                  Learn more about ISA's
+                </button>
               </motion.div>
 
+              {/* Low Minimum - hidden on mobile, shown on md+ */}
               <motion.div 
-                className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur" 
+                className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur hidden md:block"
                 whileHover={{ scale: 1.02 }} 
               > 
                 <DollarSign className="w-8 h-8 text-gold mb-4" /> 
@@ -657,8 +661,9 @@ const CompleteInvestmentJourney = () => {
                 </p> 
               </motion.div>
         
+              {/* Real-Time Monitoring - hidden on mobile, shown on md+ */}
               <motion.div
-                className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur"
+                className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur hidden md:block"
                 whileHover={{ scale: 1.02 }}
               >
                 <Activity className="w-8 h-8 text-gold mb-4" />
@@ -689,9 +694,12 @@ const CompleteInvestmentJourney = () => {
               >
                 <h3 className="text-lg md:text-xl font-medium mb-4">Disclaimer</h3>
                 <p className="text-primary-green mb-6 text-sm">
-                Investing involves risks, including the potential loss of all your invested capital. Safine Invest provides tools and information to support your decision-making, but we do not offer financial advice. All investment decisions are solely your responsibility, and Safine Invest is not liable for any losses incurred as a result of your choices. Always consult a financial advisor if you are unsure about the suitability of an investment.
+                  Investing involves risks, including the potential loss of all your invested capital. 
+                  Safine Invest provides tools and information to support your decision-making, but we 
+                  do not offer financial advice. All investment decisions are solely your responsibility, 
+                  and Safine Invest is not liable for any losses incurred as a result of your choices. 
+                  Always consult a financial advisor if you are unsure about the suitability of an investment.
                 </p>
-                
               </motion.div>
 
               <div className="space-y-4">

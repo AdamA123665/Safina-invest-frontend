@@ -1,271 +1,565 @@
-// ToolsShowcase.jsx
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
-  Calculator,
-  PieChart,
+  motion,
+  useTransform,
+  useMotionValue,
+  animate,
+} from 'framer-motion';
+import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Legend,
+  Tooltip,
+} from 'recharts';
+import {
   TrendingUp,
-  Clock,
-  Target,
-  BarChart3,
+  Shield,
+  BookOpen,
+  Database,
   ArrowRight,
-  ChevronRight
 } from 'lucide-react';
-import { FaChartPie, FaClock } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
 
-const ToolsShowcase = () => {
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const carouselRef = useRef(null);
+// MAIN COMPONENT
+const InnovativeHero = () => {
+  const containerRef = useRef(null);
+  const navigate = useNavigate();
 
-  const tools = [
-    {
-      icon: Calculator,
-      title: 'Asset Allocation',
-      description: 'Optimize your portfolio with AI-powered insights and personalized strategies.',
-      gradient: 'from-primary-green to-gold',
-      link: '/allocation',
-      isComingSoon: false,
-    },
-    {
-      icon: PieChart,
-      title: 'Risk Assessment',
-      description: "Comprehensive risk analysis tools that evaluate your portfolio's exposure and potential.",
-      gradient: 'from-deep-teal to-sage',
-      link: '/assets',
-      isComingSoon: false,
-    },
-    {
-      icon: FaChartPie, // Icon representing portfolio allocation
-      title: 'Learn About Portfolio Allocation',
-      description: 'Discover strategies to diversify your investments and optimize your portfolio for maximum returns.',
-      gradient: 'from-deep-teal to-olive-green', // Example gradient using Tailwind CSS
-      link: '/assets', // Destination link
-      isComingSoon: false,
-    },
-    {
-      icon: FaClock, // Icon representing time horizon and goals
-      title: 'Investment Time Horizon and Goals',
-      description: 'Understand how your investment timeline and financial objectives shape your investment strategy.',
-      gradient: 'from-olive-green to-gold', // Example gradient using Tailwind CSS
-      link: '/assets', // Destination link
-      isComingSoon: false,
-    },
-    {
-      icon: TrendingUp,
-      title: 'Investment Analytics ',
-      description: 'Track your investment performance with sophisticated metrics and real-time data.',
-      gradient: 'from-olive-green to-primary-green',
-      link: '/articles/investment-analytics',
-      isComingSoon: true,
-    },
-    {
-      icon: Clock,
-      title: 'Rebalancing Timer',
-      description: 'Smart portfolio rebalancing alerts to maintain your target allocation seamlessly.',
-      gradient: 'from-gold to-olive-green',
-      isComingSoon: true,
-    },
-    {
-      icon: Target,
-      title: 'Goal Planning ',
-      description: 'Set and monitor your investment milestones with intelligent tracking and feedback.',
-      gradient: 'from-dark-green to-primary-green',
-      isComingSoon: true,
-    },
-    {
-      icon: BarChart3,
-      title: 'Market Analysis',
-      description: 'Access real-time market insights and predictive analytics to inform your decisions.',
-      gradient: 'from-sage to-gold',
-      isComingSoon: true,
-    },
-  ];
+  // -------------------------------------
+  // PART 1: The hero cards (SAVINGS / INVEST / TOOLS)
+  // -------------------------------------
 
-  // Only apply “drag to scroll” on desktop:
-  const handleMouseDown = (e) => {
-    if (window.innerWidth < 768) return;
-
-    setIsDragging(true);
-    setStartX(e.pageX - carouselRef.current.offsetLeft);
-    setScrollLeft(carouselRef.current.scrollLeft);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging || window.innerWidth < 768) return;
-    e.preventDefault();
-    const x = e.pageX - carouselRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    carouselRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleScroll = (direction) => {
-    const container = carouselRef.current;
-    const scrollAmount = container.offsetWidth * 0.8;
-    container.scrollBy({
-      left: direction * scrollAmount,
-      behavior: 'smooth'
+  // Generate smooth quartic growth curve for "Investments"
+  const generateInvestmentData = () => {
+    return Array.from({ length: 50 }, (_, i) => {
+      const x = i / 49; // Normalize to 0-1
+      // Quartic function with slight randomness for a natural feel
+      const y = Math.pow(x, 4) * 0.7 + x * 0.3 + Math.sin(x * 10) * 0.02;
+      return {
+        x: i,
+        value: y,
+      };
     });
   };
 
-  // Handle window resize to adjust scrollSnapType
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+  const investmentData = generateInvestmentData();
+
+  // Dynamic number counter
+  const Counter = ({ from, to, duration = 2 }) => {
+    const count = useMotionValue(from);
+    const rounded = useTransform(count, (value) => Math.round(value));
+
+    useEffect(() => {
+      const controls = animate(count, to, {
+        duration: duration,
+        ease: 'easeOut',
+      });
+      return controls.stop;
+    }, [count, to, duration]);
+
+    return <motion.span>{rounded}</motion.span>;
+  };
+
+  // Our three “cards” data
+  const sections = [
+    {
+      id: 'save',
+      title: 'Smart Savings',
+      bgColor: 'bg-gold/50',
+      icon: (
+        <Shield className="w-8 h-8 sm:w-10 sm:h-10 mb-2 text-gold" />
+      ),
+      content: (
+        <div className="flex flex-col items-center text-center space-y-2">
+          {/* Title */}
+          <h3 className="text-lg sm:text-xl font-bold text-deep-brown">
+            Smart Savings
+          </h3>
     
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+          {/* 
+            Wrap the animated circle in a div 
+            that has a fixed height (like 'h-32 sm:h-40')
+            to match the structure of the other cards 
+          */}
+          <div className="w-full h-32 sm:h-40 relative flex items-center justify-center">
+            <motion.div
+              className="relative w-20 h-20 sm:w-24 sm:h-24 bg-gold/30 rounded-full flex items-center justify-center"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <div className="text-base sm:text-xl font-medium text-gold">
+                <Counter from={0} to={100} />%
+              </div>
+            </motion.div>
+          </div>
+    
+          {/* Body text */}
+          <p className="text-xs sm:text-sm text-deep-brown/80 max-w-sm mx-auto">
+            Start your wealth journey with our ethical saving solutions. Earn
+            competitive returns while staying true to Islamic principles.
+          </p>
+    
+          {/* Link */}
+          <motion.a
+            href="#explore-savings"
+            className="inline-flex items-center space-x-1 text-gold hover:text-gold/80 transition-colors"
+            whileHover={{ x: 5 }}
+          >
+            <span className="text-xs sm:text-sm">Explore Savings Plans</span>
+            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
+          </motion.a>
+        </div>
+      ),
+    },
+    {
+      id: 'invest',
+      title: 'Strategic Investments',
+      bgColor: 'bg-deep-teal/50',
+      icon: (
+        <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 mb-2 text-deep-teal" />
+      ),
+      content: (
+        <div className="flex flex-col items-center text-center space-y-2">
+          <h3 className="text-lg sm:text-xl font-bold text-deep-brown">
+            Strategic Investments
+          </h3>
+          <div className="w-full h-32 sm:h-40 relative">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={investmentData}>
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="url(#lineGradient)"
+                  strokeWidth={2}
+                  dot={false}
+                  isAnimationActive={true}
+                />
+                <defs>
+                  <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#066b06" />
+                    <stop offset="100%" stopColor="#c49b3c" />
+                  </linearGradient>
+                </defs>
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+          <p className="text-xs sm:text-sm text-deep-brown/80 max-w-sm mx-auto">
+            Our data-driven approach combines ethical investing with modern
+            portfolio theory, delivering consistent returns.
+          </p>
+          <motion.a
+            href="#investment-options"
+            className="inline-flex items-center space-x-1 text-deep-teal hover:text-deep-teal/80 transition-colors"
+            whileHover={{ x: 5 }}
+          >
+            <span className="text-xs sm:text-sm">View Investment Options</span>
+            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
+          </motion.a>
+        </div>
+      ),
+    },
+    {
+      id: 'tools',
+      title: 'Powerful Tools',
+      bgColor: 'bg-primary-green/50',
+      icon: (
+        <Database className="w-8 h-8 sm:w-10 sm:h-10 mb-2 text-primary-green" />
+      ),
+      content: (
+        <div className="flex flex-col items-center text-center space-y-2">
+          <h3 className="text-lg sm:text-xl font-bold text-deep-brown">
+            Powerful Tools
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {[
+              {
+                name: 'Portfolio Analysis',
+                description: 'Advanced analytics & performance tracking',
+              },
+              {
+                name: 'Risk Assessment',
+                description: 'Smart risk profiling & management',
+              },
+              {
+                name: 'Market Insights',
+                description: 'Real-time Shariah-compliant data',
+              },
+              {
+                name: 'Wealth Tracking',
+                description: 'Comprehensive monitoring tools',
+              },
+            ].map((tool, i) => (
+              <motion.div
+                key={tool.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                // Updated colors for boxes here
+                className="bg-primary-green/20 p-2 sm:p-3 rounded-lg hover:bg-green-200 transition-colors"
+              >
+                <div className="text-primary-green font-medium text-sm sm:text-base mb-1">
+                  {tool.name}
+                </div>
+                <div className="text-deep-brown text-xs sm:text-sm">
+                  {tool.description}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.a
+            href="#tools"
+            className="inline-flex items-center space-x-1 text-primary-green hover:text-primary-green/80 transition-colors"
+            whileHover={{ x: 5 }}
+          >
+            <span className="text-xs sm:text-sm">Explore All Tools</span>
+            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
+          </motion.a>
+        </div>
+      ),
+    },
+  ];
+
+  // -------------------------------------
+  // PART 2: Data & logic for the data analytics section
+  // (unchanged)
+  // -------------------------------------
+  const [performanceData, setPerformanceData] = useState([]);
+  const [ytdReturn, setYtdReturn] = useState(null);
+
+  useEffect(() => {
+    const fetchPortfolioData = async () => {
+      try {
+        const response = await fetch(
+          'https://safinabackend.azurewebsites.net/api/portfolio/optimize',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              initial_investment: 1000,
+              risk_tolerance: 10, // Example risk tolerance
+            }),
+          }
+        );
+        if (!response.ok) throw new Error('Failed to fetch portfolio data');
+        const data = await response.json();
+
+        const currentDate = new Date();
+        const lastYearDate = new Date();
+        lastYearDate.setFullYear(currentDate.getFullYear() - 1);
+
+        const portfolioSeries =
+          data.dashboard_data.performance.series.find(
+            (s) => s.name === 'Portfolio'
+          )?.values || [];
+        const dates = data.dashboard_data.performance.dates || [];
+
+        // Filter data for the last 12 months
+        const filteredData = dates
+          .map((date, idx) => ({
+            date: new Date(date),
+            value: portfolioSeries[idx],
+          }))
+          .filter((item) => item.date >= lastYearDate);
+
+        // Calculate YTD return
+        const calculatedYtdReturn =
+          filteredData.length > 1
+            ? (
+                ((filteredData[filteredData.length - 1].value -
+                  filteredData[0].value) /
+                  filteredData[0].value) *
+                100
+              ).toFixed(1)
+            : '0.0';
+
+        // Transform data for the chart
+        const transformedData = filteredData.map((item) => ({
+          name: item.date.toLocaleDateString('en-US', { month: 'short' }),
+          value: item.value,
+        }));
+
+        setPerformanceData(transformedData);
+        setYtdReturn(calculatedYtdReturn);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchPortfolioData();
   }, []);
 
-  // Filter tools based on isMobile and isComingSoon
-  const visibleTools = isMobile
-    ? tools.filter(tool => !tool.isComingSoon)
-    : tools;
+  // Determine dynamic scaling for Y-axis
+  const minValue =
+    performanceData.length > 0
+      ? Math.min(...performanceData.map((d) => d.value))
+      : 0;
+  const maxValue =
+    performanceData.length > 0
+      ? Math.max(...performanceData.map((d) => d.value))
+      : 0;
+  const yAxisDomain = [
+    minValue - 0.05 * minValue,
+    maxValue + 0.2 * (maxValue - minValue),
+  ];
 
   return (
-    <section className="relative py-10 px-4 md:py-20 bg-light-background">
-      <div className="max-w-6xl mx-auto">
-        <div className={`flex flex-col md:flex-row relative ${isMobile ? 'justify-center' : 'items-center'} md:items-center`}>
-          
-          {/* Hero Card */}
-          <div
-            className="
-              md:sticky md:top-20 
-              md:w-80 
-              bg-sage
-              text-primary-green rounded-xl shadow-lg
-              mb-8 md:mb-0
-              flex-shrink-0
-              h-[28.8rem]
-              flex flex-col justify-between
-              z-10 /* Increased z-index to ensure it stays above if overlapping */
-            "
+    <div
+      ref={containerRef}
+      className="w-full bg-cover bg-center bg-no-repeat font-sans"
+      style={{
+        background: '#e2eac3', // Light background
+      }}
+    >
+      {/*
+        ==========================================
+        HERO AREA (1 screen tall)
+        ==========================================
+      */}
+      <section
+        className="
+          h-screen
+          flex
+          flex-col
+          items-center
+          justify-center
+          px-4
+          relative
+          z-10
+        "
+      >
+        {/*
+          "Grow Your Wealth" heading 
+          (slightly increased from the previous version)
+        */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="
+            text-5xl
+            sm:text-6xl
+            md:text-7xl
+            font-bold
+            text-deep-brown
+            mb-4
+            text-center
+            drop-shadow-lg
+            pt-4
+          "
+        >
+          Grow Your
+          <span
+            className="block mt-1"
+            style={{ color: '#066b06' }} // Primary Green
           >
-            <div className="p-6 md:p-10 space-y-4 h-full flex flex-col justify-between">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-deep-brown">
-                  Investment Tools
-                </h2>
-                <p className="text-sm md:text-base text-base leading-relaxed">
-                  Unlock the power of professional-grade investment tools designed
-                  to help you make informed decisions and optimize your portfolio.
-                </p>
-                <p className="text-sm md:text-base text-base leading-relaxed mt-3 md:mt-4">
-                  From asset allocation to risk management, each tool is crafted to
-                  provide you with the insights you need for successful investing.
-                </p>
+            Wealth
+          </span>
+        </motion.h1>
+
+        {/*
+          3 cards in a responsive grid
+          (1 column on mobile, 3 columns on medium+ screens)
+          with uniform min-h so they match in size
+          Increased min-h from 300 -> 315 (5% longer)
+        */}
+        <div
+          className="
+            max-w-6xl
+            w-full
+            grid
+            grid-cols-1
+            md:grid-cols-3
+            gap-4
+            md:gap-6
+            px-2
+            sm:px-4
+          "
+        >
+          {sections.map((section) => (
+            <div
+              key={section.id}
+              className="relative min-h-[315px] flex flex-col justify-center"
+            >
+              <div
+                className={clsx(
+                  'rounded-xl p-3 sm:p-4 border border-deep-brown/20 h-full',
+                  section.bgColor
+                )}
+              >
+                <div className="flex flex-col items-center h-full">
+                  {section.icon}
+                  <div className="flex-1 w-full flex flex-col justify-center">
+                    {section.content}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/*
+          Single "Shariah Compliant" bubble just under the card grid
+        */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="
+            flex
+            items-center
+            space-x-1
+            px-3
+            py-1
+            bg-gradient-to-r
+            from-primary-green/20
+            to-deep-teal/20
+            rounded-full
+            backdrop-blur-md
+            border
+            border-primary-green/30
+            max-w-max
+            mx-auto
+            mt-4
+          "
+        >
+          <BookOpen className="w-4 h-4 text-primary-green" />
+          <span className="text-xs font-medium bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent">
+            Shariah Compliant
+          </span>
+        </motion.div>
+      </section>
+
+      {/*
+        ==========================================
+        DATA ANALYTICS SECTION (below hero)
+        ==========================================
+      */}
+      <section className="py-12 sm:py-16 bg-light-background relative z-10">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
+            {/* Text / CTA */}
+            <div>
+              <h2 className="text-3xl sm:text-4xl md:text-4xl font-medium mb-4 sm:mb-6 text-primary-green">
+                Driven by Data
+              </h2>
+              <p className="text-sm sm:text-base md:text-lg text-deep-brown mb-4 sm:mb-8 font-medium">
+                Make informed decisions with our advanced analytics and
+                real-time market insights. Our data-driven approach ensures
+                optimal performance while maintaining strict Shariah
+                compliance.
+              </p>
+              <button
+                className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-3 bg-deep-teal hover:bg-deep-teal/80 transition-colors rounded-lg text-white font-medium shadow-md"
+                onClick={() => navigate('/articles/methodology')}
+              >
+                Explore our methodology{' '}
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
+
+            {/* Chart + Stat Boxes */}
+            <div className="bg-sage rounded-2xl p-4 sm:p-6 shadow-lg">
+              <div className="text-center mb-2 sm:mb-4 text-base sm:text-xl text-deep-brown font-semibold">
+                Our Aggressive Portfolio
+              </div>
+              {/* Volatility & YTD Return */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
+                {/* Volatility */}
+                <div className="flex-1 bg-olive-green/50 border border-deep-brown rounded-lg p-2 sm:p-3 flex flex-col items-center">
+                  <span className="text-xs sm:text-sm text-deep-teal uppercase tracking-wider mb-1">
+                    Volatility
+                  </span>
+                  <span className="text-lg sm:text-xl font-medium text-primary-green">
+                    12.5%
+                  </span>
+                </div>
+                {/* YTD Return */}
+                <div className="flex-1 bg-olive-green/50 border border-deep-brown rounded-lg p-2 sm:p-3 flex flex-col items-center">
+                  <span className="text-xs sm:text-sm text-deep-teal uppercase tracking-wider mb-1">
+                    YTD Return
+                  </span>
+                  <span className="text-lg sm:text-xl font-medium text-primary-green">
+                    {ytdReturn !== null ? `+${ytdReturn}%` : 'N/A'}
+                  </span>
+                </div>
               </div>
 
-              {/* Call to Action */}
-              <div className="flex items-center text-olive-green group cursor-pointer mt-4 md:mt-6">
-                <span className="text-xs md:text-sm mr-2">Explore all tools</span>
-                <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
+              {/* Performance Chart */}
+              <div className="w-full h-48 sm:h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={performanceData}>
+                    <defs>
+                      <linearGradient
+                        id="performanceGradient"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop offset="5%" stopColor="#066b06" stopOpacity={0.8} />
+                        <stop offset="95%" stopColor="#066b06" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <XAxis
+                      dataKey="name"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: '#2c1810', fontSize: '0.7rem' }} // Deep Brown
+                      interval={Math.max(
+                        1,
+                        Math.floor(performanceData.length / 4) - 1
+                      )}
+                      padding={{ left: 10, right: 10 }}
+                    />
+                    <YAxis hide={true} domain={yAxisDomain} />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#f4e9d1', // Light Gold
+                        border: 'none',
+                        borderRadius: '0.5rem',
+                        color: '#2c1810', // Deep Brown
+                        fontSize: '0.75rem',
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#066b06"
+                      strokeWidth={2}
+                      dot={false}
+                      fill="url(#performanceGradient)"
+                      fillOpacity={1}
+                    />
+                    <Legend
+                      wrapperStyle={{
+                        bottom: 0,
+                        left: 0,
+                        width: '100%',
+                        textAlign: 'center',
+                        fontSize: '0.7rem',
+                        color: '#2c1810',
+                      }}
+                      payload={[
+                        {
+                          value: 'YTD Returns of Aggressive Portfolio',
+                          type: 'line',
+                          id: '1',
+                          color: '#066b06',
+                        },
+                      ]}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
             </div>
           </div>
-
-          {/* Scrollable Tools */}
-          <div
-            ref={carouselRef}
-            className={`
-              flex-1 
-              hide-scrollbar 
-              relative
-              flex flex-col space-y-4 md:space-y-0 
-              md:flex-row md:space-x-6 
-              overflow-y-auto md:overflow-x-auto 
-              justify-start
-              items-center /* Changed from items-start to items-center */
-            `}
-            style={{
-              scrollSnapType: isMobile ? 'y mandatory' : 'x mandatory',
-              WebkitOverflowScrolling: 'touch',
-              paddingTop: isMobile ? '0' : '1rem', // Optional: Adjust padding as needed
-            }}
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseUp}
-          >
-            {visibleTools.map((tool, index) => {
-              const Icon = tool.icon;
-              return (
-                <div
-                  key={index}
-                  className={`
-                    snap-start 
-                    ${isMobile ? 'w-11/12 sm:w-80' : 'w-60'} /* Slightly smaller than hero card on mobile */
-                    flex-shrink-0 /* Prevent shrinking */
-                    bg-sage/40 rounded-xl shadow 
-                    hover:shadow-xl transition-shadow duration-300 
-                    flex flex-col relative
-                    h-60 md:h-[23rem] /* Responsive height */
-                  `}
-                >
-                  <div className="flex flex-col justify-between p-6 md:p-8 space-y-4 md:space-y-6 h-full">
-                    <div>
-                      <div
-                        className={`
-                          w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-br 
-                          ${tool.gradient} 
-                          flex items-center justify-center mb-4 md:mb-6
-                          group-hover:scale-105 transition-transform
-                        `}
-                      >
-                        <Icon className="w-5 h-5 md:w-6 md:h-6 text-light-background" />
-                      </div>
-                      <h3 className="text-lg md:text-xl font-semibold text-deep-brown">
-                        {tool.title}
-                      </h3>
-                      <p className="text-primary-green text-sm md:text-primary-green leading-relaxed mt-2 md:mt-3">
-                        {tool.description}
-                      </p>
-                    </div>
-
-                    {/* Conditional "Learn More" or "Coming Soon" */}
-                    <div className="flex items-center mt-2 md:mt-4">
-                      {!tool.isComingSoon && tool.link ? (
-                        <Link to={tool.link} className="flex items-center text-primary-green group">
-                          <span className="mr-1">Learn More</span>
-                          <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                      ) : tool.isComingSoon ? (
-                        <span className="text-gray-500">Coming Soon</span>
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Show arrow button only on md+ */}
-          <button
-            onClick={() => handleScroll(1)}
-            className="
-              hidden md:flex 
-              absolute right-4 top-1/2 -translate-y-1/2 
-              w-12 h-12 
-              bg-sage rounded-full shadow-lg 
-              items-center justify-center hover:bg-sage hover:bg-opacity-80 
-              transition-colors z-30
-            "
-            aria-label="Next tools"
-          >
-            <ChevronRight className="w-6 h-6 md:w-6 md:h-6 text-deep-teal" />
-          </button>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 
-export default ToolsShowcase;
+export default InnovativeHero;
