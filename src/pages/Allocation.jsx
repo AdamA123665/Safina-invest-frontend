@@ -1743,7 +1743,7 @@ const PortfolioJourney = () => {
                       description: 'Compare fees, features, and minimum deposits',
                       link: {
                         text: 'View broker comparison',
-                        url: '/articles/brokerage-platforms',
+                        url: '/articles/uk-brokerage-platforms',
                       },
                     },
                     {
@@ -1809,7 +1809,7 @@ const PortfolioJourney = () => {
                   <div className="text-primary-green">
                   Need help choosing a broker? Read our detailed{' '}
                   <span
-                    onClick={() => navigate('/articles/brokerage-comparison')}
+                    onClick={() => navigate('/articles/uk-brokerage-platforms')}
                     className="underline hover:text-dark-green cursor-pointer"
                   >
                     broker comparison guide

@@ -329,7 +329,7 @@ const InnovativeHero = () => {
             mb-4
             text-center
             drop-shadow-lg
-            pt-4 sm:pt-22
+            pt-4 sm:pt-32
           "
         >
           Grow Your

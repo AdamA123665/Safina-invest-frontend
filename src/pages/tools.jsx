@@ -143,7 +143,7 @@ const ToolsShowcase = () => {
               md:w-80 
               bg-sage
               text-primary-green rounded-xl shadow-lg
-              mb-8 md:mb-0
+              mb-0 md:mb-0
               flex-shrink-0
               h-[28.8rem]
               flex flex-col justify-between
