@@ -519,17 +519,18 @@ const PortfolioJourney = () => {
 
   // Trading 212 links
   const trading212Links = {
-    1: 'https://www.trading212.com/ultra-conservative',
-    2: 'https://www.trading212.com/very-conservative',
-    3: 'https://www.trading212.com/conservative',
-    4: 'https://www.trading212.com/moderately-conservative',
-    5: 'https://www.trading212.com/balanced',
-    6: 'https://www.trading212.com/moderately-aggressive',
-    7: 'https://www.trading212.com/aggressive',
-    8: 'https://www.trading212.com/very-aggressive',
-    9: 'https://www.trading212.com/ultra-aggressive',
-    10: 'https://www.trading212.com/maximum-growth'
-  };
+    1: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ3pXvLTWFaLIz1',
+    2: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ3pXvLUgk1dewl',
+    3: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ3pXB23nsCdygi',
+    4: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ3pXGieFSjlQKV',
+    5: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ3pXGieG1EoICK',
+    6: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ3pXGieGaXcstK',
+    7: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ3pXGieGfLPzny',
+    8: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ3pXGieZ0npIne',
+    9: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ3pXGieZ9Is28U',
+    10: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ0vRXXSXTRqPt7'
+};
+
 
   // StepIndicator
   const StepIndicator = ({ currentStep, totalSteps }) => (
