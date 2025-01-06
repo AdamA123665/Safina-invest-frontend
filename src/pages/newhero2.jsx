@@ -314,7 +314,7 @@ const InnovativeHero = () => {
           justify-center
           px-4
           relative
-          pt-4 sm:pt-16
+          pt-16 md:pt-4 lg:pt-4
         "
       >
         <motion.h1

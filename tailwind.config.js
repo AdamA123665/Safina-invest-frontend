@@ -1,6 +1,8 @@
 // tailwind.config.js
 module.exports = {
+  // Specify the paths to all of your template files
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  
   theme: {
     extend: {
       // Define your custom color palette
@@ -63,6 +65,25 @@ module.exports = {
         },
       }),
     },
+
+    // Optional: If you have custom screen sizes different from Tailwind's defaults,
+    // you can extend them here. Otherwise, Tailwind's default breakpoints are used.
+    // Uncomment and modify the below section only if necessary.
+
+    /*
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
+    },
+    */
   },
-  plugins: [require('@tailwindcss/typography')],
+
+  // Include necessary plugins
+  plugins: [
+    require('@tailwindcss/typography'),
+    // Add other plugins here if needed
+  ],
 };
