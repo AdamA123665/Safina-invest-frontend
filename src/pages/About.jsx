@@ -101,17 +101,11 @@ function About() {
           <div className="lg:w-1/2 lg:pr-12 mb-8 lg:mb-0">
             <h2 className="text-3xl font-bold mb-4 text-deep-brown">Meet the Founder</h2>
             <p className="text-deep-brown mt-4">
-              Adam Ahmed is the visionary founder behind Safina Invest. With a
-              mission to uplift the Muslim community through innovative,
-              Sharia-compliant financial solutions, he has dedicated his career
-              to bridging the gap between institutional-grade tools and
-              individual investors.
-            </p>
-            <p className="text-deep-brown mt-4">
-              Adam's expertise spans technology, finance, and community-driven
-              growth. With experience from leading investment banks and asset managers his goal is to democratise finance for all while staying
-              rooted in ethical and moral values.
-            </p>
+  Hi, I’m Adam Ahmed, the founder of Safina Invest. I started this journey because I saw a gap in financial solutions that cater to our community’s values. It’s important to me that everyone has access to Sharia-compliant investment options.
+</p>
+<p className="text-deep-brown mt-4">
+  Combining my love for technology and finance, I’m dedicated to creating a platform that’s both user-friendly and ethical. At Safina Invest, we’re here to make investing simple and inclusive for everyone.
+</p>
             <div className="flex justify-center mt-6">
               <a
                 href="https://www.linkedin.com/in/adamahmed2210"
