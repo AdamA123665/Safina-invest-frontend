@@ -431,7 +431,7 @@ const InnovativeHero = () => {
               </p>
               <button
                 className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-3 bg-deep-teal hover:bg-deep-teal/80 transition-colors rounded-lg text-white font-medium shadow-md"
-                onClick={() => navigate('/articles/methodology')}
+                onClick={() => navigate('/articles/asset-allocation-methodology')}
               >
                 Explore our methodology{' '}
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
