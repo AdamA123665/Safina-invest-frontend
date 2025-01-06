@@ -35,7 +35,7 @@ import { Link } from 'react-router-dom';
 // ====== NEW IMPORTS FOR ENHANCED INVESTMENT SECTION ======
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wallet, Building, ArrowRight, Plus } from 'lucide-react';
-
+import { logAnalyticsEvent } from './analytics';
 // ===========================
 // 1) Hard-coded Risk Profiles
 // ===========================
@@ -624,11 +624,28 @@ const PortfolioJourney = () => {
 
     const handleAnalyze = async () => {
       if (!validateAmount()) return;
+
+      // Prepare additional info as a JSON string
+      const additionalInfo = JSON.stringify({
+          investment_amount: Number(amount),
+          risk_level: riskLevel
+      });
+
+      try {
+          // Log analytics event
+          await logAnalyticsEvent('analyze_click', 'analyze_button', additionalInfo);
+      } catch (analyticsError) {
+          console.error('Analytics logging failed:', analyticsError);
+          // Decide whether to proceed or handle differently
+          // For this example, we'll proceed regardless of analytics success
+      }
+
+      // Fetch portfolio data
       await fetchPortfolioData();
       if (!fetchError) {
-        setStep(2);
+          setStep(2);
       }
-    };
+  };
 
     return (
       <div className="space-y-8">
