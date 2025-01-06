@@ -24,7 +24,6 @@ import {
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
-// MAIN COMPONENT
 const InnovativeHero = () => {
   const containerRef = useRef(null);
   const navigate = useNavigate();
@@ -75,16 +74,9 @@ const InnovativeHero = () => {
       ),
       content: (
         <div className="flex flex-col items-center text-center space-y-2">
-          {/* Title */}
-          <h3 className="text-lg sm:text-xl font-bold text-deep-brown">
+          <h3 className="text-lg sm:text-xl font-medium text-deep-brown">
             Smart Savings
           </h3>
-    
-          {/* 
-            Wrap the animated circle in a div 
-            that has a fixed height (like 'h-32 sm:h-40')
-            to match the structure of the other cards 
-          */}
           <div className="w-full h-32 sm:h-40 relative flex items-center justify-center">
             <motion.div
               className="relative w-20 h-20 sm:w-24 sm:h-24 bg-gold/30 rounded-full flex items-center justify-center"
@@ -96,14 +88,10 @@ const InnovativeHero = () => {
               </div>
             </motion.div>
           </div>
-    
-          {/* Body text */}
           <p className="text-xs sm:text-sm text-deep-brown/80 max-w-sm mx-auto">
             Start your wealth journey with our ethical saving solutions. Earn
             competitive returns while staying true to Islamic principles.
           </p>
-    
-          {/* Link */}
           <motion.a
             href="#explore-savings"
             className="inline-flex items-center space-x-1 text-gold hover:text-gold/80 transition-colors"
@@ -124,7 +112,7 @@ const InnovativeHero = () => {
       ),
       content: (
         <div className="flex flex-col items-center text-center space-y-2">
-          <h3 className="text-lg sm:text-xl font-bold text-deep-brown">
+          <h3 className="text-lg sm:text-xl font-medium text-deep-brown">
             Strategic Investments
           </h3>
           <div className="w-full h-32 sm:h-40 relative">
@@ -171,7 +159,7 @@ const InnovativeHero = () => {
       ),
       content: (
         <div className="flex flex-col items-center text-center space-y-2">
-          <h3 className="text-lg sm:text-xl font-bold text-deep-brown">
+          <h3 className="text-lg sm:text-xl font-medium text-deep-brown">
             Powerful Tools
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -198,7 +186,6 @@ const InnovativeHero = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                // Updated colors for boxes here
                 className="bg-primary-green/20 p-2 sm:p-3 rounded-lg hover:bg-green-200 transition-colors"
               >
                 <div className="text-primary-green font-medium text-sm sm:text-base mb-1">
@@ -225,7 +212,6 @@ const InnovativeHero = () => {
 
   // -------------------------------------
   // PART 2: Data & logic for the data analytics section
-  // (unchanged)
   // -------------------------------------
   const [performanceData, setPerformanceData] = useState([]);
   const [ytdReturn, setYtdReturn] = useState(null);
@@ -309,32 +295,28 @@ const InnovativeHero = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full bg-cover bg-center bg-no-repeat font-sans"
+      className="w-full bg-cover bg-center bg-no-repeat font-sans "
       style={{
         background: '#e2eac3', // Light background
       }}
     >
       {/*
         ==========================================
-        HERO AREA (1 screen tall)
+        HERO AREA (modified to min-h-screen)
         ==========================================
       */}
       <section
         className="
-          h-screen
+          min-h-screen
           flex
           flex-col
           items-center
           justify-center
           px-4
           relative
-          z-10
+          pt-4
         "
       >
-        {/*
-          "Grow Your Wealth" heading 
-          (slightly increased from the previous version)
-        */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -347,7 +329,6 @@ const InnovativeHero = () => {
             mb-4
             text-center
             drop-shadow-lg
-            pt-4
           "
         >
           Grow Your
@@ -361,9 +342,6 @@ const InnovativeHero = () => {
 
         {/*
           3 cards in a responsive grid
-          (1 column on mobile, 3 columns on medium+ screens)
-          with uniform min-h so they match in size
-          Increased min-h from 300 -> 315 (5% longer)
         */}
         <div
           className="
@@ -401,7 +379,7 @@ const InnovativeHero = () => {
         </div>
 
         {/*
-          Single "Shariah Compliant" bubble just under the card grid
+          Single "Shariah Compliant" bubble
         */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -434,7 +412,7 @@ const InnovativeHero = () => {
 
       {/*
         ==========================================
-        DATA ANALYTICS SECTION (below hero)
+        DATA ANALYTICS SECTION
         ==========================================
       */}
       <section className="py-12 sm:py-16 bg-light-background relative z-10">
@@ -507,7 +485,7 @@ const InnovativeHero = () => {
                       dataKey="name"
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: '#2c1810', fontSize: '0.7rem' }} // Deep Brown
+                      tick={{ fill: '#2c1810', fontSize: '0.7rem' }}
                       interval={Math.max(
                         1,
                         Math.floor(performanceData.length / 4) - 1
@@ -517,10 +495,10 @@ const InnovativeHero = () => {
                     <YAxis hide={true} domain={yAxisDomain} />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: '#f4e9d1', // Light Gold
+                        backgroundColor: '#f4e9d1',
                         border: 'none',
                         borderRadius: '0.5rem',
-                        color: '#2c1810', // Deep Brown
+                        color: '#2c1810',
                         fontSize: '0.75rem',
                       }}
                     />
