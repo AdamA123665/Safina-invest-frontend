@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
-
+import { logAnalyticsEvent } from './analytics';
 function AlertDescription({ severity, message, description }) {
   return (
     <Alert severity={severity}>
@@ -100,19 +100,26 @@ const CompleteInvestmentJourney = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('loading');
-
+  
     try {
+      // Log the button click event
+      await logAnalyticsEvent('button_click', 'subscribe_button');
+  
+      // Send subscription request
       const response = await fetch('https://safinabackend.azurewebsites.net/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
-
+  
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Subscription failed');
+        throw new Error(data.detail || 'Subscription failed');
       }
-
+  
+      // Log the successful subscription event
+      await logAnalyticsEvent('successful_subscription', 'subscribe_button', `Email: ${email}`);
+  
       setStatus('success');
       setEmail('');
     } catch (error) {
@@ -120,7 +127,7 @@ const CompleteInvestmentJourney = () => {
       setStatus('error');
       setErrorMessage(error.message);
     }
-  };
+  };  
 
   const sections = [
     { id: 'risk', title: 'Risk Profile', icon: Shield, step: 1 },
