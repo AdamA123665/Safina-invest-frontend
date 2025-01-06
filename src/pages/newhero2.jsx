@@ -314,7 +314,6 @@ const InnovativeHero = () => {
           justify-center
           px-4
           relative
-          z-10
         "
       >
         <motion.h1
@@ -329,7 +328,7 @@ const InnovativeHero = () => {
             mb-4
             text-center
             drop-shadow-lg
-            pt-4 sm:pt-32
+            pt-4 sm:pt-12
           "
         >
           Grow Your
