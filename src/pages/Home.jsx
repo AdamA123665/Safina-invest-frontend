@@ -138,14 +138,14 @@ const PortfolioOptimizer = () => {
                     {article.title || 'No Title'}
                   </h3>
                   <p className="text-deep-brown mb-4"> {/* Updated text color */}
-                    {Array.isArray(article.content) && typeof article.content[0] === 'string'
-                      ? article.content[0].length > 120
-                        ? `${article.content[0].substring(0, 120)}...`
-                        : article.content[0]
-                      : typeof article.content === 'string'
-                      ? article.content.length > 120
-                        ? `${article.content.substring(0, 120)}...`
-                        : article.content
+                    {Array.isArray(article.summary) && typeof article.summary[0] === 'string'
+                      ? article.summary[0].length > 120
+                        ? `${article.summary[0].substring(0, 120)}...`
+                        : article.summary[0]
+                      : typeof article.summary === 'string'
+                      ? article.summary.length > 120
+                        ? `${article.summary.substring(0, 120)}...`
+                        : article.summary
                       : 'No preview available'}
                   </p>
                   <button
@@ -180,7 +180,7 @@ const PortfolioOptimizer = () => {
       Have questions or need support? We're here to help. Reach out to us for assistance or to learn more about our services.
     </p>
     <a
-      href="mailto:support@safinabank.com"
+      href="mailto:info@safinainvest.co.uk"
       className="inline-block bg-gradient-to-r from-[#066b06] to-[#044d04] text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:from-[#0a4c4c] hover:to-[#044d04] transition-all duration-300 font-work-sans"
     >
       Email Us
