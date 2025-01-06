@@ -31,7 +31,7 @@ function ArticleDetailsPage() {
   }
 
   return (
-    <div className="bg-green-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <div className="bg-green-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8 pt-10 md:pt-4 lg:pt-4">
       {/* Hero Section */}
       <div className="container mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="flex flex-col md:flex-row">
