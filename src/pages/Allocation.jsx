@@ -493,7 +493,6 @@ const PortfolioJourney = () => {
   const [riskLevel, setRiskLevel] = useState(5);
   const [amount, setAmount] = useState('');
   const [amountError, setAmountError] = useState('');
-
   // API data
   const [portfolioData, setPortfolioData] = useState(null);
   const [fetchError, setFetchError] = useState(null);
@@ -741,7 +740,7 @@ const PortfolioJourney = () => {
    // 1) Extract risk metrics
   const { risk_metrics } = portfolioData.dashboard_data;
   const { labels, values } = risk_metrics;
-
+  
   // 2) Identify indexes of relevant metrics
   const idxExp = labels.indexOf('Expected Return');
   const idxVol = labels.indexOf('Volatility');
@@ -910,16 +909,33 @@ const PortfolioJourney = () => {
     if (!portfolioData) return null;
     const { asset_info, performance } = portfolioData.dashboard_data;
     const weights = portfolioData.portfolio_metrics.Weights;
-
+    
+    const sortedAssets = [...asset_info].sort((a, b) => {
+      const weightA = weights[a.name] ?? 0;
+      const weightB = weights[b.name] ?? 0;
+    
+      // If both weights are zero, maintain their current order
+      if (weightA === 0 && weightB === 0) return 0;
+    
+      // If only weightA is zero, place it after weightB
+      if (weightA === 0) return 1;
+    
+      // If only weightB is zero, place it after weightA
+      if (weightB === 0) return -1;
+    
+      // For non-zero weights, sort in descending order
+      return weightB - weightA;
+    });
+    
     return (
       <div className="bg-white shadow-lg rounded-xl p-6 mt-8">
         <h3 className="text-xl font-bold text-primary-green mb-4">Your Assets</h3>
         <div className="space-y-6">
-          {asset_info.map((asset, index) => {
+          {sortedAssets.map((asset, index) => {
             const color = COLORS[index % COLORS.length];
             const frac = weights[asset.name] ?? 0;
             const allocationPct = (frac * 100).toFixed(2);
-
+  
             // Build performance data
             const assetSeries = performance.series.find(
               (s) => s.name === asset.name
@@ -929,13 +945,13 @@ const PortfolioJourney = () => {
               date: d,
               value: assetSeries ? assetSeries.values[idx] : 0
             }));
-
+  
             let ytdReturn = null;
             const oneYearAgo = new Date();
             oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-
+  
             const ytdData = perfData.filter((p) => new Date(p.date) >= oneYearAgo);
-
+  
             if (ytdData.length > 1) {
               const firstVal = ytdData[0].value;
               const lastVal = ytdData[ytdData.length - 1].value;
@@ -943,9 +959,9 @@ const PortfolioJourney = () => {
                 ytdReturn = ((lastVal / firstVal) - 1) * 100;
               }
             }
-
+  
             const isExpanded = expandedTicker === asset.ticker;
-
+  
             return (
               <div
                 key={asset.ticker}
@@ -966,7 +982,7 @@ const PortfolioJourney = () => {
                       Ticker: {asset.ticker}
                     </span>
                   </div>
-
+  
                   {/* YTD Return */}
                   <div className="flex flex-col w-1/4 text-right">
                     <span className="text-xs text-olive-green uppercase">
@@ -984,7 +1000,7 @@ const PortfolioJourney = () => {
                         : '0%'}
                     </span>
                   </div>
-
+  
                   {/* Allocation Box */}
                   <div
                     className="flex flex-col px-3 py-2 rounded-md w-1/4"
@@ -1006,7 +1022,7 @@ const PortfolioJourney = () => {
                         : '0'}
                     </span>
                   </div>
-
+  
                   {/* Expand Arrow */}
                   <button
                     type="button"
@@ -1022,7 +1038,7 @@ const PortfolioJourney = () => {
                     )}
                   </button>
                 </div>
-
+  
                 {isExpanded && (
                   <div className="overflow-hidden mt-4">
                     <p className="text-sm mb-4 text-deep-teal">{asset.info}</p>
