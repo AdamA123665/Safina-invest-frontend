@@ -1465,6 +1465,32 @@ const PortfolioJourney = () => {
     // Update cards per view on screen resize
       // Dynamically update cards-per-view based on screen width
    // ===== F A D E   C A R O U S E L   L O G I C  (3 cards per slide) =====
+  // 1. Determine items per slide based on screen width
+  const [, setItemsPerSlide] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768 ? 1 : 3; // 768px breakpoint for mobile
+    }
+    return 3; // Default to desktop
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setItemsPerSlide(1);
+      } else {
+        setItemsPerSlide(3);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    
+    // Call handler initially to set the correct itemsPerSlide
+    handleResize();
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  
   // 1) Chunk the brokerage array into groups of 3
   const slides = [];
   for (let i = 0; i < brokerageTypes.length; i += 3) {

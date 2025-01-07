@@ -196,7 +196,7 @@ const CompleteInvestmentJourney = () => {
         <>
           {/* Mobile Progress Bar */}
           <div
-            className="sticky top-0 z-50 bg-deep-brown/10 backdrop-blur lg:hidden"
+            className="sticky top-0 z-50 bg-deep-brown/70 backdrop-blur lg:hidden"
             style={{
               transform: showProgressBar ? "translateY(0)" : "translateY(-100%)",
               transition: "transform 0.3s ease-in-out",
@@ -702,7 +702,7 @@ const CompleteInvestmentJourney = () => {
                 <h3 className="text-lg md:text-xl font-medium mb-4">Disclaimer</h3>
                 <p className="text-primary-green mb-6 text-sm">
                   Investing involves risks, including the potential loss of all your invested capital. 
-                  Safine Invest provides tools and information to support your decision-making, but we 
+                  Safina Invest provides tools and information to support your decision-making, but we 
                   do not offer financial advice. All investment decisions are solely your responsibility, 
                   and Safine Invest is not liable for any losses incurred as a result of your choices. 
                   Always consult a financial advisor if you are unsure about the suitability of an investment.

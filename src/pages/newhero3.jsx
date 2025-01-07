@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import {
   TrendingUp,
   ArrowUpRight,
@@ -18,6 +19,7 @@ import {
 
 const HeroSection = () => {
   const [timeframe, setTimeframe] = useState('6M');
+  const navigate = useNavigate(); // Initialize navigate
 
   // Clean, smooth market data focusing on key movements
   const data = [
@@ -44,10 +46,19 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
-              <button className="bg-primary-green text-light-background px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-dark-green transition-colors">
+              {/* Get Started Button as an Anchor Tag */}
+              <a
+                href="#newhero"
+                className="bg-primary-green text-light-background px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-dark-green transition-colors text-center"
+              >
                 Get Started
-              </button>
-              <button className="border-2 border-light-background text-light-background px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-light-background/20 transition-colors flex items-center justify-center gap-2">
+              </a>
+
+              {/* Invest Now Button with navigate */}
+              <button
+                onClick={() => navigate('/allocation')}
+                className="border-2 border-light-background text-light-background px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-light-background/20 transition-colors flex items-center justify-center gap-2"
+              >
                 Invest Now <ChevronRight className="w-4 h-4" />
               </button>
             </div>
