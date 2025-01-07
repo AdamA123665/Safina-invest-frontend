@@ -32,7 +32,7 @@ const HeroSection = () => {
 
   return (
     <div className="w-full bg-gradient-to-br from-deep-teal to-gold ">
-      <div className="max-w-6xl mx-auto px-4 pt-24 pb-18 md:pt-24 md:pb-24">
+      <div className="max-w-6xl mx-auto px-4 pt-24 pb-24 md:pt-32 md:pb-24">
         {/* Updated flex direction: flex-col on mobile, flex-row on medium screens */}
         <div className="flex flex-col md:flex-row items-center gap-12">
           {/* Left Content */}
