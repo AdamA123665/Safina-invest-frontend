@@ -313,7 +313,6 @@ const InnovativeHero = () => {
           justify-center
           px-4
           relative
-          pt-4
         "
       >
         <motion.h1
@@ -354,7 +353,8 @@ const InnovativeHero = () => {
             px-4
             sm:px-4
             pt-2
-            pb-2
+            pb-4
+            sm:pb-2
           "
         >
           {sections.map((section) => (
@@ -390,7 +390,7 @@ const InnovativeHero = () => {
         DATA ANALYTICS SECTION
         ==========================================
       */}
-      <section className=" w-full sm:py-20 bg-light-background relative">
+      <section className=" w-full py-10 sm:py-20 bg-light-background relative">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Text / CTA */}
