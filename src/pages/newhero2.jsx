@@ -17,7 +17,6 @@ import {
 import {
   TrendingUp,
   Shield,
-  BookOpen,
   Database,
   ArrowRight,
 } from 'lucide-react';

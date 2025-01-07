@@ -111,7 +111,7 @@ const Navbar = () => {
                   />
                   <div className="absolute -inset-2 bg-white/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur" />
                   {!isScrolled && (
-                        <span className="text-gold font-bold">
+                        <span className="text-light-background font-bold">
                         Safina Invest
                         </span>
                     )}
