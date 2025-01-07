@@ -354,6 +354,7 @@ const InnovativeHero = () => {
             px-4
             sm:px-4
             pt-2
+            pb-2
           "
         >
           {sections.map((section) => (
@@ -389,7 +390,7 @@ const InnovativeHero = () => {
         DATA ANALYTICS SECTION
         ==========================================
       */}
-      <section className=" w-full sm:py-16 bg-light-background relative z-10 px-4">
+      <section className=" w-full sm:py-20 bg-light-background relative">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Text / CTA */}
