@@ -353,7 +353,7 @@ const InnovativeHero = () => {
             px-4
             sm:px-4
             pt-2
-            pb-4
+            pb-8
             sm:pb-2
           "
         >
@@ -390,12 +390,12 @@ const InnovativeHero = () => {
         DATA ANALYTICS SECTION
         ==========================================
       */}
-      <section className=" w-full py-10 sm:py-20 bg-light-background relative">
+      <section className=" w-full py-10 md:py-20 bg-light-background relative">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Text / CTA */}
             <div>
-              <h2 className="text-3xl sm:text-4xl md:text-4xl font-medium mb-4 sm:mb-6 text-primary-green">
+              <h2 className="text-5xl sm:text-5xl md:text-5xl font-medium mb-4 sm:mb-6 text-primary-green">
                 Driven by Data
               </h2>
               <p className="text-sm sm:text-base md:text-lg text-deep-brown mb-4 sm:mb-8 font-medium">
