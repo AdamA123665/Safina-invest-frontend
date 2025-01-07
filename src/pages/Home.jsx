@@ -6,8 +6,9 @@ import { useNavigate } from 'react-router-dom'; // Ensure react-router-dom is in
 import InnovativeHero from './newhero2';
 import Tools from './tools';
 import Savings from './savings';
-import Aboutsection from './Aboutsection';
+// import Aboutsection from './Aboutsection';
 import CompleteInvestmentJourney from './Test2';
+import HeroSection from './newhero3'
 
 const PortfolioOptimizer = () => {
     const [articles, setArticles] = useState([]);
@@ -60,6 +61,7 @@ const PortfolioOptimizer = () => {
     }
   
     return (
+      
       <div
       ref={heroContainerRef}
       className="hero-container"
@@ -70,11 +72,11 @@ const PortfolioOptimizer = () => {
         position: 'relative', // Retain if needed
       }}
     >
-      <InnovativeHero parentRef={heroContainerRef} />
+      <HeroSection parentRef={heroContainerRef} />
       
     
-    <div className="about-container">
-      <Aboutsection />
+      <div className="hero2-container">
+      <InnovativeHero />
       </div>
       
     

@@ -33,10 +33,11 @@ const HeroSection = () => {
   return (
     <div className="w-full bg-gradient-to-br from-deep-teal to-gold">
       <div className="max-w-6xl mx-auto px-4 py-16 md:py-24">
-        <div className="flex flex-col-reverse md:flex-row items-center gap-12">
+        {/* Updated flex direction: flex-col on mobile, flex-row on medium screens */}
+        <div className="flex flex-col md:flex-row items-center gap-12">
           {/* Left Content */}
           <div className="flex-1 text-white">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
+            <h1 className="text-5xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6">
               Your Wealth,
               <span className="block text-olive-green">Simplified</span>
             </h1>

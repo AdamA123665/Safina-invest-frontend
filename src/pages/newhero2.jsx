@@ -324,7 +324,7 @@ const InnovativeHero = () => {
             text-5xl
             sm:text-6xl
             md:text-7xl
-            font-bold
+            font-medium
             text-deep-brown
             mb-4
             text-center
