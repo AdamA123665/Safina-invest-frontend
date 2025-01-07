@@ -294,7 +294,7 @@ const InnovativeHero = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full bg-cover bg-center bg-no-repeat font-sans "
+      className="w-full bg-cover bg-center bg-no-repeat font-sans px-2 "
       style={{
         background: '#e2eac3', // Light background
       }}
@@ -313,7 +313,6 @@ const InnovativeHero = () => {
           justify-center
           px-4
           relative
-          pt-20 md:pt-4 lg:pt-4
         "
       >
         <motion.h1
