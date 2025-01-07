@@ -294,7 +294,7 @@ const InnovativeHero = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full bg-cover bg-center bg-no-repeat font-sans px-4 "
+      className="w-full bg-cover bg-center bg-no-repeat font-sans  "
       style={{
         background: '#e2eac3', // Light background
       }}
@@ -313,6 +313,7 @@ const InnovativeHero = () => {
           justify-center
           px-4
           relative
+          pt-4
         "
       >
         <motion.h1
@@ -327,6 +328,7 @@ const InnovativeHero = () => {
             mb-8
             text-center
             drop-shadow-lg
+            pt-4
           "
         >
           Grow Your{' '}
@@ -349,7 +351,7 @@ const InnovativeHero = () => {
             md:grid-cols-3
             gap-4
             md:gap-6
-            px-2
+            px-4
             sm:px-4
             pt-2
           "
@@ -387,7 +389,7 @@ const InnovativeHero = () => {
         DATA ANALYTICS SECTION
         ==========================================
       */}
-      <section className=" w-full py-12 sm:py-16 bg-light-background relative z-10">
+      <section className=" w-full sm:py-16 bg-light-background relative z-10 px-4">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Text / CTA */}
