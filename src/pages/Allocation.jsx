@@ -870,7 +870,7 @@ const PortfolioJourney = () => {
     }));
 
     return (
-      <div className="bg-white shadow-lg rounded-xl p-6">
+      <div className="bg-white shadow-lg rounded-xl p-6 hidden md:block ">
         <h3 className="text-xl font-bold text-primary-green mb-4">
           Asset Allocation
         </h3>
