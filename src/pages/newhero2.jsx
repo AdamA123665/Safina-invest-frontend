@@ -67,7 +67,7 @@ const InnovativeHero = () => {
     {
       id: 'save',
       title: 'Smart Savings',
-      bgColor: 'bg-gold/50',
+      bgColor: 'bg-gold/30',
       icon: (
         <Shield className="w-8 h-8 sm:w-10 sm:h-10 mb-2 text-gold" />
       ),
@@ -105,7 +105,7 @@ const InnovativeHero = () => {
     {
       id: 'invest',
       title: 'Strategic Investments',
-      bgColor: 'bg-deep-teal/50',
+      bgColor: 'bg-deep-teal/30',
       icon: (
         <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 mb-2 text-deep-teal" />
       ),
@@ -152,7 +152,7 @@ const InnovativeHero = () => {
     {
       id: 'tools',
       title: 'Powerful Tools',
-      bgColor: 'bg-primary-green/50',
+      bgColor: 'bg-primary-green/30',
       icon: (
         <Database className="w-8 h-8 sm:w-10 sm:h-10 mb-2 text-primary-green" />
       ),

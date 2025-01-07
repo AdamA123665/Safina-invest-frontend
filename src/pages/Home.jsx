@@ -75,7 +75,7 @@ const PortfolioOptimizer = () => {
       <HeroSection parentRef={heroContainerRef} />
       
     
-      <div className="hero2-container">
+      <div id="newhero" className="hero2-container">
       <InnovativeHero />
       </div>
       

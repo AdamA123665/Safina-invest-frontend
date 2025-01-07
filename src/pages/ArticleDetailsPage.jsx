@@ -31,12 +31,12 @@ function ArticleDetailsPage() {
   }
 
   return (
-    <div className="bg-green-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8 pt-10 md:pt-4 lg:pt-4">
+    <div className="bg-green-50 min-h-screen py-16 px-4 sm:px-6 lg:px-8">
       {/* Hero Section */}
       <div className="container mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="flex flex-col md:flex-row">
           {/* Left Column - Article Metadata */}
-          <div className="p-6 md:p-8 flex flex-col justify-center space-y-4">
+          <div className="p-6 md:p-8 flex flex-col justify-center space-y-4 md:w-1/2">
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">{article.title}</h1>
             <p className="text-gray-600 text-base sm:text-lg">{article.summary}</p>
             <div className="text-sm text-gray-500 space-y-1">
