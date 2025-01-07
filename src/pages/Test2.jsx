@@ -196,7 +196,7 @@ const CompleteInvestmentJourney = () => {
         <>
           {/* Mobile Progress Bar */}
           <div
-            className="sticky top-0 z-50 bg-deep-brown/20 lg:hidden"
+            className="sticky top-0 z-50 bg-light-background lg:hidden"
             style={{
               transform: showProgressBar ? "translateY(0)" : "translateY(-100%)",
               transition: "transform 0.3s ease-in-out",

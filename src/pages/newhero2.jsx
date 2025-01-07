@@ -294,7 +294,7 @@ const InnovativeHero = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full bg-cover bg-center bg-no-repeat font-sans px-2 "
+      className="w-full bg-cover bg-center bg-no-repeat font-sans px-4 "
       style={{
         background: '#e2eac3', // Light background
       }}
@@ -387,7 +387,7 @@ const InnovativeHero = () => {
         DATA ANALYTICS SECTION
         ==========================================
       */}
-      <section className="py-12 sm:py-16 bg-light-background relative z-10">
+      <section className=" w-full py-12 sm:py-16 bg-light-background relative z-10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Text / CTA */}
