@@ -31,7 +31,7 @@ const HeroSection = () => {
   ];
 
   return (
-    <div className="w-full bg-gradient-to-br from-deep-teal to-gold">
+    <div className="w-full bg-gradient-to-br from-deep-teal to-gold pt-4">
       <div className="max-w-6xl mx-auto px-4 py-16 md:py-24">
         {/* Updated flex direction: flex-col on mobile, flex-row on medium screens */}
         <div className="flex flex-col md:flex-row items-center gap-12">

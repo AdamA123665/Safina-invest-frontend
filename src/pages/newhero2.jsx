@@ -326,14 +326,13 @@ const InnovativeHero = () => {
             md:text-7xl
             font-medium
             text-deep-brown
-            mb-4
+            mb-8
             text-center
             drop-shadow-lg
           "
         >
-          Grow Your
+          Grow Your{' '}
           <span
-            className="block mt-1"
             style={{ color: '#066b06' }} // Primary Green
           >
             Wealth
@@ -354,12 +353,13 @@ const InnovativeHero = () => {
             md:gap-6
             px-2
             sm:px-4
+            pt-2
           "
         >
           {sections.map((section) => (
             <div
               key={section.id}
-              className="relative min-h-[315px] flex flex-col justify-center"
+              className="relative min-h-[347px] flex flex-col justify-center"
             >
               <div
                 className={clsx(
@@ -381,33 +381,7 @@ const InnovativeHero = () => {
         {/*
           Single "Shariah Compliant" bubble
         */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="
-            flex
-            items-center
-            space-x-1
-            px-3
-            py-1
-            bg-gradient-to-r
-            from-primary-green/20
-            to-deep-teal/20
-            rounded-full
-            backdrop-blur-md
-            border
-            border-primary-green/30
-            max-w-max
-            mx-auto
-            mt-4
-          "
-        >
-          <BookOpen className="w-4 h-4 text-primary-green" />
-          <span className="text-xs font-medium bg-gradient-to-r from-primary-green to-deep-teal bg-clip-text text-transparent">
-            Shariah Compliant
-          </span>
-        </motion.div>
+        
       </section>
 
       {/*
