@@ -1,7 +1,7 @@
 // src/PortfolioOptimizer.jsx
 
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 // Import your pages
 import Home from './pages/Home';
@@ -14,21 +14,42 @@ import Trial from './pages/Trial';
 import Test2 from './pages/Test2';
 import ArticleDetailsPage from './pages/ArticleDetailsPage';
 
-// Import the new Navbar, Footer, and RouteChangeTracker
+// Import the Navbar and Footer
 import Navbar from './Navbar';
 import Footer from './Footer';
-import RouteChangeTracker from './pages/RouteChangeTracker'; // <-- Add this line
+import RouteChangeTracker from './pages/RouteChangeTracker'; // Existing component
 
-import './index.css'; // your global styles
+import './index.css'; // Your global styles
+
+/**
+ * ScrollToTop Component
+ * Automatically scrolls the window to the top whenever the route changes.
+ */
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Scroll to the top of the window when the pathname changes
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant', // Change to 'smooth' for smooth scrolling
+    });
+  }, [pathname]);
+
+  return null; // This component doesn't render anything
+};
 
 function PortfolioOptimizer() {
   return (
     <Router>
+      {/* ScrollToTop listens to route changes and scrolls to top */}
+      <ScrollToTop /> {/* <-- Integrated ScrollToTop here */}
+
       {/* Always show the Navbar at the top */}
       <Navbar />
 
       {/* RouteChangeTracker to log page views */}
-      <RouteChangeTracker /> {/* <-- Add this line */}
+      <RouteChangeTracker /> {/* <-- Existing component */}
 
       {/* Page Content */}
       <div className="pt-0">

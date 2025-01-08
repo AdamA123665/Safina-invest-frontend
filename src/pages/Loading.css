@@ -7,40 +7,39 @@
     align-items: center;
     height: 100vh;
     background-color: #ffffff; /* Optional background color */
-  }
-  
-  /* Logo wrapper with smaller size */
-  .logo-wrapper {
+}
+
+/* Logo wrapper without fixed size */
+.logo-wrapper {
     position: relative;
-    width: 5px; /* Reduced size */
-    height: 5px; /* Reduced size */
-  }
-  
-  /* Smaller logo */
-  .logo {
-    width: 100%;
-    height: 100%;
+    /* Removed width and height to allow natural size */
+    display: inline-block; /* Ensures wrapper fits the logo */
+}
+
+/* Logo displays at its natural size */
+.logo {
+    display: block; /* Removes any unwanted spacing */
+    /* Removed width and height to maintain natural dimensions */
     object-fit: contain;
-  }
-  
-  /* Smaller loader circle */
-  .loader {
+}
+
+/* Loader circle positioned relative to the logo */
+.loader {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 40px; /* Smaller size */
-    height: 40px; /* Smaller size */
-    margin: -20px 0 0 -20px; /* Centers the loader */
+    width: 20px; /* Adjusted size to complement the logo */
+    height: 20px; /* Adjusted size to complement the logo */
+    margin: -10px 0 0 -10px; /* Centers the loader */
     border: 2px solid rgba(0, 0, 0, 0.1); /* Light border */
     border-top-color: #3498db; /* Color of the animated line */
     border-radius: 50%;
     animation: spin 1s linear infinite;
-  }
-  
-  /* Spin animation */
-  @keyframes spin {
+}
+
+/* Spin animation for loader */
+@keyframes spin {
     to {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
-  
+}
