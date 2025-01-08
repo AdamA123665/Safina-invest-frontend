@@ -24,10 +24,10 @@ const HeroSection = () => {
   // Clean, smooth market data focusing on key movements
   const data = [
     { date: 'Sep', value: 11200 },
-    { date: 'Oct', value: 12000 },
-    { date: 'Nov', value: 11600 },
-    { date: 'Dec', value: 11900 },
-    { date: 'Jan', value: 13248 },
+    { date: 'Dec', value: 12000 },
+    { date: 'Mar', value: 11600 },
+    { date: 'June', value: 11900 },
+    { date: 'Sept', value: 13248 },
   ];
 
   return (
@@ -96,7 +96,7 @@ const HeroSection = () => {
 
               {/* Timeframe Selector */}
               <div className="flex flex-wrap gap-2 mb-4">
-                {['1M', '3M', '6M', '1Y'].map((period) => (
+                {['1Y'].map((period) => (
                   <button
                     key={period}
                     onClick={() => setTimeframe(period)}
