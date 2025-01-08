@@ -326,17 +326,25 @@ const ModernAssetsPage = () => {
           higher returns come with higher risk. Make sure you’re comfortable with the journey as well as the
           destination.
         </p>
-        <button
-          className="bg-olive-green text-light-background px-4 py-2 rounded hover:bg-dark-green"
-          onClick={() => {
-            // Reset quiz if user wants to retake
-            setStep(0);
-            setScore(0);
-            setAnswers(Array(questions.length).fill(null));
-          }}
-        >
-          Retake Quiz
-        </button>
+        <div className="flex justify-between mt-4">
+  <button
+    className="bg-olive-green text-light-background px-4 py-2 rounded hover:bg-dark-green"
+    onClick={() => {
+      // Reset quiz if user wants to retake
+      setStep(0);
+      setScore(0);
+      setAnswers(Array(questions.length).fill(null));
+    }}
+  >
+    Retake Quiz
+  </button>
+  <button
+    className="bg-olive-green text-light-background px-4 py-2 rounded hover:bg-dark-green"
+    onClick={() => navigate('/allocation')}
+  >
+    Invest Now
+  </button>
+</div>
       </div>
     );
   };
@@ -898,9 +906,9 @@ const ModernAssetsPage = () => {
       <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
         Tools &amp; Calculators
       </h2>
-
+     
       {/* Tools Container */}
-      <div className="space-y-8">
+      <div id="tools" className="space-y-8">
         {/* Tools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {tools.map((tool) => (

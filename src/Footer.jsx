@@ -71,7 +71,7 @@ const Footer = () => {
           <div className="space-y-6">
             <Link to="/" className="block">
               <img
-                src={`${process.env.PUBLIC_URL}/safina_invest_logo.png`}
+                src={`${process.env.PUBLIC_URL}/Safina_Invest_logo_navbar.png`}
                 alt="Safina Invest Logo"
                 className="h-12 w-auto"
               />
@@ -164,6 +164,10 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
+
+
+
+
           </div>
 
           {/* Newsletter */}

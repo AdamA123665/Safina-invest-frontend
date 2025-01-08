@@ -1920,7 +1920,7 @@ const PortfolioJourney = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-3xl mx-auto mb-12">
       <div
-        onClick={() => navigate('/assets')}
+        onClick={() => navigate('/assets#tools')}
         className="group flex items-center gap-3 bg-white px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto cursor-pointer"
       >
         <Shield className="w-6 h-6 text-blue-600" />

@@ -52,7 +52,7 @@ const HeroSection = () => {
                 href="#newhero"
                 className="bg-primary-green text-light-background px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-dark-green transition-colors text-center"
               >
-                Get Started
+                Learn More
               </a>
 
               {/* Invest Now Button with navigate */}
