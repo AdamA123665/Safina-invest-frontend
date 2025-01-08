@@ -169,7 +169,7 @@ const HeroSection = () => {
                     Monthly Return
                   </div>
                   <div className="text-xl sm:text-2xl font-bold text-deep-teal">
-                    +£548
+                    +£180
                   </div>
                 </div>
                 <div className="bg-sage/20 p-4 rounded-2xl">
