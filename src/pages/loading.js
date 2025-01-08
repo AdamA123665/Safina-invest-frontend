@@ -1,15 +1,11 @@
-// src/components/Loading.js
 import React from 'react';
-import './Loading.css'; // Ensure this path is correct
-import logo from './safina_invest_logo.png'; // Update the path to your logo
+import './Loading.css';
 
 const Loading = () => {
   return (
     <div className="loading-container">
-      <div className="logo-wrapper">
-        <img src={logo} alt="Logo" className="logo" />
-        <div className="loader"></div>
-      </div>
+      <img src="/safina_invest_logo.png" alt="Company Logo" className="logo" />
+      <div className="loader"></div>
     </div>
   );
 };
