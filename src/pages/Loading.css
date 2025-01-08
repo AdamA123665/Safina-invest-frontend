@@ -28,8 +28,8 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 50px; /* Adjusted size to complement the logo */
-    height: 50px; /* Adjusted size to complement the logo */
+    width: 150px; /* Adjusted size to complement the logo */
+    height: 150px; /* Adjusted size to complement the logo */
     margin: -10px 0 0 -10px; /* Centers the loader */
     border: 2px solid rgba(0, 0, 0, 0.1); /* Light border */
     border-top-color: #3498db; /* Color of the animated line */

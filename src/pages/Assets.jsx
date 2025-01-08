@@ -894,7 +894,6 @@ const ModernAssetsPage = () => {
         </div>
       </div>
 
-      return (
     <div className="max-w-7xl mx-auto px-4 pb-20">
       <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
         Tools &amp; Calculators
@@ -937,7 +936,7 @@ const ModernAssetsPage = () => {
 
               {/* Expanded Content for Mobile */}
               {expandedTool === tool.id && (
-                <div className="md:hidden bg-deep-teal p-4 rounded-lg shadow-inner transition-all duration-500">
+                <div className="md:hidden bg-deep-teal p-4 rounded-lg shadow-inner transition-all duration-500 mt-4">
                   {tool.expandedContent}
                 </div>
               )}
@@ -953,7 +952,7 @@ const ModernAssetsPage = () => {
         )}
       </div>
     </div>
-    
+
       {/* Title: Asset Classes */}
       <div className="pb-20 bg-light-background pt-20">
         <h2 className="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
