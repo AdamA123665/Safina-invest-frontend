@@ -17,7 +17,7 @@ function App() {
   if (!portfolioData) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p className="text-gray-600 text-xl">Loading...</p>
+        <p className="text-primary-green text-xl">Loading...</p>
       </div>
     );
   }

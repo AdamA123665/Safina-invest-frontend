@@ -294,24 +294,23 @@ const InnovativeHero = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full bg-cover bg-center bg-no-repeat font-sans  "
+      className="w-full bg-cover bg-center bg-no-repeat font-sans"
       style={{
         background: '#e2eac3', // Light background
       }}
     >
-      {/*
-        ==========================================
-        HERO AREA (modified to min-h-screen)
-        ==========================================
-      */}
+      {/* HERO AREA (modified to have responsive min-height) */}
       <section
         className="
           min-h-screen
+          md:min-h-[60vh]         /* Responsive min-height */
           flex
           flex-col
           items-center
           justify-center
           px-4
+          py-8                  /* Default vertical padding */
+          md:py-4               /* Reduced padding on desktop */
           relative
         "
       >
@@ -328,20 +327,17 @@ const InnovativeHero = () => {
             text-center
             drop-shadow-lg
             pt-4
-            sm:pt-0
           "
         >
-          Grow Your{' '}
+          Innovative. Ethical.{' '}
           <span
             style={{ color: '#066b06' }} // Primary Green
           >
-            Wealth
+            Free
           </span>
         </motion.h1>
-
-        {/*
-          3 cards in a responsive grid
-        */}
+  
+        {/* 3 cards in a responsive grid */}
         <div
           className="
             max-w-6xl
@@ -354,7 +350,7 @@ const InnovativeHero = () => {
             px-4
             sm:px-4
             pt-2
-            pb-4
+            pb-8
             sm:pb-2
           "
         >
@@ -379,6 +375,7 @@ const InnovativeHero = () => {
             </div>
           ))}
         </div>
+  
 
         {/*
           Single "Shariah Compliant" bubble

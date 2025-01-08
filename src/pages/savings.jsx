@@ -144,7 +144,7 @@ const SavingsSection = () => {
   </h3>
   <p className="text-deep-brown leading-relaxed text-sm md:text-base lg:text-lg">
     You can open savings accounts either directly with banks or 
-    through platforms like{" "}
+    through platforms such as{" "}
     <span className="text-blue-500 font-semibold underline">
       Raisin UK
     </span>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+import Loading from ',/loading'
 function ArticleDetailsPage() {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
@@ -28,6 +28,10 @@ function ArticleDetailsPage() {
 
   if (!article) {
     return <div className="text-center mt-16 text-gray-700">Loading...</div>;
+  }
+
+  if (loading) {
+    return <Loading />;
   }
 
   return (

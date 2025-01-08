@@ -39,7 +39,7 @@ const ToolsShowcase = () => {
     },
     {
       icon: FaChartPie, // Icon representing portfolio allocation
-      title: 'Learn About Portfolio Allocation',
+      title: 'Portfolio Allocation',
       description: 'Discover strategies to diversify your investments and optimize your portfolio for maximum returns.',
       gradient: 'from-deep-teal to-olive-green', // Example gradient using Tailwind CSS
       link: '/assets', // Destination link
@@ -47,7 +47,7 @@ const ToolsShowcase = () => {
     },
     {
       icon: FaClock, // Icon representing time horizon and goals
-      title: 'Investment Time Horizon and Goals',
+      title: 'Time Horizon and Goals',
       description: 'Understand how your investment timeline and financial objectives shape your investment strategy.',
       gradient: 'from-olive-green to-gold', // Example gradient using Tailwind CSS
       link: '/assets', // Destination link
@@ -132,7 +132,7 @@ const ToolsShowcase = () => {
     : tools;
 
   return (
-    <section className="relative py-10 px-4 md:py-20 bg-light-background">
+    <section className="relative py-8 px-4 md:py-16 bg-light-background">
       <div className="max-w-6xl mx-auto">
         <div className={`flex flex-col md:flex-row relative ${isMobile ? 'justify-center' : 'items-center'} md:items-center`}>
           

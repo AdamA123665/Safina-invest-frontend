@@ -9,7 +9,7 @@ import Savings from './savings';
 // import Aboutsection from './Aboutsection';
 import CompleteInvestmentJourney from './Test2';
 import HeroSection from './newhero3'
-
+import Loading from './loading';
 const PortfolioOptimizer = () => {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -43,9 +43,7 @@ const PortfolioOptimizer = () => {
     if (loading) {
       return (
         <section id="research">
-          <div className="container mx-auto px-4 py-20 text-center">
-            <p className="text-xl">Loading...</p>
-          </div>
+          <Loading />
         </section>
       );
     }

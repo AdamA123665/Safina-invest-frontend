@@ -164,8 +164,8 @@ const InnovativeHero = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {[
               {
-                name: 'Portfolio Analysis',
-                description: 'Advanced analytics & performance tracking',
+                name: 'Asset Allocation',
+                description: 'Advanced algorithmic asset allocation',
               },
               {
                 name: 'Risk Assessment',
@@ -176,8 +176,8 @@ const InnovativeHero = () => {
                 description: 'Real-time Shariah-compliant data',
               },
               {
-                name: 'Wealth Tracking',
-                description: 'Comprehensive monitoring tools',
+                name: 'Time Horizon vs Risk',
+                description: 'Educational tools to visualise opportunities',
               },
             ].map((tool, i) => (
               <motion.div
@@ -294,24 +294,23 @@ const InnovativeHero = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full bg-cover bg-center bg-no-repeat font-sans  "
+      className="w-full bg-cover bg-center bg-no-repeat font-sans"
       style={{
         background: '#e2eac3', // Light background
       }}
     >
-      {/*
-        ==========================================
-        HERO AREA (modified to min-h-screen)
-        ==========================================
-      */}
+      {/* HERO AREA (modified to have responsive min-height) */}
       <section
         className="
           min-h-screen
+          md:min-h-[60vh]         /* Responsive min-height */
           flex
           flex-col
           items-center
           justify-center
           px-4
+          py-8                  /* Default vertical padding */
+          md:py-4               /* Reduced padding on desktop */
           relative
         "
       >
@@ -321,7 +320,7 @@ const InnovativeHero = () => {
           className="
             text-5xl
             sm:text-6xl
-            md:text-7xl
+            md:text-6xl
             font-medium
             text-deep-brown
             mb-8
@@ -330,17 +329,15 @@ const InnovativeHero = () => {
             pt-4
           "
         >
-          Grow Your{' '}
+          Innovative. Ethical.{' '}
           <span
             style={{ color: '#066b06' }} // Primary Green
           >
-            Wealth
+            Free
           </span>
         </motion.h1>
-
-        {/*
-          3 cards in a responsive grid
-        */}
+  
+        {/* 3 cards in a responsive grid */}
         <div
           className="
             max-w-6xl
@@ -378,6 +375,7 @@ const InnovativeHero = () => {
             </div>
           ))}
         </div>
+  
 
         {/*
           Single "Shariah Compliant" bubble
