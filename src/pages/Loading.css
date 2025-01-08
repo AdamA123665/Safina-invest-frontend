@@ -13,39 +13,12 @@
 .logo-wrapper {
     position: relative;
     display: inline-block; /* Ensures wrapper fits the logo */
-    max-width: 80%; /* Makes the wrapper responsive */
-    height: auto;
 }
 
-/* Logo displays at its natural size and scales responsively */
+/* Logo displays at its natural size */
 .logo {
     display: block; /* Removes any unwanted spacing */
-    width: 100%;
-    height: auto;
+    /* Optionally, you can set max-width or max-height if needed */
     object-fit: contain;
 }
 
-/* Loader circle positioned relative to the logo */
-.loader {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 120%; /* Slightly larger than the logo */
-    height: 120%; /* Slightly larger than the logo */
-    transform: translate(-50%, -50%) rotate(0deg); /* Initial centering */
-    border: 2px solid rgba(0, 0, 0, 0.1); /* Light border */
-    border-top-color: #3498db; /* Color of the animated line */
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    box-sizing: border-box; /* Ensures borders are included in size */
-}
-
-/* Spin animation for loader */
-@keyframes spin {
-    from {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-    to {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
-}

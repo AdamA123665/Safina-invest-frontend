@@ -329,7 +329,7 @@ const InnovativeHero = () => {
             pt-4
           "
         >
-          Innovative. Ethical.{' '}
+          Innovative Ethical{' '}
           <span
             style={{ color: '#066b06' }} // Primary Green
           >
