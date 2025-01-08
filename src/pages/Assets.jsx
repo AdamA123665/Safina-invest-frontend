@@ -838,7 +838,7 @@ const ModernAssetsPage = () => {
       link: '/articles/uk-real-estate-sharia-guide',
     },
     {
-      id: 'etfs',
+      id: 'understanding-etfs',
       title: 'ETFs',
       icon: <FaExchangeAlt className="w-8 h-8 text-light-background" />,
       riskLevel: 'Varied',
@@ -894,67 +894,66 @@ const ModernAssetsPage = () => {
         </div>
       </div>
 
-      {/* Title: Tools & Calculators */}
-      <div className="max-w-7xl mx-auto px-4 pb-20">
-        <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
-          Tools &amp; Calculators
-        </h2>
+      return (
+    <div className="max-w-7xl mx-auto px-4 pb-20">
+      <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
+        Tools &amp; Calculators
+      </h2>
 
-        {/* Tools Container */}
-        <div className="relative space-y-8">
-          {/* Tools Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {tools.map((tool) => (
-              <div key={tool.id}>
+      {/* Tools Container */}
+      <div className="space-y-8">
+        {/* Tools Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {tools.map((tool) => (
+            <div key={tool.id} className="flex flex-col">
+              <div
+                className={`relative ${tool.color} rounded-xl overflow-hidden transition-all duration-500 ${
+                  expandedTool && expandedTool !== tool.id
+                    ? 'opacity-50'
+                    : 'hover:shadow-xl'
+                }`}
+              >
                 <div
-                  className={`relative ${tool.color} rounded-xl overflow-hidden transition-all duration-500 ${
-                    expandedTool && expandedTool !== tool.id
-                      ? 'opacity-50'
-                      : 'hover:shadow-xl'
-                  }`}
+                  className="p-6 cursor-pointer border border-gray-700/50 rounded-xl"
+                  onClick={() =>
+                    setExpandedTool(expandedTool === tool.id ? null : tool.id)
+                  }
                 >
                   <div
-                    className="p-6 cursor-pointer border border-gray-700/50 rounded-xl"
-                    onClick={() =>
-                      setExpandedTool(expandedTool === tool.id ? null : tool.id)
-                    }
+                    className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-${tool.color}`}
+                    // Light Background for icon container
                   >
-                    <div
-                      className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-${tool.color}`}
-                       // Light Background for icon container
-                    >
-                      {tool.icon}
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">{tool.title}</h3>
-                    <p className="text-light-background">{tool.description}</p>
-                    <ChevronDown
-                      className={`mt-4 w-6 h-6 transition-transform duration-300 ${
-                        expandedTool === tool.id ? 'rotate-180' : ''
-                      }`}
-                    />
+                    {tool.icon}
                   </div>
+                  <h3 className="text-xl font-bold mb-2">{tool.title}</h3>
+                  <p className="text-light-background">{tool.description}</p>
+                  <ChevronDown
+                    className={`mt-4 w-6 h-6 transition-transform duration-300 ${
+                      expandedTool === tool.id ? 'rotate-180' : ''
+                    }`}
+                  />
                 </div>
               </div>
-            ))}
-          </div>
 
-          {/* Expanded Content */}
-          {expandedTool && (
-            <div
-              className="bg-deep-teal p-8 rounded-lg shadow-inner transition-all duration-500"
-              style={{ minHeight: '400px' }}
-            >
-              <div className="relative">
-                {/* Tool Expanded Content */}
-                <div className="relative">
-                  {tools.find((t) => t.id === expandedTool)?.expandedContent}
+              {/* Expanded Content for Mobile */}
+              {expandedTool === tool.id && (
+                <div className="md:hidden bg-deep-teal p-4 rounded-lg shadow-inner transition-all duration-500">
+                  {tool.expandedContent}
                 </div>
-              </div>
+              )}
             </div>
-          )}
+          ))}
         </div>
-      </div>
 
+        {/* Expanded Content for Desktop */}
+        {expandedTool && (
+          <div className="hidden md:block bg-deep-teal p-8 rounded-lg shadow-inner transition-all duration-500">
+            {tools.find((t) => t.id === expandedTool)?.expandedContent}
+          </div>
+        )}
+      </div>
+    </div>
+    
       {/* Title: Asset Classes */}
       <div className="pb-20 bg-light-background pt-20">
         <h2 className="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
