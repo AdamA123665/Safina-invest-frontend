@@ -12,14 +12,13 @@
 /* Logo wrapper without fixed size */
 .logo-wrapper {
     position: relative;
-    /* Removed width and height to allow natural size */
     display: inline-block; /* Ensures wrapper fits the logo */
 }
 
 /* Logo displays at its natural size */
 .logo {
     display: block; /* Removes any unwanted spacing */
-    /* Removed width and height to maintain natural dimensions */
+    /* Optionally, you can set max-width or max-height if needed */
     object-fit: contain;
 }
 
@@ -28,9 +27,9 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 150px; /* Adjusted size to complement the logo */
-    height: 150px; /* Adjusted size to complement the logo */
-    margin: -10px 0 0 -10px; /* Centers the loader */
+    width: 120%; /* Slightly larger than the logo */
+    height: 120%; /* Slightly larger than the logo */
+    transform: translate(-50%, -50%); /* Precisely centers the loader */
     border: 2px solid rgba(0, 0, 0, 0.1); /* Light border */
     border-top-color: #3498db; /* Color of the animated line */
     border-radius: 50%;
