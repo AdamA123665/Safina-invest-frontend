@@ -90,7 +90,7 @@ const CompleteInvestmentJourney = () => {
 
   const portfolioData = [
     { asset: 'Stocks', percentage: 60 },
-    { asset: 'Bonds', percentage: 10 },
+    { asset: 'Gold', percentage: 10 },
     { asset: 'Alternatives', percentage: 30 }
   ];
 
@@ -323,7 +323,7 @@ const CompleteInvestmentJourney = () => {
                   className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block"
                   whileHover={{ scale: 1.02 }}
                 >
-                  <h3 className="text-lg md:text-xl font-medium mb-6">Quick Risk Assessment</h3>
+                  <h3 className="text-lg md:text-xl font-medium mb-6">Visualise Different Risk Levels</h3>
                   <div className="space-y-4">
                     <input
                       type="range"
@@ -704,7 +704,7 @@ const CompleteInvestmentJourney = () => {
                   Investing involves risks, including the potential loss of all your invested capital. 
                   Safina Invest provides tools and information to support your decision-making, but we 
                   do not offer financial advice. All investment decisions are solely your responsibility, 
-                  and Safine Invest is not liable for any losses incurred as a result of your choices. 
+                  and Safina Invest is not liable for any losses incurred as a result of your choices. 
                   Always consult a financial advisor if you are unsure about the suitability of an investment.
                 </p>
               </motion.div>

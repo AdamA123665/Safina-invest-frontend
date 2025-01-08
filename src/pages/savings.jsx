@@ -37,8 +37,8 @@ const SavingsSection = () => {
       icon: <Shield className="h-4 w-4" />
     },
     {
-      bank: "QIB UK",
-      type: "Traditional",
+      bank: "Qatar Bank UK",
+      type: "Sharia-compliant",
       rate: "4.5% AER",
       term: "Easy Access",
       minDeposit: "£1,000",
@@ -47,8 +47,8 @@ const SavingsSection = () => {
       icon: <TrendingUp className="h-4 w-4" />
     },
     {
-      bank: "QIB UK",
-      type: "Traditional",
+      bank: "Qatar Bank UK",
+      type: "Sharia-compliant",
       rate: "4.7% AER",
       term: "31 day notice",
       minDeposit: "£1,000",

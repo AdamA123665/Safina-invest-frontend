@@ -39,8 +39,8 @@ const Navbar = () => {
     { path: '/allocation', label: 'Invest' },
     { path: '/research', label: 'Research' },
     { path: '/about', label: 'About' },
-    { path: '/funds', label: 'Funds' },
-    { path: '/Trial', label: 'Trial' },
+    // { path: '/funds', label: 'Funds' },
+    // { path: '/Trial', label: 'Trial' },
     // { path: '/Test2', label: 'Test2' },
   ];
 
