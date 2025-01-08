@@ -4,10 +4,8 @@ import { Link } from 'react-router-dom';
 import {
   Mail,
   ArrowRight,
-  Facebook,
-  Twitter,
-  Instagram,
-  ChevronUp
+  ChevronUp,
+  Linkedin
 } from 'lucide-react';
 
 const Footer = () => {
@@ -82,15 +80,15 @@ const Footer = () => {
               Empowering investors with sophisticated tools and insights for optimal portfolio management.
             </p>
             <div className="flex space-x-4">
-              <Link to="/facebook" className="text-gray-400 hover:text-green-500 transition-colors" aria-label="Facebook">
-                <Facebook className="w-5 h-5" />
-              </Link>
-              <Link to="/twitter" className="text-gray-400 hover:text-green-500 transition-colors" aria-label="Twitter">
-                <Twitter className="w-5 h-5" />
-              </Link>
-              <Link to="/instagram" className="text-gray-400 hover:text-green-500 transition-colors" aria-label="Instagram">
-                <Instagram className="w-5 h-5" />
-              </Link>
+              <a 
+                href="https://linkedin.com/company/safina-invest-uk" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-gray-400 hover:text-green-500 transition-colors" 
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-5 h-5" />
+              </a>
             </div>
           </div>
 
@@ -151,31 +149,19 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/help-center"
+                <a
+                  href="mailto:info@safinainvest.co.uk"
                   className="text-gray-400 hover:text-green-500 transition-colors flex items-center group"
                 >
-                  <span>Help Center</span>
-                  <ArrowRight className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all" />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/privacy-policy"
-                  className="text-gray-400 hover:text-green-500 transition-colors flex items-center group"
-                >
-                  <span>Privacy Policy</span>
-                  <ArrowRight className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all" />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/terms-of-service"
-                  className="text-gray-400 hover:text-green-500 transition-colors flex items-center group"
-                >
-                  <span>Terms of Service</span>
-                  <ArrowRight className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all" />
-                </Link>
+                 <div className="group">
+                    <span className="flex items-center">
+                        Contact Us
+                        <ArrowRight className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all" />
+                    </span>
+                    <p className="text-gray-400 text-sm leading-relaxed">info@safinainvest.co.uk</p>
+                    </div>
+
+                </a>
               </li>
             </ul>
           </div>
@@ -257,12 +243,6 @@ const Footer = () => {
               © {new Date().getFullYear()} Safina Invest. All rights reserved.
             </p>
             <div className="flex space-x-6">
-              <Link to="/privacy-policy" className="text-gray-500 hover:text-green-500 text-sm transition-colors">
-                Privacy
-              </Link>
-              <Link to="/terms-of-service" className="text-gray-500 hover:text-green-500 text-sm transition-colors">
-                Terms
-              </Link>
               <Link to="/cookies" className="text-gray-500 hover:text-green-500 text-sm transition-colors">
                 Cookies
               </Link>
