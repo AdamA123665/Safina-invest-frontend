@@ -18,7 +18,6 @@ import {
   Percent,
   AlertTriangle,
   Info,
-  Shield,
   ChevronRight,
   BarChart2,
   DollarSign,
@@ -36,6 +35,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wallet, Building, ArrowRight, Plus } from 'lucide-react';
 import { logAnalyticsEvent } from './analytics';
+import { HashLink } from 'react-router-hash-link';
 // ===========================
 // 1) Hard-coded Risk Profiles
 // ===========================
@@ -707,7 +707,6 @@ const PortfolioJourney = () => {
               placeholder="Enter amount between £100 and £1,000,000"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              autoFocus
             />
           </div>
           {amountError && (
@@ -1920,15 +1919,16 @@ const PortfolioJourney = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-3xl mx-auto mb-12">
       <div
-        onClick={() => navigate('/assets#tools')}
         className="group flex items-center gap-3 bg-white px-6 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 w-full sm:w-auto cursor-pointer"
       >
-        <Shield className="w-6 h-6 text-blue-600" />
+         <HashLink smooth to="/assets#tools">
         <div className="flex-1">
           <h3 className="font-semibold text-primary-green">Take the Risk Quiz</h3>
           <p className="text-sm text-olive-green">Discover your investor profile</p>
         </div>
+        </HashLink>
         <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
+       
       </div>
 
       <div

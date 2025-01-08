@@ -902,13 +902,13 @@ const ModernAssetsPage = () => {
         </div>
       </div>
 
-    <div className="max-w-7xl mx-auto px-4 pb-20">
+    <div  id="tools" className="max-w-7xl mx-auto px-4 pb-20">
       <h2 className="text-4xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-primary-green to-olive-green">
         Tools &amp; Calculators
       </h2>
      
       {/* Tools Container */}
-      <div id="tools" className="space-y-8">
+      <div className="space-y-8">
         {/* Tools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {tools.map((tool) => (
