@@ -31,11 +31,11 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-// ====== NEW IMPORTS FOR ENHANCED INVESTMENT SECTION ======
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wallet, Building, ArrowRight, Plus } from 'lucide-react';
 import { logAnalyticsEvent } from './analytics';
 import { HashLink } from 'react-router-hash-link';
+
 // ===========================
 // 1) Hard-coded Risk Profiles
 // ===========================
@@ -99,6 +99,7 @@ const EnhancedInvestment = () => {
   const [expandedSection, setExpandedSection] = useState(null);
   const containerRef = useRef(null);
   const navigate = useNavigate();
+
   const funds = [
     {
       id: 'savings',
@@ -106,11 +107,7 @@ const EnhancedInvestment = () => {
       isComingSoon: false, // Available now
       icon: Wallet,
       description: 'Secure your future with tailored savings solutions',
-      details: [
-        'Capital preservation focus',
-        'Steady growth strategy',
-        'Low volatility approach'
-      ],
+      details: ['Capital preservation focus', 'Steady growth strategy', 'Low volatility approach'],
       color: 'deepTeal',
       stats: {
         performance: 72,
@@ -122,42 +119,35 @@ const EnhancedInvestment = () => {
     {
       id: 'tactical',
       title: 'Tactical Asset Allocation',
-      isComingSoon: true, // Indicates that this fund is coming soon
+      isComingSoon: true, 
       icon: TrendingUp,
       description: 'Adapt your portfolio with precision using data-driven strategies',
-      details: [
-        'Real-time market adaptation',
-        'Risk-optimized allocation',
-        'Dynamic rebalancing'
-      ],
-      color: 'primaryGreen', // Tailwind color key
+      details: ['Real-time market adaptation', 'Risk-optimized allocation', 'Dynamic rebalancing'],
+      color: 'primaryGreen',
       stats: {
         performance: 87,
         risk: 42,
         liquidity: 95
       },
-      link: '/articles/tactical-asset-allocation' // Update with appropriate link
+      link: '/articles/tactical-asset-allocation'
     },
     {
       id: 'private',
       title: 'Private Markets',
-      isComingSoon: true, // Indicates that this fund is coming soon
+      isComingSoon: true,
       icon: Building,
       description: 'Access exclusive investment opportunities in private markets',
-      details: [
-        'Premium deal access',
-        'Diversified portfolio',
-        'Long-term growth'
-      ],
+      details: ['Premium deal access', 'Diversified portfolio', 'Long-term growth'],
       color: 'gold',
       stats: {
         performance: 92,
         risk: 65,
         liquidity: 45
       },
-      link: '/articles/private-markets' // Update with appropriate link
+      link: '/articles/private-markets'
     }
   ];
+
   const StatBar = ({ value, color }) => (
     <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
       <motion.div
@@ -168,7 +158,6 @@ const EnhancedInvestment = () => {
       />
     </div>
   );
-  
 
   const ExpandedCard = ({ fund }) => (
     <motion.div
@@ -229,30 +218,29 @@ const EnhancedInvestment = () => {
 
   const colorStyles = {
     primaryGreen: {
-      background: 'rgba(6, 107, 6, 0.1)',    // primary-green with opacity
-      text: '#066b06',                        // primary-green
-      plusBg: 'rgba(6, 107, 6, 0.2)',        // primary-green with higher opacity
-      plusText: '#066b06',                    // primary-green
+      background: 'rgba(6, 107, 6, 0.1)',
+      text: '#066b06',
+      plusBg: 'rgba(6, 107, 6, 0.2)',
+      plusText: '#066b06'
     },
     deepTeal: {
-      background: 'rgba(10, 76, 76, 0.1)',    // deep-teal with opacity
-      text: '#0a4c4c',                        // deep-teal
-      plusBg: 'rgba(10, 76, 76, 0.2)',       // deep-teal with higher opacity
-      plusText: '#0a4c4c',                    // deep-teal
+      background: 'rgba(10, 76, 76, 0.1)',
+      text: '#0a4c4c',
+      plusBg: 'rgba(10, 76, 76, 0.2)',
+      plusText: '#0a4c4c'
     },
     gold: {
-      background: 'rgba(196, 155, 60, 0.1)',  // gold with opacity
-      text: '#c49b3c',                        // gold
-      plusBg: 'rgba(196, 155, 60, 0.2)',     // gold with higher opacity
-      plusText: '#c49b3c',                    // gold
+      background: 'rgba(196, 155, 60, 0.1)',
+      text: '#c49b3c',
+      plusBg: 'rgba(196, 155, 60, 0.2)',
+      plusText: '#c49b3c'
     },
     oliveGreen: {
-      background: 'rgba(136, 163, 89, 0.1)',  // olive-green with opacity
-      text: '#88a359',                        // olive-green
-      plusBg: 'rgba(136, 163, 89, 0.2)',     // olive-green with higher opacity
-      plusText: '#88a359',                    // olive-green
-    },
-    // Add more colors as needed
+      background: 'rgba(136, 163, 89, 0.1)',
+      text: '#88a359',
+      plusBg: 'rgba(136, 163, 89, 0.2)',
+      plusText: '#88a359'
+    }
   };
 
   return (
@@ -288,7 +276,7 @@ const EnhancedInvestment = () => {
                 <motion.div
                   className="relative rounded-2xl transition-all duration-500 shadow-lg"
                   style={{
-                    backgroundColor: styles.background,
+                    backgroundColor: styles.background
                   }}
                   whileHover={{ scale: expandedSection !== fund.id ? 1.02 : 1 }}
                 >
@@ -309,41 +297,37 @@ const EnhancedInvestment = () => {
                       </motion.div>
                     </div>
 
-                    <h3
-        className="text-2xl font-bold mb-2"
-        style={{ color: styles.text }}
-      >
-        {fund.title}
-      </h3>
-      <p
-        className="mb-4"
-        style={{ color: styles.plusText }}
-      >
-        {fund.description}
-      </p>
+                    <h3 className="text-2xl font-bold mb-2" style={{ color: styles.text }}>
+                      {fund.title}
+                    </h3>
+                    <p className="mb-4" style={{ color: styles.plusText }}>
+                      {fund.description}
+                    </p>
                   </button>
 
                   <AnimatePresence>
                     {expandedSection === fund.id && <ExpandedCard fund={fund} />}
                   </AnimatePresence>
-                 {/* Conditional "Learn More" or "Coming Soon" */}
-                 <div className="flex justify-start items-center mt-4 px-4 py-4 relative">
-  {!fund.isComingSoon && fund.link ? (
-    <Link to={fund.link} className="w-auto">
-      <motion.a
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        style={{ backgroundColor: styles.text }}
-        className={`px-6 py-3 rounded-xl font-medium inline-flex items-center group text-light-background cursor-pointer`}
-      >
-        Learn More
-        <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-      </motion.a>
-    </Link>
-  ) : fund.isComingSoon ? (
-    <span style={{ color: styles.plusText }} className=" font-medium">Coming Soon</span>
-  ) : null}
-</div>
+                  {/* Conditional "Learn More" or "Coming Soon" */}
+                  <div className="flex justify-start items-center mt-4 px-4 py-4 relative">
+                    {!fund.isComingSoon && fund.link ? (
+                      <Link to={fund.link} className="w-auto">
+                        <motion.a
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          style={{ backgroundColor: styles.text }}
+                          className={`px-6 py-3 rounded-xl font-medium inline-flex items-center group text-light-background cursor-pointer`}
+                        >
+                          Learn More
+                          <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                        </motion.a>
+                      </Link>
+                    ) : fund.isComingSoon ? (
+                      <span style={{ color: styles.plusText }} className=" font-medium">
+                        Coming Soon
+                      </span>
+                    ) : null}
+                  </div>
                 </motion.div>
               </motion.div>
             );
@@ -373,14 +357,14 @@ const EnhancedInvestment = () => {
                     investment allocation for your risk preferences.
                   </p>
                   <motion.div
-                  onClick={() => navigate('/articles/asset-allocation-methodology')}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-primary-green px-6 py-3 rounded-xl font-medium inline-flex items-center group text-light-background cursor-pointer"
-                >
-                  Learn More
-                  <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                </motion.div>
+                    onClick={() => navigate('/articles/asset-allocation-methodology')}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-primary-green px-6 py-3 rounded-xl font-medium inline-flex items-center group text-light-background cursor-pointer"
+                  >
+                    Learn More
+                    <ArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                  </motion.div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   {[
@@ -396,7 +380,9 @@ const EnhancedInvestment = () => {
                       transition={{ delay: idx * 0.1 }}
                       className="bg-light-background rounded-xl p-4"
                     >
-                      <div className="text-2xl font-bold text-olive-green mb-1">{stat.value}</div>
+                      <div className="text-2xl font-bold text-olive-green mb-1">
+                        {stat.value}
+                      </div>
                       <div className="text-sm text-deep-teal">{stat.label}</div>
                     </motion.div>
                   ))}
@@ -409,7 +395,6 @@ const EnhancedInvestment = () => {
     </div>
   );
 };
-
 
 // ===========================
 // 3) Reusable UI Components
@@ -429,12 +414,15 @@ const Slider = ({ value, onChange, min, max, step = 1, className }) => (
   />
 );
 
-const Input = ({ className, ...props }) => (
+// Keep forwardRef so styling stays the same
+const Input = React.forwardRef(({ className, ...props }, ref) => (
   <input
+    ref={ref}
     className={`border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
     {...props}
   />
-);
+));
+Input.displayName = 'Input';
 
 const Button = ({
   children,
@@ -485,26 +473,34 @@ const MetricTooltip = ({ text }) => (
 // 4) Main Portfolio Component
 // ===========================
 const PortfolioJourney = () => {
-  // Steps
   const navigate = useNavigate();
+
+  // Steps
   const [step, setStep] = useState(1);
 
-  // Form: risk + amount
+  // For risk
   const [riskLevel, setRiskLevel] = useState(5);
-  const [amount, setAmount] = useState('');
+
+  // ============ Keep original variable names so ESLint is happy ============
+  const [amount, setAmount] = useState('');          // user’s final numeric input (as a string)
+  const [activeMetric, setActiveMetric] = useState(null);
+  const tooltipRef = useRef(null);
+  const assetRefs = useRef({});
+
+  // We'll keep the actual typing in an uncontrolled ref:
+  const amountRef = useRef('');
+
+  // Validation error
   const [amountError, setAmountError] = useState('');
+
   // API data
   const [portfolioData, setPortfolioData] = useState(null);
   const [fetchError, setFetchError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Expansions
+  // For expand/collapse
   const [expandedTicker, setExpandedTicker] = useState(null);
-  const assetRefs = useRef({});
-  const [activeMetric, setActiveMetric] = useState(null);
-  const tooltipRef = useRef(null);
 
-  // Colors for charts
   const COLORS = [
     '#0088FE',
     '#00C49F',
@@ -528,8 +524,7 @@ const PortfolioJourney = () => {
     8: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ3pXGieZ0npIne',
     9: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ3pXGieZ9Is28U',
     10: 'https://www.trading212.com/pies/luatvsZ7RwGoK7rJ0vRXXSXTRqPt7'
-};
-
+  };
 
   // StepIndicator
   const StepIndicator = ({ currentStep, totalSteps }) => (
@@ -572,7 +567,7 @@ const PortfolioJourney = () => {
   // ===========================
   // Fetch the portfolio data
   // ===========================
-  const fetchPortfolioData = async () => {
+  const fetchPortfolioData = async (numericVal) => {
     setIsLoading(true);
     setFetchError(null);
     try {
@@ -582,7 +577,7 @@ const PortfolioJourney = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            initial_investment: Number(amount),
+            initial_investment: numericVal,
             risk_tolerance: riskLevel
           })
         }
@@ -604,48 +599,42 @@ const PortfolioJourney = () => {
   const RiskInput = () => {
     const currentProfile = riskProfiles[riskLevel];
 
-    const validateAmount = () => {
-      if (!amount) {
-        setAmountError('Investment amount is required.');
-        return false;
-      }
-      const val = parseFloat(amount);
-      if (isNaN(val) || val < 100) {
-        setAmountError('Minimum investment amount is £100.');
-        return false;
-      }
-      if (val > 1000000) {
-        setAmountError('Maximum investment amount is £1,000,000.');
-        return false;
-      }
-      setAmountError('');
-      return true;
-    };
-
     const handleAnalyze = async () => {
-      if (!validateAmount()) return;
+      const rawVal = amountRef.current.value.trim();
+      const numericVal = parseFloat(rawVal.replace(/[^\d.]/g, '')) || 0;
 
-      // Prepare additional info as a JSON string
+      // Validate once
+      if (numericVal < 100) {
+        setAmountError('Minimum investment amount is £100.');
+        return;
+      }
+      if (numericVal > 1000000) {
+        setAmountError('Maximum investment amount is £1,000,000.');
+        return;
+      }
+      // Clear error
+      setAmountError('');
+
+      // Also update `amount` in state so the rest of your code sees it
+      setAmount(String(numericVal));
+
+      // Log analytics
       const additionalInfo = JSON.stringify({
-          investment_amount: Number(amount),
-          risk_level: riskLevel
+        investment_amount: numericVal,
+        risk_level: riskLevel
       });
-
       try {
-          // Log analytics event
-          await logAnalyticsEvent('analyze_click', 'analyze_button', additionalInfo);
+        await logAnalyticsEvent('analyze_click', 'analyze_button', additionalInfo);
       } catch (analyticsError) {
-          console.error('Analytics logging failed:', analyticsError);
-          // Decide whether to proceed or handle differently
-          // For this example, we'll proceed regardless of analytics success
+        console.error('Analytics logging failed:', analyticsError);
       }
 
-      // Fetch portfolio data
-      await fetchPortfolioData();
+      // Fetch portfolio
+      await fetchPortfolioData(numericVal);
       if (!fetchError) {
-          setStep(2);
+        setStep(2);
       }
-  };
+    };
 
     return (
       <div className="space-y-8">
@@ -678,15 +667,10 @@ const PortfolioJourney = () => {
                   style={{ color: currentProfile.color }}
                 />
                 <div>
-                  <h4
-                    className="font-semibold text-xl"
-                    style={{ color: currentProfile.color }}
-                  >
+                  <h4 className="font-semibold text-xl" style={{ color: currentProfile.color }}>
                     {currentProfile.label}
                   </h4>
-                  <p className="text-base text-gray-600">
-                    {currentProfile.description}
-                  </p>
+                  <p className="text-base text-gray-600">{currentProfile.description}</p>
                 </div>
               </div>
             </div>
@@ -701,33 +685,35 @@ const PortfolioJourney = () => {
             <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-light-background">
               £
             </span>
+            {/* 
+              Uncontrolled input: No value or onChange. 
+              We'll parse user input on "Analyze" click.
+            */}
             <Input
-              type="number"
+              ref={amountRef}
+              type="text"
               className="pl-8"
               placeholder="Enter amount between £100 and £1,000,000"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
             />
           </div>
-          {amountError && (
-            <p className="text-red-500 text-sm">{amountError}</p>
-          )}
+          {amountError && <p className="text-red-500 text-sm">{amountError}</p>}
         </div>
 
         <Button onClick={handleAnalyze} className="w-full mt-6">
           Analyze Portfolio
         </Button>
+
         {isLoading && (
           <p className="text-primary-green text-center font-medium">
             Generating your portfolio...
           </p>
         )}
-        {fetchError && (
-          <p className="text-red-500 text-center">{fetchError}</p>
-        )}
+        {fetchError && <p className="text-red-500 text-center">{fetchError}</p>}
       </div>
     );
   };
+
+
 
   // ===========================
   // Step 2: Portfolio Overview
@@ -1926,7 +1912,7 @@ const PortfolioJourney = () => {
           <h3 className="font-semibold text-primary-green">Take the Risk Quiz</h3>
           <p className="text-sm text-olive-green">Discover your investor profile</p>
         </div>
-        </HashLink>
+         </HashLink>
         <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
        
       </div>
