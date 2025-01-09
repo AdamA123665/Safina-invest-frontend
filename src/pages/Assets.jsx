@@ -853,7 +853,7 @@ const ModernAssetsPage = () => {
       riskColor: 'bg-primary-green',
       expectedReturn: '5-10%',
       description: 'Exchange-Traded Funds track indices or sectors. Risk and returns vary by ETF.',
-      link: '/articles/understanding-etfs',
+      link: '/articles/mastering-etfs',
     },
   ];
   
