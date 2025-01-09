@@ -693,7 +693,7 @@ const PortfolioJourney = () => {
               ref={amountRef}
               type="text"
               className="pl-8"
-              placeholder="Enter amount between £100 and £1,000,000"
+              placeholder="min £100 max £1,000,000"
             />
           </div>
           {amountError && <p className="text-red-500 text-sm">{amountError}</p>}
