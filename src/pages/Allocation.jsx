@@ -35,7 +35,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Wallet, Building, ArrowRight, Plus } from 'lucide-react';
 import { logAnalyticsEvent } from './analytics';
 import { HashLink } from 'react-router-hash-link';
-
+import EmailPopup from './EmailPopup'
 // ===========================
 // 1) Hard-coded Risk Profiles
 // ===========================
@@ -122,7 +122,7 @@ const EnhancedInvestment = () => {
       isComingSoon: true, 
       icon: TrendingUp,
       description: 'Adapt your portfolio with precision using data-driven strategies',
-      details: ['Real-time market adaptation', 'Risk-optimized allocation', 'Dynamic rebalancing'],
+      details: ['Real-time market adaptation', 'Risk-optimised allocation', 'Dynamic rebalancing'],
       color: 'primaryGreen',
       stats: {
         performance: 87,
@@ -477,7 +477,7 @@ const PortfolioJourney = () => {
 
   // Steps
   const [step, setStep] = useState(1);
-
+  const [showEmailPopup, setShowEmailPopup] = useState(false);
   // For risk
   const [riskLevel, setRiskLevel] = useState(5);
 
@@ -700,7 +700,7 @@ const PortfolioJourney = () => {
         </div>
 
         <Button onClick={handleAnalyze} className="w-full mt-6">
-          Analyze Portfolio
+          Analyse Portfolio
         </Button>
 
         {isLoading && (
@@ -1247,8 +1247,8 @@ const PortfolioJourney = () => {
       </Button>
       <Button
         onClick={() => {
-          setStep(3);
-          window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top smoothly
+          // Instead of going to Step 3 right away, show the popup
+          setShowEmailPopup(true);
         }}
         className="w-full md:w-1/2"
       >
@@ -1308,7 +1308,7 @@ const PortfolioJourney = () => {
         pros: [
           'Comprehensive range of investment products',
           'Robust research and analysis tools',
-          'Personalized investment advice',
+          'Personalised investment advice',
           'Strong customer service',
         ],
         cons: [
@@ -1320,7 +1320,7 @@ const PortfolioJourney = () => {
       {
         type: 'InvestEngine',
         description:
-          'An online platform providing automated investing with customizable portfolios.',
+          'An online platform providing automated investing with customisable portfolios.',
         pros: [
           'Automated portfolio management',
           'Low fees',
@@ -1328,7 +1328,7 @@ const PortfolioJourney = () => {
           'Diverse investment options',
         ],
         cons: [
-          'Limited personalization beyond portfolio choices',
+          'Limited personalisation beyond portfolio choices',
           'No social trading features',
           'Basic research tools',
         ],
@@ -1373,7 +1373,7 @@ const PortfolioJourney = () => {
           'Advanced trading platforms and tools',
           'Low trading fees',
           'Access to a vast array of global markets',
-          'High degree of customization',
+          'High degree of customisation',
         ],
         cons: [
           'Steep learning curve for beginners',
@@ -1941,6 +1941,19 @@ const PortfolioJourney = () => {
 
   {step === 1 && <RiskInput />}
   {step === 2 && portfolioData && <OptimizedPortfolio />}
+  {/* --- Insert your EmailPopup conditionally --- */}
+  {showEmailPopup && (
+        <EmailPopup
+          onSuccess={() => {
+            // hide popup
+            setShowEmailPopup(false);
+            // proceed to Step 3
+            setStep(3);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onClose={() => setShowEmailPopup(false)}
+        />
+      )}
   {step === 3 && portfolioData && <FinalCTA />}
 </div>
 {/* Enhanced Investment Section (always visible) */}

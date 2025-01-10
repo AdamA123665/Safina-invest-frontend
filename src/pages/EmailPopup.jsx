@@ -71,7 +71,7 @@ const EmailPopup = ({ onSuccess, onClose }) => {
       setTimeout(() => {
         handleClose();
         if (onSuccess) onSuccess(); // e.g. proceed to Step 3
-      }, 1500);
+      }, 5000);
 
       // Clear the input
       setEmail('');
