@@ -1,19 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Mail, ArrowRight } from 'lucide-react';
-import { logAnalyticsEvent } from './analytics'; // or your analytics module
+import { logAnalyticsEvent } from './analytics'; // or wherever your analytics is
 
 const EmailPopup = ({ onSuccess, onClose }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [email, setEmail] = useState('');
   const [isValid, setIsValid] = useState(true);
-  const [, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   // Subscription status
-  const [status, setStatus] = useState('idle'); // 'idle','loading','success','error'
+  // 'idle', 'loading', 'success', or 'error'
+  const [status, setStatus] = useState('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Wrap handleClose in useCallback so it doesn't break the eslint dependency check
+  // Wrap handleClose in useCallback so it doesn't trigger an ESLint dependency warning
   const handleClose = useCallback(() => {
     setIsOpen(false);
     if (onClose) onClose();
@@ -28,7 +29,7 @@ const EmailPopup = ({ onSuccess, onClose }) => {
     };
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
-  }, [handleClose]); // Add handleClose as a dependency
+  }, [handleClose]);
 
   // Basic email validation
   const validateEmail = (emailValue) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
@@ -57,21 +58,29 @@ const EmailPopup = ({ onSuccess, onClose }) => {
         body: JSON.stringify({ email }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.detail || 'Subscription failed');
+        // Check if the error says "already subscribed"
+        if (data.detail && data.detail.toLowerCase().includes('already subscribed')) {
+          // Treat as success
+          console.warn(`User is already subscribed: ${email}`);
+        } else {
+          // Otherwise, throw a "real" error
+          throw new Error(data.detail || 'Subscription failed');
+        }
       }
 
-      // Log success
+      // We reach here if response is OK *or* it was "already subscribed"
       await logAnalyticsEvent('successful_subscription', 'subscribe_button', `Email: ${email}`);
       setStatus('success');
       setIsSubmitted(true);
 
-      // Optionally close after 1.5 seconds
+      // Close after a short delay
       setTimeout(() => {
         handleClose();
-        if (onSuccess) onSuccess(); // e.g. proceed to Step 3
-      }, 5000);
+        if (onSuccess) onSuccess(); // e.g. proceed to the next step
+      }, 1500);
 
       // Clear the input
       setEmail('');
@@ -114,7 +123,7 @@ const EmailPopup = ({ onSuccess, onClose }) => {
           <div className="relative group">
             <input
               type="email"
-              placeholder="your@email.com"
+              placeholder="name@example.com"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
