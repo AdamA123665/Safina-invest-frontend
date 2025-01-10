@@ -6,7 +6,7 @@ const EmailPopup = ({ onSuccess, onClose }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [email, setEmail] = useState('');
   const [isValid, setIsValid] = useState(true);
-  const [isFocused, setIsFocused] = useState(false);
+  const [, setIsFocused] = useState(false);
 
   // Subscription status
   // 'idle', 'loading', 'success', or 'error'
