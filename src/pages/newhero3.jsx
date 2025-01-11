@@ -7,6 +7,7 @@ import {
   Clock,
   Shield,
   ChevronRight,
+  Shield,
 } from 'lucide-react';
 import {
   AreaChart,
@@ -73,6 +74,10 @@ const HeroSection = () => {
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-sage" />
                 <span className="text-sage">Algorithmic Asset Allocation</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Shield className="w-5 h-5 text-sage" />
+                <span className="text-sage">Transparency in every step</span>
               </div>
             </div>
           </div>
