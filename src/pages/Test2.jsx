@@ -642,7 +642,7 @@ const EnhancedTransparencyDashboard = () => {
   };
 
   return (
-    <div className="bg-light-gold text-deep-teal min-h-screen py-10">
+    <div className="bg-light-gold text-deep-teal min-h-screen py-10 px-4">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-10">
         {/* =============== SIDEBAR =============== */}
         <div className="lg:w-1/4 space-y-6">
