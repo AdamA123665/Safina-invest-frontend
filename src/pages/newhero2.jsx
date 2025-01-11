@@ -22,7 +22,6 @@ import {
   Shield,
   Eye,
   ArrowRight,
-  Sparkles,
   PieChart as PieChartIcon,
   GraduationCap,
   BarChart2,
@@ -184,16 +183,7 @@ const InnovativeHero = () => {
             Innovative{' '}
             <span className="relative">
               Ethical
-              <motion.span
-                className="absolute -top-1 -right-4"
-                animate={{
-                  rotate: [0, 15, -15, 0],
-                  scale: [1, 1.2, 1.2, 1],
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <Sparkles className="w-8 h-8 text-[#066b06]" />
-              </motion.span>
+              
             </span>{' '}
             <span className="text-[#066b06]">Free</span>
           </h1>

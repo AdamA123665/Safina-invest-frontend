@@ -65,20 +65,20 @@ const HeroSection = () => {
             </div>
 
             {/* Trust Badges */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-              <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-sage" />
-                <span className="text-sage">Shariah Compliant</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-sage" />
-                <span className="text-sage">Algorithmic Asset Allocation</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-sage" />
-                <span className="text-sage">Transparency in every step</span>
-              </div>
-            </div>
+<div className="flex flex-wrap justify-between items-center gap-4 sm:gap-6">
+  <div className="flex items-center gap-2">
+    <Shield className="w-5 h-5 text-sage" />
+    <span className="text-sage">Shariah Compliant</span>
+  </div>
+  <div className="flex items-center gap-2">
+    <TrendingUp className="w-5 h-5 text-sage" />
+    <span className="text-sage">Algorithmic Asset Allocation</span>
+  </div>
+  <div className="flex items-center gap-2">
+    <Shield className="w-5 h-5 text-sage" />
+    <span className="text-sage">Transparency in Every Step</span>
+  </div>
+</div>
           </div>
 
           {/* Right Content - App Interface Mock */}
