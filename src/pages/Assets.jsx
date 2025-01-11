@@ -83,7 +83,7 @@ const ModernAssetsPage = () => {
       {
         question: 'How do you feel if your portfolio drops by 15% in a few months?',
         options: [
-          { label: 'I’m calm, this is a long-term game. I might even buy more.', value: 3 },
+          { label: 'I’m relaxed, this is a long-term game. I might even buy more.', value: 3 },
           { label: 'I’m uneasy but I’ll hold and wait it out.', value: 1 },
           { label: 'I’d be very stressed and likely sell to prevent further losses.', value: -2 },
         ],

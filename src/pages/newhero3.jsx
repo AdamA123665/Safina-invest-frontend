@@ -6,7 +6,8 @@ import {
   Wallet,
   Clock,
   Shield,
-  ChevronRight
+  ChevronRight,
+  CheckCircle
 } from 'lucide-react';
 import {
   AreaChart,
@@ -65,21 +66,26 @@ const HeroSection = () => {
             </div>
 
             {/* Trust Badges */}
-<div className="flex flex-wrap justify-between items-center gap-4 sm:gap-6">
-  <div className="flex items-center gap-2">
-    <Shield className="w-5 h-5 text-sage" />
-    <span className="text-sage">Shariah Compliant</span>
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8">
+  {/* Badge 1: Shariah Compliant */}
+  <div className="flex items-center justify-center sm:justify-start gap-2 text-sage">
+    <CheckCircle className="w-5 h-5" />
+    <span>Shariah Compliant</span>
   </div>
-  <div className="flex items-center gap-2">
-    <TrendingUp className="w-5 h-5 text-sage" />
-    <span className="text-sage">Algorithmic Asset Allocation</span>
+
+  {/* Badge 2: Algorithmic Asset Allocation */}
+  <div className="flex items-center justify-center sm:justify-start gap-2 text-sage">
+    <TrendingUp className="w-5 h-5" />
+    <span>Algorithmic Asset Allocation</span>
   </div>
-  <div className="flex items-center gap-2">
-    <Shield className="w-5 h-5 text-sage" />
-    <span className="text-sage">Transparency in Every Step</span>
+
+  {/* Badge 3: Transparency in every step */}
+  <div className="flex items-center justify-center sm:justify-start gap-2 text-sage">
+    <Shield className="w-5 h-5" />
+    <span>Transparency in every step</span>
   </div>
 </div>
-          </div>
+</div>
 
           {/* Right Content - App Interface Mock */}
           <div className="flex-1 w-full max-w-md">
