@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Shield,
@@ -56,12 +56,18 @@ const EnhancedTransparencyDashboard = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showInfo, setShowInfo] = useState(false);
 
-  // ----- Utility: Scroll to top on mobile only -----
-  const scrollToTopOnMobile = () => {
-    if (window.innerWidth < 768) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  // ----- Multi-Step Layout States -----
+  const [activeStep, setActiveStep] = useState(0); // Moved above useEffect
+
+  // ----- Reference to Main Content -----
+  const mainContentRef = useRef(null);
+
+  // ----- Scroll to top of main content on mobile when activeStep changes -----
+  useEffect(() => {
+    if (window.innerWidth < 768 && mainContentRef.current) {
+      mainContentRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  };
+  }, [activeStep]); // activeStep is now defined before this useEffect
 
   // ----- Subscription Form Submission -----
   const handleSubmit = async (e) => {
@@ -117,6 +123,7 @@ const EnhancedTransparencyDashboard = () => {
         const volatility = 0.01 + risk * 0.01;
         const randomShock = (Math.random() - 0.5) * 2 * volatility;
 
+        // Ensure the value doesn't drop below 90% of its previous value
         prevValues[risk - 1] = Math.max(
           prevValues[risk - 1] * (1 + meanReturn + randomShock),
           prevValues[risk - 1] * 0.9
@@ -142,9 +149,6 @@ const EnhancedTransparencyDashboard = () => {
     { asset: 'Gold', percentage: 10 },
     { asset: 'Alternatives', percentage: 30 },
   ];
-
-  // ----- Multi-Step Layout States -----
-  const [activeStep, setActiveStep] = useState(0);
 
   // ----- Steps Configuration -----
   const steps = [
@@ -629,11 +633,11 @@ const EnhancedTransparencyDashboard = () => {
     },
   ];
 
-  // ----- Scroll to top & go to next step (on mobile only) -----
+  // ----- Handle Next Step -----
   const handleNextStep = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep((prev) => prev + 1);
-      scrollToTopOnMobile();
+      // Scrolling is handled in useEffect
     }
   };
 
@@ -667,7 +671,7 @@ const EnhancedTransparencyDashboard = () => {
                     <button
                       onClick={() => {
                         setActiveStep(index);
-                        scrollToTopOnMobile(); // Only scroll on mobile
+                        // Scrolling is handled in useEffect
                       }}
                       className={`flex items-center space-x-3 p-4 rounded-xl transition-colors w-full text-left ${
                         isActive
@@ -710,7 +714,7 @@ const EnhancedTransparencyDashboard = () => {
         </div>
 
         {/* =============== MAIN CONTENT =============== */}
-        <div className="lg:w-3/4">
+        <div className="lg:w-3/4" ref={mainContentRef}>
           {steps[activeStep].content}
           {activeStep < steps.length - 1 && (
             <div className="mt-10">
