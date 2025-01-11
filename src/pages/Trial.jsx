@@ -157,7 +157,6 @@ const InnovativeHero = () => {
             transition={{ delay: 0.3 }}
             className="relative mb-16 sm:mb-24"
           >
-            <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-primary-green/20 shadow-lg">
               {/* Parent Container with CSS Grid */}
               <div className="grid lg:grid-cols-12 gap-4 sm:gap-6">
                 {/* Complete Transparency Section */}
@@ -339,14 +338,13 @@ const InnovativeHero = () => {
                   </div>
                 </div>
               </div>
-            </div>
           </motion.div>
         </div>
       </div>
 
       {/* DATA ANALYTICS SECTION WITH DISTINCT BACKGROUND */}
       <section className="w-full py-10 sm:py-14 md:py-20 bg-light-background">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-center">
             {/* Text / CTA */}
             <div>

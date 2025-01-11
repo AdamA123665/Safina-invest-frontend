@@ -346,7 +346,7 @@ const InnovativeHero = () => {
 
       {/* DATA ANALYTICS SECTION WITH DISTINCT BACKGROUND */}
       <section className="w-full py-10 sm:py-14 md:py-20 bg-light-background">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-center">
             {/* Text / CTA */}
             <div>
