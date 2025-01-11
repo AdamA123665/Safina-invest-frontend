@@ -9,6 +9,9 @@ import {
   LineChart,
   Line,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
   XAxis,
   YAxis,
   Legend,
@@ -17,36 +20,53 @@ import {
 import {
   TrendingUp,
   Shield,
-  Database,
+  Eye,
   ArrowRight,
+  Sparkles,
+  PieChart as PieChartIcon,
+  GraduationCap,
+  BarChart2,
+  TrendingDown,
+  Clock,
+  Blocks,
 } from 'lucide-react';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
+// ----------------------------
+// Combined InnovativeHero
+// ----------------------------
 const InnovativeHero = () => {
-  const containerRef = useRef(null);
   const navigate = useNavigate();
+  const containerRef = useRef(null);
 
-  // -------------------------------------
-  // PART 1: The hero cards (SAVINGS / INVEST / TOOLS)
-  // -------------------------------------
+  // ----------------------------
+  // PART 1: New Hero / Transparency Section
+  // ----------------------------
 
-  // Generate smooth quartic growth curve for "Investments"
+  // Sample portfolio allocation data
+  const portfolioData = [
+    { name: 'Global ETFs', value: 40 },
+    { name: 'Sukuk Funds', value: 30 },
+    { name: 'Real Estate', value: 20 },
+    { name: 'Tech Funds', value: 10 },
+  ];
+  const COLORS = ['#066b06', '#c49b3c', '#2A9D8F', '#264653'];
+
+  const [activeTab, setActiveTab] = useState('portfolio');
+
+  // Generate investment data for "Strategic Investments" line chart
   const generateInvestmentData = () => {
     return Array.from({ length: 50 }, (_, i) => {
-      const x = i / 49; // Normalize to 0-1
-      // Quartic function with slight randomness for a natural feel
+      const x = i / 49;
+      // Slight quartic curve with some sinusoidal variation
       const y = Math.pow(x, 4) * 0.7 + x * 0.3 + Math.sin(x * 10) * 0.02;
-      return {
-        x: i,
-        value: y,
-      };
+      return { x: i, value: y };
     });
   };
-
   const investmentData = generateInvestmentData();
 
-  // Dynamic number counter
+  // Counter for the "Smart Savings" 100%
   const Counter = ({ from, to, duration = 2 }) => {
     const count = useMotionValue(from);
     const rounded = useTransform(count, (value) => Math.round(value));
@@ -62,156 +82,10 @@ const InnovativeHero = () => {
     return <motion.span>{rounded}</motion.span>;
   };
 
-  // Our three “cards” data
-  const sections = [
-    {
-      id: 'save',
-      title: 'Smart Savings',
-      bgColor: 'bg-gold/30',
-      icon: (
-        <Shield className="w-8 h-8 sm:w-10 sm:h-10 mb-2 text-gold" />
-      ),
-      content: (
-        <div className="flex flex-col items-center text-center space-y-2">
-          <h3 className="text-lg sm:text-xl font-medium text-deep-brown">
-            Smart Savings
-          </h3>
-          <div className="w-full h-32 sm:h-40 relative flex items-center justify-center">
-            <motion.div
-              className="relative w-20 h-20 sm:w-24 sm:h-24 bg-gold/30 rounded-full flex items-center justify-center"
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <div className="text-base sm:text-xl font-medium text-gold">
-                <Counter from={0} to={100} />%
-              </div>
-            </motion.div>
-          </div>
-          <p className="text-xs sm:text-sm text-deep-brown/80 max-w-sm mx-auto">
-            Start your wealth journey with our ethical saving solutions. Earn
-            competitive returns while staying true to Islamic principles.
-          </p>
-          <motion.a
-            href="#explore-savings"
-            className="inline-flex items-center space-x-1 text-gold hover:text-gold/80 transition-colors"
-            whileHover={{ x: 5 }}
-          >
-            <span className="text-xs sm:text-sm">Explore Savings Plans</span>
-            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-          </motion.a>
-        </div>
-      ),
-    },
-    {
-      id: 'invest',
-      title: 'Strategic Investments',
-      bgColor: 'bg-deep-teal/30',
-      icon: (
-        <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 mb-2 text-deep-teal" />
-      ),
-      content: (
-        <div className="flex flex-col items-center text-center space-y-2">
-          <h3 className="text-lg sm:text-xl font-medium text-deep-brown">
-            Strategic Investments
-          </h3>
-          <div className="w-full h-32 sm:h-40 relative">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={investmentData}>
-                <Line
-                  type="monotone"
-                  dataKey="value"
-                  stroke="url(#lineGradient)"
-                  strokeWidth={2}
-                  dot={false}
-                  isAnimationActive={true}
-                />
-                <defs>
-                  <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stopColor="#066b06" />
-                    <stop offset="100%" stopColor="#c49b3c" />
-                  </linearGradient>
-                </defs>
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-          <p className="text-xs sm:text-sm text-deep-brown/80 max-w-sm mx-auto">
-            Our data-driven approach combines ethical investing with modern
-            portfolio theory, delivering consistent returns.
-          </p>
-          <motion.a
-            href="#investment-options"
-            className="inline-flex items-center space-x-1 text-deep-teal hover:text-deep-teal/80 transition-colors"
-            whileHover={{ x: 5 }}
-          >
-            <span className="text-xs sm:text-sm">View Investment Options</span>
-            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-          </motion.a>
-        </div>
-      ),
-    },
-    {
-      id: 'tools',
-      title: 'Powerful Tools',
-      bgColor: 'bg-primary-green/30',
-      icon: (
-        <Database className="w-8 h-8 sm:w-10 sm:h-10 mb-2 text-primary-green" />
-      ),
-      content: (
-        <div className="flex flex-col items-center text-center space-y-2">
-          <h3 className="text-lg sm:text-xl font-medium text-deep-brown">
-            Powerful Tools
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {[
-              {
-                name: 'Asset Allocation',
-                description: 'Advanced algorithmic asset allocation',
-              },
-              {
-                name: 'Risk Assessment',
-                description: 'Smart risk profiling & management',
-              },
-              {
-                name: 'Market Insights',
-                description: 'Real-time Shariah-compliant data',
-              },
-              {
-                name: 'Time Horizon vs Risk',
-                description: 'Educational tools to visualise opportunities',
-              },
-            ].map((tool, i) => (
-              <motion.div
-                key={tool.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-primary-green/20 p-2 sm:p-3 rounded-lg hover:bg-green-200 transition-colors"
-              >
-                <div className="text-primary-green font-medium text-sm sm:text-base mb-1">
-                  {tool.name}
-                </div>
-                <div className="text-deep-brown text-xs sm:text-sm">
-                  {tool.description}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <motion.a
-            href="#tools"
-            className="inline-flex items-center space-x-1 text-primary-green hover:text-primary-green/80 transition-colors"
-            whileHover={{ x: 5 }}
-          >
-            <span className="text-xs sm:text-sm">Explore All Tools</span>
-            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-          </motion.a>
-        </div>
-      ),
-    },
-  ];
+  // ----------------------------
+  // PART 2: Data & logic for the data-driven section
+  // ----------------------------
 
-  // -------------------------------------
-  // PART 2: Data & logic for the data analytics section
-  // -------------------------------------
   const [performanceData, setPerformanceData] = useState([]);
   const [ytdReturn, setYtdReturn] = useState(null);
 
@@ -225,7 +99,7 @@ const InnovativeHero = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               initial_investment: 1000,
-              risk_tolerance: 10, // Example risk tolerance
+              risk_tolerance: 10, // example risk tolerance
             }),
           }
         );
@@ -291,104 +165,316 @@ const InnovativeHero = () => {
     maxValue + 0.2 * (maxValue - minValue),
   ];
 
+  // ----------------------------
+  // RENDER
+  // ----------------------------
   return (
     <div
       ref={containerRef}
-      className="w-full bg-cover bg-center bg-no-repeat font-sans"
-      style={{
-        background: '#e2eac3', // Light background
-      }}
+      className="min-h-screen bg-gradient-to-b from-[#e2eac3] to-[#f5f8eb] overflow-hidden font-sans"
     >
-      {/* HERO AREA (modified to have responsive min-height) */}
-      <section
-        className="
-          min-h-screen
-          md:min-h-[60vh]         /* Responsive min-height */
-          flex
-          flex-col
-          items-center
-          justify-center
-          px-4
-          py-8                  /* Default vertical padding */
-          md:py-4               /* Reduced padding on desktop */
-          relative
-        "
-      >
-        <motion.h1
+      <div className="max-w-7xl mx-auto px-4 pt-12 pb-20">
+        {/* Hero Title */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="
-            text-5xl
-            sm:text-6xl
-            md:text-6xl
-            font-medium
-            text-deep-brown
-            mb-8
-            text-center
-            drop-shadow-lg
-            pt-4
-          "
+          className="text-center mb-16"
         >
-          Innovative Ethical{' '}
-          <span
-            style={{ color: '#066b06' }} // Primary Green
-          >
-            Free
-          </span>
-        </motion.h1>
-  
-        {/* 3 cards in a responsive grid */}
-        <div
-          className="
-            max-w-6xl
-            w-full
-            grid
-            grid-cols-1
-            md:grid-cols-3
-            gap-4
-            md:gap-6
-            px-4
-            sm:px-4
-            pt-2
-            pb-8
-            sm:pb-2
-          "
-        >
-          {sections.map((section) => (
-            <div
-              key={section.id}
-              className="relative min-h-[347px] flex flex-col justify-center"
-            >
-              <div
-                className={clsx(
-                  'rounded-xl p-3 sm:p-4 border border-deep-brown/20 h-full',
-                  section.bgColor
-                )}
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-medium text-deep-brown mb-6">
+            Innovative{' '}
+            <span className="relative">
+              Ethical
+              <motion.span
+                className="absolute -top-1 -right-4"
+                animate={{
+                  rotate: [0, 15, -15, 0],
+                  scale: [1, 1.2, 1.2, 1],
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
               >
-                <div className="flex flex-col items-center h-full">
-                  {section.icon}
-                  <div className="flex-1 w-full flex flex-col justify-center">
-                    {section.content}
-                  </div>
+                <Sparkles className="w-8 h-8 text-[#066b06]" />
+              </motion.span>
+            </span>{' '}
+            <span className="text-[#066b06]">Free</span>
+          </h1>
+        </motion.div>
+
+        {/* ENHANCED TRANSPARENCY DASHBOARD */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="relative mb-24"
+        >
+          <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-8 border border-primary-green/20 shadow-lg">
+            {/* Header */}
+            <div className="flex items-center space-x-3 text-primary-green mb-8">
+              <Eye className="w-8 h-8" />
+              <h2 className="text-3xl font-semibold text-deep-brown">
+                Complete <span className="text-primary-green">Transparency</span>
+              </h2>
+            </div>
+
+            {/* Main Content */}
+            <div className="grid lg:grid-cols-12 gap-8">
+              {/* Left Column - Navigation & Info */}
+              <div className="lg:col-span-4 space-y-6">
+                {/* Navigation Tabs (Only 'Portfolio' for now) */}
+                <div className="flex flex-col space-y-2">
+                  <button
+                    onClick={() => setActiveTab('portfolio')}
+                    className={clsx(
+                      'flex items-center space-x-3 p-4 rounded-xl transition-colors',
+                      activeTab === 'portfolio'
+                        ? 'bg-primary-green/20 text-primary-green'
+                        : 'hover:bg-primary-green/10 text-deep-brown/70'
+                    )}
+                  >
+                    <PieChartIcon className="w-5 h-5" />
+                    <span className="font-medium">Portfolio Visibility</span>
+                  </button>
+                </div>
+
+                {/* Featured Insight #1 */}
+                <div className="bg-white/60 rounded-xl p-6 border border-primary-green/20">
+                  <GraduationCap className="w-6 h-6 text-primary-green mb-3" />
+                  <h3 className="text-lg font-medium text-deep-brown mb-2">
+                    Why Transparency Matters
+                  </h3>
+                  <p className="text-sm text-deep-brown/80">
+                    Understanding where your money goes is crucial for making
+                    informed investment decisions. We provide complete visibility
+                    into every aspect of your portfolio.
+                  </p>
+                </div>
+
+                {/* Featured Insight #2 */}
+                <div className="bg-white/60 rounded-xl p-6 border border-primary-green/20">
+                  <Blocks className="w-6 h-6 text-primary-green mb-3" />
+                  <h3 className="text-lg font-medium text-deep-brown mb-2">
+                    Our investment building blocks are no secret
+                  </h3>
+                  <p className="text-sm text-deep-brown/80">
+                    We provide a detailed breakdown of all 12 ETFs we use in our
+                    portfolios and our optimisation process—including descriptions,
+                    tickers, and returns—so you can invest with peace of mind.
+                  </p>
                 </div>
               </div>
+
+              {/* Right Column - Portfolio Content */}
+              <div className="lg:col-span-8">
+                {activeTab === 'portfolio' && (
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-2 gap-6">
+                      {/* Portfolio Breakdown */}
+                      <div className="bg-white/60 rounded-xl p-6 border border-primary-green/20">
+                        <h3 className="text-lg font-medium text-deep-brown mb-4">
+                          Portfolio Allocation
+                        </h3>
+                        <div className="h-48">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                              <Pie
+                                data={portfolioData}
+                                innerRadius={60}
+                                outerRadius={80}
+                                paddingAngle={5}
+                                dataKey="value"
+                              >
+                                {portfolioData.map((entry, index) => (
+                                  <Cell
+                                    key={`cell-${index}`}
+                                    fill={COLORS[index % COLORS.length]}
+                                  />
+                                ))}
+                              </Pie>
+                            </PieChart>
+                          </ResponsiveContainer>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 mt-4">
+                          {portfolioData.map((item, index) => (
+                            <div
+                              key={item.name}
+                              className="flex items-center space-x-2"
+                            >
+                              <div
+                                className="w-3 h-3 rounded-full"
+                                style={{ backgroundColor: COLORS[index] }}
+                              />
+                              <span className="text-sm text-deep-brown/80">
+                                {item.name}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Real-time Metrics (static placeholders) */}
+                      <div className="bg-white/60 rounded-xl p-6 border border-primary-green/20">
+                        <h3 className="text-lg font-medium text-deep-brown mb-4">
+                          Live Analytics
+                        </h3>
+                        <div className="space-y-4">
+                          {[
+                            {
+                              label: 'Portfolio Performance',
+                              value: '+8.2%',
+                              icon: <BarChart2 className="w-4 h-4" />,
+                            },
+                            {
+                              label: 'Max Drawdown',
+                              value: '-15.4%',
+                              trend: 'down',
+                              icon: <TrendingDown className="w-4 h-4" />,
+                              description:
+                                'Maximum observed loss from peak to trough',
+                            },
+                            {
+                              label: 'Volatility',
+                              value: '9.2%',
+                              trend: 'neutral',
+                              icon: <BarChart2 className="w-4 h-4" />,
+                              description:
+                                'Moderate price fluctuations indicating balanced risk',
+                            },
+                            {
+                              label: '10Y Return',
+                              value: '156.3%',
+                              trend: 'up',
+                              icon: <Clock className="w-4 h-4" />,
+                              description:
+                                'Cumulative return over the past decade',
+                            },
+                          ].map((metric) => (
+                            <div
+                              key={metric.label}
+                              className="flex items-center justify-between p-3 bg-white/40 rounded-lg"
+                            >
+                              <div className="flex items-center space-x-2 text-deep-brown/80">
+                                {metric.icon}
+                                <span className="text-sm">{metric.label}</span>
+                              </div>
+                              <span className="font-medium text-primary-green">
+                                {metric.value}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Investment Strategy */}
+                    <div className="bg-white/60 rounded-xl p-6 border border-primary-green/20">
+                      <h3 className="text-lg font-medium text-deep-brown mb-4">
+                        Investment Strategy
+                      </h3>
+                      <div className="grid grid-cols-3 gap-4 mb-4">
+                        {[
+                          'Shariah Compliance',
+                          'Risk Management',
+                          'Diversification',
+                        ].map((strategy) => (
+                          <div
+                            key={strategy}
+                            className="bg-primary-green/10 rounded-lg p-3 text-center"
+                          >
+                            <span className="text-sm font-medium text-deep-brown">
+                              {strategy}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          ))}
+          </div>
+        </motion.div>
+
+        {/* PRODUCTS SECTION */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Savings Card */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.6 }}
+            className="relative overflow-hidden rounded-2xl bg-gold/20 p-8 border border-gold/20 hover:shadow-lg transition-shadow"
+          >
+            <div className="relative">
+              <Shield className="w-12 h-12 text-gold mb-6" />
+              <h3 className="text-2xl font-semibold text-deep-brown mb-4">
+                Smart Savings
+              </h3>
+              <p className="text-deep-brown/80 mb-6">
+                Start your wealth journey with our ethical saving solutions. Earn
+                competitive returns while staying true to Islamic principles.
+              </p>
+              <div className="w-full h-32 sm:h-40 relative flex items-center justify-center">
+                <motion.div
+                  className="relative w-20 h-20 sm:w-24 sm:h-24 bg-gold/30 rounded-full flex items-center justify-center"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <div className="text-base sm:text-xl font-medium text-gold">
+                    <Counter from={0} to={100} />%
+                  </div>
+                </motion.div>
+              </div>
+              <motion.button
+                whileHover={{ x: 5 }}
+                className="inline-flex items-center space-x-2 text-gold"
+              >
+                <span>Explore Savings</span>
+                <ArrowRight className="w-4 h-4" />
+              </motion.button>
+            </div>
+          </motion.div>
+
+          {/* Investments Card */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.8 }}
+            className="relative overflow-hidden rounded-2xl bg-deep-teal/20 p-8 border border-deep-teal/20 hover:shadow-lg transition-shadow"
+          >
+            <div className="relative">
+              <TrendingUp className="w-12 h-12 text-deep-teal mb-6" />
+              <h3 className="text-2xl font-semibold text-deep-brown mb-4">
+                Strategic Investments
+              </h3>
+              <p className="text-deep-brown/80 mb-6">
+                Our data-driven approach combines ethical investing with modern
+                portfolio theory, delivering consistent returns.
+              </p>
+              <div className="h-32 mb-6">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={investmentData}>
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#066b06"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+              <motion.button
+                whileHover={{ x: 5 }}
+                className="inline-flex items-center space-x-2 text-deep-teal"
+              >
+                <span>View Investments</span>
+                <ArrowRight className="w-4 h-4" />
+              </motion.button>
+            </div>
+          </motion.div>
         </div>
-  
+      </div>
 
-        {/*
-          Single "Shariah Compliant" bubble
-        */}
-        
-      </section>
-
-      {/*
-        ==========================================
-        DATA ANALYTICS SECTION
-        ==========================================
-      */}
-      <section className=" w-full py-10 md:py-20 bg-light-background relative">
+      {/* DATA ANALYTICS SECTION (from your second snippet) */}
+      <section className="w-full py-10 md:py-20 bg-light-background relative">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Text / CTA */}
@@ -397,16 +483,19 @@ const InnovativeHero = () => {
                 Driven by Data
               </h2>
               <p className="text-sm sm:text-base md:text-lg text-deep-brown mb-4 sm:mb-8 font-medium">
-                Make informed decisions with our advanced analytics and
-                real-time market insights. Our data-driven approach ensures
-                optimal performance while maintaining strict Shariah
-                compliance.
+                Leverage our advanced asset allocation algorithm, built on over
+                10 years of historical data and statistical modelling. We
+                analyse market trends and performance metrics to provide
+                personalised, Shariah-compliant multi-asset investment
+                portfolios that maximise returns and balance risk.
               </p>
               <button
                 className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-3 bg-deep-teal hover:bg-deep-teal/80 transition-colors rounded-lg text-white font-medium shadow-md"
-                onClick={() => navigate('/articles/asset-allocation-methodology')}
+                onClick={() =>
+                  navigate('/articles/asset-allocation-methodology')
+                }
               >
-                Explore our methodology{' '}
+                Explore our methodology
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
@@ -450,8 +539,16 @@ const InnovativeHero = () => {
                         x2="0"
                         y2="1"
                       >
-                        <stop offset="5%" stopColor="#066b06" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="#066b06" stopOpacity={0} />
+                        <stop
+                          offset="5%"
+                          stopColor="#066b06"
+                          stopOpacity={0.8}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="#066b06"
+                          stopOpacity={0}
+                        />
                       </linearGradient>
                     </defs>
                     <XAxis

@@ -1,12 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-} from 'recharts';
 import {
   Shield,
   ChartPie,
@@ -21,11 +14,20 @@ import {
   Globe,
   BarChart3,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
 } from 'lucide-react';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 import { logAnalyticsEvent } from './analytics';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+} from 'recharts';
+
+// ============= Alert Description Component =============
 function AlertDescription({ severity, message, description }) {
   return (
     <Alert severity={severity}>
@@ -45,18 +47,58 @@ function AlertDescription({ severity, message, description }) {
   );
 }
 
-const CompleteInvestmentJourney = () => {
-  const [showProgressBar, setShowProgressBar] = useState(false); 
-  const [activeSection, setActiveSection] = useState(0);
-  const [riskLevel, setRiskLevel] = useState(5);
-  const [email, setEmail] = useState('');
+// ============= Main Component =============
+const EnhancedTransparencyDashboard = () => {
   const navigate = useNavigate();
 
-  // Reference for the section to observe
-  const sectionRef = useRef(null);
+  // ----- Shared States across steps -----
+  const [riskLevel, setRiskLevel] = useState(5);
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle'); // idle, loading, success, error
+  const [errorMessage, setErrorMessage] = useState('');
   const [showInfo, setShowInfo] = useState(false);
 
-  // Generate stock-like data for the graph
+  // ----- Subscription Form Submission -----
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('loading');
+
+    try {
+      // Log the button click event
+      await logAnalyticsEvent('button_click', 'subscribe_button');
+
+      // Send subscription request
+      const response = await fetch(
+        'https://safinabackend.azurewebsites.net/api/subscribe',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.detail || 'Subscription failed');
+      }
+
+      // Log the successful subscription event
+      await logAnalyticsEvent(
+        'successful_subscription',
+        'subscribe_button',
+        `Email: ${email}`
+      );
+
+      setStatus('success');
+      setEmail('');
+    } catch (error) {
+      console.error(error);
+      setStatus('error');
+      setErrorMessage(error.message);
+    }
+  };
+
+  // ----- Generate stock-like data for the graph (used in Step 1) -----
   const generateStockData = () => {
     const data = [];
     const numPoints = 20;
@@ -86,244 +128,59 @@ const CompleteInvestmentJourney = () => {
     return data;
   };
 
+  // ----- Memoized Stock Data -----
   const stockData = useMemo(() => generateStockData(), []);
 
+  // ----- Sample portfolio data (used in Step 2) -----
   const portfolioData = [
     { asset: 'Stocks', percentage: 60 },
     { asset: 'Gold', percentage: 10 },
-    { asset: 'Alternatives', percentage: 30 }
+    { asset: 'Alternatives', percentage: 30 },
   ];
 
-  const [status, setStatus] = useState('idle'); // idle, loading, success, error
-  const [errorMessage, setErrorMessage] = useState('');
+  // ----- Multi-Step Layout States -----
+  const [activeStep, setActiveStep] = useState(0);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus('loading');
-  
-    try {
-      // Log the button click event
-      await logAnalyticsEvent('button_click', 'subscribe_button');
-  
-      // Send subscription request
-      const response = await fetch('https://safinabackend.azurewebsites.net/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-  
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.detail || 'Subscription failed');
-      }
-  
-      // Log the successful subscription event
-      await logAnalyticsEvent('successful_subscription', 'subscribe_button', `Email: ${email}`);
-  
-      setStatus('success');
-      setEmail('');
-    } catch (error) {
-      console.error(error);
-      setStatus('error');
-      setErrorMessage(error.message);
-    }
-  };  
-
-  const sections = [
-    { id: 'risk', title: 'Risk Profile', icon: Shield, step: 1 },
-    { id: 'allocation', title: 'Asset Strategy', icon: ChartPie, step: 2 },
-    { id: 'invest', title: 'Invest & Relax', icon: Wallet, step: 3 }
-  ];
-
-  // Intersection observer for showing the progress bar
-  useEffect(() => {
-    const target = sectionRef.current;
-    if (!target) return;
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.1
-    };
-
-    const observerCallback = (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setShowProgressBar(true);
-        } else {
-          setShowProgressBar(false);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    observer.observe(target);
-
-    return () => {
-      if (target) observer.unobserve(target);
-    };
-  }, []);
-
-  // Determine active section
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const handleActiveSection = () => {
-      const howContainer = sectionRef.current;
-      const innerSections = howContainer.querySelectorAll('section');
-      innerSections.forEach((sec, index) => {
-        const rect = sec.getBoundingClientRect();
-        // If the middle of the viewport is within this section
-        if (
-          rect.top <= window.innerHeight / 2 &&
-          rect.bottom >= window.innerHeight / 2
-        ) {
-          setActiveSection(index);
-        }
-      });
-    };
-
-    window.addEventListener('scroll', handleActiveSection);
-    handleActiveSection();
-    
-    return () => window.removeEventListener('scroll', handleActiveSection);
-  }, []);
-
-  return (
-    <div className="relative bg-light-gold text-deep-teal font-sans">
-      {/* Progress Bars (Mobile and Desktop) */}
-      {showProgressBar && (
+  // ----- Steps Configuration -----
+  const steps = [
+    {
+      id: 'risk-profile',
+      title: 'Risk Profile',
+      icon: <Shield className="w-5 h-5" />,
+      shortDescription:
+        'Figure out how much risk you want to take on—higher risk may yield higher returns, but also bigger potential losses.',
+      content: (
         <>
-          {/* Mobile Progress Bar */}
-          <div
-            className="sticky top-0 z-50 bg-light-gold lg:hidden"
-            style={{
-              transform: showProgressBar ? "translateY(0)" : "translateY(-100%)",
-              transition: "transform 0.3s ease-in-out",
-            }}
-          >
-            <div className="flex justify-between p-4 overflow-x-auto">
-              {sections.map((section, index) => {
-                const Icon = section.icon;
-                const isActive = activeSection >= index;
-                return (
-                  <div key={section.id} className="flex-shrink-0 px-2">
-                    <motion.div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
-                        isActive ? "bg-primary-green" : "bg-deep-teal"
-                      }`}
-                    >
-                      <Icon className="w-4 h-4 text-white" />
-                    </motion.div>
-                    <span className="text-xs whitespace-nowrap">{section.title}</span>
-                  </div>
-                );
-              })}
-            </div>
-            {/* Bottom Progress Bar */}
-            <div className="h-1 bg-deep-teal/20">
-              <div
-                className="h-full bg-primary-green transition-all duration-300"
-                style={{
-                  width: `${(activeSection / (sections.length - 1)) * 100}%`,
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Desktop Progress Bar */}
-          <div
-            className="hidden lg:block fixed left-4 top-1/2 -translate-y-1/2 z-50"
-            style={{
-              opacity: showProgressBar ? 1 : 0,
-              transition: "opacity 0.3s ease-in-out",
-            }}
-          >
-            <div className="relative space-y-16">
-              {sections.map((section, index) => {
-                const Icon = section.icon;
-                const isActive = activeSection >= index;
-                const isLastSection = index === sections.length - 1;
-
-                return (
-                  <div key={section.id} className="relative">
-                    <div className="relative flex items-center space-x-4">
-                      <motion.div
-                        className={`
-                          w-10 h-10 rounded-full flex items-center justify-center
-                          ${isActive ? "bg-primary-green" : "bg-deep-teal"}
-                        `}
-                      >
-                        <Icon className="w-5 h-5 text-white" />
-                      </motion.div>
-
-                      <motion.div className="flex flex-col items-center">
-                        <span className="text-sm font-medium text-primary-green">
-                          Step {section.step}
-                        </span>
-                        <span className="text-sm font-medium ">{section.title}</span>
-                      </motion.div>
-                    </div>
-
-                    {!isLastSection && (
-                      <div className="absolute left-5 top-12 w-px h-12 -translate-x-1/2">
-                        <motion.div
-                          className="w-full bg-gradient-to-b from-primary-green to-transparent"
-                          style={{
-                            height: isActive ? "100%" : "0%",
-                            transition: "height 0.5s ease-out",
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* Main Content */}
-      <div
-        className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 lg:pl-30"
-        ref={sectionRef}
-      >
-        {/* Section Title */}
-        <motion.h2
-          className=" text-5xl md:text-6xl lg:text-7xl font-medium text-center mb-8 sm:mb-12 text-primary-green pt-10"
-          initial={{ opacity: 0, y: -50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-        >
-          Invest with Confidence
-        </motion.h2>
-  
-        {/* Risk Assessment Section */}
-        <section className="min-h-screen py-8 md:py-12 bg-light-gold">
+          {/* ================= STEP 1: RISK ASSESSMENT SECTION ================= */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-6xl mx-auto space-y-16"
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="space-y-16"
           >
+            {/* Intro */}
             <div className="space-y-4">
-              <h2 className="text-3xl md:text-4xl font-medium">Discover Your Risk Profile</h2>
+              <h2 className="text-3xl md:text-4xl font-medium">
+                Discover Your Risk Profile
+              </h2>
               <p className="text-dark-green md:text-xl text-deep-teal max-w-2xl">
-                Understanding your risk tolerance is crucial for successful investing.
+                Understanding your risk tolerance is crucial for successful
+                investing.
               </p>
             </div>
 
+            {/* Content Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Left Column */}
               <div className="space-y-8">
-                {/* Risk Slider Card - hidden on mobile, shown on md+ */}
+                {/* Risk Slider Card (desktop-only) */}
                 <motion.div
                   className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block"
                   whileHover={{ scale: 1.02 }}
                 >
-                  <h3 className="text-lg md:text-xl font-medium mb-6">Visualise Different Risk Levels</h3>
+                  <h3 className="text-lg md:text-xl font-medium mb-6">
+                    Visualise Different Risk Levels
+                  </h3>
                   <div className="space-y-4">
                     <input
                       type="range"
@@ -345,14 +202,13 @@ const CompleteInvestmentJourney = () => {
                           ? 'Conservative - Lower risk, stable returns'
                           : riskLevel <= 7
                           ? 'Moderate - Balanced risk and return'
-                          : 'Aggressive - Higher risk, potential for higher returns'
-                        }
+                          : 'Aggressive - Higher risk, potential for higher returns'}
                       </p>
                     </div>
                   </div>
                 </motion.div>
 
-                {/* Risk Quiz Link (kept visible on all devices) */}
+                {/* Risk Quiz Link (visible on all) */}
                 <motion.button
                   onClick={() => navigate('/assets')}
                   className="w-full text-left bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors focus:outline-none"
@@ -366,7 +222,8 @@ const CompleteInvestmentJourney = () => {
                         Take Our Full Risk Assessment
                       </h3>
                       <p className="text-primary-green mb-4 text-sm">
-                        Get a comprehensive analysis of your risk tolerance through our expert-designed questionnaire.
+                        Get a comprehensive analysis of your risk tolerance
+                        through our expert-designed questionnaire.
                       </p>
                       <span className="text-dark-green flex items-center text-sm">
                         Start Assessment <ArrowRight className="ml-2 w-4 h-4" />
@@ -375,9 +232,11 @@ const CompleteInvestmentJourney = () => {
                   </div>
                 </motion.button>
 
-                {/* Educational Resource (kept visible on all devices) */}
+                {/* Educational Resource (visible on all) */}
                 <motion.div
-                  onClick={() => navigate('/articles/understanding-investing-risk')}
+                  onClick={() =>
+                    navigate('/articles/understanding-investing-risk')
+                  }
                   className="block bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors cursor-pointer"
                   whileHover={{ scale: 1.02 }}
                 >
@@ -388,7 +247,8 @@ const CompleteInvestmentJourney = () => {
                         Understanding Investment Risk
                       </h3>
                       <p className="text-primary-green mb-4 text-sm">
-                        Learn about the factors that influence investment risk and return.
+                        Learn about the factors that influence investment risk
+                        and return.
                       </p>
                       <span className="text-gold hover:text-dark-green flex items-center text-sm md:text-dark-green">
                         Read Article <ExternalLink className="ml-2 w-4 h-4" />
@@ -398,103 +258,79 @@ const CompleteInvestmentJourney = () => {
                 </motion.div>
               </div>
 
-              {/* Right Column - Risk-Return Visualization - hidden on mobile, shown on md+ */}
+              {/* Right Column: Risk-Return Visualization (desktop-only) */}
               <div className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block">
                 <h3 className="text-lg md:text-xl font-medium mb-6">
                   Risk-Return Profiles
                 </h3>
                 <div className="bg-light-gold/70 rounded-lg p-4 mb-8">
-                  <div className="h-64 sm:h-80 md:h-96">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart
-                        data={stockData}
-                        margin={{ top: 20, right: 20, bottom: 35, left: 20 }}
-                      >
-                        {Array.from({ length: 10 }, (_, i) => i + 1).map(risk => (
-                          <Line
-                            key={risk}
-                            type="monotone"
-                            dataKey={`risk${risk}`}
-                            stroke={risk === riskLevel ? '#066b06' : '#0a4c4c'}
-                            strokeWidth={risk === riskLevel ? 3 : 1}
-                            dot={false}
-                            opacity={risk === riskLevel ? 1 : 0.3}
-                          />
-                        ))}
-                        <XAxis
-                          dataKey="year"
-                          stroke="#044d04"
-                          tick={false}
-                          label={{
-                            value: 'Time',
-                            position: 'bottom',
-                            offset: 20,
-                            fill: '#044d04'
-                          }}
-                        />
-                        <YAxis
-                          stroke="#044d04"
-                          tick={false}
-                          label={{
-                            value: 'Growth',
-                            angle: -90,
-                            position: 'left',
-                            offset: 0,
-                            fill: '#044d04'
-                          }}
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
+                  {/* Chart container */}
+                  <StockLineChart stockData={stockData} riskLevel={riskLevel} />
                 </div>
 
                 <div className="text-xs text-deep-teal italic">
-                  For illustrative purposes only. Past performance is not indicative of future results. 
-                  The graph above is a simplified visualization of potential risk-return relationships. 
-                  Actual investment outcomes may vary significantly based on market conditions, 
-                  economic factors, and other variables.
+                  For illustrative purposes only. Past performance is not
+                  indicative of future results. The graph above is a simplified
+                  visualization of potential risk-return relationships. Actual
+                  investment outcomes may vary significantly based on market
+                  conditions, economic factors, and other variables.
                 </div>
               </div>
             </div>
           </motion.div>
-        </section>
-
-        {/* Asset Strategy Section */}
-        <section className="min-h-screen py-16 md:py-24 bg-light-gold">
+        </>
+      ),
+    },
+    {
+      id: 'asset-strategy',
+      title: 'Asset Allocation',
+      icon: <ChartPie className="w-5 h-5" />,
+      shortDescription:
+        'Input that risk level into our allocation tool to generate your personalized multi-asset portfolio.',
+      content: (
+        <>
+          {/* ================= STEP 2: ASSET STRATEGY SECTION ================= */}
           <motion.div
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="max-w-6xl mx-auto"
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="space-y-16"
           >
-            <div className="mb-16 space-y-2">
+            <div className="mb-8 space-y-2">
               <div className="flex items-center gap-2">
                 <h2 className="text-3xl md:text-4xl font-medium">
                   Access Our Multi Asset Portfolios
                 </h2>
                 <div className="relative">
-                  <Info 
-                    className="w-5 h-5 text-deep-teal cursor-pointer" 
+                  <Info
+                    className="w-5 h-5 text-deep-teal cursor-pointer"
                     onClick={() => setShowInfo(!showInfo)}
                   />
                   {showInfo && (
-                    <div 
+                    <div
                       className="absolute z-10 bg-white shadow-lg rounded-md p-3 w-64 -left-32 mt-2"
                       onClick={() => setShowInfo(false)}
                     >
                       <p className="text-sm text-gray-700">
-                        Multi-asset portfolios combine different asset classes to optimize returns while reducing risk. The world's largest funds use this strategy to achieve consistent performance.
+                        Multi-asset portfolios combine different asset classes
+                        to optimize returns while reducing risk. The world’s
+                        largest funds use this strategy to achieve consistent
+                        performance.
                       </p>
                     </div>
                   )}
                 </div>
               </div>
+
               <div className="flex flex-col md:flex-row md:items-center gap-4">
                 <p className="text-dark-green md:text-xl text-deep-teal max-w-2xl">
-                  Build customised Shariah-compliant portfolios using our asset allocation tool, powered by over 10 years of ETF market data.
+                  Build customised Shariah-compliant portfolios using our asset
+                  allocation tool, powered by over 10 years of ETF market data.
                 </p>
-                <button 
-                  onClick={() => navigate('/articles/multi-asset-portfolios-explained')}
+                <button
+                  onClick={() =>
+                    navigate('/articles/multi-asset-portfolios-explained')
+                  }
                   className="bg-deep-teal text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap"
                 >
                   Learn More
@@ -503,18 +339,21 @@ const CompleteInvestmentJourney = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              {/* Our Methodology - hidden on mobile, shown on md+ */}
+              {/* Our Methodology (desktop-only) */}
               <motion.div
                 className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block"
                 whileHover={{ scale: 1.01 }}
               >
                 <div className="flex items-center space-x-4 mb-6">
                   <RefreshCcw className="w-6 h-6 text-primary-green" />
-                  <h3 className="text-lg md:text-xl font-medium">Our Methodology</h3>
+                  <h3 className="text-lg md:text-xl font-medium">
+                    Our Methodology
+                  </h3>
                 </div>
                 <p className="text-dark-green mb-8 text-sm md:text-dark-green">
-                  Our research-backed approach combines sophisticated multi-asset portfolios with
-                  dynamic allocation strategies to optimize your investment outcomes.
+                  Our research-backed approach combines sophisticated
+                  multi-asset portfolios with dynamic allocation strategies to
+                  optimize your investment outcomes.
                 </p>
 
                 {/* Methodology Cards */}
@@ -525,36 +364,38 @@ const CompleteInvestmentJourney = () => {
                       Risk Management
                     </h4>
                     <p className="text-xs md:text-sm text-dark-teal">
-                      Advanced diversification strategies across asset classes, regions, and sectors
-                      to reduce volatility while maintaining growth potential.
+                      Advanced diversification strategies across asset classes,
+                      regions, and sectors to reduce volatility while
+                      maintaining growth potential.
                     </p>
                   </div>
-                  
+
                   <div className="p-4 bg-primary-green/10 rounded-lg">
                     <h4 className="text-sm md:text-dark-green font-medium mb-2 flex items-center">
                       <Globe className="w-4 h-4 mr-2 text-primary-green" />
                       Global Diversification
                     </h4>
                     <p className="text-xs md:text-sm text-dark-teal">
-                      Strategic exposure to worldwide markets, optimizing geographical allocation
-                      based on market conditions and opportunities.
+                      Strategic exposure to worldwide markets, optimizing
+                      geographical allocation based on market conditions and
+                      opportunities.
                     </p>
                   </div>
-                  
+
                   <div className="p-4 bg-primary-green/10 rounded-lg">
                     <h4 className="text-sm md:text-dark-green font-medium mb-2 flex items-center">
                       <BarChart3 className="w-4 h-4 mr-2 text-primary-green" />
                       Active Rebalancing
                     </h4>
                     <p className="text-xs md:text-sm text-dark-teal">
-                      Regular portfolio adjustments to maintain optimal risk levels and capitalize
-                      on market opportunities.
+                      Regular portfolio adjustments to maintain optimal risk
+                      levels and capitalize on market opportunities.
                     </p>
                   </div>
                 </div>
               </motion.div>
 
-              {/* Right Column - Allocation Tool (visible on all devices) */}
+              {/* Allocation Tool (visible on all) */}
               <motion.div
                 className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur flex flex-col"
                 whileHover={{ scale: 1.01 }}
@@ -562,12 +403,14 @@ const CompleteInvestmentJourney = () => {
                 <div className="text-center mb-2 text-xs text-sage">
                   For illustrative purposes only
                 </div>
-                
+
                 <div className="flex items-center space-x-4 mb-6">
                   <ChartPie className="w-6 h-6 text-gold" />
-                  <h3 className="text-lg md:text-xl font-medium">Portfolio Allocation</h3>
+                  <h3 className="text-lg md:text-xl font-medium">
+                    Portfolio Allocation
+                  </h3>
                 </div>
-                
+
                 {/* Dynamic Portfolio Balance */}
                 <div className="flex-grow space-y-6">
                   {portfolioData.map(({ asset, percentage }) => (
@@ -588,10 +431,13 @@ const CompleteInvestmentJourney = () => {
                   ))}
 
                   <div className="mt-12 p-6 bg-primary-green/10 rounded-lg">
-                    <h4 className="font-medium mb-2">About Our Portfolio Allocation Tool</h4>
+                    <h4 className="font-medium mb-2">
+                      About Our Portfolio Allocation Tool
+                    </h4>
                     <p className="text-sm text-deep-teal mb-4">
-                      Access our algorithmic portfolio allocation tool to receive a personalized 
-                      investment strategy based on your risk profile and financial goals.
+                      Access our algorithmic portfolio allocation tool to
+                      receive a personalized investment strategy based on your
+                      risk profile and financial goals.
                     </p>
                   </div>
                 </div>
@@ -614,20 +460,29 @@ const CompleteInvestmentJourney = () => {
               </motion.div>
             </div>
           </motion.div>
-        </section>
-
-        {/* Invest & Relax Section */}
-        <section className="min-h-screen py-16 md:py-24 bg-light-gold">
+        </>
+      ),
+    },
+    {
+      id: 'invest-relax',
+      title: 'Invest & Relax',
+      icon: <Wallet className="w-5 h-5" />,
+      shortDescription:
+        'Invest with a single click through Trading 212 or use any broker you prefer, and remember to invest through tax-efficient accounts like ISAs.',
+      content: (
+        <>
+          {/* ================= STEP 3: INVEST & RELAX SECTION ================= */}
           <motion.div
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="max-w-6xl mx-auto"
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="space-y-16"
           >
-            <div className="mb-16 space-y-2">
-              <h2 className="text-3xl md:text-4xl font-medium mb-2">Invest & Relax</h2>
+            <div className="mb-8 space-y-2">
+              <h2 className="text-3xl md:text-4xl font-medium">Invest & Relax</h2>
               <p className="text-dark-green md:text-xl text-dark-green max-w-2xl">
-                Start your investment journey with just a few clicks and stay informed.
+                Start your investment journey with just a few clicks and stay
+                informed.
               </p>
             </div>
 
@@ -638,9 +493,12 @@ const CompleteInvestmentJourney = () => {
                 whileHover={{ scale: 1.02 }}
               >
                 <Lock className="w-8 h-8 text-primary-green mb-4" />
-                <h3 className="text-lg md:text-xl font-medium mb-4">1-Click Investing</h3>
-                <p className="text-primary-green text-sm ">
-                  Seamless integration with Trading 212 for instant portfolio implementation.
+                <h3 className="text-lg md:text-xl font-medium mb-4">
+                  1-Click Investing
+                </h3>
+                <p className="text-primary-green text-sm">
+                  Seamless integration with Trading 212 for instant portfolio
+                  implementation.
                 </p>
                 <span className="block mt-2 text-sm italic text-gold">
                   TIP: Open a stocks and shares ISA for tax free investments
@@ -649,26 +507,30 @@ const CompleteInvestmentJourney = () => {
                   onClick={() => navigate('/articles/understanding-isas')}
                   className="mt-6 px-6 py-3 bg-olive-green rounded-lg hover:bg-primary-green transition-colors text-sm md:text-light-background"
                 >
-                  Learn more about ISA's
+                  Learn more about ISA&apos;s
                 </button>
               </motion.div>
 
-              {/* Low Minimum - hidden on mobile, shown on md+ */}
-              <motion.div 
+              {/* Low Minimum (desktop-only) */}
+              <motion.div
                 className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur hidden md:block"
-                whileHover={{ scale: 1.02 }} 
-              > 
-                <DollarSign className="w-8 h-8 text-gold mb-4" /> 
-                <h3 className="text-lg md:text-xl font-medium mb-4">Low Minimum</h3> 
-                <p className="text-primary-green text-sm"> 
-                  Start with just $20 and build your portfolio gradually. 
+                whileHover={{ scale: 1.02 }}
+              >
+                <DollarSign className="w-8 h-8 text-gold mb-4" />
+                <h3 className="text-lg md:text-xl font-medium mb-4">
+                  Low Minimum
+                </h3>
+                <p className="text-primary-green text-sm">
+                  Start with just $20 and build your portfolio gradually.
                   <span className="block mt-2 text-sm italic text-gold">
-                    TIP: Investing smaller amounts regularly (e.g., via direct debit) can help smooth out market fluctuations and may yield better returns over time.
+                    TIP: Investing smaller amounts regularly (e.g., via direct
+                    debit) can help smooth out market fluctuations and may yield
+                    better returns over time.
                   </span>
-                </p> 
+                </p>
               </motion.div>
-        
-              {/* Real-Time Monitoring - hidden on mobile, shown on md+ */}
+
+              {/* Real-Time Monitoring (desktop-only) */}
               <motion.div
                 className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur hidden md:block"
                 whileHover={{ scale: 1.02 }}
@@ -680,9 +542,12 @@ const CompleteInvestmentJourney = () => {
                 <p className="text-primary-green text-sm">
                   Track your portfolio performance with live updates.
                 </p>
-                <h3 className="text-lg md:text-xl font-medium mb-4 pt-2">Alternative Brokers</h3>
+                <h3 className="text-lg md:text-xl font-medium mb-4 pt-2">
+                  Alternative Brokers
+                </h3>
                 <p className="text-primary-green mb-6 text-sm">
-                  Prefer a different broker? We support multiple platforms for your convenience.
+                  Prefer a different broker? We support multiple platforms for
+                  your convenience.
                 </p>
                 <div
                   onClick={() => navigate('/articles/uk-brokerage-platforms')}
@@ -699,13 +564,18 @@ const CompleteInvestmentJourney = () => {
                 className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur"
                 whileHover={{ scale: 1.02 }}
               >
-                <h3 className="text-lg md:text-xl font-medium mb-4">Disclaimer</h3>
+                <h3 className="text-lg md:text-xl font-medium mb-4">
+                  Disclaimer
+                </h3>
                 <p className="text-primary-green mb-6 text-sm">
-                  Investing involves risks, including the potential loss of all your invested capital. 
-                  Safina Invest provides tools and information to support your decision-making, but we 
-                  do not offer financial advice. All investment decisions are solely your responsibility, 
-                  and Safina Invest is not liable for any losses incurred as a result of your choices. 
-                  Always consult a financial advisor if you are unsure about the suitability of an investment.
+                  Investing involves risks, including the potential loss of all
+                  your invested capital. Safina Invest provides tools and
+                  information to support your decision-making, but we do not
+                  offer financial advice. All investment decisions are solely
+                  your responsibility, and Safina Invest is not liable for any
+                  losses incurred as a result of your choices. Always consult a
+                  financial advisor if you are unsure about the suitability of
+                  an investment.
                 </p>
               </motion.div>
 
@@ -714,11 +584,17 @@ const CompleteInvestmentJourney = () => {
                   className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur"
                   whileHover={{ scale: 1.02 }}
                 >
-                  <h3 className="text-lg md:text-xl font-medium mb-4">Stay Updated</h3>
-                  <p className="text-primary-green mb-6 text-sm ">
-                    Get personalized insights and market updates delivered to your inbox.
+                  <h3 className="text-lg md:text-xl font-medium mb-4">
+                    Stay Updated
+                  </h3>
+                  <p className="text-primary-green mb-6 text-sm">
+                    Get personalized insights and market updates delivered to
+                    your inbox.
                   </p>
-                  <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                  <form
+                    onSubmit={handleSubmit}
+                    className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4"
+                  >
                     <input
                       type="email"
                       value={email}
@@ -750,16 +626,194 @@ const CompleteInvestmentJourney = () => {
                   <AlertDescription
                     severity="error"
                     message="Error!"
-                    description={errorMessage || 'Failed to subscribe. Please try again.'}
+                    description={
+                      errorMessage || 'Failed to subscribe. Please try again.'
+                    }
                   />
                 )}
               </div>
             </div>
           </motion.div>
-        </section>
+        </>
+      ),
+    },
+  ];
+
+  // ----- Scroll to top & go to next step -----
+  const handleNextStep = () => {
+    if (activeStep < steps.length - 1) {
+      setActiveStep((prev) => prev + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // ----- Render -----
+  return (
+    <div className="bg-light-gold text-deep-teal min-h-screen py-10">
+      {/* Container */}
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-10">
+        {/* =============== SIDEBAR =============== */}
+        <div className="lg:w-1/4 space-y-6">
+          {/* Header / Title */}
+          <div className="flex items-center space-x-3 text-primary-green">
+            <ChartPie className="w-8 h-8" />
+            <h2 className="text-3xl font-semibold text-deep-brown">
+              Your Investment Journey
+            </h2>
+          </div>
+
+          {/* ----------------- PROGRESS & STEPS CONTAINER ----------------- */}
+          <div className="relative mt-8">
+            {/* Gray background bar (full height of the step container) */}
+            <div className="absolute top-0 bottom-0 left-0 w-1 bg-sage/50 z-0" />
+
+            {/* Filled bar (based on active step) */}
+            <motion.div
+              className="absolute top-0 left-0 w-1 bg-primary-green z-0"
+              style={{
+                height: `${((activeStep + 1) / steps.length) * 100}%`,
+              }}
+              layout
+              transition={{ duration: 0.4 }}
+            />
+
+            {/* Step Nav Buttons */}
+            <nav className="space-y-2 pl-4 relative z-10">
+              {steps.map((step, index) => {
+                const isActive = activeStep === index;
+                return (
+                  <div key={step.id}>
+                    <button
+                      onClick={() => {
+                        setActiveStep(index);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className={`flex items-center space-x-3 p-4 rounded-xl transition-colors w-full text-left ${
+                        isActive
+                          ? 'bg-primary-green/20 text-primary-green'
+                          : 'hover:bg-primary-green/10 text-deep-brown/70'
+                      }`}
+                    >
+                      {step.icon}
+                      {/* Step label: "Step 1: Risk Profile" */}
+                      <span className="font-medium">
+                        Step {index + 1}: {step.title}
+                      </span>
+                    </button>
+
+                    {/* Show "dropdown" shortDescription for the active step */}
+                    {isActive && (
+                      <motion.div
+                        initial={{ height: 0 }}
+                        animate={{ height: 'auto' }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden px-4 pb-2 text-sm text-deep-brown"
+                      >
+                        {step.shortDescription}
+                      </motion.div>
+                    )}
+                  </div>
+                );
+              })}
+            </nav>
+          </div>
+          {/* ------------------------------------------------------------- */}
+
+          {/* Featured Insight (from your original snippet) */}
+          <div className="bg-white/60 rounded-xl p-6 border border-primary-green/20">
+            <GraduationCapIcon />
+            <h3 className="text-lg font-medium text-deep-brown mb-2">
+              Why Transparency Matters
+            </h3>
+            <p className="text-sm text-deep-brown/80">
+              Understanding where your money goes is crucial for making informed
+              investment decisions. We provide complete visibility into every
+              aspect of your portfolio.
+            </p>
+          </div>
+        </div>
+
+        {/* =============== MAIN CONTENT =============== */}
+        <div className="lg:w-3/4">
+          {/* Step Content */}
+          {steps[activeStep].content}
+
+          {/* Next Button (if not last step) */}
+          {activeStep < steps.length - 1 && (
+            <div className="mt-10">
+              <button
+                onClick={handleNextStep}
+                className="inline-flex items-center bg-primary-green text-white px-6 py-3 rounded-md hover:bg-primary-green/90 transition-colors"
+              >
+                Next Step <ArrowRight className="ml-2 w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
-export default CompleteInvestmentJourney;
+// ============= Chart Sub-Component for Step 1 =============
+const StockLineChart = ({ stockData, riskLevel }) => {
+  return (
+    <div className="h-64 sm:h-80 md:h-96">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart
+          data={stockData}
+          margin={{ top: 20, right: 20, bottom: 35, left: 20 }}
+        >
+          {Array.from({ length: 10 }, (_, i) => i + 1).map((risk) => (
+            <Line
+              key={risk}
+              type="monotone"
+              dataKey={`risk${risk}`}
+              stroke={risk === riskLevel ? '#066b06' : '#0a4c4c'}
+              strokeWidth={risk === riskLevel ? 3 : 1}
+              dot={false}
+              opacity={risk === riskLevel ? 1 : 0.3}
+            />
+          ))}
+          <XAxis
+            dataKey="year"
+            stroke="#044d04"
+            tick={false}
+            label={{
+              value: 'Time',
+              position: 'bottom',
+              offset: 20,
+              fill: '#044d04',
+            }}
+          />
+          <YAxis
+            stroke="#044d04"
+            tick={false}
+            label={{
+              value: 'Growth',
+              angle: -90,
+              position: 'left',
+              offset: 0,
+              fill: '#044d04',
+            }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+// ============= Mock GraduationCap Icon =============
+function GraduationCapIcon() {
+  return (
+    <svg
+      className="w-6 h-6 text-primary-green mb-3"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path d="M21.48 8.65l-8.98-3.99a2 2 0 00-1.57 0L1.96 8.65A1 1 0 001 9.57v.06c0 .37.2.71.52.89l2.94 1.67v3.51a2 2 0 001.04 1.76l4.94 2.63a2 2 0 001.85 0l4.94-2.63a2 2 0 001.04-1.76v-3.51l2.94-1.67a1 1 0 00.52-.89v-.06a1 1 0 00-.52-.92zM12 19l-4-2.13v-2.59l3.48 1.55a2 2 0 001.04.23 2 2 0 001.05-.23L17 14.28v2.59L12 19zm0-5.18L3.2 9.5l8.8-3.9 8.8 3.9-8.8 4.32z" />
+    </svg>
+  );
+}
+
+export default EnhancedTransparencyDashboard;
