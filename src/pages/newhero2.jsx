@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  motion,
-  useTransform,
-  useMotionValue,
-  animate,
+  motion
 } from 'framer-motion';
 import {
   LineChart,
@@ -19,17 +16,14 @@ import {
 } from 'recharts';
 import {
   TrendingUp,
-  Shield,
   Eye,
   ArrowRight,
-  PieChart as PieChartIcon,
   GraduationCap,
   BarChart2,
   TrendingDown,
   Clock,
   Blocks,
 } from 'lucide-react';
-import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
 const InnovativeHero = () => {
@@ -49,34 +43,8 @@ const InnovativeHero = () => {
   ];
   const COLORS = ['#066b06', '#c49b3c', '#2A9D8F', '#264653'];
 
-  const [activeTab, setActiveTab] = useState('portfolio');
 
-  // Generate investment data for "Strategic Investments" line chart
-  const generateInvestmentData = () => {
-    return Array.from({ length: 50 }, (_, i) => {
-      const x = i / 49;
-      // Slight quartic curve with some sinusoidal variation
-      const y = Math.pow(x, 4) * 0.7 + x * 0.3 + Math.sin(x * 10) * 0.02;
-      return { x: i, value: y };
-    });
-  };
-  const investmentData = generateInvestmentData();
 
-  // Counter for the "Smart Savings" 100%
-  const Counter = ({ from, to, duration = 2 }) => {
-    const count = useMotionValue(from);
-    const rounded = useTransform(count, (value) => Math.round(value));
-
-    useEffect(() => {
-      const controls = animate(count, to, {
-        duration: duration,
-        ease: 'easeOut',
-      });
-      return controls.stop;
-    }, [count, to, duration]);
-
-    return <motion.span>{rounded}</motion.span>;
-  };
 
   // ----------------------------
   // PART 2: Data & logic for the data-driven section
@@ -165,306 +133,220 @@ const InnovativeHero = () => {
   // RENDER
   // ----------------------------
   return (
-    <div
-      ref={containerRef}
-      className="w-full overflow-x-hidden bg-gradient-to-b from-[#e2eac3] to-[#f5f8eb] font-sans"
-    >
-      {/* Main Container */}
-      <div className="max-w-7xl mx-auto px-4 pt-12 pb-20">
-        {/* Hero Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12 sm:mb-16"
-        >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold text-deep-brown mb-6 leading-tight">
-            Innovative{' '}
-            <span className="relative">
-              Ethical
-            </span>{' '}
-            <span className="text-[#066b06]">Free</span>
-          </h1>
-        </motion.div>
+    <div ref={containerRef} className="w-full overflow-x-hidden font-sans">
+      {/* HERO SECTION WITH GRADIENT BACKGROUND */}
+      <div className="bg-[#e2eac3]">
+        <div className="max-w-7xl mx-auto px-4 pt-12 pb-20">
+          {/* Hero Title */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-12 sm:mb-16"
+          >
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold text-deep-brown mb-6 leading-tight">
+              Innovative{' '}
+              <span className="relative">Ethical</span>{' '}
+              <span className="text-[#066b06]">Free</span>
+            </h1>
+          </motion.div>
 
-        {/* ENHANCED TRANSPARENCY DASHBOARD */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="relative mb-16 sm:mb-24"
-        >
-          <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-primary-green/20 shadow-lg">
-            {/* Header */}
-            <div className="flex items-center space-x-3 text-primary-green mb-6 sm:mb-8">
-              <Eye className="w-6 h-6 sm:w-8 sm:h-8" />
-              <h2 className="text-2xl sm:text-3xl font-semibold text-deep-brown">
-                Complete <span className="text-primary-green">Transparency</span>
-              </h2>
-            </div>
+          {/* TRANSPARENCY & PORTFOLIO INSIGHTS SECTION */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="relative mb-16 sm:mb-24"
+          >
+            <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-primary-green/20 shadow-lg">
+              {/* Parent Container with CSS Grid */}
+              <div className="grid lg:grid-cols-12 gap-4 sm:gap-6">
+                {/* Complete Transparency Section */}
+                <div className="lg:col-span-4 flex flex-col space-y-6">
+                  {/* Header */}
+                  <div className="flex items-center space-x-3">
+                    <Eye className="w-6 h-6 sm:w-8 sm:h-8" />
+                    <h2 className="text-2xl sm:text-3xl font-semibold text-deep-brown">
+                      Complete{' '}
+                      <span className="text-primary-green">Transparency</span>
+                    </h2>
+                  </div>
 
-            {/* Main Content */}
-            <div className="grid lg:grid-cols-12 gap-6 sm:gap-8">
-              {/* Left Column - Navigation & Info */}
-              <div className="lg:col-span-4 space-y-6">
-                {/* Navigation Tabs (Only 'Portfolio' for now) */}
-                <div className="flex flex-col space-y-2">
-                  <button
-                    onClick={() => setActiveTab('portfolio')}
-                    className={clsx(
-                      'flex items-center space-x-3 p-3 sm:p-4 rounded-xl transition-colors text-sm sm:text-base',
-                      activeTab === 'portfolio'
-                        ? 'bg-primary-green/20 text-primary-green'
-                        : 'hover:bg-primary-green/10 text-deep-brown/70'
-                    )}
-                  >
-                    <PieChartIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                    <span className="font-medium">Portfolio Visibility</span>
-                  </button>
+                  {/* Why Transparency Matters */}
+                  <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
+                    <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-primary-green mb-2 sm:mb-3" />
+                    <h3 className="text-base sm:text-lg lg:text-xl font-medium text-deep-brown mb-1 sm:mb-2">
+                      Why Transparency Matters
+                    </h3>
+                    <p className="text-xs sm:text-sm lg:text-base text-deep-brown/80">
+                      Understanding where your money goes is crucial for making
+                      informed investment decisions. We provide complete visibility
+                      into every aspect of your portfolio.
+                    </p>
+                  </div>
+
+                  {/* Our Investment Building Blocks Are No Secret */}
+                  <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
+                    <Blocks className="w-5 h-5 sm:w-6 sm:h-6 text-primary-green mb-2 sm:mb-3" />
+                    <h3 className="text-base sm:text-lg lg:text-xl font-medium text-deep-brown mb-1 sm:mb-2">
+                      Our Investment Building Blocks Are No Secret
+                    </h3>
+                    <p className="text-xs sm:text-sm lg:text-base text-deep-brown/80">
+                      We provide a detailed breakdown of all 12 ETFs we use in our
+                      portfolios and our optimisation process including descriptions,
+                      tickers, and returns so you can invest with peace of mind.
+                    </p>
+                  </div>
                 </div>
 
-                {/* Featured Insight #1 */}
-                <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
-                  <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-primary-green mb-2 sm:mb-3" />
-                  <h3 className="text-base sm:text-lg font-medium text-deep-brown mb-1 sm:mb-2">
-                    Why Transparency Matters
-                  </h3>
-                  <p className="text-xs sm:text-sm text-deep-brown/80">
-                    Understanding where your money goes is crucial for making
-                    informed investment decisions. We provide complete visibility
-                    into every aspect of your portfolio.
-                  </p>
+                {/* Divider - Visible only on large screens */}
+                <div className="hidden lg:flex lg:col-span-1 justify-center">
+                  <div className="w-px bg-gray-300 h-full"></div>
                 </div>
 
-                {/* Featured Insight #2 */}
-                <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
-                  <Blocks className="w-5 h-5 sm:w-6 sm:h-6 text-primary-green mb-2 sm:mb-3" />
-                  <h3 className="text-base sm:text-lg font-medium text-deep-brown mb-1 sm:mb-2">
-                    Our investment building blocks are no secret
-                  </h3>
-                  <p className="text-xs sm:text-sm text-deep-brown/80">
-                    We provide a detailed breakdown of all 12 ETFs we use in our
-                    portfolios and our optimisation process—including descriptions,
-                    tickers, and returns—so you can invest with peace of mind.
-                  </p>
-                </div>
-              </div>
+                {/* Portfolio Insights Section */}
+                <div className="lg:col-span-7 flex flex-col space-y-6">
+                  {/* Header */}
+                  <div className="flex items-center space-x-3">
+                    <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-primary-green" />
+                    <h2 className="text-2xl sm:text-3xl font-semibold text-deep-brown">
+                      Portfolio{' '}
+                      <span className="text-primary-green">Insights</span>
+                    </h2>
+                  </div>
 
-              {/* Right Column - Portfolio Content */}
-              <div className="lg:col-span-8">
-                {activeTab === 'portfolio' && (
-                  <div className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      {/* Portfolio Breakdown */}
-                      <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
-                        <h3 className="text-base sm:text-lg font-medium text-deep-brown mb-4">
-                          Portfolio Allocation
-                        </h3>
-                        <div className="h-40 sm:h-48">
-                          <ResponsiveContainer width="100%" height="100%">
-                            <PieChart>
-                              <Pie
-                                data={portfolioData}
-                                innerRadius={60}
-                                outerRadius={80}
-                                paddingAngle={5}
-                                dataKey="value"
-                              >
-                                {portfolioData.map((entry, index) => (
-                                  <Cell
-                                    key={`cell-${index}`}
-                                    fill={COLORS[index % COLORS.length]}
-                                  />
-                                ))}
-                              </Pie>
-                            </PieChart>
-                          </ResponsiveContainer>
-                        </div>
-                        <div className="grid grid-cols-2 gap-2 mt-4">
-                          {portfolioData.map((item, index) => (
-                            <div
-                              key={item.name}
-                              className="flex items-center space-x-2"
+                  {/* Nested Grid for Portfolio Allocation and Live Analytics */}
+                  <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+                    {/* Portfolio Allocation */}
+                    <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
+                      <h3 className="text-base sm:text-lg lg:text-xl font-medium text-deep-brown mb-4">
+                        Portfolio Allocation
+                      </h3>
+                      <div className="h-48 sm:h-56">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={portfolioData}
+                              innerRadius={60}
+                              outerRadius={80}
+                              paddingAngle={5}
+                              dataKey="value"
                             >
-                              <div
-                                className="w-3 h-3 rounded-full"
-                                style={{ backgroundColor: COLORS[index] }}
-                              />
-                              <span className="text-xs sm:text-sm text-deep-brown/80">
-                                {item.name}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
+                              {portfolioData.map((entry, index) => (
+                                <Cell
+                                  key={`cell-${index}`}
+                                  fill={COLORS[index % COLORS.length]}
+                                />
+                              ))}
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
                       </div>
-
-                      {/* Real-time Metrics (static placeholders) */}
-                      <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
-                        <h3 className="text-base sm:text-lg font-medium text-deep-brown mb-4">
-                          Live Analytics
-                        </h3>
-                        <div className="space-y-3 sm:space-y-4">
-                          {[
-                            {
-                              label: 'Portfolio Performance',
-                              value: '+8.2%',
-                              icon: <BarChart2 className="w-4 h-4" />,
-                            },
-                            {
-                              label: 'Max Drawdown',
-                              value: '-15.4%',
-                              trend: 'down',
-                              icon: <TrendingDown className="w-4 h-4" />,
-                              description:
-                                'Maximum observed loss from peak to trough',
-                            },
-                            {
-                              label: 'Volatility',
-                              value: '9.2%',
-                              trend: 'neutral',
-                              icon: <BarChart2 className="w-4 h-4" />,
-                              description:
-                                'Moderate price fluctuations indicating balanced risk',
-                            },
-                            {
-                              label: '10Y Return',
-                              value: '156.3%',
-                              trend: 'up',
-                              icon: <Clock className="w-4 h-4" />,
-                              description:
-                                'Cumulative return over the past decade',
-                            },
-                          ].map((metric) => (
+                      <div className="grid grid-cols-2 gap-2 mt-4">
+                        {portfolioData.map((item, index) => (
+                          <div
+                            key={item.name}
+                            className="flex items-center space-x-2"
+                          >
                             <div
-                              key={metric.label}
-                              className="flex items-center justify-between p-2 sm:p-3 bg-white/40 rounded-lg"
-                            >
-                              <div className="flex items-center space-x-2 text-deep-brown/80">
-                                {metric.icon}
-                                <span className="text-xs sm:text-sm">
-                                  {metric.label}
-                                </span>
-                              </div>
-                              <span className="font-medium text-primary-green text-sm sm:text-base">
-                                {metric.value}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
+                              className="w-3 h-3 rounded-full"
+                              style={{ backgroundColor: COLORS[index] }}
+                            />
+                            <span className="text-xs sm:text-sm text-deep-brown/80">
+                              {item.name}
+                            </span>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Investment Strategy */}
+                    {/* Live Analytics */}
                     <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
-                      <h3 className="text-base sm:text-lg font-medium text-deep-brown mb-4">
-                        Investment Strategy
+                      <h3 className="text-base sm:text-lg lg:text-xl font-medium text-deep-brown mb-4">
+                        Live Analytics
                       </h3>
-                      <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-2 sm:mb-4">
+                      <div className="space-y-3 sm:space-y-4">
                         {[
-                          'Shariah Compliance',
-                          'Risk Management',
-                          'Diversification',
-                        ].map((strategy) => (
+                          {
+                            label: 'Portfolio Performance',
+                            value: '+8.2%',
+                            icon: <BarChart2 className="w-4 h-4" />,
+                          },
+                          {
+                            label: 'Max Drawdown',
+                            value: '-15.4%',
+                            trend: 'down',
+                            icon: <TrendingDown className="w-4 h-4" />,
+                            description:
+                              'Maximum observed loss from peak to trough',
+                          },
+                          {
+                            label: 'Volatility',
+                            value: '9.2%',
+                            trend: 'neutral',
+                            icon: <BarChart2 className="w-4 h-4" />,
+                            description:
+                              'Moderate price fluctuations indicating balanced risk',
+                          },
+                          {
+                            label: '10Y Return',
+                            value: '156.3%',
+                            trend: 'up',
+                            icon: <Clock className="w-4 h-4" />,
+                            description:
+                              'Cumulative return over the past decade',
+                          },
+                        ].map((metric) => (
                           <div
-                            key={strategy}
-                            className="bg-primary-green/10 rounded-lg p-3 text-center"
+                            key={metric.label}
+                            className="flex items-center justify-between p-2 sm:p-3 bg-white/40 rounded-lg"
                           >
-                            <span className="text-xs sm:text-sm font-medium text-deep-brown">
-                              {strategy}
+                            <div className="flex items-center space-x-2 text-deep-brown/80">
+                              {metric.icon}
+                              <span className="text-xs sm:text-sm">
+                                {metric.label}
+                              </span>
+                            </div>
+                            <span className="font-medium text-primary-green text-sm sm:text-base">
+                              {metric.value}
                             </span>
                           </div>
                         ))}
                       </div>
                     </div>
                   </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </motion.div>
 
-        {/* PRODUCTS SECTION */}
-        <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
-          {/* Savings Card */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6 }}
-            className="relative overflow-hidden rounded-2xl bg-gold/20 p-6 sm:p-8 border border-gold/20 hover:shadow-lg transition-shadow"
-          >
-            <div className="relative">
-              <Shield className="w-8 h-8 sm:w-12 sm:h-12 text-gold mb-4 sm:mb-6" />
-              <h3 className="text-xl sm:text-2xl font-semibold text-deep-brown mb-2 sm:mb-4">
-                Smart Savings
-              </h3>
-              <p className="text-sm sm:text-base text-deep-brown/80 mb-4 sm:mb-6">
-                Start your wealth journey with our ethical saving solutions. Earn
-                competitive returns while staying true to Islamic principles.
-              </p>
-              <div className="w-full h-24 sm:h-32 relative flex items-center justify-center mb-4 sm:mb-6">
-                <motion.div
-                  className="relative w-16 h-16 sm:w-20 sm:h-20 bg-gold/30 rounded-full flex items-center justify-center"
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <div className="text-base sm:text-xl font-medium text-gold">
-                    <Counter from={0} to={100} />%
+                  {/* Investment Strategy */}
+                  <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
+                    <h3 className="text-base sm:text-lg lg:text-xl font-medium text-deep-brown mb-4">
+                      Investment Strategy
+                    </h3>
+                    <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-2 sm:mb-4">
+                      {[
+                        'Shariah Compliance',
+                        'Risk Management',
+                        'Diversification',
+                      ].map((strategy) => (
+                        <div
+                          key={strategy}
+                          className="bg-primary-green/10 rounded-lg p-3 text-center"
+                        >
+                          <span className="text-xs sm:text-sm font-medium text-deep-brown">
+                            {strategy}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </motion.div>
+                </div>
               </div>
-              <motion.button
-                whileHover={{ x: 5 }}
-                className="inline-flex items-center space-x-1 sm:space-x-2 text-gold text-sm sm:text-base"
-              >
-                <span>Explore Savings</span>
-                <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-              </motion.button>
-            </div>
-          </motion.div>
-
-          {/* Investments Card */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.8 }}
-            className="relative overflow-hidden rounded-2xl bg-deep-teal/20 p-6 sm:p-8 border border-deep-teal/20 hover:shadow-lg transition-shadow"
-          >
-            <div className="relative">
-              <TrendingUp className="w-8 h-8 sm:w-12 sm:h-12 text-deep-teal mb-4 sm:mb-6" />
-              <h3 className="text-xl sm:text-2xl font-semibold text-deep-brown mb-2 sm:mb-4">
-                Strategic Investments
-              </h3>
-              <p className="text-sm sm:text-base text-deep-brown/80 mb-4 sm:mb-6">
-                Our data-driven approach combines ethical investing with modern
-                portfolio theory, delivering consistent returns.
-              </p>
-              <div className="h-24 sm:h-32 mb-4 sm:mb-6">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={investmentData}>
-                    <Line
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#066b06"
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-              <motion.button
-                whileHover={{ x: 5 }}
-                className="inline-flex items-center space-x-1 sm:space-x-2 text-deep-teal text-sm sm:text-base"
-              >
-                <span>View Investments</span>
-                <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-              </motion.button>
             </div>
           </motion.div>
         </div>
       </div>
 
-      {/* DATA ANALYTICS SECTION */}
+      {/* DATA ANALYTICS SECTION WITH DISTINCT BACKGROUND */}
       <section className="w-full py-10 sm:py-14 md:py-20 bg-light-background">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-center">
             {/* Text / CTA */}
             <div>
