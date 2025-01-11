@@ -32,15 +32,12 @@ import {
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
-// ----------------------------
-// Combined InnovativeHero
-// ----------------------------
 const InnovativeHero = () => {
   const navigate = useNavigate();
   const containerRef = useRef(null);
 
   // ----------------------------
-  // PART 1: New Hero / Transparency Section
+  // PART 1: Hero / Transparency Section
   // ----------------------------
 
   // Sample portfolio allocation data
@@ -170,20 +167,20 @@ const InnovativeHero = () => {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-gradient-to-b from-[#e2eac3] to-[#f5f8eb] overflow-hidden font-sans"
+      className="w-full overflow-x-hidden bg-gradient-to-b from-[#e2eac3] to-[#f5f8eb] font-sans"
     >
+      {/* Main Container */}
       <div className="max-w-7xl mx-auto px-4 pt-12 pb-20">
         {/* Hero Title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-medium text-deep-brown mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold text-deep-brown mb-6 leading-tight">
             Innovative{' '}
             <span className="relative">
               Ethical
-              
             </span>{' '}
             <span className="text-[#066b06]">Free</span>
           </h1>
@@ -194,19 +191,19 @@ const InnovativeHero = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="relative mb-24"
+          className="relative mb-16 sm:mb-24"
         >
-          <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-8 border border-primary-green/20 shadow-lg">
+          <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-primary-green/20 shadow-lg">
             {/* Header */}
-            <div className="flex items-center space-x-3 text-primary-green mb-8">
-              <Eye className="w-8 h-8" />
-              <h2 className="text-3xl font-semibold text-deep-brown">
+            <div className="flex items-center space-x-3 text-primary-green mb-6 sm:mb-8">
+              <Eye className="w-6 h-6 sm:w-8 sm:h-8" />
+              <h2 className="text-2xl sm:text-3xl font-semibold text-deep-brown">
                 Complete <span className="text-primary-green">Transparency</span>
               </h2>
             </div>
 
             {/* Main Content */}
-            <div className="grid lg:grid-cols-12 gap-8">
+            <div className="grid lg:grid-cols-12 gap-6 sm:gap-8">
               {/* Left Column - Navigation & Info */}
               <div className="lg:col-span-4 space-y-6">
                 {/* Navigation Tabs (Only 'Portfolio' for now) */}
@@ -214,24 +211,24 @@ const InnovativeHero = () => {
                   <button
                     onClick={() => setActiveTab('portfolio')}
                     className={clsx(
-                      'flex items-center space-x-3 p-4 rounded-xl transition-colors',
+                      'flex items-center space-x-3 p-3 sm:p-4 rounded-xl transition-colors text-sm sm:text-base',
                       activeTab === 'portfolio'
                         ? 'bg-primary-green/20 text-primary-green'
                         : 'hover:bg-primary-green/10 text-deep-brown/70'
                     )}
                   >
-                    <PieChartIcon className="w-5 h-5" />
+                    <PieChartIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                     <span className="font-medium">Portfolio Visibility</span>
                   </button>
                 </div>
 
                 {/* Featured Insight #1 */}
-                <div className="bg-white/60 rounded-xl p-6 border border-primary-green/20">
-                  <GraduationCap className="w-6 h-6 text-primary-green mb-3" />
-                  <h3 className="text-lg font-medium text-deep-brown mb-2">
+                <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
+                  <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-primary-green mb-2 sm:mb-3" />
+                  <h3 className="text-base sm:text-lg font-medium text-deep-brown mb-1 sm:mb-2">
                     Why Transparency Matters
                   </h3>
-                  <p className="text-sm text-deep-brown/80">
+                  <p className="text-xs sm:text-sm text-deep-brown/80">
                     Understanding where your money goes is crucial for making
                     informed investment decisions. We provide complete visibility
                     into every aspect of your portfolio.
@@ -239,12 +236,12 @@ const InnovativeHero = () => {
                 </div>
 
                 {/* Featured Insight #2 */}
-                <div className="bg-white/60 rounded-xl p-6 border border-primary-green/20">
-                  <Blocks className="w-6 h-6 text-primary-green mb-3" />
-                  <h3 className="text-lg font-medium text-deep-brown mb-2">
+                <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
+                  <Blocks className="w-5 h-5 sm:w-6 sm:h-6 text-primary-green mb-2 sm:mb-3" />
+                  <h3 className="text-base sm:text-lg font-medium text-deep-brown mb-1 sm:mb-2">
                     Our investment building blocks are no secret
                   </h3>
-                  <p className="text-sm text-deep-brown/80">
+                  <p className="text-xs sm:text-sm text-deep-brown/80">
                     We provide a detailed breakdown of all 12 ETFs we use in our
                     portfolios and our optimisation process—including descriptions,
                     tickers, and returns—so you can invest with peace of mind.
@@ -256,13 +253,13 @@ const InnovativeHero = () => {
               <div className="lg:col-span-8">
                 {activeTab === 'portfolio' && (
                   <div className="space-y-6">
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid md:grid-cols-2 gap-6">
                       {/* Portfolio Breakdown */}
-                      <div className="bg-white/60 rounded-xl p-6 border border-primary-green/20">
-                        <h3 className="text-lg font-medium text-deep-brown mb-4">
+                      <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
+                        <h3 className="text-base sm:text-lg font-medium text-deep-brown mb-4">
                           Portfolio Allocation
                         </h3>
-                        <div className="h-48">
+                        <div className="h-40 sm:h-48">
                           <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                               <Pie
@@ -292,7 +289,7 @@ const InnovativeHero = () => {
                                 className="w-3 h-3 rounded-full"
                                 style={{ backgroundColor: COLORS[index] }}
                               />
-                              <span className="text-sm text-deep-brown/80">
+                              <span className="text-xs sm:text-sm text-deep-brown/80">
                                 {item.name}
                               </span>
                             </div>
@@ -301,11 +298,11 @@ const InnovativeHero = () => {
                       </div>
 
                       {/* Real-time Metrics (static placeholders) */}
-                      <div className="bg-white/60 rounded-xl p-6 border border-primary-green/20">
-                        <h3 className="text-lg font-medium text-deep-brown mb-4">
+                      <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
+                        <h3 className="text-base sm:text-lg font-medium text-deep-brown mb-4">
                           Live Analytics
                         </h3>
-                        <div className="space-y-4">
+                        <div className="space-y-3 sm:space-y-4">
                           {[
                             {
                               label: 'Portfolio Performance',
@@ -339,13 +336,15 @@ const InnovativeHero = () => {
                           ].map((metric) => (
                             <div
                               key={metric.label}
-                              className="flex items-center justify-between p-3 bg-white/40 rounded-lg"
+                              className="flex items-center justify-between p-2 sm:p-3 bg-white/40 rounded-lg"
                             >
                               <div className="flex items-center space-x-2 text-deep-brown/80">
                                 {metric.icon}
-                                <span className="text-sm">{metric.label}</span>
+                                <span className="text-xs sm:text-sm">
+                                  {metric.label}
+                                </span>
                               </div>
-                              <span className="font-medium text-primary-green">
+                              <span className="font-medium text-primary-green text-sm sm:text-base">
                                 {metric.value}
                               </span>
                             </div>
@@ -355,11 +354,11 @@ const InnovativeHero = () => {
                     </div>
 
                     {/* Investment Strategy */}
-                    <div className="bg-white/60 rounded-xl p-6 border border-primary-green/20">
-                      <h3 className="text-lg font-medium text-deep-brown mb-4">
+                    <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
+                      <h3 className="text-base sm:text-lg font-medium text-deep-brown mb-4">
                         Investment Strategy
                       </h3>
-                      <div className="grid grid-cols-3 gap-4 mb-4">
+                      <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-2 sm:mb-4">
                         {[
                           'Shariah Compliance',
                           'Risk Management',
@@ -369,7 +368,7 @@ const InnovativeHero = () => {
                             key={strategy}
                             className="bg-primary-green/10 rounded-lg p-3 text-center"
                           >
-                            <span className="text-sm font-medium text-deep-brown">
+                            <span className="text-xs sm:text-sm font-medium text-deep-brown">
                               {strategy}
                             </span>
                           </div>
@@ -384,26 +383,26 @@ const InnovativeHero = () => {
         </motion.div>
 
         {/* PRODUCTS SECTION */}
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
           {/* Savings Card */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6 }}
-            className="relative overflow-hidden rounded-2xl bg-gold/20 p-8 border border-gold/20 hover:shadow-lg transition-shadow"
+            className="relative overflow-hidden rounded-2xl bg-gold/20 p-6 sm:p-8 border border-gold/20 hover:shadow-lg transition-shadow"
           >
             <div className="relative">
-              <Shield className="w-12 h-12 text-gold mb-6" />
-              <h3 className="text-2xl font-semibold text-deep-brown mb-4">
+              <Shield className="w-8 h-8 sm:w-12 sm:h-12 text-gold mb-4 sm:mb-6" />
+              <h3 className="text-xl sm:text-2xl font-semibold text-deep-brown mb-2 sm:mb-4">
                 Smart Savings
               </h3>
-              <p className="text-deep-brown/80 mb-6">
+              <p className="text-sm sm:text-base text-deep-brown/80 mb-4 sm:mb-6">
                 Start your wealth journey with our ethical saving solutions. Earn
                 competitive returns while staying true to Islamic principles.
               </p>
-              <div className="w-full h-32 sm:h-40 relative flex items-center justify-center">
+              <div className="w-full h-24 sm:h-32 relative flex items-center justify-center mb-4 sm:mb-6">
                 <motion.div
-                  className="relative w-20 h-20 sm:w-24 sm:h-24 bg-gold/30 rounded-full flex items-center justify-center"
+                  className="relative w-16 h-16 sm:w-20 sm:h-20 bg-gold/30 rounded-full flex items-center justify-center"
                   animate={{ scale: [1, 1.05, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
@@ -414,10 +413,10 @@ const InnovativeHero = () => {
               </div>
               <motion.button
                 whileHover={{ x: 5 }}
-                className="inline-flex items-center space-x-2 text-gold"
+                className="inline-flex items-center space-x-1 sm:space-x-2 text-gold text-sm sm:text-base"
               >
                 <span>Explore Savings</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
               </motion.button>
             </div>
           </motion.div>
@@ -427,18 +426,18 @@ const InnovativeHero = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.8 }}
-            className="relative overflow-hidden rounded-2xl bg-deep-teal/20 p-8 border border-deep-teal/20 hover:shadow-lg transition-shadow"
+            className="relative overflow-hidden rounded-2xl bg-deep-teal/20 p-6 sm:p-8 border border-deep-teal/20 hover:shadow-lg transition-shadow"
           >
             <div className="relative">
-              <TrendingUp className="w-12 h-12 text-deep-teal mb-6" />
-              <h3 className="text-2xl font-semibold text-deep-brown mb-4">
+              <TrendingUp className="w-8 h-8 sm:w-12 sm:h-12 text-deep-teal mb-4 sm:mb-6" />
+              <h3 className="text-xl sm:text-2xl font-semibold text-deep-brown mb-2 sm:mb-4">
                 Strategic Investments
               </h3>
-              <p className="text-deep-brown/80 mb-6">
+              <p className="text-sm sm:text-base text-deep-brown/80 mb-4 sm:mb-6">
                 Our data-driven approach combines ethical investing with modern
                 portfolio theory, delivering consistent returns.
               </p>
-              <div className="h-32 mb-6">
+              <div className="h-24 sm:h-32 mb-4 sm:mb-6">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={investmentData}>
                     <Line
@@ -453,23 +452,23 @@ const InnovativeHero = () => {
               </div>
               <motion.button
                 whileHover={{ x: 5 }}
-                className="inline-flex items-center space-x-2 text-deep-teal"
+                className="inline-flex items-center space-x-1 sm:space-x-2 text-deep-teal text-sm sm:text-base"
               >
                 <span>View Investments</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
               </motion.button>
             </div>
           </motion.div>
         </div>
       </div>
 
-      {/* DATA ANALYTICS SECTION (from your second snippet) */}
-      <section className="w-full py-10 md:py-20 bg-light-background relative">
+      {/* DATA ANALYTICS SECTION */}
+      <section className="w-full py-10 sm:py-14 md:py-20 bg-light-background">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-center">
             {/* Text / CTA */}
             <div>
-              <h2 className="text-5xl sm:text-5xl md:text-5xl font-medium mb-4 sm:mb-6 text-primary-green">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium mb-3 sm:mb-5 text-primary-green leading-tight">
                 Driven by Data
               </h2>
               <p className="text-sm sm:text-base md:text-lg text-deep-brown mb-4 sm:mb-8 font-medium">
@@ -502,7 +501,7 @@ const InnovativeHero = () => {
                   <span className="text-xs sm:text-sm text-deep-teal uppercase tracking-wider mb-1">
                     Volatility
                   </span>
-                  <span className="text-lg sm:text-xl font-medium text-primary-green">
+                  <span className="text-base sm:text-xl font-medium text-primary-green">
                     12.5%
                   </span>
                 </div>
@@ -511,14 +510,14 @@ const InnovativeHero = () => {
                   <span className="text-xs sm:text-sm text-deep-teal uppercase tracking-wider mb-1">
                     YTD Return
                   </span>
-                  <span className="text-lg sm:text-xl font-medium text-primary-green">
+                  <span className="text-base sm:text-xl font-medium text-primary-green">
                     {ytdReturn !== null ? `+${ytdReturn}%` : 'N/A'}
                   </span>
                 </div>
               </div>
 
               {/* Performance Chart */}
-              <div className="w-full h-48 sm:h-64">
+              <div className="w-full h-40 sm:h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={performanceData}>
                     <defs>

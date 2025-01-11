@@ -27,7 +27,6 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-// ============= Alert Description Component =============
 function AlertDescription({ severity, message, description }) {
   return (
     <Alert severity={severity}>
@@ -47,7 +46,6 @@ function AlertDescription({ severity, message, description }) {
   );
 }
 
-// ============= Main Component =============
 const EnhancedTransparencyDashboard = () => {
   const navigate = useNavigate();
 
@@ -57,6 +55,13 @@ const EnhancedTransparencyDashboard = () => {
   const [status, setStatus] = useState('idle'); // idle, loading, success, error
   const [errorMessage, setErrorMessage] = useState('');
   const [showInfo, setShowInfo] = useState(false);
+
+  // ----- Utility: Scroll to top on mobile only -----
+  const scrollToTopOnMobile = () => {
+    if (window.innerWidth < 768) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   // ----- Subscription Form Submission -----
   const handleSubmit = async (e) => {
@@ -158,7 +163,6 @@ const EnhancedTransparencyDashboard = () => {
             transition={{ duration: 0.5 }}
             className="space-y-16"
           >
-            {/* Intro */}
             <div className="space-y-4">
               <h2 className="text-3xl md:text-4xl font-medium">
                 Discover Your Risk Profile
@@ -169,11 +173,9 @@ const EnhancedTransparencyDashboard = () => {
               </p>
             </div>
 
-            {/* Content Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Left Column */}
               <div className="space-y-8">
-                {/* Risk Slider Card (desktop-only) */}
                 <motion.div
                   className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block"
                   whileHover={{ scale: 1.02 }}
@@ -208,7 +210,6 @@ const EnhancedTransparencyDashboard = () => {
                   </div>
                 </motion.div>
 
-                {/* Risk Quiz Link (visible on all) */}
                 <motion.button
                   onClick={() => navigate('/assets')}
                   className="w-full text-left bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors focus:outline-none"
@@ -232,7 +233,6 @@ const EnhancedTransparencyDashboard = () => {
                   </div>
                 </motion.button>
 
-                {/* Educational Resource (visible on all) */}
                 <motion.div
                   onClick={() =>
                     navigate('/articles/understanding-investing-risk')
@@ -264,7 +264,6 @@ const EnhancedTransparencyDashboard = () => {
                   Risk-Return Profiles
                 </h3>
                 <div className="bg-light-gold/70 rounded-lg p-4 mb-8">
-                  {/* Chart container */}
                   <StockLineChart stockData={stockData} riskLevel={riskLevel} />
                 </div>
 
@@ -339,7 +338,6 @@ const EnhancedTransparencyDashboard = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              {/* Our Methodology (desktop-only) */}
               <motion.div
                 className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block"
                 whileHover={{ scale: 1.01 }}
@@ -356,7 +354,6 @@ const EnhancedTransparencyDashboard = () => {
                   optimize your investment outcomes.
                 </p>
 
-                {/* Methodology Cards */}
                 <div className="space-y-6">
                   <div className="p-4 bg-primary-green/10 rounded-lg">
                     <h4 className="text-sm md:text-dark-green font-medium mb-2 flex items-center">
@@ -395,7 +392,6 @@ const EnhancedTransparencyDashboard = () => {
                 </div>
               </motion.div>
 
-              {/* Allocation Tool (visible on all) */}
               <motion.div
                 className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur flex flex-col"
                 whileHover={{ scale: 1.01 }}
@@ -411,7 +407,6 @@ const EnhancedTransparencyDashboard = () => {
                   </h3>
                 </div>
 
-                {/* Dynamic Portfolio Balance */}
                 <div className="flex-grow space-y-6">
                   {portfolioData.map(({ asset, percentage }) => (
                     <div key={asset} className="space-y-2">
@@ -442,7 +437,6 @@ const EnhancedTransparencyDashboard = () => {
                   </div>
                 </div>
 
-                {/* Call to Action */}
                 <motion.div
                   onClick={() => navigate('/allocation')}
                   className="mt-8 w-full bg-olive-green hover:bg-dark-green text-white py-3 px-6 rounded-lg flex items-center justify-center space-x-2 transition-colors cursor-pointer"
@@ -487,7 +481,6 @@ const EnhancedTransparencyDashboard = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-              {/* 1-Click Investing (visible on all) */}
               <motion.div
                 className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur"
                 whileHover={{ scale: 1.02 }}
@@ -511,7 +504,6 @@ const EnhancedTransparencyDashboard = () => {
                 </button>
               </motion.div>
 
-              {/* Low Minimum (desktop-only) */}
               <motion.div
                 className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur hidden md:block"
                 whileHover={{ scale: 1.02 }}
@@ -530,7 +522,6 @@ const EnhancedTransparencyDashboard = () => {
                 </p>
               </motion.div>
 
-              {/* Real-Time Monitoring (desktop-only) */}
               <motion.div
                 className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur hidden md:block"
                 whileHover={{ scale: 1.02 }}
@@ -558,7 +549,6 @@ const EnhancedTransparencyDashboard = () => {
               </motion.div>
             </div>
 
-            {/* Additional Options */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <motion.div
                 className="bg-deep-brown/5 p-6 md:p-8 rounded-xl backdrop-blur"
@@ -639,22 +629,19 @@ const EnhancedTransparencyDashboard = () => {
     },
   ];
 
-  // ----- Scroll to top & go to next step -----
+  // ----- Scroll to top & go to next step (on mobile only) -----
   const handleNextStep = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep((prev) => prev + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToTopOnMobile();
     }
   };
 
-  // ----- Render -----
   return (
     <div className="bg-light-gold text-deep-teal min-h-screen py-10">
-      {/* Container */}
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-10">
         {/* =============== SIDEBAR =============== */}
         <div className="lg:w-1/4 space-y-6">
-          {/* Header / Title */}
           <div className="flex items-center space-x-3 text-primary-green">
             <ChartPie className="w-8 h-8" />
             <h2 className="text-3xl font-semibold text-deep-brown">
@@ -662,12 +649,8 @@ const EnhancedTransparencyDashboard = () => {
             </h2>
           </div>
 
-          {/* ----------------- PROGRESS & STEPS CONTAINER ----------------- */}
           <div className="relative mt-8">
-            {/* Gray background bar (full height of the step container) */}
             <div className="absolute top-0 bottom-0 left-0 w-1 bg-sage/50 z-0" />
-
-            {/* Filled bar (based on active step) */}
             <motion.div
               className="absolute top-0 left-0 w-1 bg-primary-green z-0"
               style={{
@@ -676,8 +659,6 @@ const EnhancedTransparencyDashboard = () => {
               layout
               transition={{ duration: 0.4 }}
             />
-
-            {/* Step Nav Buttons */}
             <nav className="space-y-2 pl-4 relative z-10">
               {steps.map((step, index) => {
                 const isActive = activeStep === index;
@@ -686,7 +667,7 @@ const EnhancedTransparencyDashboard = () => {
                     <button
                       onClick={() => {
                         setActiveStep(index);
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        scrollToTopOnMobile(); // Only scroll on mobile
                       }}
                       className={`flex items-center space-x-3 p-4 rounded-xl transition-colors w-full text-left ${
                         isActive
@@ -695,13 +676,10 @@ const EnhancedTransparencyDashboard = () => {
                       }`}
                     >
                       {step.icon}
-                      {/* Step label: "Step 1: Risk Profile" */}
                       <span className="font-medium">
                         Step {index + 1}: {step.title}
                       </span>
                     </button>
-
-                    {/* Show "dropdown" shortDescription for the active step */}
                     {isActive && (
                       <motion.div
                         initial={{ height: 0 }}
@@ -717,9 +695,7 @@ const EnhancedTransparencyDashboard = () => {
               })}
             </nav>
           </div>
-          {/* ------------------------------------------------------------- */}
 
-          {/* Featured Insight (from your original snippet) */}
           <div className="bg-white/60 rounded-xl p-6 border border-primary-green/20">
             <GraduationCapIcon />
             <h3 className="text-lg font-medium text-deep-brown mb-2">
@@ -735,10 +711,7 @@ const EnhancedTransparencyDashboard = () => {
 
         {/* =============== MAIN CONTENT =============== */}
         <div className="lg:w-3/4">
-          {/* Step Content */}
           {steps[activeStep].content}
-
-          {/* Next Button (if not last step) */}
           {activeStep < steps.length - 1 && (
             <div className="mt-10">
               <button
