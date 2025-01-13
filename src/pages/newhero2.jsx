@@ -393,12 +393,15 @@ const InnovativeHero = () => {
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Text / CTA */}
             <div>
-              <h2 className="text-5xl sm:text-5xl md:text-5xl font-medium mb-4 sm:mb-6 text-primary-green">
-                Harnessing Algorithms: Eliminating Bias, Enhancing Returns 
-              </h2>
-              <p className="text-sm sm:text-base md:text-lg text-deep-brown mb-4 sm:mb-8 font-medium">
-              Leverage our advanced asset allocation algorithm, built on over 10 years of historical data and statistical modelling. We analyse market trends and performance metrics to provide personalised, Shariah-compliant multi asset investment portfolios that maximise returns and balance risk.
-              </p>
+            <h2 className="text-5xl sm:text-5xl md:text-5xl font-medium mb-4 sm:mb-6 text-primary-green">
+  Harnessing Algorithms
+  <span className="block text-base sm:text-lg md:text-xl text-deep-teal font-normal mt-2">
+    Eliminating Bias, Enhancing Returns
+  </span>
+</h2>
+<p className="text-sm sm:text-base md:text-lg text-deep-brown mb-4 sm:mb-8 font-medium">
+  Leverage our advanced asset allocation algorithm, built on over 10 years of historical data and statistical modelling. We analyse market trends and performance metrics to provide personalised, Shariah-compliant multi-asset investment portfolios that maximise returns and balance risk.
+</p>
               <button
                 className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-3 bg-deep-teal hover:bg-deep-teal/80 transition-colors rounded-lg text-white font-medium shadow-md"
                 onClick={() => navigate('/articles/asset-allocation-methodology')}
