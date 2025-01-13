@@ -395,7 +395,7 @@ const InnovativeHero = () => {
             <div>
             <h2 className="text-5xl sm:text-5xl md:text-5xl font-medium mb-4 sm:mb-6 text-primary-green">
   Harnessing Algorithms
-  <span className="block text-base sm:text-lg md:text-xl text-deep-teal font-normal mt-2">
+  <span className="block text-base sm:text-lg md:text-xl text-sage font-normal mt-2">
     Eliminating Bias, Enhancing Returns
   </span>
 </h2>
