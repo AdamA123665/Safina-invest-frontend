@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import {
-  TrendingUp,
   ArrowUpRight,
   Wallet,
   Clock,
-  Shield,
   ChevronRight,
   CheckCircle
 } from 'lucide-react';
@@ -66,26 +64,18 @@ const HeroSection = () => {
             </div>
 
             {/* Trust Badges */}
-<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8">
+
   {/* Badge 1: Shariah Compliant */}
-  <div className="flex items-center justify-center sm:justify-start gap-2 text-sage">
+ 
+  <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 text-sage">
+              The First Algorithmically Driven, Fully Transparent Investment Platform. 
+            </p>
+            <div className="flex items-center justify-center sm:justify-start gap-2 text-sage">
     <CheckCircle className="w-5 h-5" />
     <span>Shariah Compliant</span>
   </div>
-
-  {/* Badge 2: Algorithmic Asset Allocation */}
-  <div className="flex items-center justify-center sm:justify-start gap-2 text-sage">
-    <TrendingUp className="w-5 h-5" />
-    <span>Algorithmic Asset Allocation</span>
-  </div>
-
-  {/* Badge 3: Transparency in every step */}
-  <div className="flex items-center justify-center sm:justify-start gap-2 text-sage">
-    <Shield className="w-5 h-5" />
-    <span>Transparency in every step</span>
-  </div>
 </div>
-</div>
+
 
           {/* Right Content - App Interface Mock */}
           <div className="flex-1 w-full max-w-md">

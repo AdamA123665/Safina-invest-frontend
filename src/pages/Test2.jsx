@@ -15,6 +15,10 @@ import {
   BarChart3,
   AlertCircle,
   CheckCircle,
+  BarChart2,
+  TrendingDown,
+  ListChecks,
+  
 } from 'lucide-react';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +29,9 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
 } from 'recharts';
 
 function AlertDescription({ severity, message, description }) {
@@ -61,7 +68,14 @@ const EnhancedTransparencyDashboard = () => {
 
   // ----- Reference to Main Content -----
   const mainContentRef = useRef(null);
-
+  // Sample portfolio allocation data
+  const portfolioData = [
+    { name: 'Global ETFs', value: 40 },
+    { name: 'Sukuk Funds', value: 30 },
+    { name: 'Real Estate', value: 20 },
+    { name: 'Tech Funds', value: 10 },
+  ];
+  const COLORS = ['#066b06', '#c49b3c', '#2A9D8F', '#264653'];
   // ----- Scroll to top of main content on mobile when activeStep changes -----
   useEffect(() => {
     if (window.innerWidth < 768 && mainContentRef.current) {
@@ -144,11 +158,7 @@ const EnhancedTransparencyDashboard = () => {
   const stockData = useMemo(() => generateStockData(), []);
 
   // ----- Sample portfolio data (used in Step 2) -----
-  const portfolioData = [
-    { asset: 'Stocks', percentage: 60 },
-    { asset: 'Gold', percentage: 10 },
-    { asset: 'Alternatives', percentage: 30 },
-  ];
+  
 
   // ----- Steps Configuration -----
   const steps = [
@@ -342,122 +352,197 @@ const EnhancedTransparencyDashboard = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <motion.div
-                className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block"
-                whileHover={{ scale: 1.01 }}
-              >
-                <div className="flex items-center space-x-4 mb-6">
-                  <RefreshCcw className="w-6 h-6 text-primary-green" />
-                  <h3 className="text-lg md:text-xl font-medium">
-                    Our Methodology
-                  </h3>
-                </div>
-                <p className="text-dark-green mb-8 text-sm md:text-dark-green">
-                  Our research-backed approach combines sophisticated
-                  multi-asset portfolios with dynamic allocation strategies to
-                  optimize your investment outcomes.
+      {/* Methodology Section */}
+      <motion.div
+        className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block"
+        whileHover={{ scale: 1.01 }}
+      >
+        <div className="flex items-center space-x-4 mb-6">
+          <RefreshCcw className="w-6 h-6 text-primary-green" />
+          <h3 className="text-lg md:text-xl font-medium">Our Methodology</h3>
+        </div>
+        <p className="text-dark-green mb-8 text-sm md:text-base">
+          Our research-backed approach combines sophisticated multi-asset portfolios with dynamic allocation strategies to optimize your investment outcomes.
+        </p>
+
+        <div className="space-y-6">
+          {/* Existing Methodology Boxes */}
+          {/* Risk Management */}
+          <div className="p-4 bg-primary-green/10 rounded-lg">
+            <h4 className="flex items-center text-sm md:text-base font-medium mb-2 text-dark-green">
+              <Shield className="w-4 h-4 mr-2 text-primary-green" />
+              Risk Management
+            </h4>
+            <p className="text-xs md:text-sm text-dark-teal">
+              Advanced diversification strategies across asset classes, regions, and sectors to reduce volatility while maintaining growth potential.
+            </p>
+          </div>
+
+          {/* Global Diversification */}
+          <div className="p-4 bg-primary-green/10 rounded-lg">
+            <h4 className="flex items-center text-sm md:text-base font-medium mb-2 text-dark-green">
+              <Globe className="w-4 h-4 mr-2 text-primary-green" />
+              Global Diversification
+            </h4>
+            <p className="text-xs md:text-sm text-dark-teal">
+              Strategic exposure to worldwide markets, optimizing geographical allocation based on market conditions and opportunities.
+            </p>
+          </div>
+
+          {/* Active Rebalancing */}
+          <div className="p-4 bg-primary-green/10 rounded-lg">
+            <h4 className="flex items-center text-sm md:text-base font-medium mb-2 text-dark-green">
+              <BarChart3 className="w-4 h-4 mr-2 text-primary-green" />
+              Active Rebalancing
+            </h4>
+            <p className="text-xs md:text-sm text-dark-teal">
+              Regular portfolio adjustments to maintain optimal risk levels and capitalize on market opportunities.
+            </p>
+          </div>
+        </div>
+
+        {/* New Methodology Points */}
+        <div className="mt-8 space-y-6">
+          <h4 className="text-lg md:text-xl font-semibold text-dark-green">Additional Features</h4>
+          <div className="space-y-4">
+            {/* Over 10 Risk Levels */}
+            <div className="flex items-start space-x-4">
+              <ListChecks className="w-5 h-5 text-primary-green mt-1" />
+              <div>
+                <h5 className="text-sm md:text-base font-medium text-dark-green">Over 10 Risk Levels to Choose From</h5>
+                <p className="text-xs md:text-sm text-dark-teal">
+                  Tailor your investment strategy with a variety of risk levels to match your comfort and financial goals.
                 </p>
-
-                <div className="space-y-6">
-                  <div className="p-4 bg-primary-green/10 rounded-lg">
-                    <h4 className="text-sm md:text-dark-green font-medium mb-2 flex items-center">
-                      <Shield className="w-4 h-4 mr-2 text-primary-green" />
-                      Risk Management
-                    </h4>
-                    <p className="text-xs md:text-sm text-dark-teal">
-                      Advanced diversification strategies across asset classes,
-                      regions, and sectors to reduce volatility while
-                      maintaining growth potential.
-                    </p>
-                  </div>
-
-                  <div className="p-4 bg-primary-green/10 rounded-lg">
-                    <h4 className="text-sm md:text-dark-green font-medium mb-2 flex items-center">
-                      <Globe className="w-4 h-4 mr-2 text-primary-green" />
-                      Global Diversification
-                    </h4>
-                    <p className="text-xs md:text-sm text-dark-teal">
-                      Strategic exposure to worldwide markets, optimizing
-                      geographical allocation based on market conditions and
-                      opportunities.
-                    </p>
-                  </div>
-
-                  <div className="p-4 bg-primary-green/10 rounded-lg">
-                    <h4 className="text-sm md:text-dark-green font-medium mb-2 flex items-center">
-                      <BarChart3 className="w-4 h-4 mr-2 text-primary-green" />
-                      Active Rebalancing
-                    </h4>
-                    <p className="text-xs md:text-sm text-dark-teal">
-                      Regular portfolio adjustments to maintain optimal risk
-                      levels and capitalize on market opportunities.
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur flex flex-col"
-                whileHover={{ scale: 1.01 }}
-              >
-                <div className="text-center mb-2 text-xs text-sage">
-                  For illustrative purposes only
-                </div>
-
-                <div className="flex items-center space-x-4 mb-6">
-                  <ChartPie className="w-6 h-6 text-gold" />
-                  <h3 className="text-lg md:text-xl font-medium">
-                    Portfolio Allocation
-                  </h3>
-                </div>
-
-                <div className="flex-grow space-y-6">
-                  {portfolioData.map(({ asset, percentage }) => (
-                    <div key={asset} className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="capitalize">{asset}</span>
-                        <span>{percentage}%</span>
-                      </div>
-                      <div className="w-full bg-deep-teal rounded-full h-3 overflow-hidden">
-                        <motion.div
-                          className="h-full bg-gradient-to-r from-primary-green to-gold"
-                          initial={{ width: 0 }}
-                          animate={{ width: `${percentage}%` }}
-                          transition={{ duration: 0.5 }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="mt-12 p-6 bg-primary-green/10 rounded-lg">
-                    <h4 className="font-medium mb-2">
-                      About Our Portfolio Allocation Tool
-                    </h4>
-                    <p className="text-sm text-deep-teal mb-4">
-                      Access our algorithmic portfolio allocation tool to
-                      receive a personalized investment strategy based on your
-                      risk profile and financial goals.
-                    </p>
-                  </div>
-                </div>
-
-                <motion.div
-                  onClick={() => navigate('/allocation')}
-                  className="mt-8 w-full bg-olive-green hover:bg-dark-green text-white py-3 px-6 rounded-lg flex items-center justify-center space-x-2 transition-colors cursor-pointer"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <span className="font-medium text-sm md:text-dark-teal">
-                    Access Portfolio Allocation Tool
-                  </span>
-                  <ChartPie className="w-5 h-5" />
-                </motion.div>
-
-                <div className="mt-4 text-xs text-primary-green text-center">
-                  Get your personalized asset allocation strategy in minutes
-                </div>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+
+
+
+            {/* ETF Breakdown */}
+            <div className="flex items-start space-x-4">
+              <ChartPie className="w-5 h-5 text-primary-green mt-1" />
+              <div>
+                <h5 className="text-sm md:text-base font-medium text-dark-green">
+                  ETF Breakdown
+                </h5>
+                <p className="text-xs md:text-sm text-dark-teal">
+                  View detailed information on our ETF investments, including returns and descriptions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Portfolio Allocation & Investment Strategy Section */}
+      <motion.div
+        className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur flex flex-col"
+        whileHover={{ scale: 1.01 }}
+      >
+        <div className="text-center mb-2 text-xs text-deep-brown">
+          For illustrative purposes only
+        </div>
+
+        <div className="flex flex-col space-y-6">
+          {/* Portfolio Allocation */}
+          <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
+            <h3 className="text-base sm:text-lg lg:text-xl font-medium text-deep-brown mb-4">
+              Portfolio Allocation
+            </h3>
+            <div className="h-48 sm:h-56">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={portfolioData}
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {portfolioData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="grid grid-cols-2 gap-2 mt-4">
+              {portfolioData.map((item, index) => (
+                <div key={item.name} className="flex items-center space-x-2">
+                  <div
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: COLORS[index] }}
+                  />
+                  <span className="text-xs sm:text-sm text-deep-brown/80">
+                    {item.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Investment Strategy */}
+          <div className="bg-white/60 rounded-xl p-4 sm:p-6 border border-primary-green/20">
+            <h3 className="text-base sm:text-lg lg:text-xl font-medium text-deep-brown mb-4">
+              Investment Strategy
+            </h3>
+            <div className="grid grid-cols-1 gap-4 mb-4">
+              {[
+                {
+                  label: 'Portfolio Performance',
+                  value: '+8.2%',
+                  icon: <BarChart2 className="w-4 h-4" />,
+                },
+                {
+                  label: 'Max Drawdown',
+                  value: '-15.4%',
+                  trend: 'down',
+                  icon: <TrendingDown className="w-4 h-4" />,
+                  description: 'Maximum observed loss from peak to trough',
+                },
+                {
+                  label: 'Volatility',
+                  value: '9.2%',
+                  trend: 'neutral',
+                  icon: <BarChart2 className="w-4 h-4" />,
+                  description: 'Moderate price fluctuations indicating balanced risk',
+                },
+              ].map((metric) => (
+                <div
+                  key={metric.label}
+                  className="flex items-center justify-between p-3 bg-white/40 rounded-lg"
+                >
+                  <div className="flex items-center space-x-2 text-deep-brown/80">
+                    {metric.icon}
+                    <span className="text-xs sm:text-sm">{metric.label}</span>
+                  </div>
+                  <span className="font-medium text-primary-green text-sm sm:text-base">
+                    {metric.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Access Portfolio Allocation Tool */}
+        <motion.div
+          onClick={() => navigate('/allocation')}
+          className="mt-8 w-full bg-olive-green hover:bg-dark-green text-white py-3 px-6 rounded-lg flex items-center justify-center space-x-2 transition-colors cursor-pointer"
+          whileHover={{ scale: 1.02 }}
+        >
+          <span className="font-medium text-sm md:text-base">
+            Access Portfolio Allocation Tool
+          </span>
+          <ChartPie className="w-5 h-5" />
+        </motion.div>
+
+        <div className="mt-4 text-xs text-primary-green text-center">
+          Get your personalized asset allocation strategy in minutes
+        </div>
+      </motion.div>
+    </div>
+    </motion.div>
         </>
       ),
     },
