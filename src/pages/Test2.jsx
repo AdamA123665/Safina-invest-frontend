@@ -33,7 +33,7 @@ import {
   Pie,
   Cell,
 } from 'recharts';
-
+import { HashLink } from "react-router-hash-link";
 function AlertDescription({ severity, message, description }) {
   return (
     <Alert severity={severity}>
@@ -62,7 +62,7 @@ const EnhancedTransparencyDashboard = () => {
   const [status, setStatus] = useState('idle'); // idle, loading, success, error
   const [errorMessage, setErrorMessage] = useState('');
   const [showInfo, setShowInfo] = useState(false);
-
+  
   // ----- Multi-Step Layout States -----
   const [activeStep, setActiveStep] = useState(0); // Moved above useEffect
 
@@ -189,87 +189,89 @@ const EnhancedTransparencyDashboard = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Left Column */}
-              <div className="space-y-8">
-                <motion.div
-                  className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <h3 className="text-lg md:text-xl font-medium mb-6">
-                    Visualise Different Risk Levels
-                  </h3>
-                  <div className="space-y-4">
-                    <input
-                      type="range"
-                      min="1"
-                      max="10"
-                      value={riskLevel}
-                      onChange={(e) => setRiskLevel(parseInt(e.target.value))}
-                      className="w-full h-2 bg-gradient-to-r from-primary-green to-gold rounded-full"
-                    />
-                    <div className="flex justify-between text-xs md:text-sm text-primary-green">
-                      <span>Conservative</span>
-                      <span>Moderate</span>
-                      <span>Aggressive</span>
-                    </div>
-                    <div className="mt-4 p-4 bg-primary-green/20 rounded-lg">
-                      <p className="text-sm text-primary-green">
-                        Risk Level {riskLevel}:{' '}
-                        {riskLevel <= 3
-                          ? 'Conservative - Lower risk, stable returns'
-                          : riskLevel <= 7
-                          ? 'Moderate - Balanced risk and return'
-                          : 'Aggressive - Higher risk, potential for higher returns'}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
+      <div className="space-y-8">
+        {/* Range Slider Box (Desktop-only) */}
+        <motion.div
+          className="bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hidden md:block"
+          whileHover={{ scale: 1.02 }}
+        >
+          <h3 className="text-lg md:text-xl font-medium mb-6">
+            Visualise Different Risk Levels
+          </h3>
+          <div className="space-y-4">
+            <input
+              type="range"
+              min="1"
+              max="10"
+              value={riskLevel}
+              onChange={(e) => setRiskLevel(parseInt(e.target.value))}
+              className="w-full h-2 bg-gradient-to-r from-primary-green to-gold rounded-full"
+            />
+            <div className="flex justify-between text-xs md:text-sm text-primary-green">
+              <span>Conservative</span>
+              <span>Moderate</span>
+              <span>Aggressive</span>
+            </div>
+            <div className="mt-4 p-4 bg-primary-green/20 rounded-lg">
+              <p className="text-sm text-primary-green">
+                Risk Level {riskLevel}:{' '}
+                {riskLevel <= 3
+                  ? 'Conservative - Lower risk, stable returns'
+                  : riskLevel <= 7
+                  ? 'Moderate - Balanced risk and return'
+                  : 'Aggressive - Higher risk, potential for higher returns'}
+              </p>
+            </div>
+          </div>
+        </motion.div>
 
-                <motion.button
-                  onClick={() => navigate('/assets')}
-                  className="w-full text-left bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors focus:outline-none"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <div className="flex items-start space-x-4">
-                    <Shield className="w-6 h-6 text-primary-green flex-shrink-0" />
-                    <div>
-                      <h3 className="text-lg md:text-xl font-medium mb-2">
-                        Take Our Full Risk Assessment
-                      </h3>
-                      <p className="text-primary-green mb-4 text-sm">
-                        Get a comprehensive analysis of your risk tolerance
-                        through our expert-designed questionnaire.
-                      </p>
-                      <span className="text-dark-green flex items-center text-sm">
-                        Start Assessment <ArrowRight className="ml-2 w-4 h-4" />
-                      </span>
-                    </div>
-                  </div>
-                </motion.button>
+        {/* HashLink to Risk Assessment */}
+        <HashLink smooth to="/assets#tools" className="block">
+          <motion.button
+            className="w-full text-left bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors focus:outline-none"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <div className="flex items-start space-x-4">
+              <Shield className="w-6 h-6 text-primary-green flex-shrink-0" />
+              <div>
+                <h3 className="text-lg md:text-xl font-medium mb-2">
+                  Take Our Full Risk Assessment
+                </h3>
+                <p className="text-primary-green mb-4 text-sm">
+                  Get a comprehensive analysis of your risk tolerance
+                  through our expert-designed questionnaire.
+                </p>
+                <span className="text-dark-green flex items-center text-sm">
+                  Start Assessment <ArrowRight className="ml-2 w-4 h-4" />
+                </span>
+              </div>
+            </div>
+          </motion.button>
+        </HashLink>
 
-                <motion.div
-                  onClick={() =>
-                    navigate('/articles/understanding-investing-risk')
-                  }
-                  className="block bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors cursor-pointer"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="flex items-start space-x-4">
-                    <Info className="w-6 h-6 text-gold flex-shrink-0" />
-                    <div>
-                      <h3 className="text-lg md:text-xl font-medium mb-2">
-                        Understanding Investment Risk
-                      </h3>
-                      <p className="text-primary-green mb-4 text-sm">
-                        Learn about the factors that influence investment risk
-                        and return.
-                      </p>
-                      <span className="text-gold hover:text-dark-green flex items-center text-sm md:text-dark-green">
-                        Read Article <ExternalLink className="ml-2 w-4 h-4" />
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
+        {/* Article Link Box */}
+        <motion.div
+          onClick={() => navigate('/articles/understanding-investing-risk')}
+          className="block bg-deep-brown/5 rounded-xl p-6 md:p-8 backdrop-blur hover:bg-deep-brown/10 transition-colors cursor-pointer"
+          whileHover={{ scale: 1.02 }}
+        >
+          <div className="flex items-start space-x-4">
+            <Info className="w-6 h-6 text-gold flex-shrink-0" />
+            <div>
+              <h3 className="text-lg md:text-xl font-medium mb-2">
+                Understanding Investment Risk
+              </h3>
+              <p className="text-primary-green mb-4 text-sm">
+                Learn about the factors that influence investment risk
+                and return.
+              </p>
+              <span className="text-gold hover:text-dark-green flex items-center text-sm md:text-dark-green">
+                Read Article <ExternalLink className="ml-2 w-4 h-4" />
+              </span>
+            </div>
+          </div>
+        </motion.div>
               </div>
 
               {/* Right Column: Risk-Return Visualization (desktop-only) */}
