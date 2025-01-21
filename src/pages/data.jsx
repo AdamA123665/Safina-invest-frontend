@@ -15,7 +15,7 @@ const sectionsData = [
   {
     id: 1,
     title: 'Smart Optimisation',
-    subtitle: 'AI-Powered Portfolio Creation',
+    subtitle: 'Algorithmic Portfolio Creation',
     icon: <Cog className="w-6 h-6" />,
     gradient: 'from-deep-teal to-dark-green',
     description: 'Our algorithm creates your perfect portfolio mix',
