@@ -10,10 +10,7 @@ const sectionsData = [
     gradient: 'from-primary-green to-olive-green',
     description:
       'We use Exchange-Traded Funds (ETFs) from world-leading providers like BlackRock and HSBC that pass Sharia screening',
-    points: [
-      'Diversified funds tracking major market indices',
-      'Lower costs'
-    ]
+    points: ['Diversified funds tracking major market indices', 'Lower costs']
   },
   {
     id: 1,
@@ -24,7 +21,7 @@ const sectionsData = [
     description: 'Our algorithm creates your perfect portfolio mix',
     points: [
       'Risk-adjusted returns optimisation',
-      'Sophisticated diversification strategy',
+      'Sophisticated diversification strategy'
     ]
   },
   {
@@ -68,13 +65,11 @@ const ConnectedSteps = () => {
   }, []);
 
   return (
-    // Changed background to a light green (Tailwind "bg-green-50" as an example)
     <div className="bg-light-gold text-sage">
       {/* Hero Section */}
-      {/* Reduced padding, removed min-h-screen to avoid huge vertical space */}
       <header className="flex flex-col items-center justify-center px-2 py-12">
         <div className="text-center max-w-2xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4 leading-tight text-primary-green">
+          <h1 className="text-5xl sm:text-5xl font-bold mb-4 leading-tight text-primary-green">
             Halal Investing
             <span className="block text-gold mt-2">Made Simple</span>
           </h1>
@@ -90,12 +85,9 @@ const ConnectedSteps = () => {
       </header>
 
       {/* Main Content */}
-      {/* Reduced horizontal padding from px-4 to px-2 and vertical from py-24 to py-12 */}
       <main className="max-w-5xl mx-auto px-2 py-12">
-        {/* Step Cards */}
-        {/* Reduced vertical gap from space-y-12 to space-y-8 */}
         <div className="space-y-8 relative">
-          {/* Vertical Connection Line */}
+          {/* Vertical Connection Line: visible only on md+ */}
           <div className="absolute left-8 top-8 bottom-8 w-0.5 bg-sage/20 hidden md:block">
             <div
               className="absolute top-0 w-full bg-gold transition-all duration-700"
@@ -115,29 +107,48 @@ const ConnectedSteps = () => {
                 ref={(el) => (stepsRef.current[index] = el)}
                 data-step={index}
                 className={`
-                  relative pl-16 md:pl-24 transition-all duration-500
+                  relative
+                  transition-all duration-500
+                  // Keep left padding on desktop for the timeline
+                  md:pl-24
+                  pl-0
                   ${isActive ? 'translate-x-0 opacity-100' : 'opacity-75'}
                 `}
               >
                 {/* Step Number Circle */}
                 <div
                   className={`
-                    absolute left-0 top-0 w-12 h-12 rounded-full 
+                    // Absolutely position on desktop, normal flow on mobile
+                    md:absolute md:left-0 md:top-0
+                    w-12 h-12 rounded-full 
                     flex items-center justify-center text-lg font-bold
                     transition-all duration-500 z-10
-                    ${isActive || isPast ? 'bg-gold text-deep-brown' : 'bg-sage/20 text-sage'}
+                    // Center on mobile and add some bottom margin
+                    mx-auto md:mx-0
+                    mb-4 md:mb-0
+
+                    ${
+                      isActive || isPast
+                        ? 'bg-gold text-deep-brown'
+                        : 'bg-sage/20 text-sage'
+                    }
                     ${isActive ? 'scale-125' : 'scale-100'}
                   `}
                 >
                   {index + 1}
                 </div>
 
-                {/* Card Content */}
+                {/* Card Container */}
                 <div
                   className={`
+                    mx-4 md:mx-0
                     bg-deep-teal rounded-xl p-6
                     transition-all duration-500
-                    ${isActive ? 'ring-2 ring-gold shadow-lg shadow-gold/20 scale-105' : 'scale-100'}
+                    ${
+                      isActive
+                        ? 'ring-2 ring-gold shadow-lg shadow-gold/20 scale-105'
+                        : 'scale-100'
+                    }
                   `}
                 >
                   {/* Icon */}
@@ -166,7 +177,11 @@ const ConnectedSteps = () => {
                         className={`
                           flex items-center gap-2
                           transition-all duration-500
-                          ${isActive ? 'opacity-100 translate-x-0' : 'opacity-75 translate-x-4'}
+                          ${
+                            isActive
+                              ? 'opacity-100 translate-x-0'
+                              : 'opacity-75 translate-x-4'
+                          }
                         `}
                         style={{ transitionDelay: `${i * 100}ms` }}
                       >
