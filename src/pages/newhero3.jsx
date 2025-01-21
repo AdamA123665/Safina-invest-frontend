@@ -48,7 +48,7 @@ const HeroSection = () => {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
               {/* Get Started Button as an Anchor Tag */}
               <a
-                href="#newhero"
+                href="#investment-options"
                 className="bg-primary-green text-light-background px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-dark-green transition-colors text-center"
               >
                 Learn More
