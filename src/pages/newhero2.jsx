@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  motion,
-  useTransform,
-  useMotionValue,
-  animate,
-} from 'framer-motion';
+
 import {
   LineChart,
   Line,
@@ -15,12 +10,8 @@ import {
   Tooltip,
 } from 'recharts';
 import {
-  TrendingUp,
-  Shield,
-  Database,
   ArrowRight,
 } from 'lucide-react';
-import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
 const InnovativeHero = () => {
@@ -31,183 +22,11 @@ const InnovativeHero = () => {
   // PART 1: The hero cards (SAVINGS / INVEST / TOOLS)
   // -------------------------------------
 
-  // Generate smooth quartic growth curve for "Investments"
-  const generateInvestmentData = () => {
-    return Array.from({ length: 50 }, (_, i) => {
-      const x = i / 49; // Normalize to 0-1
-      // Quartic function with slight randomness for a natural feel
-      const y = Math.pow(x, 4) * 0.7 + x * 0.3 + Math.sin(x * 10) * 0.02;
-      return {
-        x: i,
-        value: y,
-      };
-    });
-  };
+ 
 
-  const investmentData = generateInvestmentData();
+  
 
-  // Dynamic number counter
-  const Counter = ({ from, to, duration = 2 }) => {
-    const count = useMotionValue(from);
-    const rounded = useTransform(count, (value) => Math.round(value));
-
-    useEffect(() => {
-      const controls = animate(count, to, {
-        duration: duration,
-        ease: 'easeOut',
-      });
-      return controls.stop;
-    }, [count, to, duration]);
-
-    return <motion.span>{rounded}</motion.span>;
-  };
-
-  // Our three “cards” data
-  const sections = [
-    {
-      id: 'save',
-      title: 'Smart Savings',
-      bgColor: 'bg-gold/30',
-      icon: (
-        <Shield className="w-8 h-8 sm:w-10 sm:h-10 mb-2 text-gold" />
-      ),
-      content: (
-        <div className="flex flex-col items-center text-center space-y-2">
-          <h3 className="text-lg sm:text-xl font-medium text-deep-brown">
-            Smart Savings
-          </h3>
-          <div className="w-full h-32 sm:h-40 relative flex items-center justify-center">
-            <motion.div
-              className="relative w-20 h-20 sm:w-24 sm:h-24 bg-gold/30 rounded-full flex items-center justify-center"
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <div className="text-base sm:text-xl font-medium text-gold">
-                <Counter from={0} to={100} />%
-              </div>
-            </motion.div>
-          </div>
-          <p className="text-xs sm:text-sm text-deep-brown/80 max-w-sm mx-auto">
-            Start your wealth journey with our ethical saving solutions. Earn
-            competitive returns while staying true to Islamic principles.
-          </p>
-          <motion.a
-            href="#explore-savings"
-            className="inline-flex items-center space-x-1 text-gold hover:text-gold/80 transition-colors"
-            whileHover={{ x: 5 }}
-          >
-            <span className="text-xs sm:text-sm">Explore Savings Plans</span>
-            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-          </motion.a>
-        </div>
-      ),
-    },
-    {
-      id: 'invest',
-      title: 'Strategic Investments',
-      bgColor: 'bg-deep-teal/30',
-      icon: (
-        <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 mb-2 text-deep-teal" />
-      ),
-      content: (
-        <div className="flex flex-col items-center text-center space-y-2">
-          <h3 className="text-lg sm:text-xl font-medium text-deep-brown">
-            Strategic Investments
-          </h3>
-          <div className="w-full h-32 sm:h-40 relative">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={investmentData}>
-                <Line
-                  type="monotone"
-                  dataKey="value"
-                  stroke="url(#lineGradient)"
-                  strokeWidth={2}
-                  dot={false}
-                  isAnimationActive={true}
-                />
-                <defs>
-                  <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stopColor="#066b06" />
-                    <stop offset="100%" stopColor="#c49b3c" />
-                  </linearGradient>
-                </defs>
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-          <p className="text-xs sm:text-sm text-deep-brown/80 max-w-sm mx-auto">
-            Our data-driven approach combines ethical investing with modern
-            portfolio theory, delivering consistent returns.
-          </p>
-          <motion.a
-            href="#investment-options"
-            className="inline-flex items-center space-x-1 text-deep-teal hover:text-deep-teal/80 transition-colors"
-            whileHover={{ x: 5 }}
-          >
-            <span className="text-xs sm:text-sm">View Investment Options</span>
-            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-          </motion.a>
-        </div>
-      ),
-    },
-    {
-      id: 'tools',
-      title: 'Powerful Tools',
-      bgColor: 'bg-primary-green/30',
-      icon: (
-        <Database className="w-8 h-8 sm:w-10 sm:h-10 mb-2 text-primary-green" />
-      ),
-      content: (
-        <div className="flex flex-col items-center text-center space-y-2">
-          <h3 className="text-lg sm:text-xl font-medium text-deep-brown">
-            Powerful Tools
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {[
-              {
-                name: 'Asset Allocation',
-                description: 'Advanced algorithmic asset allocation',
-              },
-              {
-                name: 'Risk Assessment',
-                description: 'Smart risk profiling & management',
-              },
-              {
-                name: 'Market Insights',
-                description: 'Real-time Shariah-compliant data',
-              },
-              {
-                name: 'Time Horizon vs Risk',
-                description: 'Educational tools to visualise opportunities',
-              },
-            ].map((tool, i) => (
-              <motion.div
-                key={tool.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-primary-green/20 p-2 sm:p-3 rounded-lg hover:bg-green-200 transition-colors"
-              >
-                <div className="text-primary-green font-medium text-sm sm:text-base mb-1">
-                  {tool.name}
-                </div>
-                <div className="text-deep-brown text-xs sm:text-sm">
-                  {tool.description}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <motion.a
-            href="#tools"
-            className="inline-flex items-center space-x-1 text-primary-green hover:text-primary-green/80 transition-colors"
-            whileHover={{ x: 5 }}
-          >
-            <span className="text-xs sm:text-sm">Explore All Tools</span>
-            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
-          </motion.a>
-        </div>
-      ),
-    },
-  ];
+  
 
   // -------------------------------------
   // PART 2: Data & logic for the data analytics section
@@ -299,89 +118,7 @@ const InnovativeHero = () => {
         background: '#e2eac3', // Light background
       }}
     >
-      {/* HERO AREA (modified to have responsive min-height) */}
-      <section
-        className="
-          min-h-screen
-          md:min-h-[60vh]         /* Responsive min-height */
-          flex
-          flex-col
-          items-center
-          justify-center
-          px-4
-          py-8                  /* Default vertical padding */
-          md:py-4               /* Reduced padding on desktop */
-          relative
-        "
-      >
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="
-            text-5xl
-            sm:text-6xl
-            md:text-6xl
-            font-medium
-            text-deep-brown
-            mb-8
-            text-center
-            drop-shadow-lg
-            pt-4
-          "
-        >
-          Innovative Ethical{' '}
-          <span
-            style={{ color: '#066b06' }} // Primary Green
-          >
-            Free
-          </span>
-        </motion.h1>
-  
-        {/* 3 cards in a responsive grid */}
-        <div
-          className="
-            max-w-6xl
-            w-full
-            grid
-            grid-cols-1
-            md:grid-cols-3
-            gap-4
-            md:gap-6
-            px-4
-            sm:px-4
-            pt-2
-            pb-8
-            sm:pb-2
-          "
-        >
-          {sections.map((section) => (
-            <div
-              key={section.id}
-              className="relative min-h-[347px] flex flex-col justify-center"
-            >
-              <div
-                className={clsx(
-                  'rounded-xl p-3 sm:p-4 border border-deep-brown/20 h-full',
-                  section.bgColor
-                )}
-              >
-                <div className="flex flex-col items-center h-full">
-                  {section.icon}
-                  <div className="flex-1 w-full flex flex-col justify-center">
-                    {section.content}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-  
-
-        {/*
-          Single "Shariah Compliant" bubble
-        */}
-        
-      </section>
+      
 
       {/*
         ==========================================
