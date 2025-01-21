@@ -9,12 +9,10 @@ const sectionsData = [
     icon: <Moon className="w-6 h-6" />,
     gradient: 'from-primary-green to-olive-green',
     description:
-      'We use Exchange-Traded Funds (ETFs) from world-leading providers like BlackRock and HSBC that pass strict Sharia screening',
+      'We use Exchange-Traded Funds (ETFs) from world-leading providers like BlackRock and HSBC that pass Sharia screening',
     points: [
       'Diversified funds tracking major market indices',
-      'Zero exposure to interest-based investments',
-      'Regular compliance monitoring',
-      'Lower costs than traditional mutual funds'
+      'Lower costs'
     ]
   },
   {
@@ -27,8 +25,6 @@ const sectionsData = [
     points: [
       'Risk-adjusted returns optimisation',
       'Sophisticated diversification strategy',
-      'Lower fees than active management',
-      'Automatic rebalancing suggestions'
     ]
   },
   {
