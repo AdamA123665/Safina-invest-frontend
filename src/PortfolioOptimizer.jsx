@@ -13,6 +13,7 @@ import About from './pages/About';
 import Trial from './pages/Trial';
 import Test2 from './pages/Test2';
 import ArticleDetailsPage from './pages/ArticleDetailsPage';
+import Methodology from './pages/methodology'; // <-- NEW: Import the Methodology page
 
 // Import the Navbar and Footer
 import Navbar from './Navbar';
@@ -43,13 +44,13 @@ function PortfolioOptimizer() {
   return (
     <Router>
       {/* ScrollToTop listens to route changes and scrolls to top */}
-      <ScrollToTop /> {/* <-- Integrated ScrollToTop here */}
+      <ScrollToTop />
 
       {/* Always show the Navbar at the top */}
       <Navbar />
 
-      {/* RouteChangeTracker to log page views */}
-      <RouteChangeTracker /> {/* <-- Existing component */}
+      {/* RouteChangeTracker logs page views */}
+      <RouteChangeTracker />
 
       {/* Page Content */}
       <div className="pt-0">
@@ -63,6 +64,9 @@ function PortfolioOptimizer() {
           <Route path="/trial" element={<Trial />} />
           <Route path="/test2" element={<Test2 />} />
           <Route path="/articles/:id" element={<ArticleDetailsPage />} />
+
+          {/* NEW: Methodology route */}
+          <Route path="/methodology" element={<Methodology />} />
         </Routes>
       </div>
 
