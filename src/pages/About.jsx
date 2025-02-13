@@ -108,7 +108,7 @@ function About() {
 </p>
             <div className="flex justify-center mt-6">
               <a
-                href="https://www.linkedin.com/in/adamahmed2210"
+                href="https://www.linkedin.com/in/safina-invest-uk"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center px-4 py-2 bg-primary-green text-white font-semibold text-lg rounded-full shadow-md hover:bg-dark-green transition duration-300"
@@ -126,14 +126,7 @@ function About() {
             </div>
           </div>
           
-          {/* Image Section */}
-          <div className="lg:w-1/2 flex justify-center">
-            <img
-              src={`${process.env.PUBLIC_URL}/adam.png`}
-              alt="Adam Ahmed"
-              className="rounded-lg shadow-lg w-80 h-auto"
-            />
-          </div>
+          
         </div>
       </div>
     </div>
